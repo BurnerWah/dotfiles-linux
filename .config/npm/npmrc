@@ -1,0 +1,10 @@
+prefix=${HOME}/.local
+cache=${XDG_CACHE_HOME}/npm
+tmp=${XDG_RUNTIME_DIR}/npm
+init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+globalconfig=/etc/npmrc
+globalignorefile=/etc/npmignore
+optional=false
+sign-git-commit=true
+sign-git-tag=true
+link=true

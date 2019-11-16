@@ -1,0 +1,2 @@
+prompt_powerlevel10k_setup
+source $ZDOTDIR/.p10k.zsh
