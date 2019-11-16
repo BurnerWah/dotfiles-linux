@@ -1,0 +1,2 @@
+unfunction $@
+autoload -Uz $@

@@ -1,0 +1,20 @@
+#compdef hyperfine
+_arguments -s \
+  '(-h --help)'{-h,--help}'[print help information]' \
+  '(-V --version)'{-V,--version}'[show version information]' \
+  '(-w --warmup)'{-w,--warmup}'[perform NUM warmup runs before the actual benchmark]' \
+  '(-m --min-runs)'{-m,--min-runs}'[perform at least NUM runs for each command (default: 10)]' \
+  '(-M --max-runs)'{-M,--max-runs}'[perform at most NUM runs for each command]' \
+  '(-r --runs)'{-r,--runs}'[perform exactly NUM runs for each command]' \
+  '(-p --prepare)'{-p,--prepare}'[execute CMD before each timing run]' \
+  '(-c --cleanup)'{-c,--cleanup}'[execute CMD after the completion of all benchmarking runs]' \
+  '(-P --parameter-scan)'{-P,--parameter-scan}'[perform benchmark runs for each value in the range MIN..MAX]' \
+  '(-s --style)'{-s,--style}'[set output style type]' \
+  '(-S --shell)'{-S,--shell}'[set the shell to use]' \
+  '(-i --ignore-failure)'{-i,--ignore-failure}'[ignore non-zero exit codes]' \
+  '(-u --time-unit)'{-u,--time-unit}'[set the time unit used]:unit:(millisecond second)' \
+  '--export-asciidoc[export the timing summary statistics as an Asciidoc table]' \
+  '--export-csv[export the timing summary statistics as CSV]' \
+  '--export-json[export the timing summary statistics as JSON]' \
+  '--export-markdown[export the timing summary statistics as a Markdown table]' \
+  '--show-output[print the stdout and stderr of the benchmark instead of suppressing it]'

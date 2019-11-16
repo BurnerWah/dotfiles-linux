@@ -1,0 +1,34 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+prompt_order = [
+    "username",
+    "hostname",
+    "directory",
+    "git_branch",
+    "git_state",
+    "git_status",
+    "rust",
+    "python",
+    "golang",
+    "cmd_duration",
+    "jobs",
+    "battery",
+    "time",
+    "character",
+]
+
+[git_branch]
+symbol = " " # , , , 
+
+[golang]
+symbol = " " # , ﳑ, 
+
+[python]
+symbol = " " # , , , , 
+
+[ruby]
+symbol = " " # , , , , , 
+
+[rust]
+symbol = " "

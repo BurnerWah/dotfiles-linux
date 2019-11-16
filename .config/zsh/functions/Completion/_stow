@@ -1,0 +1,2 @@
+#compdef stow
+_arguments -s '*::files:_files' --

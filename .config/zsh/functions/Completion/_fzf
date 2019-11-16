@@ -1,0 +1,65 @@
+#compdef fzf -value-,FZF_DEFAULT_OPTS,-default-
+local -A macro
+macro[number]='_guard "[0-9]##" "number"'
+_arguments -s \
+  '(-h --help)'{-h,--help}'[show help]' \
+  --version'[display version information and exit]' \
++ 'search' \
+  '(-e --exact)'{-e,--exact}'[enable exact-match]' \
+  --algo='[fuzzy matching algorithm (default: v2)]:algorithm:(v1 v2)' \
+  '(-i +i)'-i'[case-insensitive match (default: smart-case match)]' \
+  '(-i +i)'+i'[case-sensitive match (default: smart-case match)]' \
+  --literal'[do not normalize latin script letters before matching]' \
+  '(+s --no-sort)'{+s,--no-sort}"[don't sort the result]" \
+  --tac'[reverse the order of the input]' \
++ 'interface' \
+  '(-m --multi)'{-m,--multi}'[enable multi-select with tab/shift-tab]' \
+  --no-mouse'[disable mouse]' \
+  --cycle'[enable cyclic scroll]' \
+  --no-hscroll'[disable horizontal scroll]' \
+  --hscroll-off="[number of columns to the right of the highlighted substring (default: 10)]:number:${macro[number]}" \
+  --filepath-word'[make word-wise movements respect path separators]' \
++ 'layout' \
+  --min-height="[minimum height when --height is given in percent (default: 10)]:number:${macro[number]}" \
+  --layout='[choose layout]:layout:(default reverse reverse-list)' \
+  --border'[draw border above and below the finder]' \
+  --inline-info'[display finder info inline with the query]' \
+  --header-lines="[the first N lines of the input are treated as header]:number:${macro[number]}" \
++ 'display' \
+  --ansi'[enable processing of ANSI color codes]' \
+  --tabstop="[number of spaces for a tab character (default: 8)]:number:${macro[number]}" \
+  --no-bold'[do not use bold text]' \
++ 'history' \
+  --history='[history file]:history file:_files' \
+  --history-size="[maximum number of history entries (default: 1000)]:number:${macro[number]}" \
++ 'scripting' \
+  '(-1 --select-1)'{-1,--select-1}'[automatically select the only match]' \
+  '(-0 --exit-0)'{-0,--exit-0}"[exit immediately when there's no match]" \
+  --print-query'[print query as the first line]' \
+  --read0'[read input delimited by ASCII NUL characters]' \
+  --print0'[print output delimited by ASCII NUL characters]' \
+  --sync'[synchronous search for multi-staged filtering]' \
++ '(extended)' \
+  {-x,--extended}'[enable extended-search mode]' \
+  {+x,--no-extended}'[disable extended-search mode]'
+# 'auto' \
+# -- \
+# '*=COMMAND:command:_normal' \
+# '*=HEIGHT[%]:number:_guard "[0-9]##[%]#" "number"' \
+
+# TODO: -n, --nth=N[,..]
+# TODO: --with-nth=N[,..]
+# TODO: -d, --delimiter=STR
+# TODO: --tiebreak=CRI[,..]
+# TODO: --bind=KEYBINDS
+# TODO: --jump-labels=CHARS
+# TODO: --height=HEIGHT[%]
+# TODO: --margin=MARGIN
+# TODO: --prompt=STR
+# TODO: --header=STR
+# TODO: --color=COLSPEC
+# TODO: --preview=COMMAND
+# TODO: --preview-window=OPT
+# TODO: -q, --query=STR
+# TODO: -f, --filter=STR
+# TODO: --expect=KEYS

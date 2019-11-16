@@ -1,0 +1,9 @@
+#compdef grc
+_arguments \
+  '--colour=-[control use of color]:color:(on off auto)' \
+  {-e,--stderr}'[redirect stderr]' \
+  {-s,--stdout}'[redirect stdout]' \
+  '--pty[run command in pseudoterminal]'  \
+  '(-c --config)'{-c,--config=-}'[use name as configuration file for grcat]:config:_path_files -W /usr/share/grc' \
+  ':command:_path_commands' \
+  '*::arguments: _normal'

@@ -1,0 +1,77 @@
+#compdef lsipc
+
+_lsipc() {
+  _arguments -s \
+    '(-g --global -i --id -c --creator -t --time)'{-g,--global}'[info about system-wide usage]' \
+    '(-i --id -g --global)'{-i,--id}'[print details on resource identified by id]' \
+    '(-b --bytes)'{-b,--bytes}'[print SIZE in bytes rather than in human readable format]' \
+    '(-c --creator -g --global)'{-c,--creator}'[show creator and owner]' \
+    '(-o --output)'{-o,--output}"[define the columns to output]:properties:_sequence -s , _lsipc_props" \
+    '(-P --numeric-perms)'{-P,--numeric-perms}'[print numeric permissions]' \
+    '(-t --time -g --global)'{-t,--time}'[show attach, detach and change times]' \
+    '--time-format=[display dates in format]:time format:(short full iso)' \
+  + '(format)' \
+    {-e,--export}'[display in an export-able output format]' \
+    {-J,--json}'[use the JSON output format]' \
+    {-n,--newline}'[display each piece of information on a new line]' \
+    {-l,--list}'[force list output format]' \
+    {-r,--raw}'[display in raw mode]' \
+  + '(resource)' \
+    {-m,--shmems}'[shared memory segments]' \
+    {-q,--queues}'[message queues]' \
+    {-s,--semaphores}'[semaphores]' \
+  + 'auto' \
+    --
+
+}
+
+(( $+functions[_lsipc_props] )) || _lsipc_props() {
+local opts=(
+  KEY:'Resource key'
+  ID:'Resource ID'
+  OWNER:"Owner's username or UID"
+  PERMS:'Permissions'
+  CUID:'Creator UID'
+  CUSER:'Creator user'
+  CGID:'Creator GID'
+  CGROUP:'Creator group'
+  UID:'User ID'
+  USER:'User name'
+  GID:'Group ID'
+  GROUP:'Group name'
+  CTIME:'Time of the last change'
+)
+(( $+opt_args[-g] || $+opt_args[--global] )) && {opts+=(
+  RESOURCE:'Resource name'
+  DESCRIPTION:'Resource description'
+  LIMIT:'System-wide limit'
+  USED:'Currently used'
+  USE%:'Currently use percentage'
+)}
+(( $+opt_args[resource--m] || $+opt_args[resource---shmems] )) && {opts+=(
+  SIZEE:'Segment size'
+  NATTACH:'Number of attached processes'
+  STATUS:'Status'
+  ATTACH:'Attach time'
+  DETACH:'Detach time'
+  COMMAND:'Creator command line'
+  CPID:'PID of the creator'
+  LPID:'PID of last user'
+)}
+(( $+opt_args[resource--q] || $+opt_args[resource---queues] )) && {opts+=(
+  USEDBYTES:'Bytes used'
+  MSGS:'Number of messages'
+  SEND:'Time of last msg sent'
+  RECV:'Time of last msg received'
+  LSPID:'PID of the last msg sender'
+  LRPID:'PID of the last msg receiver'
+)}
+(( $+opt_args[resource--s] || $+opt_args[resource---semaphores] )) && {opts+=(
+  NSEMS:'Number of semaphores'
+  OTIME:'Time of the last operation'
+)}
+
+_describe -t properties property opts
+}
+
+_lsipc "$@"

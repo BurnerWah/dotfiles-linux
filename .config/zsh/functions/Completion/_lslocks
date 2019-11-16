@@ -1,0 +1,36 @@
+#compdef lslocks
+
+_lslocks() {
+  _arguments -s \
+    '(-h --help)'{-h,--help}'[display this help]' \
+    '(-V --version)'{-V,--version}'[display version]' \
+    '(-b --bytes)'{-b,--bytes}'[print SIZE in bytes rather than in human readable format]' \
+    '(-i --noinaccessible)'{-i,--noinaccessible}'[ignore locks without read permissions]' \
+    '(-n --noheadings)'{-n,--noheadings}"[don't print headings]" \
+    '(-p --pid)'{-p,--pid}'[display only locks held by this process]' \
+    '(-u --notruncate)'{-u,--notruncate}"[don't truncate text in columns]" \
+  + '(format)' \
+    {-J,--json}'[use JSON output format]' \
+    {-r,--raw}'[use the raw output format]' \
+  + '(output)' \
+    {-o,--output}'[define which output columns to use]:properties:_sequence -s , _lslocks_prop' \
+    '--output-all[output all columns]'
+}
+
+(( $+functions[_lslocks_prop] )) || _lslocks_prop() {
+local props=(
+  COMMAND:'command of the process holding the lock'
+  PID:'PID of the process holding the lock'
+  TYPE:'kind of lock'
+  SIZE:'size of the lock'
+  MODE:'lock access mode'
+  M:'mandatory state of the lock: 0 (none), 1 (set)'
+  START:'relative byte offset of the lock'
+  END:'ending offset of the lock'
+  PATH:'path of the locked file'
+  BLOCKER:'PID of the process blocking the lock'
+)
+_describe -t properties property props
+}
+
+_lslocks "$@"

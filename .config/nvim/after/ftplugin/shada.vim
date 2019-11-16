@@ -1,0 +1,2 @@
+" Disable spell
+setl nospell

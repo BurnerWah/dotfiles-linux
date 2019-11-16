@@ -1,0 +1,26 @@
+#compdef lsmem
+
+_lsmem() {
+  _arguments -s \
+    '(-a --all)'{-a,--all}'[list each individual memory block]' \
+    '(-b --bytes)'{-b,--bytes}'[print SIZE in bytes]' \
+    '(-n --noheadings)'{-n,--noheadings}"[don't print headings]" \
+    '(-S --split)'{-S,--split}'[split ranges by specified columns]' \
+    '(-s --sysroot)'{-s,--sysroot}'[use the specified directory as system root]' \
+    '--summary[print summary information]::option:(only never always)' \
+    '(-h --help)'{-h,--help}'[display this help]' \
+    '(-V --version)'{-V,--version}'[display version]' \
+  + '(format)' \
+    {-J,--json}'[use JSON output format]' \
+    {-P,--pairs}'[use key="value" output format]' \
+    {-r,--raw}'[use raw output format]' \
+  + '(output)' \
+    {-o,--output}'[output columns]' \
+    '--output-all[output all columns]'
+}
+
+_lsmem_props() {
+  # TODO
+}
+
+_lsmem "$@"

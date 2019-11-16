@@ -1,0 +1,41 @@
+#compdef -P autopep8 autopep8-[0-9.] python[0-9.]#-autopep8
+
+_autopep8() {
+  _arguments -s -S \
+    '(-h --help)'{-h,--help}'[show help info]' \
+    '--version[show version number]' \
+    '(-v --verbose)'{-v,--verbose}'[print verbose messages]' \
+    '--global-config[path to a global pep8 config file]:global config file:_files' \
+    "--ignore-local-config[don't look for and apply local config files]" \
+    '(-r --recursive)'{-r,--recursive}'[run recursively; must be used with --in-place or --diff]' \
+    '(-j --jobs)'{-j,--jobs}'[number of parallel jobs]:number of parallel jobs:_guard "[0-9]#" "number of jobs"' \
+    '(-p --pep8-passes)'{-p,--pep8-passes}'[max number of additional pep8 passes]:number:_guard "[0-9]#" "number of passes"' \
+    '(-a --aggressive)'{-a,--aggressive}'[enable non-whitespace changes]' \
+    '--experimental[enable experimental fixes]' \
+    '--exclude[exclude files/directories]:globs:_sequence -s , _files' \
+    '--list-fixes[list codes for fixes; used by --ignore and --select]' \
+    '--ignore[do not fix these errors/warnings (default: E226,E24,W50,W690)]:fixes:_sequence -s , _autopep8_fixes' \
+    '--select[fix only these errors/warnings]:fixes:_sequence -s , _autopep8_fixes' \
+    '--max-line-length[set maximum allowed line length (default: 79)]:number:_guard "[0-9]#" "max line length (default: 79)"' \
+    '(--range --line-range)'{--range,--line-range}'[only fix errors found within this range of lines]:line numbers:_guard "[0-9]# #[0-9]#" "line numbers"' \
+    '--hang-closing[hang-closing option passed to pycodestyle]' \
+    '--exit-code[change to behavior of exit code]' \
+  + '(mode)' \
+    {-d,--diff}'[print the diff for the fixed source]' \
+    {-i,--in-place}'[make changes to files in place]' \
+  + 'files' \
+    '*::files:_files'
+
+  }
+
+_autopep8_fixes() {
+  local -a fixes=(
+    E:'ALL errors'
+    W:'ALL warnings'
+    ${${(f)"$(autopep8-3 --list-fixes | sed -e 's| - |:"|g' -e 's/$/"/g' -e 's|:""||g')"}}
+    # ${(f)"$(${service} --list-fixes)"/ - /:}
+  )
+  _describe -t fixes fix fixes "$@"
+}
+
+_autopep8 "$@"

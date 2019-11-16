@@ -1,0 +1,19 @@
+if [[ "${2[(w)1]}" == (fg|%*)(\;|) ]] {
+  # Get the job name, and, if missing, set it to the default %+.
+  local job_name="${${2[(wr)%*(\;|)]}:-%+}"
+
+    # Make a local copy for use in the subshell.
+    local -A jobtexts_from_parent_shell
+    jobtexts_from_parent_shell=(${(kv)jobtexts})
+
+    jobs "$job_name" 2> /dev/null > >(
+    read index discarded
+    # The index is already surrounded by brackets: [1].
+    terminal_title_preexec "${(e):-\$jobtexts_from_parent_shell$index}"
+  )
+} else {
+  # Set the command name, or in the case of sudo or ssh, the next command.
+  local cmd="${${2[(wr)^(*=*|sudo|ssh|grc|-*)]}:t}"
+
+  print -PDn "\\033]0;$cmd\\007"
+}

@@ -1,0 +1,6 @@
+#compdef hexyl
+_arguments -s \
+  '--color[When to use colors]:option:(always auto never)' \
+  '--border[What border to draw]:border:(unicode ascii none)' \
+  '*::files:_files' \
+  --

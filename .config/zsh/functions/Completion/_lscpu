@@ -1,0 +1,56 @@
+#compdef lscpu
+#
+# Written against: lscpu from util-linux 2.34
+
+_lscpu() {
+  _arguments -s \
+    '(-h --help)'{-h,--help}'[diplay help]' \
+    '(-V --version)'{-V,--version}'[display version]' \
+    '(-B --bytes)'{-B,--bytes}'[print sizes in bytes rather than in human readable format]' \
+    '(-J --json)'{-J,--json}'[use JSON for default or extended format]' \
+    '(-s --sysroot)'{-s,--sysroot}'[use specified directory as system root]:directory:_path_files -/' \
+    '(-x --hex)'{-x,--hex}'[print hexadecimal masks rather than lists of CPUs]' \
+    '(-y --physical)'{-y,--physical}'[print physical instead of logical IDs]' \
+    '--output-all[print all available columns for -e, -p or -C]' \
+  + '(cpus)' \
+    {-a,--all}'[print both online and offline CPUs (default for -e)]' \
+    {-b,--online}'[print online CPUs only]' \
+    {-c,--offline}'[print offline CPUs only]' \
+  + '(output)' \
+    {-C,--caches=}'[info about caches in extended readable format]::properties:_sequence -s , _lscpu_cache_props' \
+    {-e,--extended=}'[print out an extended readable format]::properties:_sequence -s , _lscpu_props' \
+    {-p,--parse=}'[print out a parsable format]::properties:_sequence -s , _lscpu_props'
+}
+
+(( $+functions[_lscpu_cache_props] )) || _lscpu_cache_props() {
+local opts=(
+ALL-SIZE:'size of all system caches'
+LEVEL:'cache level'
+NAME:'cache name'
+ONE-SIZE:'size of one cache'
+TYPE:'cache type'
+WAYS:'ways of associativity'
+)
+_describe -t properties property opts "$@"
+}
+
+(( $+functions[_lscpu_props] )) || _lscpu_props() {
+local opts=(
+CPU:'logical CPU number'
+CORE:'logical core number'
+SOCKET:'logical socket number'
+NODE:'logical NUMA node number'
+BOOK:'logical book number'
+DRAWER:'logical drawer number'
+CACHE:'shows how caches are shared between CPUs'
+POLARIZATION:'CPU dispatching mode on virtual hardware'
+ADDRESS:'physical address of a CPU'
+CONFIGURED:'shows if the hypervisor has allocated the CPU'
+ONLINE:'shows if Linux currently makes use of the CPU'
+MAXMHZ:'shows the maximum MHz of the CPU'
+MINMHZ:'shows the minimum MHz of the CPU'
+)
+_describe -t properties property opts "$@"
+}
+
+_lscpu "$@"

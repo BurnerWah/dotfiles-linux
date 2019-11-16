@@ -1,0 +1,67 @@
+#compdef lslogins
+
+_lslogins() {
+  _arguments -s \
+    '(-h --help)'{-h,--help}'[display help]' \
+    '(-V --version)'{-V,--version}'[display version]' \
+    '(-a --acc-expiration)'{-a,--acc-expiration}'[display info about passwords expiration]' \
+    '(-e --export)'{-e,--export}'[display in an export-able output format]' \
+    '(-f --failed)'{-f,--failed}"[display data about the users' last failed logins]" \
+    '(-G --supp-groups)'{-G,--supp-groups}'[display information about groups]' \
+    '(-g --groups=)'{-g,--groups=}'[display users belonging to a group in <groups>]:groups:_sequence -s , _groups' \
+    '(-L --last)'{-L,--last}"[show info about the users' last login sessions]" \
+    '(-l --logins=)'{-l,--logins=}'[display only users from <logins>]' \
+    '(-p --pwd)'{-p,--pwd}'[display information related to login by password]' \
+    '(-s --system-accs)'{-s,--system-accs}'[display system accounts]' \
+    '--time-format=[display dates in format]:time format:(short long iso)' \
+    '(-u --user-accs)'{-u,--user-accs}'[display user accounts]' \
+    '(-Z --context)'{-Z,--context}'[display SELinux contexts]' \
+    '--wtmp-file[set an alternate path for wtmp]:wtmp file:_files' \
+    '--btmp-file[set an alternate path for btmp]:btml file:_files' \
+  + '(format)' \
+    {-c,--colon-separate}'[display data in a format similar to /etc/passwd]' \
+    {-n,--newline}'[display each piece of information on a new line]' \
+    {-r,--raw}'[display in raw mode]' \
+    {-z,--print0}'[delimit user entries with a nul character]' \
+  + '(output)' \
+    {-o,--output=}'[define the columns to output]:properties:_sequence -s , _lslogins_props' \
+    '--output-all[output all columns]' \
+  + 'final' \
+    '::user:_users' --
+
+}
+
+(( $+functions[_lslogins_props] )) || _lslogins_props() {
+local opts=(
+  USER:'user name'
+  UID:'user ID'
+  GECOS:'full user name'
+  HOMEDIR:'home directory'
+  SHELL:'login shell'
+  NOLOGIN:'log in disabled by nologin(8) or pam_nologin(8)'
+  PWD-LOCK:'password defined, but locked'
+  PWD-EMPTY:'password not required'
+  PWD-DENY:'login by password disabled'
+  PWD-METHOD:'password encryption method'
+  GROUP:'primary group name'
+  GID:'primary group ID'
+  SUPP-GROUPS:'supplementary group names'
+  SUPP-GIDS:'supplementary group IDs'
+  LAST-LOGIN:'date of last login'
+  LAST-TTY:'last tty used'
+  LAST-HOSTNAME:'hostname during the last session'
+  FAILED-LOGIN:'date of last failed login'
+  FAILED-TTY:'where did the login fail?'
+  HUSHED:"user's hush settings"
+  PWD-WARN:'days user is warned of password expiration'
+  PWD-CHANGE:'date of last password change'
+  PWD-MIN:'number of days required between changes'
+  PWD-MAX:'max number of days a password may remain unchanged'
+  PWD-EXPIR:'password expiration date'
+  CONTEXT:"the user's security context"
+  PROC:'number of processes run by the user'
+)
+_describe -t properties property opts
+}
+
+_lslogins "$@"

@@ -1,0 +1,4 @@
+# vim:ft=zsh
+# Automatically rehashes every 10 minutes
+rehash
+sched +00:10:00 zshTimedRehash

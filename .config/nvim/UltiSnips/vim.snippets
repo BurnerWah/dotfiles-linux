@@ -1,0 +1,42 @@
+priority 50
+clearsnippets bun plug plugdo plugon plugfor plugbr plugtag
+
+# Custom snippets to use while writing vim scripts
+
+snippet fun "function" b
+fun ${1:function_name}($2)
+	${3:" code}
+endfun
+endsnippet
+
+snippet aug "augroup ... autocmd block" b
+aug ${1:AU_NAME}
+	au ${2:BufNewFile,BufRead} ${3:*.ext,*.ext3|<buffer[=N]>} ${0}
+aug end
+endsnippet
+
+snippet au "autocmd" b
+au ${1:BufNewFile,BufRead} ${2:*ext,*.ext3|<buffer[=N]>} ${0}
+endsnippet
+
+snippet exe "execute ..." b
+exe ${1}
+endsnippet
+
+snippet deinadd "call dein#add" b
+call dein#add('${0}')
+endsnippet
+
+snippet let "let ... = ..." b
+let ${1:variable} = ${0:value}
+endsnippet
+
+snippet set "set ... = ..." b
+set ${1:setting} = ${0:value}
+endsnippet
+
+snippet setl "setlocal ... = ..." b
+setl ${1:filetype} = ${0:value}
+endsnippet
+
+# vim:ft=snippets:noet:ts=4:sw=4:sts=0:

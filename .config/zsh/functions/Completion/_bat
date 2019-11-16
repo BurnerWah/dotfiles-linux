@@ -1,0 +1,56 @@
+#compdef bat -value-,BAT_STYLE,-default-
+
+_bat() {
+  case $curcontext {
+    (*':-value-,BAT_STYLE,:'*) _sequence -s , _bat_style_prop ;;
+    (*) _arguments \
+    '(- *)'{-h,--help}'[show help]' \
+    '(-l --language)'{-l,--language}'[set the language for syntax highlighting]:language:_bat_languages' \
+    '--list-languages[display all supported languages]' \
+    '(-m --map-syntax)'{-m,--map-syntax}'[map a file extension or name to an existing syntax]' \
+    "--theme[set the color theme for syntax highlighting]:theme:($(bat --list-themes))" \
+    '--list-themes[display all supported highlighting themes]' \
+    '--style[comma-separated list of style elements to display]:style:_sequence -s , _bat_style_prop' \
+    '(-p --plain)'{-p,--plain}'[show plain style]' \
+    '(-n --number)'{-n,--number}'[show line numbers]' \
+    '(-A --show-all)'{-A,--show-all}'[show non-printable characters]' \
+    '(-r --line-range)'{-r,--line-range}'[only print the lines from N to M]' \
+    '(-H --highlight-line)'{-H,--highlight-line}'[highlight the given line]' \
+    '--color[when to use colors]:option:((auto\:default always never))' \
+    '--italic-text[use italics in output]:option:((always never\:default))' \
+    '--decorations[when to show the decorations]:option:((auto\:default always never))' \
+    '--paging[specify when to use the pager]:option:((auto\:default always never))' \
+    '--wrap[specify the text-wrapping mode]:option:((auto\:default never character))' \
+    '--tabs[set the tab width to T spaces]' \
+    '(-V --version)'{-V,--version}'[show version information]' \
+    '*::files:_files'
+  }
+}
+
+_bat_languages() {
+local languages=(${${(f)"$(bat --list-languages | awk -F':' '
+{
+  lang=$1
+  split($2, exts, ",")
+
+  for (i in exts) {
+    ext=exts[i]
+    if (ext !~ /[A-Z].*/ && ext !~ /^\..*rc$/) {
+      print ext":"lang
+    }
+  }
+}')"}})
+_describe -t languages language languages "$@"
+}
+
+_bat_style_prop() {
+local opts=(
+  auto:'enable everything when relevant (default)'
+  full:'enable everything'
+  plain:'disable everything'
+  numbers changes grid header
+)
+_describe -t styles style opts "$@"
+}
+
+_bat "$@"

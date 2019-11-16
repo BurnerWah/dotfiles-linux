@@ -1,0 +1,76 @@
+[core]
+	editor = nvim # use NeoVim as the editor
+	pager = less
+	excludesfile = /home/jadenpleasants/.config/git/global.gitignore
+[user]
+	name = Jaden Pleasants
+	email = jadenpleasants@fastmail.com
+	signingkey = jadenpleasants@fastmail.com
+[commit]
+	gpgsign = true # force commits to be signed with GPG
+[advice] # provide help to new git users
+	pushUpdateRejected = true
+	pushUnqualifiedRefname = true
+	statusHints = true
+	statusUoption = true
+	resetQuiet = true
+	resolveConflict = true
+	implicitIdentity = true
+	detachedHead = true
+	checkoutAmbiguousRemoteBranceName = true
+	amWorkDir = true
+	rmHints = true
+	addEmbeddedRepo = true
+	ignoredHook = true
+	waitingForEditor = true
+[diff]
+	tool = vimdiff # use NeoVim as a diff tool
+	guitool = meld # use GNOME Meld when using the GUI
+[difftool]
+	prompt = false # keep git quiet when opening a diff tool
+[difftool "vimdiff"]
+	path = nvim # force nvim over vim
+[difftool "vimdiff2"]
+	path = nvim # force nvim over vim
+[difftool "vimdiff3"]
+	path = nvim # force nvim over vim
+[merge]
+	tool = vimdiff # use NeoVim as a merge tool
+	guitool = meld # use GNOME Meld when using the GUI
+[mergetool]
+	prompt = false # keep git quiet when opening a merge tool
+[mergetool "vimdiff"]
+	path = nvim # force nvim over vim
+[mergetool "vimdiff2"]
+	path = nvim # force nvim over vim
+[mergetool "vimdiff3"]
+	path = nvim # force nvim over vim
+[gpg]
+	program = gpg
+[color]
+	ui = true
+[color "branch"] # $ git branch
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"] # $ git diff
+	meta = 11
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	commit = yellow bold
+	whitespace = red reverse
+[color "status"] # $ git status
+	added = yellow
+	changed = green
+	untracked = cyan
+[web]
+	browser = xdg-open # open websites in the best program available, or the default browser
+[alias]
+	aliases = config --get-regexp alias
+[submodule]
+	fetchJobs = 0
+[help]
+	format = man
+[blame]
+	coloring = highlightRecent

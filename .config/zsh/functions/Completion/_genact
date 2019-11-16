@@ -1,0 +1,5 @@
+#compdef genact
+_arguments \
+  '(-e --exitafter)'{-e,--exitafter}'[Exit after running for this long]:duration:_guard "[0-9.]#([smhd]|)" duration' \
+  '(-m --modules)'{-m,--modules}"[Run only these modules]:modules:($(echo $(genact -l) | sed 's|Available modules: ||g'))" \
+  --

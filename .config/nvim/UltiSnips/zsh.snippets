@@ -1,0 +1,75 @@
+# Custom snippets for zsh
+
+snippet if "if (( ... )) ..." b
+if ${2:(( ${1:condition} ))} ${0:#statement}
+endsnippet
+
+snippet if "if (( ... )) { ... }"
+if ${2:(( ${1:condition} ))} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet ife "if ... else" b
+if ${2:(( ${1:condition} ))} {
+	${3:${VISUAL}}
+} else {
+	${0:# statements}
+}
+endsnippet
+
+snippet elif "elif (( ... )) { ... }" b
+elif ${2:(( ${1:condition} ))} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet for "for ... in ... { ... }" b
+for ${1:name} in ${2:list} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fori "incremental for loop" b
+for (( ${2:i} = 0l $2 < ${1:count}; $2++ )) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet foreach "for each loop" b
+foreach ${1:name} ${3:( ${2:list} )} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet while "while ... { ... }" b
+while ${2:(( ${1:condition} ))} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet until "until ... { ... }" b
+until ${2:(( ${1:condition} ))} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet case "switch statement" b
+case ${1:word} {
+	(${2:pattern})
+		${0:${VISUAL}}
+		;;
+}
+endsnippet
+
+snippet { "list of operations" b
+{
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet (( "arithmetic evaluation" b
+(( ${0:expression} ))
+endsnippet
+
+# vim:ft=snippets:noet:ts=4:sw=4:sts=0:

@@ -1,0 +1,195 @@
+{
+  "languageserver": {
+    "bash-language-server": {
+      // to be replaced by coc-sh
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "ccls": {
+      /*
+       * to be replaced by coc-ccls
+       */
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "cuda", "objc", "objc++"],
+      "rootPatterns": [".ccls-root", "compile_commands.json"],
+      "initializationOptions": {
+        "cache": { "directory": ".ccls-cache" },
+        "clang": { "resourceDir": "/usr/lib64/clang/9.0.0" },
+        "highlight": { "lsRanges": true }
+      }
+    },
+    "digestif": {
+      "command": "digestif",
+      "filetypes": ["tex", "plaintex", "context"]
+    },
+    "efm": {
+      "command": "efm-langserver",
+      "args": [],
+      "filetypes": ["eruby", "markdown", "vim", "yaml"]
+    },
+    "fortls": {
+      "command": "fortls",
+      "filetypes": ["fortran"],
+      "rootPatterns": [".fortls", ".git/"]
+    },
+    "gluon_language-server": {
+      "command": "gluon_language-server",
+      "filetypes": ["gluon"],
+      "settings": { "gluon.language-server.path": "gluon_language-server" }
+    },
+    "gopls": {
+      "command": "gopls",
+      "filetypes": ["go"],
+      "rootPatterns": ["go.mod"]
+    },
+    "srcy": {
+      "command": "srcy",
+      "filetypes": ["crystal"],
+      "rootPatterns": ["shard.yml"]
+    },
+    "terraform-lsp": {
+      "command": "terraform-lsp",
+      "filetypes": ["terraform"],
+      "initializationOptions": {}
+    }
+  },
+  "coc.preferences.extensionUpdateCheck": "never",
+  "coc.preferences.formatOnSaveFiletypes": ["css", "json", "markdown", "yaml"],
+  "coc.preferences.hoverTarget": "float",
+  "codeLens.enable": true,
+  "diagnostic-languageserver.filetypes": {
+    "markdown": "markdownlint",
+    "sh": "shellcheck",
+    "vim": "vint"
+  },
+  "diagnostic-languageserver.linters": {
+    "markdownlint": {
+      "command": "markdownlint",
+      "isStderr": true,
+      "debounce": 100,
+      "args": ["--stdin"],
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "markdownlint",
+      "formatLines": 1,
+      "formatPattern": [
+        "^.*?:\\s+(\\d+):\\s+(.*)$",
+        { "line": 1, "column": -1, "message": 2 }
+      ]
+    },
+    "shellcheck": {
+      "command": "shellcheck",
+      "debounce": 100,
+      "args": ["--format=gcc", "-"],
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "shellcheck",
+      "formatLines": 1,
+      "formatPatterns": [
+        "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
+        { "line": 1, "column": 2, "message": 4, "security": 3 }
+      ],
+      "securities": { "error": "error", "warning": "warning", "note": "info" }
+    },
+    "stylelint": {
+      "command": "stylelint",
+      "rootPatterns": [".git"],
+      "isStdout": true,
+      "isStderr": false,
+      "debounce": 100,
+      "args": ["--formatter", "unix"],
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "stylelint",
+      "formatLines": 1,
+      "formatPattern": [
+        "^[^:]+:(\\d+):(\\d+):\\s(.+)\\s\\[(\\w+)\\]$",
+        { "line": 1, "column": 2, "message": 3, "security": 4 }
+      ],
+      "securities": { "error": "error", "warning": "warning" }
+    },
+    "vint": {
+      "command": "vint",
+      "debounce": 100,
+      "args": ["--enable-neovim", "-"],
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "vint",
+      "formatLines": 1,
+      "formatPattern": [
+        "[^:]+:(\\d+):(\\d+):\\s*(.*$)",
+        { "line": 1, "column": 2, "message": 3 }
+      ]
+    }
+  },
+  "go.goplsPath": "/usr/bin/gopls", // Installed & updated via DNF
+  "highlight.colors.enable": false, // We have another plugin set up to handle this
+  "json.schemas": [
+    {
+      "fileMatch": ["bower.json", ".bower.json"],
+      "url": "http://json.schemastore.org/bower"
+    },
+    {
+      "fileMatch": ["c_cpp_properties.json"],
+      "url": "https://github.com/microsoft/vscode-cpptools/raw/master/Extension/c_cpp_properties.schema.json"
+    },
+    {
+      "fileMatch": ["coffeelint.json"],
+      "url": "http://json.schemastore.org/coffeelint"
+    },
+    {
+      "fileMatch": ["composer.json"],
+      "url": "http://json.schemastore.org/composer"
+    },
+    {
+      "fileMatch": [".csslintrc"],
+      "url": "http://json.schemastore.org/csslintrc"
+    },
+    {
+      "fileMatch": ["*.ipynb"],
+      "url": "https://raw.githubusercontent.com/jupyter/nbformat/master/nbformat/v4/nbformat.v4.schema.json"
+    },
+    {
+      "fileMatch": ["*.tmLanguage.json"],
+      "url": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json"
+    },
+    {
+      "fileMatch": ["pyconfig.json"],
+      "url": "https://github.com/tht13/Python-vscode/raw/master/schemas/pyconfig.schema.json"
+    }
+  ],
+  "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
+  "lua.commandPath": "/home/jadenpleasants/.local/bin/lua-lsp",
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+  "project.dbpath": "~/.config/coc/projects.json",
+  "pyls.enable": false, // IMO pyls is better than Microsoft's language server
+  "rust.clippy_preference": "on",
+  "rust-client.disableRustup": true, // I don't use rustup
+  "session.directory": "~/.local/share/nvim/sessions",
+  "signature.target": "float",
+  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"], // vim-go support
+  "suggest.labelMaxLength": 100,
+  "template.email": "jadenpleasants@fastmail.com",
+  "template.username": "Jaden Pleasants",
+  "vimlsp.suggest.fromRuntimepath": true, // vimlsp runs quickly enough for this to work fine I guess
+  "xml.catalogs": ["/etc/xml/catalog"],
+  "xml.java.home": "/usr/lib/jvm/jre", // Needs to point to a JRE
+  "xml.server.workDir": "~/.cache/lsp4xml", // By default places random shit in home folder
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": true,
+  "yaml.schemas": {
+    "http://json.schemastore.org/appveyor": "?(.)appveyor.yml",
+    "http://json.schemastore.org/circleciconfig": "/.circleci/config.yml",
+    "http://json.schemastore.org/cirrus": "/.cirrus.yml",
+    "http://json.schemastore.org/codecov": "?(.)codecov.yml",
+    "http://json.schemastore.org/eslintrc": ".eslintrc.yml",
+    "http://json.schemastore.org/gitlab-ci": "/.gitlab-ci.yml",
+    "http://json.schemastore.org/github-action": "/action.yml",
+    "http://json.schemastore.org/github-workflow": "/.github/workflows/**.yml",
+    "http://json.schemastore.org/travis": "/.travis.yml",
+    "https://raw.githubusercontent.com/snapcore/snapcraft/master/schema/snapcraft.json": "?(.)snapcraft.yaml"
+  }
+}
