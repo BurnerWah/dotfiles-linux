@@ -1,0 +1,184 @@
+---
+colors:
+  background_color: '090300'
+
+  # Colors are based on base16-3024.
+  # standard colors
+  Black:    "090300" # color 0
+  Maroon:   "db2d20" # color 1
+  Green:    "01a252" # color 2
+  Olive:    "fded02" # color 3
+  Navy:     "01a0e4" # color 4
+  Purple:   "a16a94" # color 5
+  Teal:     "b5e4f4" # color 6
+  Silver:   "a5a2a2" # color 7
+  Grey:     "5c5855" # color 8
+  Red:      "db2d20" # color 9
+  Lime:     "01a252" # color 10
+  Yellow:   "fded02" # color 11
+  Blue:     "01a0e4" # color 12
+  Fuchsia:  "a16a94" # color 13
+  Aqua:     "b5e4f4" # color 14
+  White:    "a5a2a2" # color 15
+  Grey0:    "e8bbd0" # color 16
+  NavyBlue: "cdab53" # color 17
+  DarkBlue: "3a3432" # color 18
+  Blue3:    "4a4543" # color 19
+  Blue2:    "807d7c" # color 20
+  Blue1:    "d6d5d4" # color 21
+
+  # 256 colors
+  DarkGreen3: "00af00"  # color 34
+  Green3: "00d700"  # color 40
+  SpringGreen1: "00ff87"  # color 48
+  DarkViolet: "8700d7"  # color 92
+  PurpleReal: "8700ff"  # color 93
+  LightSlateBlue: "8787ff"  # color 105
+  LightSkyBlue3: "87afaf" # color 109
+  MediumOrchid3: "af5faf" # color 133
+  MediumPurple2: "af5fff" # color 135
+  Khaki3: "d7d75f"  # color 185
+  Orange1: "ffaf00"   # color 214
+  MistyRose1: "ffd7d7"  # color 224
+  Grey3: "080808"     # color 232
+
+core:
+  regular_file: {}
+
+  directory:
+    foreground: Blue
+    font-style: bold
+
+  executable_file:
+    foreground: Green
+    font-style: bold
+
+  symlink:
+    foreground: Aqua
+    font-style: bold
+
+  orphan:
+    foreground: Red
+    background: Grey3
+
+  broken_symlink:
+    foreground: White
+    background: Red
+    font-style: blink
+
+  fifo:
+    foreground: Yellow
+    background: Black
+
+  socket:
+    foreground: Fuchsia
+    font-style: bold
+
+  character_device:
+    foreground: Olive
+    background: Black
+    font-style: bold
+
+  block_device:
+    foreground: Yellow
+    background: Black
+    font-style: bold
+
+  setuid:
+    foreground: White
+    background: Red
+
+  setgid:
+    foreground: Black
+    background: Yellow
+
+  capability:
+    foreground: Yellow
+    background: Red
+
+  sticky_other_write:
+    foreground: Black
+    background: Green
+
+  other_write:
+    foreground: Blue
+    background: Green
+
+  sticky:
+    foreground: White
+    background: Blue
+
+  normal_text: {}
+
+text:
+  special:
+    foreground: Yellow
+    font-style: underline
+
+  todo:
+    font-style: bold
+
+  licenses:
+    foreground: Grey
+
+  crypto:
+    foreground: LightSkyBlue3
+
+  configuration:
+    foreground: Green
+
+  manifest:
+    foreground: DarkGreen3
+
+  other:
+    foreground: Yellow
+
+markup:
+  foreground: Yellow
+
+programming:
+  source:
+    foreground: SpringGreen1
+
+  tooling:
+    foreground: Green
+
+    continuous-integration:
+      foreground: Khaki3
+
+media:
+  image:
+    foreground: MediumOrchid3
+
+  audio:
+    lossy:
+      foreground: DarkViolet
+    lossless:
+      foreground: PurpleReal
+
+  video:
+    foreground: MediumPurple2
+
+  fonts:
+    foreground: Purple
+
+office:
+  foreground: LightSlateBlue
+
+archives:
+  foreground: Red
+  font-style: bold
+
+executable:
+  foreground: Green
+  font-style: bold
+
+unimportant:
+  build_artifacts:
+    foreground: Grey
+
+  temporary:
+    foreground: MistyRose1
+
+  other:
+    foreground: Grey

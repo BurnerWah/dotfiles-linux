@@ -1,0 +1,588 @@
+---
+core:
+  regular_file: [$fi]
+  directory: [$di]
+
+  executable_file: [$ex]
+
+  symlink: [$ln]
+  broken_symlink: [$mi]
+  orphan: [$or]
+
+  fifo: [$pi]
+  socket: [$so]
+
+  character_device: [$cd]
+  block_device: [$bd]
+
+  setuid: [$su]
+  setgid: [$sg]
+  capability: [$ca]
+
+  sticky_other_write: [$tw]
+  other_write: [$ow]
+  sticky: [$st]
+
+  normal_text: [$no]
+
+text:
+  special:
+    - CONTRIBUTORS
+    - CONTRIBUTORS.md
+    - CONTRIBUTORS.txt
+    - 'INSTALL*'
+    - 'README*'
+
+  todo:
+    - TODO
+    - TODO.md
+    - TODO.txt
+
+  licenses:
+    - COPYING
+    - COPYRIGHT
+    - 'LICENCE*'
+    - 'LICENSE*'
+
+  crypto:
+    - .asc
+    - .enc
+    - .gpg
+    - id_rsa
+    - .kbx
+    - .key
+    - .pgp
+    - .pub
+    - .sig
+    - .signature
+    - .pfx
+    - .p12
+
+  configuration:
+    generic:
+      - .cfg
+      - .conf
+      - .config
+      - .ini
+      - .json
+      - .tml
+      - .toml
+      - .yaml
+      - .yml
+
+    metadata:
+      - .xmp
+
+    bibtex:
+      - .bib
+      - .bst
+
+    dockerfile:
+      - Dockerfile
+
+    nix:
+      - .nix
+
+    qt:
+      - .ui
+
+    sublime:
+      - .sublime-syntax
+      - .tmTheme
+
+    shells:
+      - .profile
+      - bashrc
+      - .bash_profile
+      - .bash_logout
+      - cshrc
+      - csh.login
+      - zlogin
+      - zlogout
+      - zprofile
+      - zshenv
+      - zshrc
+
+    vim:
+      - .vimrc
+      - .virc
+
+    desktop:
+      - .desktop
+
+    system:
+      - environment
+      - fstab
+      - group
+      - passwd
+      - rpc
+      - shadow
+      - subgid
+      - subuid
+      - sudoers
+
+    cron:
+      - crontab
+      - cron.deny
+
+    rpm:
+      - .repo
+
+    systemd:
+      - .service
+
+    other:
+      - gdbinit
+      - gtkrc
+      - inputrc
+      - kderc
+      - kde4rc
+      - kid3rc
+      - kleopatrarc
+      - kritarc
+      - kritadisplayrc
+      - matplotlibrc
+      - nanorc
+      - pinforc
+      - screenrc
+      - taskrc
+      - tigrc
+      - vlcrc
+      - wgetrc
+
+  manifest:
+    - .devhelp
+    - .devhelp2
+    - .enums.xml
+    - .evince-backend
+    - .gir
+    - .glade
+    - .gresource
+    - .gschema.override
+    - .gschema.xml
+    - mimeapps.list
+    - .plugin
+    - rplugin.vim
+    - .session
+
+  other:
+    - .txt
+
+markup:
+  web:
+    - .htm
+    - .html
+    - .shtml
+    - .xhtml
+
+  other:
+    - .adoc
+    - .csv
+    - .dtd
+    - .man
+    - .markdown
+    - .md
+    - .mdown
+    - .mkd
+    - .rst
+    - .wiki
+    - .xml
+
+programming:
+  source:
+    actionscript: [.as]
+    applescript: [.applescript]
+    asp: [.asa]
+    awk: [.awk]
+    basic: [.vb]
+    cabal: [.cabal]
+    clojure: [.clj]
+    crystal: [.cr]
+    csharp: [.cs, .csx]
+    css: [css]
+    cxx:
+      [
+        .c,
+        .cpp,
+        .cc,
+        .cp,
+        .cxx,
+        .c++,
+        .h,
+        .hh,
+        .hpp,
+        .hxx,
+        .h++,
+        .inc,
+        .inl,
+        .ipp,
+        .def,
+      ]
+    d: [.d, .di]
+    dart: [.dart]
+    diff: [.diff, .patch]
+    dosbatch: [.cmd]
+    elixir: [.ex, .exs]
+    elm: [.elm]
+    erlang: [.erl]
+    fsharp: [.fs, .fsi, .fsx]
+    go: [.go]
+    graphviz: [.dot, .gv]
+    groovy: [.groovy, .gvy, .gradle]
+    haskell: [.hs]
+    ipython: [.ipynb]
+    java: [.java, .bsh]
+    javascript: [.js, .htc]
+    julia: [.jl]
+    kotlin: [.kt, .kts]
+    latex: [.tex, .ltx]
+    less: [.less]
+    llvm: [.ll, .mir]
+    lisp: [.lisp, .el]
+    lua: [.lua]
+    mathematica: [.nb]
+    matlab: [.matlab, .m, .mn]
+    ocaml: [.ml, .mli]
+    pascal: [.pas, .p, .dpr]
+    perl: [.pl, .pm, .pod, .t, .cgi]
+    php: [.php]
+    powershell: [.ps1, .psm1, .psd1]
+    puppet: [.pp, .epp]
+    purescript: [.purs]
+    python: [.py, .pyi, .pyx]
+    r: [.r]
+    renpy: [.rpy, .rpym]
+    ruby: [.rb, .erb]
+    rust: [.rs]
+    scala: [.scala, .sbt]
+    shell: [.sh, .bash, .csh, .zsh, .fish]
+    sql: [.sql]
+    swift: [.swift]
+    tablegen: [.td]
+    tcl: [.tcl]
+    typescript: [.ts, .tsx]
+    vala: [.vala, .vapi]
+    viml: [.vim]
+
+  tooling:
+    vcs:
+      git:
+        - .gitignore
+        - .gitmodules
+        - .gitattributes
+        - .gitconfig
+        - .git-blame-ignore-revs
+
+      hg:
+        - .hgrc
+        - hgrc
+        - .hgignore
+        - .hgtags
+
+      other:
+        - CODEOWNERS
+        - .ignore
+        - .fdignore
+        - .dockerignore
+        - .rgignore
+        - .clang-tidy
+        - .arcconfig
+        - .arclint
+
+    build:
+      cmake:
+        - .cmake
+        - CMakeLists.txt
+        - .cmake.in
+
+      make:
+        - Makefile
+        - .mak
+        - .make
+        - .mk
+
+      automake:
+        - Makefile.am
+
+      configure:
+        - configure
+        - configure.ac
+
+      scons:
+        - SConscript
+        - SConstruct
+
+      pip:
+        - requirements.txt
+
+      other:
+        - build.gradle
+        - build.ninja
+        - build.xml
+        - Gemfile
+        - meson.build
+        - Rakefile
+        - Vagrantfile
+
+    packaging:
+      lua:
+        - .rockspec
+      pacman:
+        - PKGBUILD
+      python:
+        - MANIFEST.in
+        - setup.py
+      rpm:
+        - .spec
+      ruby:
+        - .gemspec
+
+    code-style:
+      python:
+        - .flake8
+
+      cxx:
+        - .clang-format
+
+      other:
+        - .editorconfig
+        - rustfmt.toml
+
+    linting:
+      other:
+        - .codecov.yml
+        - .coveragerc
+        - pylintrc
+        - .vintrc.yaml
+
+    editors:
+      qt:
+        - .pro
+      kdevelop:
+        - .kdevelop
+
+    documentation:
+      doxygen:
+        - Doxyfile
+        - .dox
+
+    continuous-integration:
+      - appveyor.yml
+      - .travis.yml
+
+media:
+  image:
+    - .arw
+    - .bmp
+    - .gif
+    - .ico
+    - .jpf
+    - .jpeg
+    - .jpg
+    - .pbm
+    - .pgm
+    - .png
+    - .pnm
+    - .ppm
+    - .raw
+    - .stl
+    - .svg
+    - .tif
+    - .tiff
+    - .webp
+    - .xcf
+
+  audio:
+    lossy:
+      - .aac
+      - .aif
+      - .mid
+      - .m4a
+      - .mp3
+      - .ogg
+      - .opus
+      - .wma
+      - .mka
+    lossless:
+      - .alac
+      - .ape
+      - .flac
+      - .wav
+
+  video:
+    - .avi
+    - .flv
+    - .h264
+    - .m2v
+    - .m2ts
+    - .m4v
+    - .mkv
+    - .mov
+    - .mp4
+    - .mpeg
+    - .mpg
+    - .ogm
+    - .rm
+    - .swf
+    - .vob
+    - .webm
+    - .wmv
+
+  fonts:
+    - .fnt
+    - .fon
+    - .otf
+    - .ttf
+
+office:
+  document:
+    - .doc
+    - .docx
+    - .epub
+    - .odt
+    - .pdf
+    - .ps
+    - .rtf
+    - .sxw
+
+  spreadsheet:
+    - .xls
+    - .xlsx
+    - .ods
+    - .xlr
+
+  presentation:
+    - .ppt
+    - .pptx
+    - .odp
+    - .sxi
+    - .kex
+    - .pps
+
+  calendar:
+    - .ics
+
+archives:
+  packages:
+    - .apk
+    - .deb
+    - .rpm
+    - .whl
+
+  ros:
+    - .bag
+
+  images:
+    - .bin
+    - .dmg
+    - .img
+    - .iso
+    - .toast
+    - .vcd
+
+  other:
+    - .7z
+    - .arj
+    - .bz
+    - .bz2
+    - .gz
+    - .jar
+    - .lzma
+    - .lz4
+    - .pkg
+    - .rar
+    - .tar
+    - .tbz
+    - .tbz2
+    - .tgz
+    - .xz
+    - .z
+    - .zim
+    - .zip
+
+executable:
+  windows:
+    - .bat
+    - .com
+    - .exe
+
+  library:
+    - .so
+    - .a
+    - .dll
+
+  linux:
+    - .ko
+
+unimportant:
+  build_artifacts:
+    cxx:
+      - .o
+      - .la
+      - .lo
+    cmake:
+      - CMakeCache.txt
+    automake:
+      - Makefile.in
+    rust:
+      - .rlib
+      - .rmeta
+    python:
+      - .pyc
+      - .pyo
+    renpy:
+      - .rpyc
+      - .rpymc
+    haskell:
+      - .dyn_hi
+      - .dyn_o
+      - .cache
+      - .hi
+    java:
+      - .class
+    scons:
+      - .scons_opt
+      - .sconsign.dblite
+    latex:
+      - .aux
+      - .bbl
+      - .bcf
+      - .blg
+      - .fdb_latexmk
+      - .fls
+      - .idx
+      - .ilg
+      - .ind
+      - .out
+      - .sty
+      - .synctex.gz
+      - .toc
+    llvm:
+      - .bc
+    zsh:
+      - .zcompdump
+      - .zwc
+
+  temporary:
+    - '~'
+    - '#'
+    - .swn
+    - .swo
+    - .swp
+    - .tmp
+    - .bak
+
+  other:
+    - .git # only works for '.git' files (submodules)
+    - .lock
+    - .log
+    - .m4f
+    - .netrwhist
+    - .old
+    - .orig
+    - .pid
+    - .shada
+    - .wget-hsts
+    - gschemas.compiled
+    - gnome-initial-setup-done
+    - package-lock.json
