@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-zsh">
+    <comment>Zsh script</comment>
+    <sub-class-of type="application/x-shellscript"/>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-script"/>
+    <glob pattern="*.zsh"/>
+    <glob pattern="*.zshrc"/>
+    <glob pattern="*.zshenv"/>
+    <glob pattern="*.zprofile"/>
+    <glob pattern="*.zlogin"/>
+    <glob pattern="*.zlogout"/>
+    <glob pattern="*.zsh-theme"/>
+    <glob pattern="zshrc"/>
+    <glob pattern="zshenv"/>
+    <glob pattern="zprofile"/>
+    <glob pattern="zlogin"/>
+    <glob pattern="zlogout"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#compdef"/>
+      <match type="string" offset="0" value="#autoload"/>
+      <match type="string" offset="0" value="#!/bin/zsh"/>
+      <match type="string" offset="0" value="#!/bin/env zsh"/>
+      <match type="string" offset="0" value="#!/usr/bin/zsh"/>
+      <match type="string" offset="0" value="#!/usr/bin/env zsh"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-bash">
+    <comment>Bash script</comment>
+    <sub-class-of type="application/x-shellscript"/>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-script"/>
+    <glob pattern="*.bash"/>
+    <glob pattern="*.bashrc"/>
+    <glob pattern="*.bash_profile"/>
+    <glob pattern="*.bash_logout"/>
+    <glob pattern="bashrc"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#!bash"/>
+      <match type="string" offset="0" value="#!/bin/bash"/>
+      <match type="string" offset="0" value="#!/bin/env bash"/>
+      <match type="string" offset="0" value="#!/usr/bin/bash"/>
+      <match type="string" offset="0" value="#!/usr/bin/env bash"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-cshell">
+    <comment>C-Shell script</comment>
+    <sub-class-of type="application/x-shellscript"/>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-script"/>
+    <glob pattern="*.csh"/>
+    <glob pattern="*.cshrc"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#!/bin/csh"/>
+      <match type="string" offset="0" value="#!/bin/tcsh"/>
+      <match type="string" offset="0" value="#!/bin/env csh"/>
+      <match type="string" offset="0" value="#!/bin/env tcsh"/>
+      <match type="string" offset="0" value="#!/usr/bin/csh"/>
+      <match type="string" offset="0" value="#!/usr/bin/tcsh"/>
+      <match type="string" offset="0" value="#!/usr/bin/env csh"/>
+      <match type="string" offset="0" value="#!/usr/bin/env tcsh"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-fish">
+    <comment>Fish script</comment>
+    <sub-class-of type="application/x-shellscript"/>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-script"/>
+    <glob pattern="*.fish"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#!/usr/bin/fish"/>
+      <match type="string" offset="0" value="#!/usr/bin/env fish"/>
+    </magic>
+  </mime-type>
+</mime-info>
