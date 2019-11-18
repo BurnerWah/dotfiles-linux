@@ -79,6 +79,7 @@ bindkey -v
 # Interactive variables {{{1
 #eval "$(dircolors)"
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
+if [[ $COLORTERM == "truecolor" ]] export MICRO_TRUECOLOR=1
 #export GREP_COLORS="${GREP_COLORS:-$(vivid -d ~/.config/vivid/filetypes.grep.yml generate burner)}"
 #export EXA_COLORS="${EXA_COLORS:-$(vivid -m 8-bit generate molokai)}"
 # Early autoloads {{{1
