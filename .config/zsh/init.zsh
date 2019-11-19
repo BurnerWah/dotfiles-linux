@@ -79,7 +79,7 @@ bindkey -v
 # Interactive variables {{{1
 #eval "$(dircolors)"
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
-if [[ $COLORTERM == "truecolor" ]] export MICRO_TRUECOLOR=1
+if [[ $COLORTERM == "truecolor" ]] local -x MICRO_TRUECOLOR=1
 #export GREP_COLORS="${GREP_COLORS:-$(vivid -d ~/.config/vivid/filetypes.grep.yml generate burner)}"
 #export EXA_COLORS="${EXA_COLORS:-$(vivid -m 8-bit generate molokai)}"
 # Early autoloads {{{1
@@ -273,7 +273,7 @@ source $ZDOTDIR/Math.zsh
 source $ZDOTDIR/ZLE.zsh
 
 # User dirs
-typeset -Hhr \
+local -Hhr \
   lutris=~/.local/share/lutris \
   steam=~/.local/share/Steam \
   golang=~/.local/lib64/golang \
