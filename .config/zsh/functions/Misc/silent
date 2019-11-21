@@ -1,4 +1,13 @@
+# run a program while suppressing it's output, while abandoning control over
+# the process. Mostly meant for running GUI tools, I.E. 'silent firefox'
 setopt LOCAL_OPTIONS
-setopt NO_MONITOR
-$1 "${@:1}" &>> /dev/null &
-disown %\$1
+# disable almost all job control before running the command
+setopt NO_MONITOR NO_CHECK_JOBS NO_CHECK_RUNNING_JOBS NO_HUP NO_NOTIFY
+# quoting $@ results in most of the command name being passed off to whatever
+# we're trying to run, so for safety we're shifting $1 out of the arguments.
+local cmd="$1"
+shift
+# nohup ensures that the process survives even after we exit the shell.
+# '&>> /dev/null' keeps the process silent (pipes stdout & stderr)
+# '&!' immediately disowns the process
+nohup "$cmd" "$@" &>> /dev/null &!
