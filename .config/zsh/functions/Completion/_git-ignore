@@ -1,0 +1,10 @@
+#compdef git-ignore
+#description add .gitignore patterns
+# adapted from git-extras completion
+_arguments \
++ '(scope)' \
+  {-l,--local}'[show local gitignore]' \
+  {-g,--global}'[show global gitignore]' \
+  {-p,--private}'[show repo gitignore]' \
++ 'normal' \
+  '*:file:_files'
