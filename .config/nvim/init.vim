@@ -212,15 +212,14 @@ if dein#load_state('~/.local/share/dein')
   " Official gluon syntax
 
   " Go: {{{3
-  " FTDetect: vim-go
+  " FTDetect: vim-go, $VIMRUNTIME
   " FTPlugin: vim-go
   " Syntax: vim-go
   " Format: ALE, coc-go, vim-go
   " Linter: ALE, coc-go, vim-go?
   " Completion: coc-go, vim-go?
-  " Snippets: vim-go, vim-snippets
+  " Snippets: vim-go, vim-snippets, coc-go
   " Compiler: vim-go
-
   call dein#add('fatih/vim-go')
 
   " I3: {{{3
@@ -233,11 +232,13 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('othree/yajs.vim')
 
   " JSON: {{{3
-  " Syntax: vim-json
-  " Format: coc-json. ALE, vim-json
-  " Ftplugin: vim-json
-  " Ftdetect: vim-json
-  " Linter: language server, ALE, vim-json
+  " FTDetect: vim-json, $VIMRUNTIME
+  " FTPlugin: vim-json
+  " Syntax: vim-json, custom
+  " Format: coc-json, ALE, vim-json
+  " Linter: coc-json, ALE, vim-json
+  " Completion: coc-json
+  " Snippets: coc-json
   call dein#add('elzr/vim-json')
 
   " Julia: {{{3
@@ -289,9 +290,13 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('zah/nim.vim')
 
   " Python: {{{3
+  " FTDetect: $VIMRUNTIME
+  " FTPlugin: $VIMRUNTIME
   " Syntax: Semshi, python-syntax
-  " Completion: coc-pyls
-  " Linter: ale, coc-pyls
+  " Format: ALE, coc-pyls, coc-python, isort.nvim
+  " Linter: ALE, coc-pyls, coc-python
+  " Completion: coc-pyls, coc-python
+  " Snippets: vim-snippets
   " I used to use python-mode but it turns out that plugin causes more
   " problems than it solves.
 
@@ -316,13 +321,13 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('peterhoeg/vim-qml')
 
   " Rust: {{{3
+  " FTDetect: rust.vim
+  " FTPlugin: rust.vim
   " Syntax: rust.vim
   " Format: rust.vim, ale, coc-rls?
-  " Ftplugin: rust.vim
-  " Ftdetect: rust.vim
-  " Snippets: vim-snippets, coc-rls
-  " Completion: coc-rls
   " Linter: ale, coc-rls
+  " Completion: coc-rls
+  " Snippets: vim-snippets, coc-rls
 
   call dein#add('rust-lang/rust.vim')
   " Official rust syntax
@@ -340,6 +345,12 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('hashivim/vim-terraform')
 
   " TeX: {{{3
+  " FTDetect: $VIMRUNTIME
+  " FTPlugin: vimtex
+  " Syntax: vimtex
+  " Linter: ALE, coc-texlab
+  " Completion: coc-texlab, coc-vimtex
+  " Snippets: vim-snippets, latex-snippets, coc-texlab?
   call dein#add('lervag/vimtex', {
         \ 'type__depth': 1,
         \ })
