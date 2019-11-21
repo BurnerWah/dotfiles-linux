@@ -1,0 +1,7 @@
+#compdef git-refactor
+#description create a refactor branch
+# simplified version of completions from git-extras
+_arguments \
+  '(-r --remote)'{-r,--remote}'[setup remote tracking branch]:remote:__git_remotes' \
+  ':command:(( finish\:merge\ refactor\ into\ the\ current\ branch ))' \
+  ':branch:__gitex_refactor_branch_names'

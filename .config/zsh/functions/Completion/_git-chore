@@ -1,0 +1,7 @@
+#compdef git-chore
+#description create a chore branch
+# simplified version of completions from git-extras
+_arguments \
+  '(-r --remote)'{-r,--remote}'[setup remote tracking branch]:remote:__git_remotes' \
+  ':command:(( finish\:merge\ and\ delete\ the\ chore\ branch ))' \
+  ':branch name:__gitex_chore_branch_names'
