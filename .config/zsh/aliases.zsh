@@ -67,4 +67,4 @@ functions+=(
 )
 alias ex='nvim -e' vi=nvim vim=nvim view='nvim -R' vimdiff='nvim -d'
 
-# vim:ft=zsh:fdm=marker
+# vim:ft=zsh fdm=marker

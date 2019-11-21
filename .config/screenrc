@@ -21,11 +21,11 @@ term screen-256color
 # all termcap entries are now duplicated as terminfo entries.
 # only difference should be the slightly modified syntax, and check for
 # terminfo entries, that are already corected in the database.
-# 
-# G0 	we have a SEMI-GRAPHICS-CHARACTER-MODE
-# WS	this sequence resizes our window.
+#
+# G0    we have a SEMI-GRAPHICS-CHARACTER-MODE
+# WS    this sequence resizes our window.
 # cs    this sequence changes the scrollregion
-# hs@	we have no hardware statusline. screen will only believe that
+# hs@   we have no hardware statusline. screen will only believe that
 #       there is a hardware status line if hs,ts,fs,ds are all set.
 # ts    to statusline
 # fs    from statusline
@@ -68,7 +68,7 @@ terminfo sun 'up=^K:AL=\E[%p1%dL:DL=\E[%p1%dM:UP=\E[%p1%dA:DO=\E[%p1%dB:LE=\E[%p
 #terminfo xterm 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
 
 #
-# Do not use xterms alternate window buffer. 
+# Do not use xterms alternate window buffer.
 # This one would not add lines to the scrollback buffer.
 termcap xterm|xterms|xs ti=\E7\E[?47l
 terminfo xterm|xterms|xs ti=\E7\E[?47l

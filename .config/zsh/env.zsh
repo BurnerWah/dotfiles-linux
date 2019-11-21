@@ -1,5 +1,4 @@
 #!/usr/bin/zsh
-# vim ft=zsh fdm=marker
 
 export GOBIN="$HOME/.local/bin"
 
@@ -114,3 +113,5 @@ if [[ -d $ZDOTDIR/env.d ]]; then
     fi
   done
 fi
+
+# vim:ft=zsh fdm=marker

@@ -1,5 +1,4 @@
 #!/usr/bin/zsh
-# vim:ft=zsh:fdm=marker
 # init.zsh (.zshrc)
 # sourced in interactive sessions
 autoload -Uz zrecompile
@@ -231,3 +230,5 @@ local -Hhr \
   flatpak=/var/lib/flatpak
 
 : ~lutris ~steam ~golang ~retroarch ~zealdocs ~flatpak
+
+# vim:ft=zsh fdm=marker

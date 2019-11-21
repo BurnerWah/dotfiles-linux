@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-# vim:fileencoding=utf-8:ft=zsh:foldmethod=marker
 #
 # ZLE Settings
 # Pre-setup {{{1
@@ -47,3 +46,4 @@ bindkey -M vicmd su widget/sudo # rerun last command as root
 bindkey -M vicmd \! edit-command-line # modify the command being input in $EDITOR
 bindkey -M vicmd ZZ quit   # That's a thing you can do in vim
 
+# vim:fenc=utf-8 ft=zsh fdm=marker
