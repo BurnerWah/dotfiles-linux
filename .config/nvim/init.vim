@@ -1,4 +1,3 @@
-" vim:ft=vim fenc=utf-8 fdm=marker
 " File: init.vim
 " Author: Jaden Pleasants
 " Description: neovim configuration
@@ -706,3 +705,4 @@ aug init
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
 aug END
+" vim:ft=vim fenc=utf-8 fdm=marker
