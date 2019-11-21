@@ -1,0 +1,4 @@
+setopt LOCAL_OPTIONS
+setopt NO_MONITOR
+$1 "${@:1}" &>> /dev/null &
+disown %\$1

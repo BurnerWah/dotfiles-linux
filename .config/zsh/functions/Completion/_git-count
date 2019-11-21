@@ -1,0 +1,4 @@
+#compdef git-count
+#description show commit count
+# adapted from git-extras completion
+_arguments '--all[detailed commit count]'

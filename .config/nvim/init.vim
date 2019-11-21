@@ -157,8 +157,9 @@ if dein#load_state('~/.local/share/dein')
   " Ftplugin: csv.vim
   " Syntax: csv.vim
 
-  call dein#add('chrisbra/csv.vim', {'lazy': v:true, 'on_ft': ['csv']})
+  " call dein#add('chrisbra/csv.vim', {'lazy': v:true, 'on_ft': ['csv']})
   " Has a plugin file but it probably shouldn't.
+  " replacing with local fork temporarily
 
   " Cue: cue sheets {{{3
   call dein#add('mgrabovsky/vim-cuesheet')
@@ -296,7 +297,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('zah/nim.vim')
 
   " Python: {{{3
-  " Syntax: Semshi, python-mode
+  " Syntax: Semshi, python-syntax
   " Completion: coc-pyls
   " Linter: ale, coc-pyls
   " I used to use python-mode but it turns out that plugin causes more
@@ -305,6 +306,10 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('vim-python/python-syntax')
 
   call dein#add(s:gh_raw.'/Vimjas/vim-python-pep8-indent/master/indent/python.vim', {'script_type': 'indent'})
+  " I'm really not sure why this plugin has so much stuff in it's repo. Do you
+  " really need a dockerfile, a makefile, a gemfile, a docker compose
+  " configuration, and continuous integration for one file?
+  " One file? Just one file?
 
   call dein#add('numirias/semshi', {
         \ 'if': has('nvim') && has('python3'),
@@ -354,8 +359,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('HerringtonDarkholme/yats.vim')
 
   " Vala: {{{3
-  call dein#add('arrufat/vala.vim', {'lazy': v:true, 'on_ft': ['vala']})
-  " Load lazily to prevent plugin from sourcing when it doesn't need to
+  call dein#add('YaBoiBurner/vala.vim')
+  " Fork of arrufat/vala.vim
+
+  " Vifm: vifm configuration {{{3
+  call dein#add('vifm/vifm.vim')
 
   " VimL: {{{3
   call dein#add('Shougo/neco-vim')
@@ -462,6 +470,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('fszymanski/fzf-gitignore')
   call dein#add('editorconfig/editorconfig-vim')
   call dein#add('Shougo/context_filetype.vim')
+  call dein#add('easymotion/vim-easymotion')
 
   " call dein#add('Yggdroot/LeaderF', {
   "       \ 'merged': v:true,
@@ -689,16 +698,10 @@ nmap <leader>x  <Plug>(coc-cursors-operator)
 " Init augroup {{{1
 aug init
   au!
-  au FileType help setl signcolumn=no
-  au FileType json setl foldmethod=syntax
   au FileType list setl nospell
-  au FileType denite call Maps#denite()
-  au FileType denite-filter imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
   au FileType gitmessengerpopup setl winblend=10
   " Highlight symbol under cursor on CursorHold
   au CursorHold * silent call CocActionAsync('highlight')
-  " Setup formatexpr specified filetype(s).
-  au FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif

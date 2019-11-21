@@ -1,0 +1,6 @@
+#compdef git-authors
+#description generate authors report
+# adapted from git-extras completion
+_arguments \
+  '(-l --list)'{-l,--list}'[show authors]' \
+  '--no-email[without email]'

@@ -1,0 +1,1 @@
+setl formatexpr=CocAction('formatSelected')

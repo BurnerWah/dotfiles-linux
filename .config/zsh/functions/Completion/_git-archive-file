@@ -1,0 +1,3 @@
+#compdef git-archive-file
+#description export the current head of the git repository to an archive
+#compflag NO_ARGUMENTS

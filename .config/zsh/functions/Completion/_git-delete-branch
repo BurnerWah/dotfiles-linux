@@ -1,0 +1,4 @@
+#compdef git-delete-branch
+#description delete branches
+# adapted from git-extras completion
+_arguments ':branch-name:__git_branch_names'

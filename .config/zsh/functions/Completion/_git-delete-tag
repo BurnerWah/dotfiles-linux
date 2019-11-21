@@ -1,0 +1,4 @@
+#compdef git-delete-tag
+#description delete tags
+# adapted from git-extras completion
+_arguments ':tag name:__git_tags'

@@ -1,0 +1,5 @@
+#compdef git-create-branch
+#description create branches
+# adapted from git-extras completion
+_arguments \
+  '(-r --remote)'{-r,--remote}'[setup remote tracking branch]:remote name:__git_remotes'

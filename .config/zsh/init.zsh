@@ -77,11 +77,8 @@ setopt SHARE_HISTORY
 setopt NO_BEEP
 bindkey -v
 # Interactive variables {{{1
-#eval "$(dircolors)"
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
 if [[ $COLORTERM == "truecolor" ]] local -x MICRO_TRUECOLOR=1
-#export GREP_COLORS="${GREP_COLORS:-$(vivid -d ~/.config/vivid/filetypes.grep.yml generate burner)}"
-#export EXA_COLORS="${EXA_COLORS:-$(vivid -m 8-bit generate molokai)}"
 # Early autoloads {{{1
 autoload -Uz zstyle+ add-zsh-hook
 autoload -Uz zmathfunc && zmathfunc
@@ -93,57 +90,9 @@ autoload -Uz zmathfunc && zmathfunc
 # zstyle is basically a lightweight configuration system for zsh. It's not
 # perfect, but it does well enough.
 # 2}}}
-#zstyle ':compinstall' filename '/home/jadenpleasants/.config/zsh/init.zsh'
 autoload -Uz compinit && {
   [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]] && compinit || compinit -C
 }
-
-# Bash completions {{{2
-#autoload -Uz bashcompinit && { bashcompinit && {
-#  BASH_VERSION=5 source /usr/share/bash-completion/completions/gdbus
-#  BASH_VERSION=5 source /usr/share/bash-completion/completions/gapplication
-#  BASH_VERSION=5 source /usr/share/bash-completion/completions/gio
-#  BASH_VERSION=5 source /usr/share/bash-completion/completions/dconf-editor
-#  BASH_VERSION=5 source /usr/share/bash-completion/completions/gresource
-#  for i in \
-#    addpart blkdiscard blkid blkzone blockdev bodhi cfdisk chcpu chmem col \
-#    colcrt colormgr colrm createrepo_c ctrlaltdel delpart eject fallocate \
-#    fdformat fdisk fincore findfs findmnt flock fsck fsck.{cramfs,minix} \
-#    fsfreeze fstrim gnome-control-center gnome-mplayer hwclock ipcmk ipcrm \
-#    ipcs isosize kmod ldattach logger losetup lscpu lsipc lslocks lslogins \
-#    lsmem lsns mcookie mesg mkfs mkfs.{cramfs,minix} mkswap mokutil more \
-#    mountpoint namei ndctl nsenter partx prlimit raw readprofile resizepart \
-#    rev rpmlint rpm-ostree rtcwake semanage setarch setpriv setsebool setterm \
-#    sfdisk source-highlight swaplabel swapoff swapon taskset ul unshare \
-#    utmpdump uuidgen uuidparse virt-{clone,convert,install,xml} \
-#    wall wdctl zramctl \
-#    ; {
-#      if ! (( $+_comps[$i] )) && [[ -a /usr/share/bash-completion/completions/$i ]]
-#        source /usr/share/bash-completion/completions/$i
-#    }
-#}}
-
-# Eval completion {{{2
-# Note on kubectl {{{3
-# kubectl has the worst goddamn completions I've ever seen.
-# Like, really, who on earth thought they were acceptable?
-# Startup time:
-#   W/  kubectl completions: 621.5 ms ± 21.9 ms
-#   W/O kubectl completions: 204.7 ms ± 13.3 ms
-# Difference is approx 400 ms, which is a fucking joke.
-# Maybe it's designed to use a million threads.
-# Maybe it's the most complicated compdef in history.
-# Or maybe it has hundreds of lines of "var+=(thing)" in place of "var+=(thing1 thing2 etc...)"
-# Maybe it converts bash completions to zsh completions using sed.
-# Maybe, it's just shit.
-#
-#
-# Probably that last one.
-# 3}}}
-if (( $+commands[kompose] )); then
-  source <(kompose completion zsh) # 37.7 ms ± 5.6 ms
-fi
-# }}}
 # Compdefs {{{2
 noglob compdef _cmp  -P [blx]#zcmp
 noglob compdef _diff -P [blx]#zdiff
@@ -262,8 +211,8 @@ autoload -Uz run-help run-help-{dnf,git,ip,openssl,p4,sudo,svk,svn}
 unalias run-help
 alias help=run-help
 autoload -Uz zshTimedRehash && zshTimedRehash # Runs rehash every ten minutes
-autoload -Uz xman xinfo # helper scripts to open documentation in Gnome Help
 autoload -Uz harden # convert a symbolic link to a file
+autoload -Uz silent # run program in background
 # }}}
 
 zstyle ':zle:cd-widget:colors' disabled false

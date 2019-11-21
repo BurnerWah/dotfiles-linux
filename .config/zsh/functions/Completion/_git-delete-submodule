@@ -1,0 +1,4 @@
+#compdef git-delete-submodule
+#description delete submodules
+# adapted from git-extras completion
+_arguments ':submodule name:__git_submodules'
