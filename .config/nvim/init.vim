@@ -136,8 +136,9 @@ if dein#load_state('~/.local/share/dein')
 
   " Language-specific stuff {{{2
   " AWK: {{{3
+  " FTDetect: $VIMRUNTIME
+  " FTPlugin: $VIMRUNTIME
   " Syntax: $VIMRUNTIME
-  " Ftplugin: $VIMRUNTIME
   " Format: $VIMRUNTIME
   " Linter: ALE
   " Snippets: vim-snippets
@@ -152,10 +153,6 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('rhysd/vim-crystal')
 
   " CSV: comma-separated values {{{3
-  " Ftdetect: csv.vim
-  " Ftplugin: csv.vim
-  " Syntax: csv.vim
-
   " call dein#add('chrisbra/csv.vim', {'lazy': v:true, 'on_ft': ['csv']})
   " Has a plugin file but it probably shouldn't.
   " replacing with local fork temporarily
@@ -164,9 +161,10 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('mgrabovsky/vim-cuesheet')
 
   " CXX: {{{3
+  " FTDetect: $VIMRUNTIME
+  " FTPlugin: $VIMRUNTIME
   " Syntax: chromatica.nvim, $VIMRUNTIME, vim-enhanced-cpp-highlight
   " Format: ALE, language server, $VIMRUNTIME
-  " Ftplugin: $VIMRUNTIME
   " Linter: ALE, language server
   " Completion: language server, neoinclude
   " Snippets: vim-snippets
@@ -176,11 +174,6 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('octol/vim-cpp-enhanced-highlight')
   " Enhancements to base c++ highlighting. It inherently loads lazily.
-
-  " call dein#add('m-pilia/vim-ccls')
-  " Enhanced support for ccls.
-  " Has a small plugin file
-  " redundant with coc.nvim
 
   call dein#add('Shougo/neoinclude.vim')
   call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
@@ -192,10 +185,10 @@ if dein#load_state('~/.local/share/dein')
   " Probably can be manually converted to an ftplugin.
 
   " Docker: dockerfile, docker-compose {{{3
+  " FTDetect: Dockerfile.vim
+  " FTPlugin: Dockerfile.vim
   " Syntax: Dockerfile.vim
   " Format: Dockerfile.vim
-  " Ftplugin: Dockerfile.vim
-  " Ftdetect: Dockerfile.vim
   " Linter: ALE, coc-docker
   " Completion: coc-docker
   " Snippets: Dockerfile.vim
@@ -210,8 +203,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('dag/vim-fish')
 
   " Gluon: {{{3
+  " FTDetect: vim-gluon
   " Syntax: vim-gluon
-  " Ftdetect: vim-gluon
   " Format: vim-gluon
   " Completion: language server (not working)
 
@@ -219,14 +212,14 @@ if dein#load_state('~/.local/share/dein')
   " Official gluon syntax
 
   " Go: {{{3
+  " FTDetect: vim-go
+  " FTPlugin: vim-go
   " Syntax: vim-go
-  " Ftdetect: vim-go
-  " Ftplugin: vim-go
-  " Compiler: vim-go
   " Format: ALE, coc-go, vim-go
   " Linter: ALE, coc-go, vim-go?
   " Completion: coc-go, vim-go?
   " Snippets: vim-go, vim-snippets
+  " Compiler: vim-go
 
   call dein#add('fatih/vim-go')
 
