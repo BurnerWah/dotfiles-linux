@@ -131,6 +131,7 @@ zstyle ':completion:*:parameters' ignored-patterns \
   '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
   '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
   '_history_substring_search_*'
+zstyle ':completion:*:user-math-functions' ignored-patterns 'fsh_sy_h_append'
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
