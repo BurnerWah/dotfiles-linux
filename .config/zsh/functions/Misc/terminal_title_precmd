@@ -1,1 +1,6 @@
+# -P enables prompt expansion
+# -D replaces directories with shortened ~dir versions when relevant
+# %n is the username
+# %m is the hostname up to the first .
+# %~ is the shortened CWD
 print -PDn '\033]0;%n@%m:%~\007'
