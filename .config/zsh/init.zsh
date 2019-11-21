@@ -129,7 +129,8 @@ zstyle ':completion:*' verbose true
 
 zstyle ':completion:*:parameters' ignored-patterns \
   '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
-  '_#ZSH_HIGHLIGHT_*'
+  '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
+  '_history_substring_search_*'
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
@@ -137,7 +138,6 @@ zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
 zstyle ':completion:*:*:cdr:*:*' menu selection
 zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS' '(*/)#.git' # Ignore VCS folders
 
-# TODO: Add colors to docker completions
 zstyle ':completion:*:*:docker*:*' menu selection
 zstyle ':completion:*:*:docker*:*' option-stacking yes
 
@@ -182,9 +182,6 @@ add-zsh-hook preexec terminal_title_preexec
 
 # Prompt setup {{{1
 autoload -Uz promptinit && promptinit
-#prompt powerlevel10k
-#source $ZDOTDIR/.p10k.zsh
-#prompt starship
 prompt powerlevel10k
 zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
 
