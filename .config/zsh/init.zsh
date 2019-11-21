@@ -33,24 +33,23 @@ source $ZDOTDIR/.terminfo.zsh
 # * zsh/example   - not needed 99% of the time
 # 2}}}
 
-zmodload -ab zsh/attr z{get,set,del,list}attr # builtins for manipulating xattr
-#zmodload zsh/cap        # POSIX.1e (POSIX.6)
-zmodload -ab zsh/cap {,get,set}cap
-#zmodload zsh/clone      # Clone current terminal to another tty
-zmodload -ab zsh/clone clone
-zmodload zsh/curses     # ncurses stuff
-zmodload zsh/datetime   # check the current date
+zmodload -aF zsh/attr b:z{get,set,del,list}attr
+zmodload -aF zsh/cap b:{,get,set}cap
+zmodload -aF zsh/clone b:clone
+zmodload -aF zsh/curses \
+  b:zcurses \
+  p:zcurses_{attrs,colors,keycodes,windows} \
+  p:ZCURSES_{COLORS,COLOR_PAIRS}
+zmodload -aF zsh/datetime b:strftime p:EPOCH{SECONDS,REALTIME} p:epochtime
 #zmodload zsh/langinfo   # array of locale information
-zmodload zsh/mapfile    # special array containing external files
+zmodload -aF zsh/mapfile p:mapfile
 zmodload zsh/mathfunc   # maths
-zmodload zsh/net/socket # local network interactions
-zmodload zsh/net/tcp    # external network interactions
-zmodload zsh/pcre       # Perl compatible regex
-zmodload zsh/regex      # regex matching conditions
-zmodload zsh/system     # I forgot
-zmodload zsh/zftp       # ftp support
-zmodload zsh/zpty       # pseudo-terminals
-zmodload zsh/zselect    # forgot again
+zmodload -aF zsh/net/socket b:zsocket
+zmodload -aF zsh/net/tcp b:ztcp
+zmodload -aF zsh/pcre b:pcre_{compile,match,study} C:pcre-match
+zmodload -aF zsh/system b:sys{error,read,write,open,seek} b:zsystem f:systell p:errnos p:sysparams
+zmodload -aF zsh/zpty b:zpty
+zmodload -aF zsh/zselect b:zselect
 
 [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
 # nearcolor fixes colors but it's not always present or needed
@@ -74,6 +73,7 @@ setopt HIST_REDUCE_BLANKS
 #setopt HIST_VERIFY
 setopt SHARE_HISTORY
 setopt NO_BEEP
+setopt REMATCH_PCRE
 bindkey -v
 # Interactive variables {{{1
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
