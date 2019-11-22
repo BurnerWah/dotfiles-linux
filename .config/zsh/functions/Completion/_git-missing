@@ -1,0 +1,3 @@
+#compdef git-missing
+#description show commits missing from another branch
+_arguments ': :__git_branch_names' ': :__git_branch_names'

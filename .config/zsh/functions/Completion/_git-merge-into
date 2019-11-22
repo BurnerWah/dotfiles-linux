@@ -1,0 +1,5 @@
+#compdef git-merge-into
+#description merge one branch into another
+_arguments '--ff-only[merge only fast-forward]' \
+  ':src:__git_branch_names' \
+  ':dest:__git_branch_names'

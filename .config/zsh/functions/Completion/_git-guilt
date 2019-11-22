@@ -1,0 +1,9 @@
+#compdef git-guilt
+#description calculate change between two revisions
+# fixed version of completions from git-extras
+_arguments \
+  '(-h --help)'{-h,--help}'[show usage info]' \
+  '(-e --email)'{-e,--email}'[display author emails instead of names]' \
+  '(-w --ignore-whitespace)'{-w,--ignore-whitespace}'[ignore whitespace only changes]' \
+  '(-d --debug)'{-d,--debug}'[show debug info]' \
+  ': :__git_revisions' ':: :__git_revisions'
