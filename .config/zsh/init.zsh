@@ -138,8 +138,10 @@ zstyle ':completion:*:parameters' ignored-patterns \
 zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
 
 zstyle ':completion:*:functions' ignored-patterns \
-  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_history[-_]substring[-_]*' \
-  '_p9k_*' '_gitstatus_*' 'prompt_(^(*_setup))'
+  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
+  '_#p9k_*' '_#gitstatus_*' 'prompt_(^(*_setup))' getColorCode get_icon_names \
+  edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
+  'zsh_math_func_*'
 
 zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 
