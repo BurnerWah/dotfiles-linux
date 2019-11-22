@@ -148,13 +148,13 @@ zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
 zstyle ':completion:*:commands' ignored-patterns \
   '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
   chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
-  'flake8-*' 'futurize-*' 'git-*' gnome-keyring-3 gnuplot-qt gpg2 gpgv2 ipdb3 \
-  ipython3 'isort-*' 'luajit-*' 'msgfmt?##.py' nodeenv 'nu_plugin_*' \
-  'pasteurize-*' pbr-3 'pip(|-)[0-9.]##' 'py[0-9.]##' 'pycodestyle-*' \
-  'pycompleter?##' 'pydoc[0-9.]##' 'pyflakes-*' 'pygettext?##.py' \
-  '(|e)pylint-*' 'pyreverse-*' 'pystache(|-test)-[0-9.]##' 'pyvenv-*' \
-  'sphinx-(apidoc|autogen|build|quickstart)-*' 'symilar-*' 'trial-*' \
-  'twistd-*' 'vala(|-gen-introspect|c)-[0-9.]##' 'vapigen-*' yum \
+  'flake8-*' 'futurize-*' fzf-tmux genq 'git-*' gnome-keyring-3 gnuplot-qt \
+  gpg2 gpgv2 ipdb3 ipython3 'isort-*' 'luajit-*' 'msgfmt?##.py' nodeenv \
+  'nu_plugin_*' 'pasteurize-*' pbr-3 'pip(|-)[0-9.]##' 'py[0-9.]##' \
+  'pycodestyle-*' 'pycompleter?##' 'pydoc[0-9.]##' 'pyflakes-*' \
+  'pygettext?##.py' '(|e)pylint-*' 'pyreverse-*' 'pystache(|-test)-[0-9.]##' \
+  'pyvenv-*' sk-tmux 'sphinx-(apidoc|autogen|build|quickstart)-*' 'symilar-*' \
+  'trial-*' 'twistd-*' 'vala(|-gen-introspect|c)-[0-9.]##' 'vapigen-*' yum \
   python-argcomplete-check-easy-install-script
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
