@@ -498,17 +498,6 @@ if dein#check_install()
   call dein#install()
 endif
 
-" My functions {{{1
-"fun! s:in_git_dir(path) abort
-"  let dir = fnamemodify(a:path, ':p:h')
-"  let root = finddir('.git', dir.';')
-"  return !empty(root)
-"endfun
-
-" Commands {{{1
-com! -nargs=0 Prettier :CocCommand prettier.formatFile
-com! -nargs=0 Tsc    :CocCommand tsserver.watchBuild
-
 " Plugin Settings {{{1
 
 let g:snips_author = 'Jaden Pleasants'
