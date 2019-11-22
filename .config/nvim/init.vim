@@ -387,8 +387,10 @@ if dein#load_state('~/.local/share/dein')
   " Open documentation in Zeal
   " The default mapping is garbage and overwrites some defaults I'm used to.
 
-  call dein#add('tpope/vim-fugitive')
-  " Git wrapper. You know what it does.
+  " call dein#add('tpope/vim-fugitive')
+  " Fugitive resolves symlinks for git repos, which breaks a lot of random
+  " stuff. If there's a way to fix that I'd be very happy but for now I'm just
+  " not gonna use it.
 
   call dein#add('tpope/vim-dadbod')
 
