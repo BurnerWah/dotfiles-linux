@@ -3,5 +3,5 @@
 # simplified version of completions from git-extras
 _arguments \
   '(-r --remote)'{-r,--remote}'[setup remote tracking branch]:remote:__git_remotes' \
-  ':command:(( finish\:merge\ bug\ into\ the\ current\ branch ))' \
+  ':command:(( finish\:"merge bug into the current branch" ))' \
   ':branch name:__gitex_bug_branch_names'

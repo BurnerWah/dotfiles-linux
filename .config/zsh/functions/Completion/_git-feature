@@ -3,5 +3,5 @@
 # simplified version of completions from zsh-extras
 _arguments \
   '(-r --remote)'{-r,--remote}'[setup remote tracking branch]:remote name:__git_remotes' \
-  ':command:(( finish\:merge\ feature\ into\ the\ current\ branch ))' \
+  ':command:(( finish\:"merge feature into the current branch" ))' \
   ':branch name:__gitex_feature_branch_names'
