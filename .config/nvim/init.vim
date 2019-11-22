@@ -163,7 +163,7 @@ if dein#load_state('~/.local/share/dein')
   " CXX: {{{3
   " FTDetect: $VIMRUNTIME
   " FTPlugin: $VIMRUNTIME
-  " Syntax: chromatica.nvim, $VIMRUNTIME, vim-enhanced-cpp-highlight
+  " Syntax: chromatica.nvim, $VIMRUNTIME
   " Format: ALE, language server, $VIMRUNTIME
   " Linter: ALE, language server
   " Completion: language server, neoinclude
@@ -171,9 +171,6 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('arakashic/chromatica.nvim')
   " Provides enhanced highlighting. It requires the base CXX syntax definition.
-
-  call dein#add('octol/vim-cpp-enhanced-highlight')
-  " Enhancements to base c++ highlighting. It inherently loads lazily.
 
   call dein#add('Shougo/neoinclude.vim')
   call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
