@@ -114,7 +114,9 @@ compdef _gnu_generic \
 zstyle ':completion:*' auto-description 'specify: %d' # default description template for completions
 zstyle ':completion:*' use-cache on                   # Cache complex completions
 zstyle ':completion:*' cache-path "$HOME/.cache/zsh/" # Place completion cache in standard folder
-zstyle ':completion:*' completer _complete _correct _approximate
+zstyle ':completion:*' completer _complete _match _correct _approximate
+zstyle ':completion:*:match:*' original only
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
@@ -127,11 +129,29 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 
+# We're just gonna pretend this stuff doesn't exist. Cool?
 zstyle ':completion:*:parameters' ignored-patterns \
   '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
   '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
   '_history_substring_search_*'
-zstyle ':completion:*:user-math-functions' ignored-patterns 'fsh_sy_h_append'
+
+zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
+
+zstyle ':completion:*:functions' ignored-patterns \
+  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_history[-_]substring[-_]*' \
+  '_p9k_*' '_gitstatus_*' 'prompt_(^(*_setup))'
+
+zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
+
+zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
+
+zstyle ':completion:*:commands' ignored-patterns \
+  '\[' chrome-gnome-shell ccmake3 cmake3 cpack3 ctest3 'git-*' \
+  gnome-keyring-3 gnuplot-qt gpg2 gpgv2 'luajit-*' nodeenv 'nu_plugin_*' \
+  python-argcomplete-check-easy-install-script yum \
+  '(aclocal|automake)-*' '(vala(|-gen-introspect|c)|vapigen)-[0-9.]##' \
+  '(f2py|ipdb|ipython|msgfmt|pip|py|pycompleter|pydoc|pygettext)[0-9.]##(|.py)' \
+  '(autopep8|black(|d)|dnf|easy_install|epylint|flake8|futurize|isort|pasteurize|pbr|pip|py(codestyle|completer|doc|flakes|lint|reverse|stache(|-test)|venv|)|sphinx-*|symilar|trial|twistd)-[0-9.]##'
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
