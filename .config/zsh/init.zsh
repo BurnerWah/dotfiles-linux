@@ -146,12 +146,16 @@ zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
 
 zstyle ':completion:*:commands' ignored-patterns \
-  '\[' chrome-gnome-shell ccmake3 cmake3 cpack3 ctest3 'git-*' \
-  gnome-keyring-3 gnuplot-qt gpg2 gpgv2 'luajit-*' nodeenv 'nu_plugin_*' \
-  python-argcomplete-check-easy-install-script yum \
-  '(aclocal|automake)-*' '(vala(|-gen-introspect|c)|vapigen)-[0-9.]##' \
-  '(f2py|ipdb|ipython|msgfmt|pip|py|pycompleter|pydoc|pygettext)[0-9.]##(|.py)' \
-  '(autopep8|black(|d)|dnf|easy_install|epylint|flake8|futurize|isort|pasteurize|pbr|pip|py(codestyle|completer|doc|flakes|lint|reverse|stache(|-test)|venv|)|sphinx-*|symilar|trial|twistd)-[0-9.]##'
+  '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
+  chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
+  'flake8-*' 'futurize-*' 'git-*' gnome-keyring-3 gnuplot-qt gpg2 gpgv2 ipdb3 \
+  ipython3 'isort-*' 'luajit-*' 'msgfmt?##.py' nodeenv 'nu_plugin_*' \
+  'pasteurize-*' pbr-3 'pip(|-)[0-9.]##' 'py[0-9.]##' 'pycodestyle-*' \
+  'pycompleter?##' 'pydoc[0-9.]##' 'pyflakes-*' 'pygettext?##.py' \
+  '(|e)pylint-*' 'pyreverse-*' 'pystache(|-test)-[0-9.]##' 'pyvenv-*' \
+  'sphinx-(apidoc|autogen|build|quickstart)-*' 'symilar-*' 'trial-*' \
+  'twistd-*' 'vala(|-gen-introspect|c)-[0-9.]##' 'vapigen-*' yum \
+  python-argcomplete-check-easy-install-script
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
