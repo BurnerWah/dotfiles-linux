@@ -13,7 +13,6 @@
     "coc-fish": ">=1.0.10",
     "coc-git": ">=1.6.16",
     "coc-gitignore": ">=0.0.4",
-    "coc-go": ">=0.6.0",
     "coc-highlight": ">=1.2.5",
     "coc-html": ">=1.2.1",
     "coc-json": ">=1.2.4",
