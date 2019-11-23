@@ -606,6 +606,7 @@ let g:chromatica#global_args = [
 let g:go_doc_keywordprg_enabled = v:false
 let g:go_def_mapping_enabled = v:false
 let g:go_textobj_enabled = v:false
+let g:go_code_completion_enabled = v:false " Let coc handle completion
 
 " VimWiki: Note-taking tool {{{2
 let g:vimwiki_list = [{
