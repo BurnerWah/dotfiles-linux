@@ -550,15 +550,23 @@ let g:ale_linters = {
       \     'clang', 'clangcheck', 'clangd', 'clangtidy', 'clazy',
       \     'cppcheck', 'cpplint', 'cquery', 'flawfinder', 'gcc', 'uncrustify',
       \   ],
+      \   'css': ['csslint', 'fecs'],
+      \   'lua': ['luac'],
+      \   'markdown': [
+      \     'alex', 'languagetool', 'mdl', 'proselint', 'redpen',
+      \     'remark_lint', 'textlint', 'vale', 'writegood',
+      \   ],
       \   'objc':   ['clang', 'clangd', 'uncrustify'],
       \   'python': ['flake8'],
+      \   'sass': ['sasslint'],
+      \   'scss': ['sasslint', 'scsslint'],
       \   'sh':     ['shell', 'shellcheck'],
+      \   'tex': ['alex', 'chktex', 'lacheck', 'proselint', 'redpen', 'textlint', 'vale', 'writegood'],
       \ }
 
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \
-      \   'json': ['prettier'],
       \   'xml':  ['xmllint'],
       \
       \   'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
