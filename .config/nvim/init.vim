@@ -551,6 +551,7 @@ let g:ale_linters = {
       \     'cppcheck', 'cpplint', 'cquery', 'flawfinder', 'gcc', 'uncrustify',
       \   ],
       \   'objc':   ['clang', 'clangd', 'uncrustify'],
+      \   'python': ['flake8'],
       \   'sh':     ['shell', 'shellcheck'],
       \ }
 
@@ -570,7 +571,6 @@ let g:ale_fixers = {
       \   ],
       \   'python': [
       \     'add_blank_lines_for_python_control_statements',
-      \     'autopep8', 'black', 'isort', 'yapf',
       \   ],
       \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
       \   'sh':   ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],

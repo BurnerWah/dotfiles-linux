@@ -165,7 +165,8 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "project.dbpath": "~/.config/coc/projects.json",
-  "pyls.enable": false, // IMO pyls is better than Microsoft's language server
+  "pyls.enable": true, // IMO pyls is better than Microsoft's language server
+  "python.linting.mypyEnabled": true,
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",
