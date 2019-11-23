@@ -556,18 +556,21 @@ let g:ale_linters = {
       \     'alex', 'languagetool', 'mdl', 'proselint', 'redpen',
       \     'remark_lint', 'textlint', 'vale', 'writegood',
       \   ],
-      \   'objc':   ['clang', 'clangd', 'uncrustify'],
+      \   'objc': ['clang', 'clangd', 'uncrustify'],
       \   'python': ['flake8'],
       \   'sass': ['sasslint'],
       \   'scss': ['sasslint', 'scsslint'],
-      \   'sh':     ['shell', 'shellcheck'],
-      \   'tex': ['alex', 'chktex', 'lacheck', 'proselint', 'redpen', 'textlint', 'vale', 'writegood'],
+      \   'sh': ['shell', 'shellcheck'],
+      \   'tex': [
+      \     'alex', 'chktex', 'lacheck', 'proselint', 'redpen',
+      \     'textlint', 'vale', 'writegood',
+      \   ],
       \ }
 
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \
-      \   'xml':  ['xmllint'],
+      \   'xml': ['xmllint'],
       \
       \   'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
       \   'cpp': [
@@ -581,8 +584,8 @@ let g:ale_fixers = {
       \     'add_blank_lines_for_python_control_statements',
       \   ],
       \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'sh':   ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'sql':  ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
       \ }
 
 let g:ale_fix_on_save = v:true
@@ -614,7 +617,7 @@ let g:vimwiki_list = [{
 let g:python_highlight_all = v:true
 let g:tex_flavor = 'latex'
 let g:vim_json_syntax_conceal = v:true  " Enable conceal for json
-let g:rust_conceal     = v:true " Conceal markers for rust
+let g:rust_conceal = v:true " Conceal markers for rust
 let g:vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 
 " Keybindings {{{1
@@ -630,8 +633,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 nnoremap <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
 
-xmap ga         <Plug>(LiveEasyAlign)
-nmap ga         <Plug>(EasyAlign)
+xmap ga <Plug>(LiveEasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Trigger completion on menu key
 inoremap <silent><expr> <F16> coc#refresh()
