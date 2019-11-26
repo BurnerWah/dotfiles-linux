@@ -565,6 +565,7 @@ let g:ale_linters = {
       \     'alex', 'chktex', 'lacheck', 'proselint', 'redpen',
       \     'textlint', 'vale', 'writegood',
       \   ],
+      \   'yaml': ['swaglint'],
       \ }
 
 let g:ale_fixers = {
