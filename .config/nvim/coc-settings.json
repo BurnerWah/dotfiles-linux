@@ -18,9 +18,20 @@
         "highlight": { "lsRanges": true }
       }
     },
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": ["build/"],
+      "initializationOptions": { "buildDirectory": "build" }
+    },
     "digestif": {
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
+    },
+    "dot-language-server": {
+      "command": "dot-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["dot"]
     },
     "efm": {
       "command": "efm-langserver",
