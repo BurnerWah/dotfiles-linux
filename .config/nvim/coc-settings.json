@@ -8,9 +8,7 @@
       "ignoredRootPaths": ["~"]
     },
     "ccls": {
-      /*
-       * to be replaced by coc-ccls
-       */
+      // to be replaced by coc-ccls
       "command": "ccls",
       "filetypes": ["c", "cpp", "cuda", "objc", "objc++"],
       "rootPatterns": [".ccls-root", "compile_commands.json"],
@@ -26,7 +24,6 @@
     },
     "efm": {
       "command": "efm-langserver",
-      "args": [],
       "filetypes": ["eruby", "markdown", "vim", "yaml"]
     },
     "fortls": {
@@ -124,7 +121,6 @@
       ]
     }
   },
-  "go.goplsPath": "/usr/bin/gopls", // Installed & updated via DNF
   "highlight.colors.enable": false, // We have another plugin set up to handle this
   "json.schemas": [
     {
