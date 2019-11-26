@@ -11,7 +11,7 @@
       // to be replaced by coc-ccls
       "command": "ccls",
       "filetypes": ["c", "cpp", "cuda", "objc", "objc++"],
-      "rootPatterns": [".ccls-root", "compile_commands.json"],
+      "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/"],
       "initializationOptions": {
         "cache": { "directory": ".ccls-cache" },
         "clang": { "resourceDir": "/usr/lib64/clang/9.0.0" },
@@ -39,7 +39,7 @@
     "gopls": {
       "command": "gopls",
       "filetypes": ["go"],
-      "rootPatterns": ["go.mod"]
+      "rootPatterns": ["go.mod", "Gopkg.toml"]
     },
     "srcy": {
       "command": "srcy",
