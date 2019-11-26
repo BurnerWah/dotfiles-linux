@@ -8,3 +8,4 @@ optional=false
 sign-git-commit=true
 sign-git-tag=true
 link=true
+update-notifier=false
