@@ -553,7 +553,7 @@ let g:ale_linters = {
       \     'remark_lint', 'textlint', 'vale', 'writegood',
       \   ],
       \   'objc': ['clang', 'clangd', 'uncrustify'],
-      \   'python': ['flake8'],
+      \   'python': ['flake8', 'mypy'],
       \   'sass': ['sasslint'],
       \   'scss': ['sasslint', 'scsslint'],
       \   'sh': ['shell', 'shellcheck'],
@@ -563,6 +563,7 @@ let g:ale_linters = {
       \   ],
       \   'yaml': ['swaglint'],
       \ }
+
 
 let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
