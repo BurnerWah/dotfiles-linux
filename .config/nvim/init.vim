@@ -382,10 +382,7 @@ if dein#load_state('~/.local/share/dein')
   " Zsh completions in Zsh scripts.
 
   " Integration: Work with other things {{{2
-  let g:zv_disable_mapping = v:true
-  call dein#add('KabbAmine/zeavim.vim')
-  " Open documentation in Zeal
-  " The default mapping is garbage and overwrites some defaults I'm used to.
+  " zealvim was removed because it was too agressive with it's mappings
 
   " call dein#add('tpope/vim-fugitive')
   " Fugitive resolves symlinks for git repos, which breaks a lot of random
@@ -502,7 +499,6 @@ endif
 let g:snips_author = 'Jaden Pleasants'
 let g:snips_email  = 'jadenpleasants@fastmail.com'
 let g:git_messenger_always_into_popup = v:true
-let g:zv_zeal_executable = 'org.zealdocs.Zeal'
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
 lua require("navigation")
