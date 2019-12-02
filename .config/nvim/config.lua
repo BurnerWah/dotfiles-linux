@@ -13,6 +13,11 @@ iron.core.add_repl_definitions {
       command = {"fennel", "--repl"}
     }
   },
+  fish = {
+    fish = {
+      command = {"fish"}
+    }
+  },
   gluon = {
     gluon = {
       command = {"gluon", "-i"}
@@ -23,6 +28,7 @@ iron.core.add_repl_definitions {
 iron.core.set_config {
   preferred = {
     fennel = "fennel",
+    fish = "fish",
     gluon = "gluon",
     javascript = "node",
     lua = "lua",
