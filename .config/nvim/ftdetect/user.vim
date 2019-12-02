@@ -10,6 +10,9 @@ aug userft
   au BufNewFile,BufRead *.gdb setf gdb
   au BufNewFile,BufRead */.config/gdbinit setf gdb
 
+  " Go
+  au BufNewFile,BufRead */go.mod setf gomod
+
   " JSON
   au BufNewFile,BufRead /etc/proselintrc,*.proselintrc  setf json
   au BufNewFile,BufRead */coc-settings.json let b:is_jsonc = 1

@@ -553,6 +553,7 @@ let g:tex_flavor = 'latex'
 let g:vim_json_syntax_conceal = v:true  " Enable conceal for json
 let g:rust_conceal = v:true " Conceal markers for rust
 let g:vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
+let g:markdown_fenced_languages = ['go']
 
 " Keybindings {{{1
 
