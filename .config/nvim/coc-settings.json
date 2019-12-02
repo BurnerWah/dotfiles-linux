@@ -28,6 +28,11 @@
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
     },
+    "dockerfile-ls-node": {
+      "command": "docker-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["dockerfile"]
+    },
     "dot-language-server": {
       "command": "dot-language-server",
       "args": ["--stdio"],
