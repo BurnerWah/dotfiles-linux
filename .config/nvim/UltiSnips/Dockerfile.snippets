@@ -1,0 +1,52 @@
+snippet FROM "Base image" b
+FROM ${1:fedora}
+endsnippet
+
+snippet RUN "Run a shell command" b
+RUN ${1:: command}
+endsnippet
+
+snippet CMD "Provide defaults for executing a container" b
+CMD ["${1:executable}", "${2:parameter}"]
+endsnippet
+
+snippet LABEL "Add metadata to an image" b
+LABEL ${1:label}="${2:value}"
+endsnippet
+
+snippet MAINTAINER "Add a maintainer to an image" b
+LABEL maintainer="${1:`g:snips_author`}"
+endsnippet
+
+snippet EXPOSE "Set ports to listen to on host at runtime" b
+EXPOSE ${1:port}
+endsnippet
+
+snippet ENV "Set an environment variable" b
+ENV ${1:key}="${2:value}"
+endsnippet
+
+snippet ADD "Add files to a container's filesystem" b
+ADD ${1:source} ${2:destination}
+endsnippet
+
+snippet COPY "Copy files to a container's filesystem" b
+COPY ${1:source} ${2:destination}
+endsnippet
+
+snippet ENTRYPOINT "Set the entry point of a container" b
+ENTRYPOINT ["${1:executable}", "${2:parameter}"]
+endsnippet
+
+snippet VOLUME "Create a volume" b
+VOLUME ["${1:path}"]
+endsnippet
+
+snippet USER "Set the username to use a runtime" b
+USER ${1:name}
+endsnippet
+
+snippet WORKDIR "Set the working directory" b
+WORKDIR ${1:path}
+endsnippet
+# vim:ft=snippets:noet:ts=4:sw=4:sts=0
