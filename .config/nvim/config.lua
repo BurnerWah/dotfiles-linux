@@ -24,6 +24,10 @@ iron.core.set_config {
   preferred = {
     fennel = "fennel",
     gluon = "gluon",
-    python = "ipython"
+    javascript = "node",
+    lua = "lua",
+    python = "ipython",
+    sh = "bash",
+    zsh = "zsh"
   }
 }
