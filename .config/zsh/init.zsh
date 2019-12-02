@@ -247,13 +247,13 @@ source $ZDOTDIR/ZLE.zsh
 # User dirs
 local -Hhr \
   cargo=~/.local/lib64/cargo \
-  lutris=~/.local/share/lutris \
-  steam=~/.local/share/Steam \
+  flatpak=/var/lib/flatpak \
   golang=~/.local/lib64/golang \
+  lutris=~/.local/share/lutris \
   retroarch=~/.var/app/org.libretro.RetroArch/config/retroarch \
-  zealdocs=~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets \
-  flatpak=/var/lib/flatpak
+  steam=~/.local/share/Steam \
+  zealdocs=~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets
 
-: ~cargo ~lutris ~steam ~golang ~retroarch ~zealdocs ~flatpak
+: ~cargo ~flatpak ~golang ~lutris ~retroarch ~steam ~zealdocs
 
 # vim:ft=zsh fdm=marker
