@@ -1,2 +1,3 @@
 --map-syntax anacrontab:crontab
+--map-syntax .tcelldb:json
 --map-syntax mkd:md
