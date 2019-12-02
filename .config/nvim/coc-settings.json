@@ -71,7 +71,6 @@
   "coc.preferences.extensionUpdateCheck": "never",
   "coc.preferences.formatOnSaveFiletypes": ["css", "json", "markdown", "yaml"],
   "coc.preferences.hoverTarget": "float",
-  "codeLens.enable": true,
   "diagnostic-languageserver.filetypes": {
     "markdown": "markdownlint",
     "sh": "shellcheck",
