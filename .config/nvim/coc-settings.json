@@ -1,14 +1,12 @@
 {
   "languageserver": {
     "bash-language-server": {
-      // to be replaced by coc-sh
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
     },
     "ccls": {
-      // to be replaced by coc-ccls
       "command": "ccls",
       "filetypes": ["c", "cpp", "cuda", "objc", "objc++"],
       "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/"],
