@@ -23,10 +23,6 @@ snippet exe "execute ..." b
 exe ${1}
 endsnippet
 
-snippet deinadd "call dein#add" b
-call dein#add('${0}')
-endsnippet
-
 snippet let "let ... = ..." b
 let ${1:variable} = ${0:value}
 endsnippet
@@ -37,6 +33,34 @@ endsnippet
 
 snippet setl "setlocal ... = ..." b
 setl ${1:filetype} = ${0:value}
+endsnippet
+
+snippet try "try ... catch block" b
+try
+	${1:${VISUAL}}
+catch ${2}
+	${0:" code}
+endtry
+endsnippet
+
+snippet while "while loop" b
+while ${1:condition}
+	${0:${VISUAL}}
+endwhile
+endsnippet
+
+snippet if "if block" b
+if ${1:condition}
+	${0:${VISUAL}}
+endif
+endsnippet
+
+snippet ife "if ... else block" b
+if ${1:condition}
+	${2:${VISUAL}}
+else
+	${0:" code}
+endif
 endsnippet
 
 # vim:ft=snippets:noet:ts=4:sw=4:sts=0:
