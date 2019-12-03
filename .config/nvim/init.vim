@@ -511,6 +511,7 @@ let g:ale_linters_ignore = {
       \   'go': ['golangserver', 'gopls'],
       \   'javascript': ['tsserver'],
       \   'less': ['stylelint'],
+      \   'lua': ['luacheck'],
       \   'markdown': ['markdownlint'],
       \   'nim': ['nimlsp'],
       \   'objc': ['ccls', 'clangd'],
