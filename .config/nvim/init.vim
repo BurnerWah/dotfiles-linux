@@ -501,6 +501,77 @@ let g:snips_email  = 'jadenpleasants@fastmail.com'
 let g:git_messenger_always_into_popup = v:true
 let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
+let g:ale_fix_on_save = v:true
+
+let g:ale_linters = {
+      \   'cpp': [
+      \     'clang', 'clangcheck', 'clangd', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder', 'gcc',
+      \   ],
+      \   'css': [
+      \     'csslint', 'fecs',
+      \   ],
+      \   'lua': [
+      \     'luac',
+      \   ],
+      \   'markdown': [
+      \     'alex', 'languagetool', 'mdl', 'proselint', 'redpen', 'remark_lint', 'textlint', 'vale', 'writegood',
+      \   ],
+      \   'objc': [
+      \     'clang', 'clangd', 'uncrustify',
+      \   ],
+      \   'python': [
+      \     'flake8', 'mypy',
+      \   ],
+      \   'sass': [
+      \     'sasslint',
+      \   ],
+      \   'scss': [
+      \     'sasslint', 'scsslint',
+      \   ],
+      \   'sh': [
+      \     'shell', 'shellcheck',
+      \   ],
+      \   'tex': [
+      \     'alex', 'chktex', 'lacheck', 'proselint', 'redpen', 'textlint', 'vale', 'writegood',
+      \   ],
+      \   'vim': [
+      \     'ale_custom_linting_rules',
+      \   ],
+      \   'yaml': [
+      \     'swaglint'
+      \   ],
+      \ }
+
+let g:ale_fixers = {
+      \   '*': [
+      \     'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'cmake': [
+      \     'cmakeformat', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'cpp': [
+      \     'clang-format', 'clangtidy', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'go': [
+      \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'python': [
+      \     'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'rust': [
+      \     'rustfmt', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'sh': [
+      \     'shfmt', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'sql': [
+      \     'sql-format', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'xml': [
+      \     'xmllint',
+      \   ],
+      \ }
+
 lua require("navigation")
 
 exe 'luafile '.stdpath('config').'/config.lua'
