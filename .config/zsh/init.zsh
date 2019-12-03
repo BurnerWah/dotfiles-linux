@@ -4,8 +4,9 @@
 autoload -Uz zrecompile
 
 source $ZDOTDIR/.terminfo.zsh
-# Modules {{{1
 
+
+# Modules {{{1
 zmodload -aF zsh/attr b:z{get,set,del,list}attr
 zmodload -aF zsh/cap b:{,get,set}cap
 zmodload -aF zsh/clone b:clone
@@ -14,18 +15,21 @@ zmodload -aF zsh/curses \
   p:zcurses_{attrs,colors,keycodes,windows} \
   p:ZCURSES_{COLORS,COLOR_PAIRS}
 zmodload -aF zsh/datetime b:strftime p:EPOCH{SECONDS,REALTIME} p:epochtime
-#zmodload zsh/langinfo   # array of locale information
 zmodload -aF zsh/mapfile p:mapfile
-zmodload zsh/mathfunc   # maths
+zmodload zsh/mathfunc
 zmodload -aF zsh/net/socket b:zsocket
 zmodload -aF zsh/net/tcp b:ztcp
 zmodload -aF zsh/pcre b:pcre_{compile,match,study} C:pcre-match
-zmodload -aF zsh/system b:sys{error,read,write,open,seek} b:zsystem f:systell p:errnos p:sysparams
+zmodload -aF zsh/system \
+  b:sys{error,read,write,open,seek} b:zsystem \
+  f:systell \
+  p:errnos p:sysparams
 zmodload -aF zsh/zpty b:zpty
 zmodload -aF zsh/zselect b:zselect
 
 [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
 # nearcolor fixes colors but it's not always present or needed
+
 
 # Zsh options {{{1
 HISTFILE=~/.local/share/zsh/history
@@ -48,16 +52,23 @@ setopt SHARE_HISTORY
 setopt NO_BEEP
 setopt REMATCH_PCRE
 bindkey -v
+
+
 # Interactive variables {{{1
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
 if [[ $COLORTERM == "truecolor" ]] local -x MICRO_TRUECOLOR=1
+
+
 # Early autoloads {{{1
 autoload -Uz zstyle+ add-zsh-hook
 autoload -Uz zmathfunc && zmathfunc
+
+
 # Completion system {{{1
 autoload -Uz compinit && {
   [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]] && compinit || compinit -C
 }
+
 # Compdefs {{{2
 noglob compdef _cmp  -P [blx]#zcmp
 noglob compdef _diff -P [blx]#zdiff
@@ -172,23 +183,26 @@ if [[ -e $ZDOTDIR/.zkbd/${TERM}-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]] {
   source $ZDOTDIR/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
 }
 
+
 # Terminal title {{{1
 autoload -Uz terminal_title_{preexec,precmd}
 add-zsh-hook precmd terminal_title_precmd
 add-zsh-hook preexec terminal_title_preexec
+
 
 # Prompt setup {{{1
 autoload -Uz promptinit && promptinit
 prompt powerlevel10k
 zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
 
+
 # Settings {{{1
 zstyle ':ztodo:*'    cache-file ~/.local/share/zsh/ztodolist
 zstyle ':stick-note' notefile ~/.local/share/zsh/zsticky
 zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
 
-# Plugins {{{1
 
+# Plugins {{{1
 source $ZDOTDIR/**/zsh-autosuggestions.zsh
 source $ZDOTDIR/**/zsh-history-substring-search.zsh
 source $ZDOTDIR/**/fast-syntax-highlighting.plugin.zsh
@@ -206,6 +220,8 @@ alias help=run-help
 autoload -Uz zshTimedRehash && zshTimedRehash # Runs rehash every ten minutes
 autoload -Uz harden # convert a symbolic link to a file
 autoload -Uz silent # run program in background
+
+
 # }}}
 
 zstyle ':zle:cd-widget:colors' disabled false
