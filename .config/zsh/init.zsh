@@ -7,25 +7,30 @@ source $ZDOTDIR/.terminfo.zsh
 
 
 # Modules {{{1
-zmodload -aF zsh/attr b:z{get,set,del,list}attr
-zmodload -aF zsh/cap b:{,get,set}cap
-zmodload -aF zsh/clone b:clone
+zmodload zsh/mathfunc
+
+zmodload -aF zsh/attr       b:z{get,set,del,list}attr
+zmodload -aF zsh/cap        b:{,get,set}cap
+zmodload -aF zsh/clone      b:clone
+zmodload -aF zsh/net/socket b:zsocket
+zmodload -aF zsh/net/tcp    b:ztcp
+zmodload -aF zsh/zpty       b:zpty
+zmodload -aF zsh/zselect    b:zselect
+zmodload -aF zsh/mapfile    p:mapfile
+
 zmodload -aF zsh/curses \
   b:zcurses \
-  p:zcurses_{attrs,colors,keycodes,windows} \
-  p:ZCURSES_{COLORS,COLOR_PAIRS}
-zmodload -aF zsh/datetime b:strftime p:EPOCH{SECONDS,REALTIME} p:epochtime
-zmodload -aF zsh/mapfile p:mapfile
-zmodload zsh/mathfunc
-zmodload -aF zsh/net/socket b:zsocket
-zmodload -aF zsh/net/tcp b:ztcp
-zmodload -aF zsh/pcre b:pcre_{compile,match,study} C:pcre-match
+  p:zcurses_{attrs,colors,keycodes,windows} p:ZCURSES_{COLORS,COLOR_PAIRS}
+zmodload -aF zsh/datetime \
+  b:strftime p:EPOCH{SECONDS,REALTIME} \
+  p:epochtime
+zmodload -aF zsh/pcre \
+  b:pcre_{compile,match,study} \
+  C:pcre-match
 zmodload -aF zsh/system \
   b:sys{error,read,write,open,seek} b:zsystem \
   f:systell \
   p:errnos p:sysparams
-zmodload -aF zsh/zpty b:zpty
-zmodload -aF zsh/zselect b:zselect
 
 [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
 # nearcolor fixes colors but it's not always present or needed
