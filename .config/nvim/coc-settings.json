@@ -16,6 +16,12 @@
         "highlight": { "lsRanges": true }
       }
     },
+    "clangd": {
+      "command": "clangd",
+      "args": ["--background-index"],
+      "filetypes": ["c", "cpp", "objc", "objcpp"],
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".git/"]
+    },
     "cmake": {
       "command": "cmake-language-server",
       "filetypes": ["cmake"],

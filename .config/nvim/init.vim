@@ -504,8 +504,8 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 let g:ale_fix_on_save = v:true
 
 let g:ale_linters_ignore = {
-      \   'c': ['ccls'],
-      \   'cpp': ['ccls'],
+      \   'c': ['ccls', 'clangd'],
+      \   'cpp': ['ccls', 'clangd'],
       \   'css': ['stylelint'],
       \   'fortran': ['language_server'],
       \   'go': ['golangserver', 'gopls'],
@@ -513,7 +513,8 @@ let g:ale_linters_ignore = {
       \   'less': ['stylelint'],
       \   'markdown': ['markdownlint'],
       \   'nim': ['nimlsp'],
-      \   'objc': ['ccls'],
+      \   'objc': ['ccls', 'clangd'],
+      \   'objcpp': ['clangd'],
       \   'python': ['pyls'],
       \   'rust': ['rls'],
       \   'sass': ['stylelint'],
