@@ -59,7 +59,8 @@
     "gopls": {
       "command": "gopls",
       "filetypes": ["go"],
-      "rootPatterns": ["go.mod", "Gopkg.toml", ".git/"]
+      "rootPatterns": ["go.mod", "Gopkg.toml", ".git/"],
+      "initializationOptions": { "usePlaceholders": true }
     },
     "srcy": {
       "command": "srcy",
