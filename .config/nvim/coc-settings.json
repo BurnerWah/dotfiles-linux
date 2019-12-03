@@ -70,6 +70,11 @@
       "command": "terraform-lsp",
       "filetypes": ["terraform"],
       "initializationOptions": {}
+    },
+    "vls": {
+      "command": "vala-language-server",
+      "filetypes": ["vala"],
+      "rootPatterns": [".vala-lint.conf", "compile_commands.json", ".git/"]
     }
   },
   "coc.preferences.extensionUpdateCheck": "never",
