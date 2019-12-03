@@ -5,33 +5,6 @@ autoload -Uz zrecompile
 
 source $ZDOTDIR/.terminfo.zsh
 # Modules {{{1
-# Notes {{{2
-# Modules that MUST be autoloaded
-# * zsh/main    - pseudo-module that contains zsh itself
-# * zsh/rlimits - not listed as an actual module, likely a part of zsh-core
-#
-# Modules set to autoload by default
-# * zsh/sched         - scheduling
-# * zsh/param/private - private variables
-# * zsh/parameter     - special array with access to internal hash tables
-# * zsh/termcap       - access to termcap
-# * zsh/terminfo      - access to terminfo
-# * zsh/zutil         - utility builtins
-# * zsh/compctl       - compsys: legacy controller command
-# * zsh/complete      - compsys: core
-# * zsh/complist      - compsys: file listings
-# * zsh/computil      - compsys: stuff needed for function based completions
-# * zsh/zle           - ZLE: core
-# * zsh/zleparameter  - ZLE: internals
-#
-# Modules that SHOULD NOT usually be autoloaded
-# * zsh/files     - builtins will shadow coreutils
-# * zsh/stat      - builtins will shadow coreutils
-# * zsh/nearcolor - only needed on terminals without truecolor support
-# * zsh/zprof     - only needed when profiling zsh
-# * zsh/newuser   - only needed for brand new users
-# * zsh/example   - not needed 99% of the time
-# 2}}}
 
 zmodload -aF zsh/attr b:z{get,set,del,list}attr
 zmodload -aF zsh/cap b:{,get,set}cap
@@ -82,13 +55,6 @@ if [[ $COLORTERM == "truecolor" ]] local -x MICRO_TRUECOLOR=1
 autoload -Uz zstyle+ add-zsh-hook
 autoload -Uz zmathfunc && zmathfunc
 # Completion system {{{1
-# NOTES {{{2
-# Zsh has a very powerful completion system, which I use a lot. This section
-# is where the majority of my zstyle settings are.
-#
-# zstyle is basically a lightweight configuration system for zsh. It's not
-# perfect, but it does well enough.
-# 2}}}
 autoload -Uz compinit && {
   [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]] && compinit || compinit -C
 }
