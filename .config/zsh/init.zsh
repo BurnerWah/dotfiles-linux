@@ -103,7 +103,6 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
@@ -114,6 +113,8 @@ zstyle ':completion:*' verbose true
 
 
 # Tags
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
 zstyle ':completion:*:commands' ignored-patterns \
   '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
   chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
