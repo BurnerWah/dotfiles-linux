@@ -129,23 +129,6 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 
-zstyle ':completion:*:parameters' ignored-patterns \
-  '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
-  '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
-  '_history_substring_search_*'
-
-zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
-
-zstyle ':completion:*:functions' ignored-patterns \
-  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
-  '_#p9k_*' '_#gitstatus_*' 'prompt_(^(*_setup))' getColorCode get_icon_names \
-  edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
-  'zsh_math_func_*'
-
-zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
-
-zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
-
 zstyle ':completion:*:commands' ignored-patterns \
   '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
   chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
@@ -157,6 +140,23 @@ zstyle ':completion:*:commands' ignored-patterns \
   'pyvenv-*' sk-tmux 'sphinx-(apidoc|autogen|build|quickstart)-*' 'symilar-*' \
   'trial-*' 'twistd-*' 'vala(|-gen-introspect|c)-[0-9.]##' 'vapigen-*' yum \
   python-argcomplete-check-easy-install-script
+
+zstyle ':completion:*:functions' ignored-patterns \
+  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
+  '_#p9k_*' '_#gitstatus_*' 'prompt_(^(*_setup))' getColorCode get_icon_names \
+  edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
+  'zsh_math_func_*'
+
+zstyle ':completion:*:parameters' ignored-patterns \
+  '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
+  '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
+  '_history_substring_search_*'
+
+zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
+
+zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
+
+zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
