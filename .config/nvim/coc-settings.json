@@ -1,6 +1,6 @@
 {
   "languageserver": {
-    "bash-language-server": {
+    "bashls": {
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["sh"],
@@ -32,12 +32,12 @@
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
     },
-    "dockerfile-ls-node": {
+    "dockerls": {
       "command": "docker-langserver",
       "args": ["--stdio"],
       "filetypes": ["dockerfile"]
     },
-    "dot-language-server": {
+    "dotls": {
       "command": "dot-language-server",
       "args": ["--stdio"],
       "filetypes": ["dot"]
@@ -51,7 +51,7 @@
       "filetypes": ["fortran"],
       "rootPatterns": [".fortls", ".git/"]
     },
-    "gluon_language-server": {
+    "gluon_language_server": {
       "command": "gluon_language-server",
       "filetypes": ["gluon"],
       "settings": { "gluon.language-server.path": "gluon_language-server" }
@@ -66,7 +66,7 @@
       "filetypes": ["crystal"],
       "rootPatterns": ["shard.yml"]
     },
-    "terraform-lsp": {
+    "terraform_lsp": {
       "command": "terraform-lsp",
       "filetypes": ["terraform"],
       "initializationOptions": {}
