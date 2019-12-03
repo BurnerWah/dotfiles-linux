@@ -503,43 +503,26 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
 let g:ale_fix_on_save = v:true
 
-let g:ale_linters = {
-      \   'cpp': [
-      \     'clang', 'clangcheck', 'clangd', 'clangtidy', 'clazy', 'cppcheck', 'cpplint', 'cquery', 'flawfinder', 'gcc',
-      \   ],
-      \   'css': [
-      \     'csslint', 'fecs',
-      \   ],
-      \   'lua': [
-      \     'luac',
-      \   ],
-      \   'markdown': [
-      \     'alex', 'languagetool', 'mdl', 'proselint', 'redpen', 'remark_lint', 'textlint', 'vale', 'writegood',
-      \   ],
-      \   'objc': [
-      \     'clang', 'clangd', 'uncrustify',
-      \   ],
-      \   'python': [
-      \     'flake8', 'mypy',
-      \   ],
-      \   'sass': [
-      \     'sasslint',
-      \   ],
-      \   'scss': [
-      \     'sasslint', 'scsslint',
-      \   ],
-      \   'sh': [
-      \     'shell', 'shellcheck',
-      \   ],
-      \   'tex': [
-      \     'alex', 'chktex', 'lacheck', 'proselint', 'redpen', 'textlint', 'vale', 'writegood',
-      \   ],
-      \   'vim': [
-      \     'ale_custom_linting_rules',
-      \   ],
-      \   'yaml': [
-      \     'swaglint'
-      \   ],
+let g:ale_linters_ignore = {
+      \   'c': ['ccls'],
+      \   'cpp': ['ccls'],
+      \   'css': ['stylelint'],
+      \   'fortran': ['language_server'],
+      \   'go': ['golangserver', 'gopls'],
+      \   'javascript': ['tsserver'],
+      \   'less': ['stylelint'],
+      \   'markdown': ['markdownlint'],
+      \   'nim': ['nimlsp'],
+      \   'objc': ['ccls'],
+      \   'python': ['pyls'],
+      \   'rust': ['rls'],
+      \   'sass': ['stylelint'],
+      \   'scss': ['stylelint'],
+      \   'sh': ['language_server'],
+      \   'tex': ['texlab'],
+      \   'typescript': ['tsserver'],
+      \   'vim': ['vint'],
+      \   'yaml': ['yamllint'],
       \ }
 
 let g:ale_fixers = {
