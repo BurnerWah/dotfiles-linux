@@ -111,6 +111,7 @@ compdef _gnu_generic \
 
 # 2}}}
 
+# Main settings
 zstyle ':completion:*' auto-description 'specify: %d' # default description template for completions
 zstyle ':completion:*' use-cache on                   # Cache complex completions
 zstyle ':completion:*' cache-path "$HOME/.cache/zsh/" # Place completion cache in standard folder
@@ -129,6 +130,8 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
 
+
+# Tags
 zstyle ':completion:*:commands' ignored-patterns \
   '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
   chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
@@ -158,6 +161,8 @@ zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
 
 zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 
+
+# Everything else
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
 
