@@ -40,7 +40,7 @@
     },
     "efm": {
       "command": "efm-langserver",
-      "filetypes": ["eruby", "markdown", "vim", "yaml"]
+      "filetypes": ["eruby", "markdown", "yaml"]
     },
     "fortls": {
       "command": "fortls",
@@ -73,8 +73,7 @@
   "coc.preferences.hoverTarget": "float",
   "diagnostic-languageserver.filetypes": {
     "markdown": "markdownlint",
-    "sh": "shellcheck",
-    "vim": "vint"
+    "sh": "shellcheck"
   },
   "diagnostic-languageserver.linters": {
     "markdownlint": {
