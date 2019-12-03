@@ -59,17 +59,16 @@
     "gopls": {
       "command": "gopls",
       "filetypes": ["go"],
-      "rootPatterns": ["go.mod", "Gopkg.toml"]
+      "rootPatterns": ["go.mod", "Gopkg.toml", ".git/"]
     },
     "srcy": {
       "command": "srcy",
       "filetypes": ["crystal"],
-      "rootPatterns": ["shard.yml"]
+      "rootPatterns": ["shard.yml", ".git/"]
     },
     "terraform_lsp": {
       "command": "terraform-lsp",
-      "filetypes": ["terraform"],
-      "initializationOptions": {}
+      "filetypes": ["terraform"]
     },
     "vls": {
       "command": "vala-language-server",
