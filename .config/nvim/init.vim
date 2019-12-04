@@ -263,6 +263,9 @@ if dein#load_state('~/.local/share/dein')
   call dein#add(s:llvm_raw.'/indent/llvm.vim', {'script_type': 'indent'})
   unlet s:llvm_raw
 
+  " Lua: {{{3
+  call dein#add('bfredl/nvim-luadev')
+
   " Markdown: {{{3
   " call dein#add('iamcco/markdown-preview.nvim', {
   "       \ 'lazy': v:true,
