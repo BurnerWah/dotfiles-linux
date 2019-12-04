@@ -138,8 +138,6 @@
   ],
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
   "lua.commandPath": "/home/jadenpleasants/.local/bin/lua-lsp",
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
   "project.dbpath": "~/.config/coc/projects.json",
   "pyls.enable": true, // IMO pyls is better than Microsoft's language server
   "rust.clippy_preference": "on",

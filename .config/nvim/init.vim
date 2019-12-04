@@ -538,8 +538,23 @@ let g:ale_fixers = {
       \   'cpp': [
       \     'clang-format', 'clangtidy', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
+      \   'css': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
       \   'go': [
       \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'html': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'javascript': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'json': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
+      \   'less': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'python': [
       \     'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace',
@@ -547,16 +562,30 @@ let g:ale_fixers = {
       \   'rust': [
       \     'rustfmt', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
+      \   'scss': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
       \   'sh': [
       \     'shfmt', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'sql': [
       \     'sql-format', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
+      \   'typescript': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
       \   'xml': [
       \     'xmllint',
       \   ],
+      \   'yaml': [
+      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \   ],
       \ }
+
+let g:ale_javascript_prettier_options = join([
+      \ '--no-semi',
+      \ '--single-quote',
+      \ ])
 
 lua require("navigation")
 
@@ -699,8 +728,5 @@ aug init
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
-  " Format files w/ prettier (doesn't seem to work on coc's end)
-  au BufWritePre *.css,*.json,*.yaml,*.yml
-        \ call CocAction('runCommand', 'prettier.formatFile')
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker
