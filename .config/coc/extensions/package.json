@@ -1,7 +1,5 @@
 {
   "dependencies": {
-    "appidocsnippets": "https://github.com/Krazeus/ApiDocSnippets",
-    "cargo-toml-snippets": "https://github.com/kevinkassimo/cargo-toml-snippets",
     "coc-bookmark": ">=1.0.2",
     "coc-calc": ">=1.5.0",
     "coc-css": ">=1.2.2",
@@ -41,15 +39,6 @@
     "coc-vimtex": ">=1.0.2",
     "coc-xml": ">=1.9.5",
     "coc-yaml": ">=1.0.2",
-    "coc-yank": ">=1.1.3",
-    "latex-snippets": "https://github.com/sabertazimi/LaTeX-snippets",
-    "pythonsnippets": "https://github.com/ylcnfrht/vscode-python-snippet-pack",
-    "pytorch-snippets": "https://github.com/SvenBecker/vscode-pytorch",
-    "shebang-snippets": "https://github.com/Rpinski/vscode-shebang-snippets",
-    "sql-snippets": "https://github.com/SadeghPM/sql-vscode-snipptes",
-    "svg-snippets": "https://github.com/sidthesloth92/vsc_svg_snippets",
-    "tensorflow-snippets": "https://github.com/vahidk/tensorflow-snippets",
-    "vscode-php-snippets": "https://github.com/jm-mwi/vscode-php-snippets",
-    "vscode-xslt-snippets": "https://github.com/marvinhagemeister/vscode-xslt-snippets"
+    "coc-yank": ">=1.1.3"
   }
 }

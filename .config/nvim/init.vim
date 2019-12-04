@@ -125,6 +125,8 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('neoclide/coc-snippets', {'build': 'yarnpkg install --frozen-lockfile'})
   " call dein#add('honza/vim-snippets')
   " vim-snippets is selectively linked in via stow
+  call dein#add('Krazeus/ApiDocSnippets', {'merged': v:false})
+  call dein#add('Rpinski/vscode-shebang-snippets', {'merged': v:false})
 
   " Language agnostic stuff {{{2
   " Polyglot used to be in here but it tends to break stuff so I don't use it
@@ -286,6 +288,9 @@ if dein#load_state('~/.local/share/dein')
   " Nim: {{{3
   call dein#add('zah/nim.vim')
 
+  " PHP: {{{3
+  call dein#add('jm-mwi/vscode-php-snippets', {'merged': v:false})
+
   " Python: {{{3
   " FTDetect: $VIMRUNTIME
   " FTPlugin: $VIMRUNTIME
@@ -314,6 +319,10 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('bfredl/nvim-ipy', {'if': has('python3'), 'merged': v:true})
   call dein#add('stsewd/isort.nvim', {'if': has('python3'), 'merged': v:true})
 
+  call dein#add('ylcnfrht/vscode-python-snippet-pack', {'merged': v:false})
+  call dein#add('vahidk/tensorflow-snippets', {'merged': v:false})
+  call dein#add('SvenBecker/vscode-pytorch', {'merged': v:false})
+
   " QML: {{{3
   call dein#add('peterhoeg/vim-qml')
 
@@ -335,8 +344,12 @@ if dein#load_state('~/.local/share/dein')
   " Solidity: {{{3
   call dein#add('tomlion/vim-solidity')
 
+  " SQL: {{{3
+  call dein#add('SadeghPM/sql-vscode-snipptes', {'merged': v:false})
+
   " SVG: {{{3
   call dein#add(s:gh_raw.'/jasonshell/vim-svg-indent/master/indent/svg.vim', {'script_type': 'indent'})
+  call dein#add('sidthesloth92/vsc_svg_snippets', {'merged': v:false})
 
   " Terraform: {{{3
   call dein#add('hashivim/vim-terraform')
@@ -351,9 +364,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('lervag/vimtex', {
         \ 'type__depth': 1,
         \ })
+  call dein#add('sabertazimi/LaTeX-snippets', {'merged': v:false})
 
   " TOML: {{{3
   call dein#add('cespare/vim-toml')
+  call dein#add('kevinkassimo/cargo-toml-snippets', {'merged': v:false})
 
   " TypeScript: {{{3
   call dein#add('HerringtonDarkholme/yats.vim')
