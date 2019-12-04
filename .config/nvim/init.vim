@@ -520,7 +520,7 @@ let g:ale_linters_ignore = {
       \   'rust': ['rls'],
       \   'sass': ['stylelint'],
       \   'scss': ['stylelint'],
-      \   'sh': ['language_server'],
+      \   'sh': ['language_server', 'shellcheck'],
       \   'tex': ['texlab'],
       \   'typescript': ['tsserver'],
       \   'vim': ['vint'],
