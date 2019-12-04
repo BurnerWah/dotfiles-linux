@@ -115,7 +115,7 @@ if dein#load_state('~/.local/share/dein')
   let s:gh_raw = 'https://raw.githubusercontent.com'
 
   " Core plugins {{{2
-  call dein#add('neoclide/coc.nvim', {'merge': v:false, 'rev': 'release'})
+  call dein#add('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release'})
 
   call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:true})
 
