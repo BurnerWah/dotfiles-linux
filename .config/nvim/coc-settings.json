@@ -81,8 +81,25 @@
   "coc.preferences.formatOnSaveFiletypes": ["css", "json", "markdown", "yaml"],
   "coc.preferences.hoverTarget": "float",
   "diagnostic-languageserver.filetypes": {
+    "gitcommit": "gitlint",
     "markdown": "markdownlint",
     "sh": "shellcheck"
+  },
+  "diagnostic-languageserver.linters": {
+    "gitlint": {
+      "command": "gitlint",
+      "isStdout": false,
+      "isStderr": true,
+      "debounce": 100,
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "gitlint",
+      "formatLines": 1,
+      "formatPattern": [
+        "^(\\d+): (.*)$",
+        {"line": 1, "column": -1, "message": 2}
+      ]
+    }
   },
   "highlight.colors.enable": false, // We have another plugin set up to handle this
   "json.schemas": [

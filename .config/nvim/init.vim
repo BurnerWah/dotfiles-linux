@@ -508,6 +508,7 @@ let g:ale_linters_ignore = {
       \   'cpp': ['ccls', 'clangd'],
       \   'css': ['stylelint'],
       \   'fortran': ['language_server'],
+      \   'gitcommit': ['gitlint'],
       \   'go': ['golangserver', 'gopls'],
       \   'javascript': ['tsserver'],
       \   'less': ['stylelint'],
