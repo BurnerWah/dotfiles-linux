@@ -517,7 +517,7 @@ let g:ale_linters_ignore = {
       \   'nim': ['nimlsp'],
       \   'objc': ['ccls', 'clangd'],
       \   'objcpp': ['clangd'],
-      \   'python': ['pyls'],
+      \   'python': ['flake8', 'mypy', 'pyls', 'pylint'],
       \   'rust': ['rls'],
       \   'sass': ['stylelint'],
       \   'scss': ['stylelint'],

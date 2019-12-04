@@ -22,7 +22,6 @@
     "coc-omni": ">=1.2.4",
     "coc-pairs": ">=1.2.19",
     "coc-project": ">=0.0.8",
-    "coc-pyls": ">=1.0.6",
     "coc-pyright": ">=1.1.7",
     "coc-rls": ">=1.1.4",
     "coc-smartf": ">=1.1.10",

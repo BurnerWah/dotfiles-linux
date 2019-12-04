@@ -62,6 +62,21 @@
       "rootPatterns": ["go.mod", "Gopkg.toml", ".git/"],
       "initializationOptions": { "usePlaceholders": true }
     },
+    "pyls": {
+      "command": "python",
+      "args": ["-mpyls", "-vv"],
+      "filetypes": ["python"],
+      "settings": {
+        "pyls": {
+          "enable": true,
+          "plugins": {
+            "flake8": { "enabled": true, "ignore": null },
+            "pycodestyle": { "enabled": false }, // covered by flake8
+            "pydocstyle": { "enabled": false } // covered by flake8
+          }
+        }
+      }
+    },
     "srcy": {
       "command": "srcy",
       "filetypes": ["crystal"],
@@ -139,7 +154,6 @@
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
   "lua.commandPath": "/home/jadenpleasants/.local/bin/lua-lsp",
   "project.dbpath": "~/.config/coc/projects.json",
-  "pyls.enable": true, // IMO pyls is better than Microsoft's language server
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",
