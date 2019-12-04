@@ -699,5 +699,8 @@ aug init
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
+  " Format files w/ prettier (doesn't seem to work on coc's end)
+  au BufWritePre *.css,*.json,*.yaml,*.yml
+        \ call CocAction('runCommand', 'prettier.formatFile')
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker
