@@ -70,7 +70,11 @@
         "pyls": {
           "enable": true,
           "plugins": {
-            "flake8": { "enabled": true, "ignore": null },
+            "flake8": {
+              "enabled": true,
+              "ignore": ["F401", "F841"]
+            },
+            "pyflakes": { "enabled": false }, // covered by flake8
             "pycodestyle": { "enabled": false }, // covered by flake8
             "pydocstyle": { "enabled": false } // covered by flake8
           }
