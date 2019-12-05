@@ -133,6 +133,13 @@ zstyle ':completion:*:functions' ignored-patterns \
   edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
   'zsh_math_func_*'
 
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.1' ignored-patterns \
+  'aclocal-*' 'automake-*' 'bashbug-*' 'java-*' 'jjs-*' 'keytool-*' 'orbd-*' \
+  'pack200-*' 'policytool-*' 'rmid-*' 'rmiregistry-*' 'servertool-*' \
+  'tnameserv-*' 'unpack200-*'
+
+
 zstyle ':completion:*:parameters' ignored-patterns \
   '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
   '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
@@ -146,18 +153,20 @@ zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 
 
 # Everything else
-zstyle ':completion:*:*:-DISPLAY-:*:hosts' command :
-zstyle ':completion:*:*:-DISPLAY-:*:hosts' use-ip
+zstyle ':completion:*:-DISPLAY-:*:hosts' command :
+zstyle ':completion:*:-DISPLAY-:*:hosts' use-ip
 
-zstyle ':completion:*:*:cdr:*:*' menu selection
+zstyle ':completion:*:cdr:*:*' menu selection
 zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS' '(*/)#.git' # Ignore VCS folders
 
-zstyle ':completion:*:*:docker*:*' menu selection
-zstyle ':completion:*:*:docker*:*' option-stacking yes
+zstyle ':completion:*:docker*:*' menu selection
+zstyle ':completion:*:docker*:*' option-stacking yes
 
-zstyle ':completion:*:*:git*:*' use-fallback false
-zstyle ':completion:*:*:git:*' verbose true
-zstyle ':completion:*:*:git*:*:*' menu selection
+zstyle ':completion:*:fd:*:options' ignored-patterns --maxdepth --search-path -u
+
+zstyle ':completion:*:git*:*' use-fallback false
+zstyle ':completion:*:git:*' verbose true
+zstyle ':completion:*:git*:*' menu selection
 
 () {
   local remove=(
@@ -166,21 +175,23 @@ zstyle ':completion:*:*:git*:*:*' menu selection
     guilt ignore ignore-io merge-into missing psykorebase refactor squash stamp
     standup undo
   )
-  zstyle ':completion:*:*:git:*' user-commands ${${${(M)${(k)commands}:#git-*}/git-/}:|remove}
+  zstyle ':completion:*:git:*' user-commands ${${${(M)${(k)commands}:#git-*}/git-/}:|remove}
 }
 
-zstyle ':completion:*:*:git*:*:commits'      list-colors '=(#b)([[:xdigit:]]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
-zstyle ':completion:*:*:git*:*:heads-remote' list-colors '=(#b)([[:ascii:]]##)*=0=0;35'
+zstyle ':completion:*:git*:*:commits'      list-colors '=(#b)([[:xdigit:]]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
+zstyle ':completion:*:git*:*:heads(|-remote|-local)' list-colors '=(#b)([[:ascii:]]##)*=0=0;35'
+
+zstyle ':completion:*:git-add:*:*-files' menu interactive
 
 # TODO: Add more colors to kill completions
-zstyle ':completion:*:*:kill:*:processes' list-colors \
+zstyle ':completion:*:kill:*:processes' list-colors \
   '=(#b) #([[:digit:]]#) #([[:digit:]]#.[[:digit:]]#)*=0=01;31=01;32'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-zstyle ':completion:*:*:task:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:task:*:descriptions' format '%U%B%d%b%u'
 
-zstyle ':completion:*:*:tmux:*:subcommands' mode 'commands'
-zstyle ':completion:*:*:tmux:*:subcommands' ignored-patterns \
+zstyle ':completion:*:tmux:*:subcommands' mode 'commands'
+zstyle ':completion:*:tmux:*:subcommands' ignored-patterns \
   'choose-*' 'confirm-before' 'find-window'
 
 
