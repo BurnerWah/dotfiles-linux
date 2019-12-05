@@ -377,7 +377,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('HerringtonDarkholme/yats.vim')
 
   " Vala: {{{3
-  call dein#add('YaBoiBurner/vala.vim')
+  call dein#add(s:gitlab.'YaBoiBurner/vala-vim')
   " Fork of arrufat/vala.vim
 
   " Vifm: vifm configuration {{{3
