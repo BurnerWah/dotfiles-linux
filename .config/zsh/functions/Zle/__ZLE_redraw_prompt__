@@ -1,0 +1,6 @@
+#autoload
+local precmd
+for precmd in $precmd_functions; do
+  $precmd
+done
+zle reset-prompt

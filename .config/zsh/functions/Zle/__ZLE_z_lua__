@@ -1,0 +1,15 @@
+#autoload
+local dir fzf_header fzf_theme
+
+zstyle -s ':widget:z:fzf' theme fzf_theme
+fzf_header="Rating     Path"
+
+dir=$(z -l | sed "s|$HOME|~|" | fzf --nth 2.. --reverse --inline-info --tac +s +m -e --height=35% --header=$fzf_header $(__fzf_theme $fzf_theme) | sed -e "s|~|$HOME|" -e 's/[0-9\. ]*//')
+
+# sed -e "s/[0-9\\. ]*//"
+zle redisplay
+cd ${dir:-$PWD}
+local ret=$?
+zle redraw-prompt
+return $ret
+# vim:fenc=utf-8 ft=zsh

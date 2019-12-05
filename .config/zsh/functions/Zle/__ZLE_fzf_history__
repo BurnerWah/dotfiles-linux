@@ -1,0 +1,35 @@
+#autoload
+local selected num pygments_theme color_mode fzf_theme
+
+setopt local_options no_glob_subst no_posix_builtins pipe_fail 2> /dev/null
+
+zstyle -s ':widget:history:pygments' theme pygments_theme
+# adds pygmentize theme
+
+zstyle -s ':widget:history:fzf' theme fzf_theme
+
+if [[ $COLORTERM = *(24bit|truecolor)* ]] { color_mode=16m } else { color_mode=256 }
+
+local -x FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort --query=${(qqq)LBUFFER} +m --ansi $(__fzf_theme "$fzf_theme")"
+
+selected=($(
+  # get hist -> colorize history line-by-line
+  fc -rl 1 | pygmentize -s -l zsh -O style=${pygments_theme:-default} -f $color_mode |\
+  fzf
+  # call fzf with ansi support to handle pygments
+  ))
+
+local ret=$?
+
+if [ -n "$selected" ]; then
+  num=$selected[1]
+  if [ -n "$num" ]; then
+    zle vi-fetch-history -n $num
+  fi
+fi
+
+zle reset-prompt
+
+return $ret
+
+# vim:fenc=utf-8 ft=zsh

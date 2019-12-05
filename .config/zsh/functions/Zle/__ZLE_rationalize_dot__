@@ -1,0 +1,6 @@
+#autoload
+if [[ $LBUFFER == *.. ]] {
+  LBUFFER+=/..
+} else {
+  LBUFFER+=.
+}
