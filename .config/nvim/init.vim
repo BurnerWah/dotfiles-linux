@@ -147,6 +147,12 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim')
 
+  " Brainfuck: {{{3
+  call dein#add('vim-scripts/brainfuck-syntax')
+
+  " CoffeeScript: {{{3
+  call dein#add('kchmck/vim-coffee-script')
+
   " CQL: Cassandra CQL {{{3
   call dein#add('elubow/cql-vim')
 

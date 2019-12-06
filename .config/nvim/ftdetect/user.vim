@@ -1,4 +1,7 @@
 aug userft
+  " Brainfuck
+  au BufNewFile,BufRead *.bf setf brainfuck
+
   " Desktop files
   au BufNewFile,BufRead /var/lib/flatpak/app/*/*/*/metadata setf desktop
 
