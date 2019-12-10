@@ -47,8 +47,8 @@ if has('conceal')
   set concealcursor =nv
 endif
 
-let g:loaded_ruby_provider = 0
-" let g:loaded_node_provider = 0
+let loaded_ruby_provider = 0
+" let loaded_node_provider = 0
 let fennel_nvim_auto_init = v:false
 
 " Maybe someday I'll be able to remove this block
@@ -86,8 +86,8 @@ endif
 " for dein available, it seems to be pretty buggy. I don't use it personally.
 "
 " Settings {{{2
-let g:dein#install_log_filename = stdpath('data').'/logs/dein.log'
-let g:dein#enable_notification = v:true
+let dein#install_log_filename = stdpath('data').'/logs/dein.log'
+let dein#enable_notification = v:true
 
 " Required {{{2
 " Technically dein requires nocompatible to be set, but that's always true
@@ -151,7 +151,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('elubow/cql-vim')
 
   " Crystal: {{{3
-  let g:loaded_syntastic_crystal_filetype = 0
+  let loaded_syntastic_crystal_filetype = 0
   call dein#add('rhysd/vim-crystal')
 
   " CSV: comma-separated values {{{3
@@ -214,10 +214,10 @@ if dein#load_state('~/.local/share/dein')
   " FTDetect: vim-go, $VIMRUNTIME
   " FTPlugin: vim-go
   " Syntax: vim-go
-  " Format: ALE, coc-go, vim-go
-  " Linter: ALE, coc-go, vim-go?
-  " Completion: coc-go, vim-go?
-  " Snippets: vim-go, vim-snippets, coc-go
+  " Format: ALE, vim-go
+  " Linter: ALE, vim-go?
+  " Completion: gopls
+  " Snippets: vim-go, vim-snippets
   " Compiler: vim-go
   call dein#add('fatih/vim-go')
 
@@ -513,14 +513,14 @@ endif
 
 " Plugin Settings {{{1
 
-let g:snips_author = 'Jaden Pleasants'
-let g:snips_email  = 'jadenpleasants@fastmail.com'
-let g:git_messenger_always_into_popup = v:true
-let g:EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
+let snips_author = 'Jaden Pleasants'
+let snips_email  = 'jadenpleasants@fastmail.com'
+let git_messenger_always_into_popup = v:true
+let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-let g:ale_fix_on_save = v:true
+let ale_fix_on_save = v:true
 
-let g:ale_linters_ignore = {
+let ale_linters_ignore = {
       \   'c': ['ccls', 'clangd'],
       \   'cpp': ['ccls', 'clangd'],
       \   'css': ['stylelint'],
@@ -545,7 +545,7 @@ let g:ale_linters_ignore = {
       \   'yaml': ['yamllint'],
       \ }
 
-let g:ale_fixers = {
+let ale_fixers = {
       \   '*': [
       \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
@@ -599,7 +599,7 @@ let g:ale_fixers = {
       \   ],
       \ }
 
-let g:ale_javascript_prettier_options = join([
+let ale_javascript_prettier_options = join([
       \ '--no-semi',
       \ '--single-quote',
       \ ])
@@ -610,32 +610,32 @@ exe 'luafile '.stdpath('config').'/config.lua'
 
 " Colorscheme: Currently set to a modded version of quantum {{{2
 set background=dark
-let g:quantum_black   = v:true
-let g:quantum_italics = v:true
+let quantum_black   = v:true
+let quantum_italics = v:true
 
 colors quantum-mod
 
 " Airline: Bottom bar for Vim. {{{2
 
 " Main settings
-let g:airline_powerline_fonts  = v:true " Airline + Powerline
-let g:airline_detect_spelllang = v:false " Cleans up stuff a little
-let g:airline_left_sep  = ''
-let g:airline_left_alt_sep = '│'
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = '│'
+let airline_powerline_fonts  = v:true " Airline + Powerline
+let airline_detect_spelllang = v:false " Cleans up stuff a little
+let airline_left_sep  = ''
+let airline_left_alt_sep = '│'
+let airline_right_sep = ''
+let airline_right_alt_sep = '│'
 
 " Extensions
 
-let g:airline#extensions#tabline#enabled   = v:true " airline tabs
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let airline#extensions#tabline#enabled   = v:true " airline tabs
+let airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 " Chromatica: Remote plugin that enhances clang highlighting {{{2
-let g:chromatica#libclang_path     = '/usr/lib64/libclang.so'
-let g:chromatica#enable_at_startup = v:true " auto-enable Chromatica when relevant
-let g:chromatica#responsive_mode   = v:true " Continuously highlight files
+let chromatica#libclang_path     = '/usr/lib64/libclang.so'
+let chromatica#enable_at_startup = v:true " auto-enable Chromatica when relevant
+let chromatica#responsive_mode   = v:true " Continuously highlight files
 " Without the following args, chromatica won't highlight files correctly.
-let g:chromatica#global_args = [
+let chromatica#global_args = [
       \ '-isystem/usr/include/c++/9',
       \ '-isystem/usr/include/c++/9/x86_64-redhat-linux',
       \ '-isystem/usr/include/c++/9/backward',
@@ -643,46 +643,46 @@ let g:chromatica#global_args = [
       \ ]
 
 " VimWiki: Note-taking tool {{{2
-let g:vimwiki_list = [{
+let vimwiki_list = [{
       \   'path': '~/Documents/VimWiki',
       \   'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
       \ }]
 
 " Syntax Settings {{{1
 " Go
-let g:go_code_completion_enabled         = v:false " Let coc handle completion
-let g:go_def_mapping_enabled             = v:false
-let g:go_doc_keywordprg_enabled          = v:false
-let g:go_highlight_build_constraints     = v:true
-let g:go_highlight_extra_types           = v:true
-let g:go_highlight_fiels                 = v:true
-let g:go_highlight_function_calls        = v:true
-let g:go_highlight_function_parameters   = v:true
-let g:go_highlight_functions             = v:true
-let g:go_highlight_generate_tags         = v:true
-let g:go_highlight_operators             = v:true
-let g:go_highlight_types                 = v:true
-let g:go_highlight_variable_assingments  = v:true
-let g:go_highlight_variable_declarations = v:true
-let g:go_textobj_enabled                 = v:false
+let go_code_completion_enabled         = v:false " Let coc handle completion
+let go_def_mapping_enabled             = v:false
+let go_doc_keywordprg_enabled          = v:false
+let go_highlight_build_constraints     = v:true
+let go_highlight_extra_types           = v:true
+let go_highlight_fiels                 = v:true
+let go_highlight_function_calls        = v:true
+let go_highlight_function_parameters   = v:true
+let go_highlight_functions             = v:true
+let go_highlight_generate_tags         = v:true
+let go_highlight_operators             = v:true
+let go_highlight_types                 = v:true
+let go_highlight_variable_assingments  = v:true
+let go_highlight_variable_declarations = v:true
+let go_textobj_enabled                 = v:false
 
 " JSON
-let g:vim_json_syntax_conceal = v:true  " Enable conceal for json
+let vim_json_syntax_conceal = v:true  " Enable conceal for json
 
 " Python
-let g:python_highlight_all = v:true
+let python_highlight_all = v:true
 
 " Rust
-let g:rust_conceal = v:true " Conceal markers for rust
+let rust_conceal = v:true " Conceal markers for rust
 
 " Tex
-let g:tex_flavor = 'latex'
+let tex_flavor = 'latex'
 
 " VimL
-let g:vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
+let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 
 " Markdown
-let g:markdown_fenced_languages = ['go']
+let markdown_fenced_languages = ['go']
 
 " Keybindings {{{1
 
