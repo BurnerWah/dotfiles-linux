@@ -56,12 +56,6 @@ if &shell =~# 'fish$'
   set shell=zsh
 endif
 
-" Early augroup
-aug init.colors
-  au!
-  au ColorScheme quantum runtime! after/colors/quantum.vim
-aug END
-
 " Dein: plugin manager {{{1
 " Notes {{{2
 " dein is a fairly capable plugin manager, but it has it's limitations. It
@@ -626,6 +620,10 @@ colors quantum-mod
 " Main settings
 let g:airline_powerline_fonts  = v:true " Airline + Powerline
 let g:airline_detect_spelllang = v:false " Cleans up stuff a little
+let g:airline_left_sep  = ''
+let g:airline_left_alt_sep = '│'
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = '│'
 
 " Extensions
 
@@ -644,12 +642,6 @@ let g:chromatica#global_args = [
       \ '-isystem/usr/lib64/clang/9.0.0/include',
       \ ]
 
-" Vim-Go: {{{2
-let g:go_doc_keywordprg_enabled = v:false
-let g:go_def_mapping_enabled = v:false
-let g:go_textobj_enabled = v:false
-let g:go_code_completion_enabled = v:false " Let coc handle completion
-
 " VimWiki: Note-taking tool {{{2
 let g:vimwiki_list = [{
       \   'path': '~/Documents/VimWiki',
@@ -657,11 +649,39 @@ let g:vimwiki_list = [{
       \ }]
 
 " Syntax Settings {{{1
-let g:python_highlight_all = v:true
-let g:tex_flavor = 'latex'
+" Go
+let g:go_code_completion_enabled         = v:false " Let coc handle completion
+let g:go_def_mapping_enabled             = v:false
+let g:go_doc_keywordprg_enabled          = v:false
+let g:go_highlight_build_constraints     = v:true
+let g:go_highlight_extra_types           = v:true
+let g:go_highlight_fiels                 = v:true
+let g:go_highlight_function_calls        = v:true
+let g:go_highlight_function_parameters   = v:true
+let g:go_highlight_functions             = v:true
+let g:go_highlight_generate_tags         = v:true
+let g:go_highlight_operators             = v:true
+let g:go_highlight_types                 = v:true
+let g:go_highlight_variable_assingments  = v:true
+let g:go_highlight_variable_declarations = v:true
+let g:go_textobj_enabled                 = v:false
+
+" JSON
 let g:vim_json_syntax_conceal = v:true  " Enable conceal for json
+
+" Python
+let g:python_highlight_all = v:true
+
+" Rust
 let g:rust_conceal = v:true " Conceal markers for rust
+
+" Tex
+let g:tex_flavor = 'latex'
+
+" VimL
 let g:vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
+
+" Markdown
 let g:markdown_fenced_languages = ['go']
 
 " Keybindings {{{1

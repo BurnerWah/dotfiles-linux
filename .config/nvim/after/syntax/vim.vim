@@ -12,6 +12,7 @@ syn cluster vimRegMeta contains=vimRegLiteral,vimRegNonAscii,vimRegReference,vim
 syn cluster vimRegQuant contains=vimRegQuantity,vimReg0Or1,vimReg1OrMore,vimRegGreedy
 syn cluster vimRegChars contains=vimRegChar,vimRegCharClass
 syn cluster vimRegCluster contains=vimRegFlag,vimRegErr,vimRegNumber,@vimRegAnchors,@vimRegChars,@vimRegGroups,@vimRegMeta,@vimRegQuant
+syn cluster vimDictGroup contains=vimDictString,vimDictKey,vimDictStrFix,vimDictPrimitive,@vimOperGroup
 
 syn cluster vimOperGroup add=vimVar
 syn cluster vimStringGroup    add=@vimRegCluster
@@ -29,9 +30,26 @@ syn match vimRichFuncGetHL contained '\h\w*\%(\.\h\w*\)*'
 
 hi def link vimRichFungGetHL vimVar
 
+" Syntax: multi-line commands {{{2
+" The expression for a continuation line is `/^\s*\\/`.
+" So for us to properly extend weird regions, such as the ones used for
+" :syn-region, we need to have things end on a line which matches the inverse
+" of a continuation line.
+" The best expression I've been able to come up with is `/^\%(\s*\\\)\@!/`.
+" It's not great, since it relies upon a lookahead, but I've been unable to
+" come up with anything else.
+syn region vimSynRegion contained keepend
+      \ matchgroup=vimGroupName
+      \ start=+\h\w*+
+      \ skip=+\\\\\|\\|+
+      \ matchgroup=vimSep
+      \ end=+|+
+      \ end=+^\%(\s*\\\)\@!+
+      \ contains=@vimSynRegGroup,vimContinue
+
 " Syntax: conceal {{{2
 " This was outright missing from the default syntax. Why I don't know.
-syn match vimSynType contained 'conceal' skipwhite nextgroup=FixVimSynType
+syn match vimSynType contained skipwhite 'conceal' nextgroup=vimSynConcealOpt
 syn keyword vimSynConcealOpt contained on off
 
 " Variables: Constants {{{2
@@ -131,7 +149,7 @@ syn match vimRegCharClass contained '\%(\\\\\)*\zs\c\\_\?[ikfpsdxowhalu]'
 
 " Regexp: Numbers {{{2
 syn match vimRegNumber contained '\%(\\\\\)*\zs\d\+'
-syn match vimRegUnsafeNumber contained '\d+'
+syn match vimRegUnsafeNumber contained '\d\+'
 
 " Regexp: Errors {{{2
 " These errors will cause the regex engine to fail.
@@ -143,6 +161,47 @@ syn match vimRegErr contained '\%(\\\\\)*\zs\\_\%(\ze[\'"/]\|\c[^ikfpsdxowhalu\^
 syn match vimRegErr contained '\%(\\\\\)*\zs\\[ETRBNgGjJqQ]' " reserved escapes
 syn match vimRegErr contained '\%(\\\\\)*\zs\\{-,}' " syntax error, not too problematic
 
+
+" Dictionaries: make it look like JSON {{{2
+" Effectively concealing dictionaries is a pain in the ass, but it can be
+" done. Normally they're handled by vimOperParen but this overrides that.
+
+syn region vimOperParen
+      \ matchgroup=vimSep
+      \ start=+{+ end=+}+
+      \ contains=@vimDictGroup
+      \ nextgroup=vimVar,vimFuncVar
+
+" For keys and strings, things get a little stupid. If we define keys first,
+" then strings will override them. But if we define strings first, keys will
+" sometimes extend farther than they're supposed to. This could be fixed by
+" using a super region that contains both keys and strings, but then we loose
+" the ability to actually detect whether something is a string or a key. Of
+" course we can fix that by removing the matchgroup, but that breaks
+" concealends. Of course we could try to hand concealends in the child
+" regions, but then I guess we get back to keys extending farther than they're
+" supposed to pLEASE KILL ME
+"
+" define strings first.
+" then keys to override strings.
+" then matches that override erroneous keys.
+syn region vimDictString contained oneline keepend concealends
+      \ matchgroup=vimDictQuoteS
+      \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
+      \ skip=+\\\\\|\\\z1+
+      \ end=+\z1+
+      \ contains=@vimStringGroup
+
+syn region vimDictKey contained oneline keepend concealends
+      \ matchgroup=vimDictQuoteK
+      \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
+      \ skip=+\\\\\|\\\z1+
+      \ end=+\z1\ze:+
+
+syn match vimDictStrFix contained transparent +'[^']\+'\ze[^:]+ contains=vimDictString
+
+syn match vimDictPrimitive contained 'v:\%(true\|false\|null\)' contains=vimDictPrimConceal
+syn match vimDictPrimConceal contained transparent conceal 'v:'
 
 " Highlight settings {{{1
 hi def link vimRegFlag PreCondit
@@ -163,7 +222,7 @@ hi def link vimReg1OrMore Number
 hi def link vimRegGreedy Number
 
 hi def link vimRegGroup Delimiter
-hi def link vimRegEither Delimiter
+hi def link vimRegEither Operator
 hi def link vimRegCondit Conditional
 
 hi def link vimRegChar SpecialChar
@@ -179,3 +238,9 @@ hi def link vimRegErr Error
 
 hi def link vimSynConcealOpt vimSynType
 hi def link vimConstant Constant
+
+hi def link vimDictString vimString
+hi def link vimDictQuoteS vimDictString
+hi def link vimDictKey Keyword
+hi def link vimDictQuoteK vimDictKey
+hi def link vimDictPrimitive vimConstant
