@@ -73,4 +73,61 @@
       <match type="string" offset="0" value="#!/usr/bin/env fish"/>
     </magic>
   </mime-type>
+  <mime-type type="application/vim">
+    <comment>Vim script</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.vim"/>
+    <glob pattern="*.virc"/>
+    <glob pattern="*.vimrc"/>
+    <glob pattern="vimrc"/>
+    <glob pattern="virc"/>
+  </mime-type>
+  <mime-type type="application/typescript">
+    <comment>TypeScript program</comment>
+    <sub-class-of type="application/javascript"/>
+    <generic-icon name="application-javascript"/>
+    <glob pattern="*.ts"/>
+  </mime-type>
+  <mime-type type="application/coffeescript">
+    <comment>CoffeeScript program</comment>
+    <sub-class-of type="application/javascript"/>
+    <generic-icon name="application-javascript"/>
+    <glon pattern="*.coffee"/>
+  </mime-type>
+  <mime-type type="application/nodejs">
+    <comment>JavaScript program</comment>
+    <sub-class-of type="application/javascript"/>
+    <generic-icon name="application-javascript"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#!/bin/node"/>
+      <match type="string" offset="0" value="#!/usr/bin/node"/>
+      <match type="string" offset="0" value="#!/bin/env node"/>
+      <match type="string" offset="0" value="#!/usr/bin/env node"/>
+    </magic>
+  </mime-type>
+  <mime-type type="text/fennel">
+    <comment>Fennel lisp source code</comment>
+    <sub-class-of type="text/x-emacs-lisp"/>
+    <sub-class-of type="text/x-lua"/>
+    <generic-icon name="text-x-lua"/>
+    <glob pattern="*.fnl"/>
+  </mime-type>
+  <mime-type type="text/moonscript">
+    <comment>Moonscript source code</comment>
+    <sub-class-of type="text/x-lua"/>
+    <generic-icon name="text-x-lua"/>
+    <glob pattern="*.moon"/>
+    <magic priority="50">
+      <match type="string" offset="0" value="#!/bin/moon"/>
+      <match type="string" offset="0" value="#!/usr/bin/moon"/>
+      <match type="string" offset="0" value="#!/bin/env moon"/>
+      <match type="string" offset="0" value="#!/usr/bin/env moon"/>
+    </magic>
+  </mime-type>
+  <mime-type type="text/toml">
+    <comment>Tom's Obvious Markup Language</comment>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-generic"/>
+    <glob pattern="*.toml"/>
+  </mime-type>
 </mime-info>
