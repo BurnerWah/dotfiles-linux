@@ -7,6 +7,7 @@ alias fuck='TF_CMD=$(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES=$(ali
 if (( ! $+commands[autopep8] && $+commands[autopep8-3] )) alias autopep8=autopep8-3
 if (( $+commands[colormake] )) alias make=colormake
 if (( $+commands[pxz] )) alias xz=pxz unxz="pxz -d"
+if (( $+commands[pigz] )) alias gzip=pigz gunzip="pigz -d" zcat="pigz -dc"
 if (( $+commands[pinfo] )) alias info=pinfo
 
 alias blkid="grc ${aliases[blkid]:-blkid}"
