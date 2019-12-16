@@ -1,2 +1,2 @@
-" Disable spell
-setl nospell
+" Options
+setl nospell  " Disable spell

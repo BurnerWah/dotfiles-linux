@@ -185,23 +185,23 @@ syn region vimOperParen
 " define strings first.
 " then keys to override strings.
 " then matches that override erroneous keys.
-syn region vimDictString contained oneline keepend concealends
-      \ matchgroup=vimDictQuoteS
-      \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
-      \ skip=+\\\\\|\\\z1+
-      \ end=+\z1+
-      \ contains=@vimStringGroup
+" syn region vimDictString contained oneline keepend 
+"       \ matchgroup=vimDictQuoteS
+"       \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
+"       \ skip=+\\\\\|\\\z1+
+"       \ end=+\z1+
+"       \ contains=@vimStringGroup
 
-syn region vimDictKey contained oneline keepend concealends
-      \ matchgroup=vimDictQuoteK
-      \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
-      \ skip=+\\\\\|\\\z1+
-      \ end=+\z1\ze:+
+" syn region vimDictKey contained oneline keepend 
+"       \ matchgroup=vimDictQuoteK
+"       \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
+"       \ skip=+\\\\\|\\\z1+
+"       \ end=+\z1\ze:+
 
-syn match vimDictStrFix contained transparent +'[^']\+'\ze[^:]+ contains=vimDictString
+" syn match vimDictStrFix contained transparent +'[^']\+'\ze[^:]+ contains=vimDictString
 
-syn match vimDictPrimitive contained 'v:\%(true\|false\|null\)' contains=vimDictPrimConceal
-syn match vimDictPrimConceal contained transparent conceal 'v:'
+" syn match vimDictPrimitive contained 'v:\%(true\|false\|null\)' contains=vimDictPrimConceal
+" syn match vimDictPrimConceal contained transparent conceal 'v:'
 
 " Highlight settings {{{1
 hi def link vimRegFlag PreCondit

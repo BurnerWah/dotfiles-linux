@@ -36,6 +36,7 @@ set spell              " Enable spell correction
 set spelllang   =en_us " Set language for spelling
 set pumblend    =10    " Slightly transparent menus
 set sessionoptions  =blank,curdir,folds,help,localoptions,tabpages,winpos,winsize
+set updatetime  =300
 set list               " Show non-printable characters.
 if has('multi_byte') && &encoding ==# 'utf-8'
   let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
@@ -341,7 +342,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('rust-lang/rust.vim')
   " Official rust syntax
 
-  call dein#add('mhinz/vim-crates')
+  " call dein#add('mhinz/vim-crates')
   " Info on crates
 
   " Solidity: {{{3
@@ -380,7 +381,12 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('arrufat/vala.vim')
 
   " Vifm: vifm configuration {{{3
-  call dein#add('vifm/vifm.vim')
+  " call dein#add('vifm/vifm.vim')
+  let s:vifm_raw = s:gh_raw.'/vifm/vifm.vim/master'
+  call dein#add(s:vifm_raw.'/ftdetect/vifm.vim', {'script_type': 'ftdetect'})
+  call dein#add(s:vifm_raw.'/ftplugin/vifm.vim', {'script_type': 'ftplugin'})
+  call dein#add(s:vifm_raw.'/syntax/vifm.vim', {'script_type': 'syntax'})
+  unlet s:vifm_raw
 
   " VimL: {{{3
   call dein#add('Shougo/neco-vim')
@@ -415,6 +421,14 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('vimwiki/vimwiki',)
   call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/nvimux')
+  call dein#add('liuchengxu/vim-clap', {
+        \ 'build': join([
+        \   'cargo build --release',
+        \   'cd pythonx/clap',
+        \   'make build',
+        \ ], ';')
+        \ })
+  call dein#add('liuchengxu/vista.vim',)
 
   " User interface {{{2
   call dein#add('ryanoasis/vim-devicons')
@@ -422,6 +436,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
   call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
   call dein#add('sakhnik/nvim-gdb')
+  call dein#add('liuchengxu/vim-which-key',)
 
   call dein#add('rhysd/git-messenger.vim', {
         \ 'lazy': v:true,
@@ -433,7 +448,6 @@ if dein#load_state('~/.local/share/dein')
   " Mode-line {{{3
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes', {'depends': ['vim-airline']})
-  call dein#add('majutsushi/tagbar')
 
   " Visual helpers {{{3
   let g:line_number_interval#enable_at_startup = v:true
@@ -442,7 +456,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('norcalli/nvim-colorizer.lua')
   " nvim colorizer highlights colors really quickly.
 
-  " call dein#add('meain/vim-package-info', {'build': 'npm install --no-link'})
+  call dein#add('meain/vim-package-info', {'build': 'npm install --no-link'})
   " Shows package information in package.json, cargo.toml, etc.
   " Very simple plugin right now, no need to lazy-load.
 
@@ -454,6 +468,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('keitanakamura/neodark.vim')
   call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
+  call dein#add('liuchengxu/space-vim-theme',)
   " call dein#add('sickill/vim-monokai')
   " call dein#add('joshdick/onedark.vim')
   " call dein#add('challenger-deep-theme/vim', {'name': 'challenger_deep.vim'})
@@ -518,6 +533,35 @@ let snips_email  = 'jadenpleasants@fastmail.com'
 let git_messenger_always_into_popup = v:true
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
+lua require("navigation")
+
+exe 'luafile '.stdpath('config').'/config.lua'
+
+" Colorscheme: Currently set to a modded version of quantum {{{2
+set background=dark
+let quantum_black   = v:true
+let quantum_italics = v:true
+
+colors quantum-mod
+" colors space_vim_theme
+" let g:airline_theme = 'violet'
+
+" Airline: Bottom bar for Vim. {{{2
+
+" Main settings
+let airline_powerline_fonts  = v:true " Airline + Powerline
+let airline_detect_spelllang = v:false " Cleans up stuff a little
+let airline_left_sep  = ''
+let airline_left_alt_sep = '│'
+let airline_right_sep = ''
+let airline_right_alt_sep = '│'
+
+" Extensions
+
+let airline#extensions#tabline#enabled   = v:true " airline tabs
+let airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+" ALE: Async linter {{{2
 let ale_fix_on_save = v:true
 
 let ale_linters_ignore = {
@@ -556,25 +600,25 @@ let ale_fixers = {
       \     'clang-format', 'clangtidy', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'css': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'go': [
       \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'html': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'javascript': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'json': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'less': [
       \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'python': [
-      \     'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace',
+      \     'add_blank_lines_for_python_control_statements', 'reorder-python-imports', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'rust': [
       \     'rustfmt', 'remove_trailing_lines', 'trim_whitespace',
@@ -589,13 +633,13 @@ let ale_fixers = {
       \     'sql-format', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'typescript': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'xml': [
       \     'xmllint',
       \   ],
       \   'yaml': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
+      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \ }
 
@@ -603,32 +647,6 @@ let ale_javascript_prettier_options = join([
       \ '--no-semi',
       \ '--single-quote',
       \ ])
-
-lua require("navigation")
-
-exe 'luafile '.stdpath('config').'/config.lua'
-
-" Colorscheme: Currently set to a modded version of quantum {{{2
-set background=dark
-let quantum_black   = v:true
-let quantum_italics = v:true
-
-colors quantum-mod
-
-" Airline: Bottom bar for Vim. {{{2
-
-" Main settings
-let airline_powerline_fonts  = v:true " Airline + Powerline
-let airline_detect_spelllang = v:false " Cleans up stuff a little
-let airline_left_sep  = ''
-let airline_left_alt_sep = '│'
-let airline_right_sep = ''
-let airline_right_alt_sep = '│'
-
-" Extensions
-
-let airline#extensions#tabline#enabled   = v:true " airline tabs
-let airline#extensions#tabline#formatter = 'unique_tail_improved'
 
 " Chromatica: Remote plugin that enhances clang highlighting {{{2
 let chromatica#libclang_path     = '/usr/lib64/libclang.so'
@@ -640,6 +658,7 @@ let chromatica#global_args = [
       \ '-isystem/usr/include/c++/9/x86_64-redhat-linux',
       \ '-isystem/usr/include/c++/9/backward',
       \ '-isystem/usr/lib64/clang/9.0.0/include',
+      \ '-isystem/usr/local/include',
       \ ]
 
 " VimWiki: Note-taking tool {{{2
@@ -647,6 +666,29 @@ let vimwiki_list = [{
       \   'path': '~/Documents/VimWiki',
       \   'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
       \ }]
+
+" Vista: replacement for tagbar {{{2
+let vista#renderer#enable_icon = 1
+let vista_executive_for = {
+      \   'c': 'coc',
+      \   'cpp': 'coc',
+      \   'css': 'coc',
+      \   'go': 'coc',
+      \   'html': 'coc',
+      \   'javascript': 'coc',
+      \   'json': 'coc',
+      \   'lua': 'coc',
+      \   'markdown': 'toc',
+      \   'python': 'coc',
+      \   'tex': 'coc',
+      \   'typescript': 'coc',
+      \   'vala': 'coc',
+      \   'xml': 'coc',
+      \   'yaml': 'coc',
+      \ }
+let vista_ctags_cmd = {
+      \   'go': 'gotags',
+      \ }
 
 " Syntax Settings {{{1
 " Go
@@ -670,7 +712,7 @@ let go_textobj_enabled                 = v:false
 let vim_json_syntax_conceal = v:true  " Enable conceal for json
 
 " Python
-let python_highlight_all = v:true
+let python_highlight_all = 1
 
 " Rust
 let rust_conceal = v:true " Conceal markers for rust
@@ -683,6 +725,9 @@ let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 
 " Markdown
 let markdown_fenced_languages = ['go']
+
+" Commands {{{1
+cabbrev Vi Vista
 
 " Keybindings {{{1
 
@@ -713,17 +758,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-fun! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    exe 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfun
-
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
@@ -750,14 +784,14 @@ omap af <Plug>(coc-funcobj-a)
 nmap <silent> <C-d> <Plug>(coc-range-select)
 xmap <silent> <C-d> <Plug>(coc-range-select)
 
-nmap <silent> f <Plug>(coc-smartf-forward)
-nmap <silent> F <Plug>(coc-smartf-backward)
-nmap <silent> ; <Plug>(coc-smartf-repeat)
-nmap <silent> , <Plug>(coc-smartf-repeat-opposite)
+" nmap <silent> f <Plug>(coc-smartf-forward)
+" nmap <silent> F <Plug>(coc-smartf-backward)
+" nmap <silent> ; <Plug>(coc-smartf-repeat)
+" nmap <silent> , <Plug>(coc-smartf-repeat-opposite)
 
-nmap <silent> <C-c> <Plug>(coc-cursors-position)
-nmap <silent> <C-d> <Plug>(coc-cursors-word)
-xmap <silent> <C-d> <Plug>(coc-cursors-range)
+" nmap <silent> <C-c> <Plug>(coc-cursors-position)
+" nmap <silent> <C-d> <Plug>(coc-cursors-word)
+" xmap <silent> <C-d> <Plug>(coc-cursors-range)
 " use normal command like `<leader>xi(`
 nmap <leader>x  <Plug>(coc-cursors-operator)
 

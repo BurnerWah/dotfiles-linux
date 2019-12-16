@@ -68,7 +68,7 @@
       "filetypes": ["python"],
       "settings": {
         "pyls": {
-          "enable": true,
+          "enable": false,
           "plugins": {
             "flake8": {
               "enabled": true,
@@ -97,7 +97,15 @@
     }
   },
   "coc.preferences.extensionUpdateCheck": "never",
-  "coc.preferences.formatOnSaveFiletypes": ["css", "json", "markdown", "yaml"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "markdown",
+    "typescript",
+    "yaml"
+  ],
   "coc.preferences.hoverTarget": "float",
   "diagnostic-languageserver.filetypes": {
     "gitcommit": "gitlint",
@@ -157,15 +165,18 @@
   ],
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
   "lua.commandPath": "/home/jadenpleasants/.local/bin/lua-lsp",
+  "npm.binPath": "yarnpkg",
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
   "project.dbpath": "~/.config/coc/projects.json",
+  "python.jediEnabled": false,
+  "python.autoComplete.addBrackets": true,
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",
   "signature.target": "float",
   "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"], // vim-go support
   "suggest.labelMaxLength": 100,
-  "template.email": "jadenpleasants@fastmail.com",
-  "template.username": "Jaden Pleasants",
   "vimlsp.suggest.fromRuntimepath": true, // vimlsp runs quickly enough for this to work fine I guess
   "xml.catalogs": ["/etc/xml/catalog"],
   "xml.java.home": "/usr/lib/jvm/jre", // Needs to point to a JRE
