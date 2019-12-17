@@ -112,7 +112,7 @@ if dein#load_state('~/.local/share/dein')
   " Core plugins {{{2
   call dein#add('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release'})
 
-  call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:true})
+  call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:false})
 
   call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
 
@@ -120,8 +120,8 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('neoclide/coc-snippets', {'build': 'yarnpkg install --frozen-lockfile'})
   " call dein#add('honza/vim-snippets')
   " vim-snippets is selectively linked in via stow
-  call dein#add('Krazeus/ApiDocSnippets', {'merged': v:false})
-  call dein#add('Rpinski/vscode-shebang-snippets', {'merged': v:false})
+  " call dein#add('Krazeus/ApiDocSnippets', {'merged': v:false})
+  " call dein#add('Rpinski/vscode-shebang-snippets', {'merged': v:false})
 
   " Language agnostic stuff {{{2
   " Polyglot used to be in here but it tends to break stuff so I don't use it
@@ -179,7 +179,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
 
   " Dart: {{{3
-  call dein#add('dart-lang/dart-vim-plugin', {'lazy': v:true, 'on_ft': ['dart']})
+  " call dein#add('dart-lang/dart-vim-plugin', {'lazy': v:true, 'on_ft': ['dart']})
   " Official dart syntax
   " Load lazily to prevent plugin from sourcing when it doesn't need to
   " Probably can be manually converted to an ftplugin.
@@ -293,7 +293,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('zah/nim.vim')
 
   " PHP: {{{3
-  call dein#add('jm-mwi/vscode-php-snippets', {'merged': v:false})
+  " call dein#add('jm-mwi/vscode-php-snippets', {'merged': v:false})
 
   " Python: {{{3
   " FTDetect: $VIMRUNTIME
@@ -323,9 +323,9 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('bfredl/nvim-ipy', {'if': has('python3'), 'merged': v:true})
   call dein#add('stsewd/isort.nvim', {'if': has('python3'), 'merged': v:true})
 
-  call dein#add('ylcnfrht/vscode-python-snippet-pack', {'merged': v:false})
-  call dein#add('vahidk/tensorflow-snippets', {'merged': v:false})
-  call dein#add('SvenBecker/vscode-pytorch', {'merged': v:false})
+  " call dein#add('ylcnfrht/vscode-python-snippet-pack', {'merged': v:false})
+  " call dein#add('vahidk/tensorflow-snippets', {'merged': v:false})
+  " call dein#add('SvenBecker/vscode-pytorch', {'merged': v:false})
 
   " QML: {{{3
   call dein#add('peterhoeg/vim-qml')
@@ -349,11 +349,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('tomlion/vim-solidity')
 
   " SQL: {{{3
-  call dein#add('SadeghPM/sql-vscode-snipptes', {'merged': v:false})
+  " call dein#add('SadeghPM/sql-vscode-snipptes', {'merged': v:false})
 
   " SVG: {{{3
   call dein#add(s:gh_raw.'/jasonshell/vim-svg-indent/master/indent/svg.vim', {'script_type': 'indent'})
-  call dein#add('sidthesloth92/vsc_svg_snippets', {'merged': v:false})
+  " call dein#add('sidthesloth92/vsc_svg_snippets', {'merged': v:false})
 
   " Terraform: {{{3
   call dein#add('hashivim/vim-terraform')
@@ -368,11 +368,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('lervag/vimtex', {
         \ 'type__depth': 1,
         \ })
-  call dein#add('sabertazimi/LaTeX-snippets', {'merged': v:false})
+  " call dein#add('sabertazimi/LaTeX-snippets', {'merged': v:false})
 
   " TOML: {{{3
   call dein#add('cespare/vim-toml')
-  call dein#add('kevinkassimo/cargo-toml-snippets', {'merged': v:false})
+  " call dein#add('kevinkassimo/cargo-toml-snippets', {'merged': v:false})
 
   " TypeScript: {{{3
   call dein#add('HerringtonDarkholme/yats.vim')
@@ -407,7 +407,7 @@ if dein#load_state('~/.local/share/dein')
   " Integration: Work with other things {{{2
   " zealvim was removed because it was too agressive with it's mappings
 
-  " call dein#add('tpope/vim-fugitive')
+  call dein#add('tpope/vim-fugitive')
   " Fugitive resolves symlinks for git repos, which breaks a lot of random
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
@@ -419,7 +419,7 @@ if dein#load_state('~/.local/share/dein')
 
   " General utilities {{{2
   call dein#add('vimwiki/vimwiki',)
-  call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
+  " call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/nvimux')
   call dein#add('liuchengxu/vim-clap', {
         \ 'build': join([
@@ -432,7 +432,7 @@ if dein#load_state('~/.local/share/dein')
 
   " User interface {{{2
   call dein#add('ryanoasis/vim-devicons')
-  call dein#add('Shougo/deol.nvim', {'depends': ['denite.nvim']})
+  " call dein#add('Shougo/deol.nvim', {'depends': ['denite.nvim']})
   call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
   call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
   call dein#add('sakhnik/nvim-gdb')
@@ -461,14 +461,14 @@ if dein#load_state('~/.local/share/dein')
   " Very simple plugin right now, no need to lazy-load.
 
   " Signcolumn {{{3
-  call dein#add('airblade/vim-gitgutter')
+  " call dein#add('airblade/vim-gitgutter')
   call dein#add('mhinz/vim-signify')
 
   " Color schemes {{{3
-  call dein#add('keitanakamura/neodark.vim')
-  call dein#add('tyrannicaltoucan/vim-quantum')
+  " call dein#add('keitanakamura/neodark.vim')
+  " call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
-  call dein#add('liuchengxu/space-vim-theme',)
+  " call dein#add('liuchengxu/space-vim-theme',)
   " call dein#add('sickill/vim-monokai')
   " call dein#add('joshdick/onedark.vim')
   " call dein#add('challenger-deep-theme/vim', {'name': 'challenger_deep.vim'})
@@ -496,22 +496,22 @@ if dein#load_state('~/.local/share/dein')
   " Cycle between hex, rgb, and hsl colors
 
   " Uncategorized {{{2
-  call dein#add('ctrlpvim/ctrlp.vim')
+  " call dein#add('ctrlpvim/ctrlp.vim')
   call dein#add('rliang/termedit.nvim')
   call dein#add('fszymanski/fzf-gitignore')
   call dein#add('editorconfig/editorconfig-vim')
-  call dein#add('Shougo/context_filetype.vim')
-  call dein#add('easymotion/vim-easymotion')
+  " call dein#add('Shougo/context_filetype.vim')
+  " call dein#add('easymotion/vim-easymotion')
 
   " call dein#add('Yggdroot/LeaderF', {
   "       \ 'merged': v:true,
   "       \ 'build': 'bash install.sh',
   "       \ })
 
-  call dein#add('Shougo/vimproc.vim', {
-        \ 'merged': v:true,
-        \ 'build': 'make && strip lib/vimproc_linux64.so',
-        \ })
+  " call dein#add('Shougo/vimproc.vim', {
+  "       \ 'merged': v:true,
+  "       \ 'build': 'make && strip lib/vimproc_linux64.so',
+  "       \ })
 
   " Required {{{2
   call dein#end()
@@ -537,24 +537,20 @@ lua require("navigation")
 
 exe 'luafile '.stdpath('config').'/config.lua'
 
-" Colorscheme: Currently set to a modded version of quantum {{{2
+" Colorscheme: Currently set to a fork of quantum {{{2
 set background=dark
 let quantum_black   = v:true
 let quantum_italics = v:true
 
-colors quantum-mod
-" colors space_vim_theme
-" let g:airline_theme = 'violet'
+colors quantum
 
 " Airline: Bottom bar for Vim. {{{2
 
 " Main settings
 let airline_powerline_fonts  = v:true " Airline + Powerline
 let airline_detect_spelllang = v:false " Cleans up stuff a little
-let airline_left_sep  = ''
-let airline_left_alt_sep = '│'
-let airline_right_sep = ''
-let airline_right_alt_sep = '│'
+" let airline_inactive_collapse = 1
+let airline_skip_empty_sections = 1
 
 " Extensions
 
@@ -599,20 +595,11 @@ let ale_fixers = {
       \   'cpp': [
       \     'clang-format', 'clangtidy', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
-      \   'css': [
-      \     'remove_trailing_lines', 'trim_whitespace',
-      \   ],
       \   'go': [
       \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'html': [
-      \     'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'javascript': [
-      \     'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'json': [
-      \     'remove_trailing_lines', 'trim_whitespace',
+      \     'tidy', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'less': [
       \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
@@ -632,14 +619,8 @@ let ale_fixers = {
       \   'sql': [
       \     'sql-format', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
-      \   'typescript': [
-      \     'remove_trailing_lines', 'trim_whitespace',
-      \   ],
       \   'xml': [
       \     'xmllint',
-      \   ],
-      \   'yaml': [
-      \     'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \ }
 
