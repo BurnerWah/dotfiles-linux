@@ -1,4 +1,4 @@
-# .bashrc
+#!/usr/bin/env bash
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
