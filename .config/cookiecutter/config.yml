@@ -1,0 +1,7 @@
+default_context:
+  full_name: 'Jaden Pleasants'
+  email: 'jadenpleasants@fastmail.com'
+  github_username: 'YaBoiBurner'
+
+cookiecutters_dir: '~/.local/share/cookiecutter'
+replay_dir: '~/.cache/cookiecutter/replay'
