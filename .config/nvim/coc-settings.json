@@ -171,6 +171,7 @@
   "project.dbpath": "~/.config/coc/projects.json",
   "python.jediEnabled": false,
   "python.autoComplete.addBrackets": true,
+  "powershell.powerShellExePath": "~/.local/bin/pwsh",
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",

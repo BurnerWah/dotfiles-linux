@@ -15,6 +15,7 @@
     "coc-marketplace": ">=1.5.0",
     "coc-omni": ">=1.2.4",
     "coc-pairs": ">=1.2.19",
+    "coc-powershell": ">=0.0.21",
     "coc-prettier": ">=1.1.11",
     "coc-project": ">=0.0.8",
     "coc-pyright": ">=1.1.10",

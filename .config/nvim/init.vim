@@ -295,6 +295,9 @@ if dein#load_state('~/.local/share/dein')
   " PHP: {{{3
   " call dein#add('jm-mwi/vscode-php-snippets', {'merged': v:false})
 
+  " Powershell: {{{3
+  call dein#add('PProvost/vim-ps1')
+
   " Python: {{{3
   " FTDetect: $VIMRUNTIME
   " FTPlugin: $VIMRUNTIME
@@ -416,6 +419,7 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('neoclide/denite-git', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/iron.nvim')
+  call dein#add('aurieh/discord.nvim')
 
   " General utilities {{{2
   call dein#add('vimwiki/vimwiki',)
