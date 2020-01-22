@@ -34,7 +34,7 @@ alias ls="${aliases[ls]:-ls} --color=auto --quoting-style=literal -F" l=ls
 alias lsblk="grc ${aliases[lsblk]:-lsblk}"
 alias lsmod="grc ${aliases[lsmod]:-lsmod}"
 alias lsof="grc ${aliases[lsof]:-lsof}"
-alias lspci="grc ${aliases[lspci]:-lspci}]"
+alias lspci="grc ${aliases[lspci]:-lspci}"
 alias mtr="grc ${aliases[mtr]:-mtr}"
 alias netstat="grc ${aliases[netstat]:-netstat}" ports='netstat -ntup'
 alias ping="grc ${aliases[ping]:-ping}" ping4='ping -4'
