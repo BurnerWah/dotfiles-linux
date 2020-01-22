@@ -3,6 +3,7 @@
 # sourced in interactive sessions
 autoload -Uz zrecompile
 
+source $ZDOTDIR/profile.zsh # /etc/profile.d/ files are sourced on startup bit this is missed
 source $ZDOTDIR/.terminfo.zsh
 
 

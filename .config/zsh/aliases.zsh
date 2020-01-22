@@ -11,6 +11,8 @@ if (( $+commands[pigz] )) alias gzip=pigz gunzip="pigz -d" zcat="pigz -dc"
 if (( $+commands[pinfo] )) alias info=pinfo
 
 alias blkid="grc ${aliases[blkid]:-blkid}"
+alias cc=c++
+alias clang=clang++
 alias df="grc ${aliases[df]:-df} -hH"
 alias diff="${aliases[diff]:-diff} --color=auto"
 alias dig="grc ${aliases[dig]:-dig}"
@@ -21,6 +23,7 @@ alias fdisk="grc ${aliases[fdisk]:-fdisk}"
 alias findmnt="grc ${aliases[findmnt]:-findmnt}"
 alias free="grc ${aliases[free]:-free}"
 alias getsebool="grc ${aliases[getsebool]:-getsebool}"
+alias gcc=g++
 alias grc='grc -es --colour=auto'
 alias id="grc ${aliases[id]:-id}"
 alias ifconfig="grc ${aliases[ifconfig]:-ifconfig}"
