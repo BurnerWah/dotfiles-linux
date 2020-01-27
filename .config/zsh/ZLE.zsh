@@ -19,7 +19,7 @@ autoload -Uz surround && {
 zle -N redraw-prompt __ZLE_redraw_prompt__
 
 zle -N rationalize-dot __ZLE_rationalize_dot__
-zle -N fzf-zlua __ZLE_fzf_zlua__
+zle -N fzf-zlua __ZLE_z_lua__
 zle -N fzf-cd __ZLE_fzf_cd__
 zle -N fzf-hist __ZLE_fzf_history__
 
