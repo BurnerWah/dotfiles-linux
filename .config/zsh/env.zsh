@@ -85,7 +85,7 @@ manpath=(
     "$HOME/.local/share/zsh/site-functions" # not standard but useful with GNU Stow
     "$ZDOTDIR/functions/Completion/Patched" # intended to shadow official completions
   ) fpath_appends=(
-    "$ZDOTDIR/functions/Zle"      # ZLE specific functions
+    "$ZDOTDIR/functions/ZLE"      # ZLE specific functions
     "$ZDOTDIR/functions/Prompts"  # Custom prompts
     "$ZDOTDIR/functions/Misc"     # Stuff
     "$ZDOTDIR/functions/Internals"  # Library of autoloading functions I've written for other functions to use
