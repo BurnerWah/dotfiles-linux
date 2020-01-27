@@ -1,12 +1,20 @@
 #autoload
-local dir fzf_header fzf_theme
 
-zstyle -s ':widget:z:fzf' theme fzf_theme
-fzf_header="Rating     Path"
+local dir="$(
+  z -l \
+| sed "s|$HOME|~|" \
+\
+| fzf +m +s -e \
+      --reverse --tac \
+      --info='inline' \
+      --nth 2.. \
+      --height=35% \
+      --header='Rating     Path' \
+\
+| sed -e "s|~|$HOME|" \
+      -e 's/[0-9\. ]*//'
+)"
 
-dir=$(z -l | sed "s|$HOME|~|" | fzf --nth 2.. --reverse --inline-info --tac +s +m -e --height=35% --header=$fzf_header $(__fzf_theme $fzf_theme) | sed -e "s|~|$HOME|" -e 's/[0-9\. ]*//')
-
-# sed -e "s/[0-9\\. ]*//"
 zle redisplay
 cd ${dir:-$PWD}
 local ret=$?
