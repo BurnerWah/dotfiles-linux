@@ -88,10 +88,8 @@ manpath=(
     "$ZDOTDIR/functions/Zle"      # ZLE specific functions
     "$ZDOTDIR/functions/Prompts"  # Custom prompts
     "$ZDOTDIR/functions/Misc"     # Stuff
-    "$ZDOTDIR/functions/Help"
     "$ZDOTDIR/functions/Internals"  # Library of autoloading functions I've written for other functions to use
-    "$ZDOTDIR/functions/Completion/Core"  # Stuff used by my own completion functions
-    "$ZDOTDIR/functions/Completion"       # Custom and` third-party completions
+    "$ZDOTDIR/functions/Completion" # Custom and` third-party completions
   )
   local element
   for element in $fpath_prepends; do
@@ -101,16 +99,5 @@ manpath=(
     if ! (( ${fpath[(Ie)$element]} )) { fpath+=$element }
   done
 }
-
-# Source files in zshenv.d {{{1
-if [[ -d $ZDOTDIR/env.d ]]; then
-  for i in $ZDOTDIR/env.d/*.*sh ; do
-    if [ "${-#*i}" != "$-" ]; then
-      source "$i"
-    else
-      source "$i" >/dev/null
-    fi
-  done
-fi
 
 # vim:ft=zsh fdm=marker

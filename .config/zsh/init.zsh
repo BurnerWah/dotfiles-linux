@@ -255,7 +255,6 @@ autoload -Uz silent # run program in background
 zstyle ':zle:cd-widget:colors' disabled false
 
 source $ZDOTDIR/aliases.zsh
-source $ZDOTDIR/Math.zsh
 source $ZDOTDIR/ZLE.zsh
 source $ZDOTDIR/var_hider.zsh
 
