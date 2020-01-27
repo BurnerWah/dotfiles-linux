@@ -221,10 +221,20 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
 
 
 # Plugins {{{1
-source $ZDOTDIR/**/zsh-autosuggestions.zsh
-source $ZDOTDIR/**/zsh-history-substring-search.zsh
-source $ZDOTDIR/**/fast-syntax-highlighting.plugin.zsh
-#source $ZDOTDIR/**/autopair.zsh
+() {
+  # This just loads recompiles & loads plugins.
+  local plugin
+  local plugin_dir="$HOME/.local/share/zsh/plugins"
+  local plugins=(
+    'zsh-autosuggestions'
+    'zsh-history-substring-search'
+    'fast-syntax-highlighting.plugin'
+  )
+  for plugin in $plugins; do
+    zrecompile $plugin_dir/**/$plugin.zsh
+    source $plugin_dir/**/$plugin.zsh
+  done
+}
 if (( $+commands[z.lua] )) eval "$(z.lua --init zsh enhanced once)"
 if (( $+commands[direnv] )) eval "$(direnv hook zsh)"
 #autoload -Uz abbrev-alias && abbrev-alias --init

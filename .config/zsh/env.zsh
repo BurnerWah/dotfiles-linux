@@ -87,7 +87,6 @@ manpath=(
   ) fpath_appends=(
     "$ZDOTDIR/functions/Zle"      # ZLE specific functions
     "$ZDOTDIR/functions/Prompts"  # Custom prompts
-    "$ZDOTDIR/functions/Plugins"  # Autoloading plugins
     "$ZDOTDIR/functions/Misc"     # Stuff
     "$ZDOTDIR/functions/Help"
     "$ZDOTDIR/functions/Internals"  # Library of autoloading functions I've written for other functions to use
