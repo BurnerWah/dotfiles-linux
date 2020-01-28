@@ -1,0 +1,53 @@
+#compdef gapplication
+
+_gapplication() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  local -a gapplication_subcommands=(
+    'help:print help'
+    'version:print version'
+    'list-apps:list applications'
+    'launch:launch an application'
+    'action:activate an action'
+    'list-actions:list available actions'
+  )
+
+  _arguments -C ':command:->command' '*::options:->options'
+
+  case $state {
+    (command)
+      _describe -t commands 'gapplication' gapplication_subcommands
+      ;;
+    (options)
+      case $words[1] {
+        (help)
+          _describe -t commands 'gapplication' gapplication_subcommands
+          ;;
+        (list-actions)
+          _gapplication_apps
+          ;;
+        (launch)
+          _arguments ':application:_gapplication_apps' '::file:_files'
+          ;;
+        (action)
+          _arguments ':application:_gapplication_apps' ':action:_gapplication_actions'
+          ;;
+      }
+      ;;
+  }
+}
+
+# Argument objects
+
+_gapplication_apps() {
+  local -a apps=(${${(f)"$(_call_program applications ${service} list-apps)"}})
+  _describe -t applications 'gapplication application' apps || compadd "$@"
+}
+
+_gapplication_actions() {
+  local -a actions=(${${(f)"$(_call_program actions ${service} list-actions $words[2])"}})
+  _describe -t actions 'gapplication action' actions || compadd "$@"
+}
+
+_gapplication "$@"
