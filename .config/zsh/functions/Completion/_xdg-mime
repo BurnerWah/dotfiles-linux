@@ -1,0 +1,47 @@
+#compdef xdg-mime -value-,XDG_UTILS_INSTALL_MODE,-default-
+
+__xdg-mime_command() {
+local -a _xdg_mime_cmds
+_xdg_mime_cmds=(
+  'query:get information related to file types'
+  'default:set default app for mimetype'
+  'install:adds the file type descriptions to desktop environment'
+  'uninstall:removes the file type descriptions from the desktop environment'
+)
+
+case $CURRENT {
+  (1)
+    _describe -t commands 'xdg-mime command' _xdg_mime_cmds || compadd "$@"
+    ;;
+  (2)
+    case $words[1] {
+      (install) _arguments \
+        '--mode[edit files for user or system]:mode:_values mode system user' \
+        '--novendor[disable checks to make sure mimetypes file installs to a proper prefix]'
+
+      ;;
+    (uninstall) _arguments \
+      '--mode[edit files for user or system]:mode:_values mode system user'
+
+    ;;
+  }
+}
+}
+
+_xdg-mime() {
+case $curcontext in
+  (*':-value-,XDG_UTILS_INSTALL_MODE,:'*)
+    _values mode system user
+    ;;
+  (*)
+    _arguments \
+      '--help[show command synopsis]' \
+      '--manual[show manual page]' \
+      '--version[show xdg-utils version info]' \
+      '*::xdg-mime command:__xdg-mime_command'
+
+    esac
+
+  }
+
+_xdg-mime "$@"

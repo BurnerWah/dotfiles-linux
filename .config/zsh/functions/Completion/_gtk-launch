@@ -1,0 +1,17 @@
+#compdef gtk-launch
+# This is loosely based on the completion from zsh-users/zsh-completions, with
+# significant changes made to improve performance
+_gtk-launch() {
+  _arguments \
+    {-h,--help}'[Show help options]' \
+    '--help-all[Show all help options]' \
+    '--help-gtk[Show GTK+ Options]' \
+    '--display=[X display to use]' \
+    '--version[Show program version]' \
+    '1: :_gtk_launch_apps'
+}
+
+_gtk_launch_apps() {
+  local -a apps=( /usr/share/applications/*.desktop(:t:r) )
+  _describe -t applications 'applications' apps
+}

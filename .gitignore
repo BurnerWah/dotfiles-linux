@@ -1,0 +1,4 @@
+**/*.zcalc_history
+**/*.zcompdump
+**/*.zwc*
+/.config/zsh/.zkbd

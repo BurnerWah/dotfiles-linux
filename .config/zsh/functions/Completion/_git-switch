@@ -1,0 +1,27 @@
+#compdef git-switch
+#description switch branches
+#
+# This is missing from the standard zsh completions, likely because it's still
+# an experimental command. But I kinda need completions for it so...
+#
+# it's really incomplete
+
+_arguments -C -s \
+    '(-c --create -C --force-create -t --track)'{-c,--create}'[create a new branch]' \
+    '(-c --create -C --force-create -t --track)'{-C,--force-create}'[create a new branch, even if one already exists]' \
+    '(-d --detach)'{-d,--detach}'[switch to a commit for inspection & experiments]' \
+    '(--guess --no-guess)--guess[try to use a branch from a remote]' \
+    "(--guess --no-guess)--no-guess[don't try to use a branch from a remote]" \
+    '(--discard-changes -f --force)'{--discard-changes,-f,--force}'[proceed even if index or work tree differs from HEAD]' \
+    '(-m --merge)'{-m,--merge}'[attempt a to merge into the new branch]' \
+    '--conflict=[like --merge, but changes how to handle conflicts]:style:(
+      merge\:"default"
+      diff3\:"like merge, but also shows original contents"
+    )' \
+    '(--progress --no-progress)--progress[report progress to the terminal]' \
+    "(--progress --no-progress)--no-progress[don't report progress to the terminal]" \
+    '(-t --track --no-track)'{-t,--track}'[set up upstream configuration]' \
+    "(-t --track --no-track)--no-track[don't set up upstream configuration]" \
+    '--orphan[creates a new orphaned branch]' \
+    '(--recurse-submodules --no-recurse-submodules)--recurse-submodules[update submodules]' \
+    "(--recurse-submodules --no-recurse-submodules)--no-recurse-submodules[don't update submodules]" \

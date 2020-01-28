@@ -1,0 +1,2 @@
+#compdef silent
+_precommand "$@"

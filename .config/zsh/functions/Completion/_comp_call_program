@@ -1,0 +1,7 @@
+#compdef _call_program
+_arguments \
+  '-l[run under current locale]' \
+  '-p[run with privileges]' \
+  ':tag' \
+  ':command:_path_commands' \
+  '*::arguments:_normal'

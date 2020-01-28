@@ -1,0 +1,7 @@
+#compdef _path_files _files
+
+_arguments -C -s -S -A "-*" \
+  '-f[Complete all filenames]' \
+  '-/[Complete only directories]' \
+  '-g[Complete files matching a pattern]:pattern' \
+  '-W[Paths]:' \

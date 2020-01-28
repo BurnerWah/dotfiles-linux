@@ -1,0 +1,180 @@
+#compdef -P pip[0-9.]#
+# Custom completions for pip
+
+__pip_packages_installed() {
+  local -a _pip_packages_installed
+  _pip_packages_installed=($(COMP_WORDS="pip3 uninstall" COMP_CWORD=$((cword-1)) PIP_AUTO_COMPLETE=1 pip3 uninstall))
+}
+
+
+(( $+functions[_pip-install] )) || _pip-install() {
+  local -a download_options;  _pip_setup_download_options
+  local -a general_options;   _pip_setup_general_options
+  local -a index_options;     _pip_setup_index_options
+  _arguments -C -s \
+    $general_options $index_options $download_options \
+    '(-e --editable)'{-e,--editable}'[install project in editable mode]'  \
+    '(-t --target)'{-t,--target}'[install packages into <dir>]:directory:_files -/' \
+    '--user[install to the Python user install directory for your platform]' \
+    '--root[install everything relative to this root directory]:root directory:_files -/' \
+    '--prefix[installation prefix]:prefix:_files -/' \
+    '--strip-file-prefix[strip given prefix from script paths in wheel RECORD]:prefix:_files -/' \
+    '(-U --upgrade)'{-U,--upgrade}'[upgrade all specified packages to the newest available version]' \
+    '--upgrade-strategy[how to handle upgrading dependencies]:upgrade strategy:((only-if-needed\:default eager))' \
+    '--force-reinstall[reinstall all packages even if they are up-to-date]' \
+    '(-I --ignore-installed)'{-I,--ignore-installed}'[ignore the installed packages (reinstalling instead)]' \
+    '--ignore-requires-python[ignore Requires-Python information]' \
+    '--install-option[extra arguments to be supplied to the setup.py install command]' \
+    '(--compile --no-compile)--compile[compile Python source files to bytecode]' \
+    '(--compile --no-compile)--no-compile[do not compile Python source files to bytecode]' \
+    "--no-warn-script-location[don't warn when installing scripts outside PATH]" \
+    "--no-warn-conflicts[don't warn about broken dependencies]" \
+}
+
+
+(( $+functions[_pip-download] )) || _pip-download() {
+  local -a download_options;  _pip_setup_download_options
+  local -a general_options;   _pip_setup_general_options
+  local -a index_options;     _pip_setup_index_options
+  _arguments -C -s \
+    $general_options $download_options $index_options \
+    '(-d --dest)'{-d,--dest}'[download packages into <dir>]:destination:_files -/'
+}
+
+
+(( $+functions[_pip-list] )) || _pip-list() {
+  local -a general_options; _pip_setup_general_options
+  local -a index_options;   _pip_setup_index_options
+  _arguments -C -s \
+    $general_options $index_options \
+    '(-o --outdated)'{-o,--outdated}'[list outdated packages]' \
+    '(-u --uptodate)'{-u,--uptodate}'[list up-to-date packages]' \
+    '(-e --editable)'{-e,--editable}'[list editable projects]' \
+    '(-l --local)'{-l,--local}"[if in a virtualenv with global access, don't list globally-installed packages]" \
+    '--user[only output packages installed in user-site]' \
+    '--pre[include pre-release and development versions]' \
+    '--format[select the output format]:format:((
+         columns\:default
+         freeze
+         json
+       ))' \
+    '--not-required[list packages that are not dependencies of installed packages]' \
+    '--exclude-editable[exclude editable package from output]' \
+    '--include-editable[include editable package from output]'
+}
+
+# Argument objects
+
+
+# Shared arguments
+(( $+functions[_pip_setup_general_options] )) || _pip_setup_general_options() {
+# TODO add -v/--verbose
+# TODO add -q/--quiet
+general_options=(
+  '(- *)'{-h,--help}'[show help]'
+  '(-V --version)'{-V,--version}'[show version and exit]'
+  '--isolated[ignore environment variables and user configuration]'
+
+  '--log[path to a verbose appending log]:log file:_files'
+  '--proxy[specify a proxy]:proxy'
+  '--retries[max number of retries each connection should attempt]:number:
+     _guard "[0-9]#" "max number of retries (default\: 5)"'
+  '--timeout[set the socket timeout]:number:
+     _guard "[0-9]#" "socket timeout in seconds (default\: 15 seconds)"'
+  '--exists-action[default action when a path already exists]:action:(
+       s switch
+       i ignore
+       w wipe
+       b backup
+       a abort
+     )'
+  "--trusted-host[trust a host, even if it doesn't have valid HTTPS]:hostname:_hosts"
+  '--cert[path to alternate CA bundle]:CA file'
+  '--client-cert[path to SSL client certificate PEM format]:SSL certificate'
+  '(--no-cache-dir)--cache-dir[set cache directory]:cache directory:_files -/'
+  '(--no-cache-dir)--no-cache-dir[disable the cache]'
+  '--disable-pip-version-check[do not check if pip is outdated]'
+  '--no-color[suppress colored output]'
+)}
+
+(( $+functions[_pip_setup_index_options] )) || _pip_setup_index_options() {
+index_options=(
+  '(-i --index-url)'{-i,--index-url}'[base URL of Python Package Index]'
+  '--extra-index-url[extra URLs of package indexes to use]'
+  '(--disable-pip-version-check)--no-index[ignore package index]'
+  '(-f --find-links)'{-f,--find-links}'[If a url or path to an html file, then parse for links to archives]'
+)}
+
+(( $+functions[_pip_setup_download_options] )) || _pip_setup_download_options() {
+download_options=(
+  '(-r --requirement)'{-r,--requirement}'[install from a requirements file]:requirements file:
+    _files'
+  '(-c --constraint)'{-c,--constraint}'[constrain versions using a constraints file]:constraints file:
+    _files'
+  '(-b --build)'{-b,--build}'[directory to unpack packages into and build in]:build directory:
+    _files -/'
+  "--no-deps[don't install package dependencies]"
+  '--global-option[extra global options to supply to the setup.py call before installing]'
+  "--no-binary[don't use binary packages]"
+  "--only-binary[don't use source packages]"
+  '--prefer-binary[prefer older binary packages over newer source packages]'
+  '--src[directory to check out editable projects into]:source directory:_files -/'
+  '--pre[include pre-release and development versions]'
+  "--no-clean[don't clean up build directories]"
+  '--require-hashes[require hashes to check requirements against]'
+  '--progress-bar[type of progress to be displayed]:type:((
+       on\:default
+       off ascii pretty emoji
+     ))'
+  '--no-build-isolation[disable isolation when building a modern source distribution]'
+  '(--no-use-pep517)--use-pep517[use PEP 517 for building source distributions]'
+  "(--use-pep517)--no-use-pep517[don't use PEP 517 for building source distributions]"
+  '--platform[only use wheels compatible with <platform>]'
+  '--python-version[use wheels compatible with Python <version>]'
+  '--implementation[use wheels compatible with Python implementation]:implementation:(
+       py cp pp jy ip
+     )'
+  '--abi[only use wheels compatible with Python abi]'
+)}
+
+
+# Main completer
+
+_pip() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  _arguments -C ':command:->command' '*::options:->options'
+
+  case $state {
+    (command)
+      local -a subcommands
+      subcommands=(
+        'install:install packages'
+        'download:download packages'
+        'uninstall:uninstall packages'
+        'freeze:output installed packages in requirements format'
+        'list:list installed packages'
+        'show:show information about installed packages'
+        'check:verify installed packages have compatible dependencies'
+        'config:manage local and global configuration'
+        'search:search PyPI for packages'
+        'wheel:build wheels from your requirements'
+        'hash:compute hashes of package archives'
+        'completion:a helper command used for command completion'
+        'help:show help for commands'
+      )
+      _describe -t commands 'pip command' subcommands || compadd "$@"
+    ;;
+    (options)
+      case $words[1] {
+        (install)   _pip-install  ;;
+        (download)  _pip-download ;;
+        (list)      _pip-list     ;;
+        (uninstall) _pip_handler  ;;
+      }
+    ;;
+  }
+}
+
+_pip "$@"

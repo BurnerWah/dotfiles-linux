@@ -1,0 +1,7 @@
+#compdef _values
+_arguments \
+  '-O[pass values from array to compadd]:name:_parameters' \
+  '-s[seperate values with character]:seperator' \
+  '-S' '-w' '-C' \
+  ':description' \
+  '*:spec'

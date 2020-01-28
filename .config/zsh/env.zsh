@@ -88,7 +88,6 @@ manpath=(
     "$ZDOTDIR/functions/ZLE"      # ZLE specific functions
     "$ZDOTDIR/functions/Prompts"  # Custom prompts
     "$ZDOTDIR/functions/Misc"     # Stuff
-    "$ZDOTDIR/functions/Internals"  # Library of autoloading functions I've written for other functions to use
     "$ZDOTDIR/functions/Completion" # Custom and` third-party completions
   )
   local element
