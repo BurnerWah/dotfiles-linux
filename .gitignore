@@ -1,5 +1,17 @@
-# Created by https://www.gitignore.io/api/vim,zsh,tags,linux,python
-# Edit at https://www.gitignore.io/?templates=vim,zsh,tags,linux,python
+# Created by https://www.gitignore.io/api/gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
+# Edit at https://www.gitignore.io/?templates=gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
+
+### Database ###
+*.accdb
+*.db
+*.dbf
+*.mdb
+*.pdb
+*.sqlite3
+
+### GPG ###
+secring.*
+**/.gnupg/*.gpg
 
 ### Linux ###
 *~
@@ -16,6 +28,54 @@
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
+### Lua ###
+# Compiled Lua sources
+luac.out
+
+# luarocks build files
+*.src.rock
+*.zip
+*.tar.gz
+
+# Object files
+*.o
+*.os
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.exp
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+
+### PowerShell ###
+# Exclude packaged modules
+
+# Exclude .NET assemblies from source
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -23,7 +83,6 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
 
 # Distribution / packaging
 .Python
@@ -121,6 +180,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+### SSH ###
+**/.ssh/id_*
+**/.ssh/*_id_*
+**/.ssh/known_hosts
+
 ### Tags ###
 # Ignore tags created by etags, ctags, gtags (GNU global) and cscope
 TAGS
@@ -193,7 +257,7 @@ zsdoc/data
 /tests/_output/*
 !/tests/_output/.gitkeep
 
-# End of https://www.gitignore.io/api/vim,zsh,tags,linux,python
+# End of https://www.gitignore.io/api/gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
 
 /.config/zsh/.zkbd
 
