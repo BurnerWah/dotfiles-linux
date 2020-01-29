@@ -633,6 +633,11 @@ let ale_javascript_prettier_options = join([
       \ '--single-quote',
       \ ])
 
+let ale_sh_shfmt_options = join([
+      \ '-i=2',
+      \ '-ci',
+      \ ])
+
 " Chromatica: Remote plugin that enhances clang highlighting {{{2
 let chromatica#libclang_path     = '/usr/lib64/libclang.so'
 let chromatica#enable_at_startup = v:true " auto-enable Chromatica when relevant
