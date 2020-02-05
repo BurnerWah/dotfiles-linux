@@ -16,7 +16,7 @@ deflogin on
 vbell on
 vbell_msg "   Wuff  ----  Wuff!!  "
 
-term screen-256color
+# $TERM will usually be "screen.$TERM"
 
 # all termcap entries are now duplicated as terminfo entries.
 # only difference should be the slightly modified syntax, and check for
