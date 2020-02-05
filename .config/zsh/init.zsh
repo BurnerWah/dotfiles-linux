@@ -256,7 +256,8 @@ zstyle ':zle:cd-widget:colors' disabled false
 
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/ZLE.zsh
-source $ZDOTDIR/var_hider.zsh
+
+if [[ "$options[interactive]" == on ]] source $ZDOTDIR/var_hider.zsh
 
 # User dirs
 local -Hhr \
