@@ -419,7 +419,8 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('neoclide/denite-git', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/iron.nvim')
-  call dein#add('aurieh/discord.nvim')
+  " call dein#add('aurieh/discord.nvim')
+  " This seems to make nvim segfault sometimes
 
   " General utilities {{{2
   call dein#add('vimwiki/vimwiki',)
