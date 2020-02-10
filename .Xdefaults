@@ -1,0 +1,11 @@
+! Rofi config
+rofi.modi: window,run,ssh,drun,calc,file-browser,emoji,top,combi
+rofi.dpi: 1
+rofi.terminal: kitty
+rofi.theme: /usr/share/rofi/themes/arthur.rasi
+rofi.drun-match-fields:   name,generic,exec,categories,comment
+rofi.drun-display-format: {name} [<span weight='light' size='small'><i>({comment})</i></span>]
+
+! URxvt
+URxvt.clipboard.copycmd: wl-copy
+URxvt.clipboard.pastecmd: wl-paste
