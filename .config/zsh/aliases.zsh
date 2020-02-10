@@ -8,6 +8,7 @@ if (( ! $+commands[autopep8] && $+commands[autopep8-3] )) alias autopep8=autopep
 if (( $+commands[colormake] )) alias make=colormake
 if (( $+commands[pxz] )) alias xz=pxz unxz="pxz -d"
 if (( $+commands[pigz] )) alias gzip=pigz gunzip="pigz -d" zcat="pigz -dc"
+if (( $+commands[pbzip2] )) alias bzip2=pbzip2 bunzip2="pbzip2 -d" bzcat="pbzip -dc"
 if (( $+commands[pinfo] )) alias info=pinfo
 
 alias blkid="grc ${aliases[blkid]:-blkid}"
