@@ -129,18 +129,43 @@ text:
       - .repo
 
     systemd:
+      - .automount
+      - .mount
+      - .path
       - .service
+      - .slice
+      - .socket
+      - .target
+      - .timer
+
+    kde:
+      krita:
+        - kritarc
+        - kritadisplayrc
+
+      kate:
+        - katerc
+        - katemetainfos
+        - kateschemarc
+        - katesyntaxhighlightingrc
+        - katevirc
+
+      kleopatra:
+        - kleopatrarc
+
+      konsole:
+        - konsolerc
+
+      global:
+        - kderc
+        - kde4rc
+        - kid3rc
+        - kdeglobals
 
     other:
       - gdbinit
       - gtkrc
       - inputrc
-      - kderc
-      - kde4rc
-      - kid3rc
-      - kleopatrarc
-      - kritarc
-      - kritadisplayrc
       - matplotlibrc
       - nanorc
       - pinforc
@@ -271,7 +296,6 @@ programming:
         - .gitmodules
         - .gitattributes
         - .gitconfig
-        - .git-blame-ignore-revs
 
       hg:
         - .hgrc
