@@ -57,9 +57,4 @@ fpath+=(
   "$XDG_DATA_HOME/zsh/site-functions" # not standard but useful with GNU Stow
 )
 
-# Fix Kitty's bad terminfo {{{1
-if [[ "$TERMINFO" == "/usr/lib64/kitty/terminfo" \
-   && -d "$XDG_DATA_HOME/terminfo" ]] \
-   export TERMINFO="$XDG_DATA_HOME/terminfo"
-
 # vim:ft=zsh fdm=marker
