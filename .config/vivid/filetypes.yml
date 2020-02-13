@@ -48,15 +48,15 @@ text:
     - .asc
     - .enc
     - .gpg
-    - id_rsa
     - .kbx
     - .key
+    - .p12
+    - .pfx
     - .pgp
     - .pub
     - .sig
     - .signature
-    - .pfx
-    - .p12
+    - id_rsa
 
   configuration:
     generic:
@@ -70,45 +70,30 @@ text:
       - .yaml
       - .yml
 
-    metadata:
-      - .xmp
-
-    bibtex:
-      - .bib
-      - .bst
-
-    dockerfile:
-      - Dockerfile
-
-    nix:
-      - .nix
-
-    qt:
-      - .ui
-
-    sublime:
-      - .sublime-syntax
-      - .tmTheme
+    metadata: [.xmp]
+    bibtex: [.bib, .bst]
+    nix: [.nix]
+    qt: [.ui]
+    sublime: [.sublime-syntax, .tmTheme]
 
     shells:
+      - .bash_logout
+      - .bash_profile
+      - .cshrc
       - .profile
       - bashrc
-      - .bash_profile
-      - .bash_logout
-      - cshrc
-      - csh.login
       - zlogin
       - zlogout
       - zprofile
       - zshenv
       - zshrc
 
-    vim:
-      - .vimrc
-      - .virc
+    vim: [.vimrc, .virc]
 
     desktop:
       - .desktop
+      - .thumbnailer
+      - .session
 
     system:
       - environment
@@ -121,12 +106,8 @@ text:
       - subuid
       - sudoers
 
-    cron:
-      - crontab
-      - cron.deny
-
-    rpm:
-      - .repo
+    cron: [crontab, cron.deny]
+    rpm: [.repo]
 
     systemd:
       - .automount
@@ -139,10 +120,6 @@ text:
       - .timer
 
     kde:
-      krita:
-        - kritarc
-        - kritadisplayrc
-
       kate:
         - katerc
         - katemetainfos
@@ -150,45 +127,32 @@ text:
         - katesyntaxhighlightingrc
         - katevirc
 
-      kleopatra:
-        - kleopatrarc
-
-      konsole:
-        - konsolerc
+      kleopatra: [kleopatrarc]
+      konsole: [konsolerc]
+      krita: [kritarc, kritadisplayrc]
 
       global:
-        - kderc
         - kde4rc
-        - kid3rc
         - kdeglobals
+        - kderc
 
     other:
       - gdbinit
       - gtkrc
       - inputrc
-      - matplotlibrc
       - nanorc
       - pinforc
       - screenrc
       - taskrc
-      - tigrc
       - vlcrc
       - wgetrc
 
   manifest:
     - .devhelp
     - .devhelp2
-    - .enums.xml
-    - .evince-backend
     - .gir
     - .glade
-    - .gresource
-    - .gschema.override
-    - .gschema.xml
     - mimeapps.list
-    - .plugin
-    - rplugin.vim
-    - .session
 
   other:
     - .txt
@@ -202,6 +166,7 @@ markup:
 
   other:
     - .adoc
+    - .asciidoc
     - .csv
     - .dtd
     - .man
@@ -287,112 +252,64 @@ programming:
     tcl: [.tcl]
     typescript: [.ts, .tsx]
     vala: [.vala, .vapi]
-    viml: [.vim]
+    vim: [.vim]
 
   tooling:
     vcs:
-      git:
-        - .gitignore
-        - .gitmodules
-        - .gitattributes
-        - .gitconfig
-
-      hg:
-        - .hgrc
-        - hgrc
-        - .hgignore
-        - .hgtags
-
+      git: [.gitconfig, .gitignore, .gitattributes, .gitmodules]
+      hg: [.hgrc, .hgignore, .hgtags]
       other:
         - CODEOWNERS
-        - .ignore
-        - .fdignore
-        - .dockerignore
-        - .rgignore
-        - .clang-tidy
-        - .arcconfig
-        - .arclint
 
     build:
-      cmake:
-        - .cmake
-        - CMakeLists.txt
-        - .cmake.in
-
-      make:
-        - Makefile
-        - .mak
-        - .make
-        - .mk
-
-      automake:
-        - Makefile.am
-
-      configure:
-        - configure
-        - configure.ac
-
-      scons:
-        - SConscript
-        - SConstruct
-
-      pip:
-        - requirements.txt
-
+      cmake: [CMakeLists.txt, .cmake, .cmake.in]
+      make: [Makefile, .mak, .make, .mk]
+      autotools: [Makefile.am, .m4]
+      configure: [configure, configure.ac]
+      scons: [SConscript, SConstruct]
+      pip: [requirements.txt]
       other:
-        - build.gradle
-        - build.ninja
-        - build.xml
         - Gemfile
-        - meson.build
         - Rakefile
         - Vagrantfile
+        - build.gradle
+        - build.ninja
+        - meson.build
 
     packaging:
-      lua:
-        - .rockspec
-      pacman:
-        - PKGBUILD
-      python:
-        - MANIFEST.in
-        - setup.py
-      rpm:
-        - .spec
-      ruby:
-        - .gemspec
+      lua: [.rockspec]
+      pacman: [PKGBUILD]
+      python: [MANIFEST.in, setup.py]
+      rpm: [.spec]
+      ruby: [.gemspec]
+      docker: [Dockerfile]
 
     code-style:
-      python:
-        - .flake8
-
-      cxx:
-        - .clang-format
-
+      cxx: [.clang-format, .uncrustify.cfg]
+      python: [.flake8]
+      rust: [rustfmt.toml]
       other:
         - .editorconfig
-        - rustfmt.toml
 
     linting:
+      cxx: [.clang-tidy]
+      python: [pylintrc]
+      vim: [.vintrc.yaml]
       other:
         - .codecov.yml
         - .coveragerc
-        - pylintrc
-        - .vintrc.yaml
 
     editors:
-      qt:
-        - .pro
-      kdevelop:
-        - .kdevelop
+      qt: [.pro]
+      kdevelop: [.kdevelop]
+      emacs: [.dir-locals.el]
 
     documentation:
-      doxygen:
-        - Doxyfile
-        - .dox
+      doxygen: [Doxyfile, .dox]
 
     continuous-integration:
-      - appveyor.yml
       - .travis.yml
+      - appveyor.yml
 
 media:
   image:
@@ -400,8 +317,8 @@ media:
     - .bmp
     - .gif
     - .ico
-    - .jpf
     - .jpeg
+    - .jpf
     - .jpg
     - .pbm
     - .pgm
@@ -420,13 +337,14 @@ media:
     lossy:
       - .aac
       - .aif
-      - .mid
       - .m4a
+      - .mid
+      - .mka
       - .mp3
       - .ogg
       - .opus
       - .wma
-      - .mka
+
     lossless:
       - .alac
       - .ape
@@ -437,8 +355,8 @@ media:
     - .avi
     - .flv
     - .h264
-    - .m2v
     - .m2ts
+    - .m2v
     - .m4v
     - .mkv
     - .mov
@@ -457,6 +375,7 @@ media:
     - .fon
     - .otf
     - .ttf
+    - .pf2 # GRUB2 Font
 
 office:
   document:
@@ -470,40 +389,25 @@ office:
     - .sxw
 
   spreadsheet:
-    - .xls
-    - .xlsx
     - .ods
     - .xlr
+    - .xls
+    - .xlsx
 
   presentation:
+    - .kex
+    - .odp
+    - .pps
     - .ppt
     - .pptx
-    - .odp
     - .sxi
-    - .kex
-    - .pps
 
-  calendar:
-    - .ics
+  calendar: [.ics]
 
 archives:
-  packages:
-    - .apk
-    - .deb
-    - .rpm
-    - .whl
-
-  ros:
-    - .bag
-
-  images:
-    - .bin
-    - .dmg
-    - .img
-    - .iso
-    - .toast
-    - .vcd
-
+  packages: [.apk, .deb, .rpm, .whl]
+  ros: [.bag]
+  images: [.bin, .dmg, .img, .iso, .toast, .vcd]
   other:
     - .7z
     - .arj
@@ -511,8 +415,8 @@ archives:
     - .bz2
     - .gz
     - .jar
-    - .lzma
     - .lz4
+    - .lzma
     - .pkg
     - .rar
     - .tar
@@ -521,52 +425,24 @@ archives:
     - .tgz
     - .xz
     - .z
-    - .zim
     - .zip
 
 executable:
-  windows:
-    - .bat
-    - .com
-    - .exe
-
-  library:
-    - .so
-    - .a
-    - .dll
-
-  linux:
-    - .ko
+  windows: [.bat, .com, .exe]
+  library: [.a, .dll, .so]
+  linux: [.ko]
 
 unimportant:
   build_artifacts:
-    cxx:
-      - .o
-      - .la
-      - .lo
-    cmake:
-      - CMakeCache.txt
-    automake:
-      - Makefile.in
-    rust:
-      - .rlib
-      - .rmeta
-    python:
-      - .pyc
-      - .pyo
-    renpy:
-      - .rpyc
-      - .rpymc
-    haskell:
-      - .dyn_hi
-      - .dyn_o
-      - .cache
-      - .hi
-    java:
-      - .class
-    scons:
-      - .scons_opt
-      - .sconsign.dblite
+    cxx: [.la, .lo, .o]
+    cmake: [CMakeCache.txt]
+    automake: [Makefile.in]
+    rust: [.rlib, .rmeta]
+    python: [.pyc, .pyo]
+    renpy: [.rpyc, .rpymc]
+    haskell: [.hi, .dyn_hi, .dyn_o]
+    java: [.class]
+    scons: [.scons_opt, .sconsign.dblite]
     latex:
       - .aux
       - .bbl
@@ -581,11 +457,9 @@ unimportant:
       - .sty
       - .synctex.gz
       - .toc
-    llvm:
-      - .bc
-    zsh:
-      - .zcompdump
-      - .zwc
+    llvm: [.bc]
+    other:
+      - .zwc # ZSH Word Code
 
   temporary:
     - '~'
@@ -597,6 +471,7 @@ unimportant:
     - .bak
 
   other:
+    - .cache
     - .git # only works for '.git' files (submodules)
     - .lock
     - .log
@@ -606,7 +481,6 @@ unimportant:
     - .orig
     - .pid
     - .shada
-    - .wget-hsts
+    - .zcompdump
     - gschemas.compiled
-    - gnome-initial-setup-done
     - package-lock.json
