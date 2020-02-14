@@ -49,7 +49,9 @@ if (( $+commands[manpath] )) MANPATH="${MANPATH:-"$(manpath)"}"
 
 # Set up $FPATH {{{1
 typeset -U fpath
-fpath+=(
+fpath=(
+  "$XDG_DATA_HOME/zsh/override-functions"
+  $fpath
   "$ZDOTDIR/functions/ZLE"      # ZLE specific functions
   "$ZDOTDIR/functions/Prompts"  # Custom prompts
   "$ZDOTDIR/functions/Misc"     # Stuff
