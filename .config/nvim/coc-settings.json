@@ -44,7 +44,7 @@
     },
     "efm": {
       "command": "efm-langserver",
-      "filetypes": ["eruby", "markdown", "yaml"]
+      "filetypes": ["eruby", "yaml"]
     },
     "fortls": {
       "command": "fortls",
@@ -102,14 +102,12 @@
     "html",
     "javascript",
     "json",
-    "markdown",
     "typescript",
     "yaml"
   ],
   "coc.preferences.hoverTarget": "float",
   "diagnostic-languageserver.filetypes": {
     "gitcommit": "gitlint",
-    "markdown": "markdownlint",
     "sh": "shellcheck"
   },
   "diagnostic-languageserver.linters": {

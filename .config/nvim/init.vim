@@ -48,7 +48,7 @@ if has('conceal')
   set concealcursor =nv
 endif
 
-let loaded_ruby_provider = 0
+" let loaded_ruby_provider = 0
 " let loaded_node_provider = 0
 let fennel_nvim_auto_init = v:false
 
