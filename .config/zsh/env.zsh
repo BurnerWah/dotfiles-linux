@@ -23,10 +23,6 @@ rehash
 
 # Set core variables {{{1
 # Command vars
-# page uses neovim as a pager. It's really good
-export PAGER=${PAGER:-page}
-export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
-
 export FZF_DEFAULT_COMMAND='fd -t f'
 
 # things I just don't want in the $HOME folder
