@@ -129,7 +129,7 @@ zstyle ':completion:*:commands' ignored-patterns \
   python-argcomplete-check-easy-install-script
 
 zstyle ':completion:*:functions' ignored-patterns \
-  '-*' 'chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
+  '-*' ':chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
   '_#p9k_*' '_#gitstatus_*' 'prompt_(^(*_setup))' getColorCode get_icon_names \
   edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
   'zsh_math_func_*'

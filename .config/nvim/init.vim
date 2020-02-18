@@ -200,7 +200,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('jaawerth/fennel-nvim')
 
   " Fish: {{{3
-  call dein#add('dag/vim-fish')
+  " call dein#add('blankname/vim-fish')
+  " Maintained fork of dag/vim-fish
 
   " Gluon: {{{3
   " FTDetect: vim-gluon

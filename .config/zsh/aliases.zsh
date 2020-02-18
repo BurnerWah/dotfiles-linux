@@ -12,17 +12,19 @@ if (( $+commands[pbzip2] )) alias bzip2=pbzip2 bunzip2="pbzip2 -d" bzcat="pbzip 
 if (( $+commands[pinfo] )) alias info=pinfo
 
 alias blkid="grc ${aliases[blkid]:-blkid}"
+alias bmon="${aliases[bmon]:-bmon} -U"
 alias cc=c++
 alias clang=clang++
 alias df="grc ${aliases[df]:-df} -hH"
 alias diff="${aliases[diff]:-diff} --color=auto"
 alias dig="grc ${aliases[dig]:-dig}"
+alias dmesg="${aliases[dmesg]:-dmesg} -H"
 alias du="grc ${alias[du]:-du} -h"
 alias exa="${aliases[exa]:-exa} -F" ll='exa -lh' la='ll -a'
 alias fd="noglob ${aliases[fd]:-fd}"
 alias fdisk="grc ${aliases[fdisk]:-fdisk}"
 alias findmnt="grc ${aliases[findmnt]:-findmnt}"
-alias free="grc ${aliases[free]:-free}"
+alias free="grc ${aliases[free]:-free} -h --si"
 alias getsebool="grc ${aliases[getsebool]:-getsebool}"
 alias gcc=g++
 alias grc='grc -es --colour=auto'
@@ -37,6 +39,7 @@ alias lsmod="grc ${aliases[lsmod]:-lsmod}"
 alias lsof="grc ${aliases[lsof]:-lsof}"
 alias lspci="grc ${aliases[lspci]:-lspci}"
 alias mtr="grc ${aliases[mtr]:-mtr}"
+alias ncdu="${aliases[ncdu]:-ncdu} --si --color dark"
 alias netstat="grc ${aliases[netstat]:-netstat}" ports='netstat -ntup'
 alias ping="grc ${aliases[ping]:-ping}" ping4='ping -4'
 alias please=sudo
