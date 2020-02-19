@@ -194,4 +194,5 @@
     "http://json.schemastore.org/travis": "/.travis.yml",
     "https://raw.githubusercontent.com/snapcore/snapcraft/master/schema/snapcraft.json": "?(.)snapcraft.yaml"
   }
+  // vim:ft=jsonc
 }

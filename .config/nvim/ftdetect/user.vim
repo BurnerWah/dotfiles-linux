@@ -18,12 +18,15 @@ aug userft
 
   " JSON
   au BufNewFile,BufRead /etc/proselintrc,*.proselintrc  setf json
-  au BufNewFile,BufRead */coc-settings.json let b:is_jsonc = 1
-  au BufNewFile,BufRead */tsconfig.json let b:is_jsonc = 1
-  au BufNewFile,BufRead */.vscode/*.json let b:is_jsonc = 1
   au BufNewFile,BufRead *.luacompleterc setf json
   au BufNewFile,BufRead *.arcconfig,*.arclint setf json
   au BufNewFile,BufRead *.tcelldb setf json
+
+  " JSON w/ comments
+  au BufNewFile,BufRead */coc-settings.json setf jsonc
+  au BufNewFile,BufRead */tsconfig.json setf jsonc
+  au BufNewFile,BufRead */.vscode/*.json setf jsonc
+  au BufNewFile,BufRead */waybar/config setf jsonc
 
   " Lua
   au BufNewFile,BufRead *.luacheckrc setf lua

@@ -19,8 +19,3 @@ aug user_ftplugin_json
   au! * <buffer>
   au BufWritePre <buffer> call CocAction('runCommand', 'prettier.formatFile')
 aug END
-
-" JSON W/ Comments
-if exists('b:is_jsonc')
-  setl commentstring=//%s comments=s1:/*,mb:*,ex:*/,://
-endif
