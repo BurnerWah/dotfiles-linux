@@ -599,7 +599,10 @@ let ale_fixers = {
       \     'cmakeformat', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'cpp': [
-      \     'clang-format', 'clangtidy', 'remove_trailing_lines', 'trim_whitespace',
+      \     'clang-format',
+      \     'clangtidy',
+      \     'remove_trailing_lines',
+      \     'trim_whitespace',
       \   ],
       \   'go': [
       \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
@@ -611,7 +614,10 @@ let ale_fixers = {
       \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
       \   'python': [
-      \     'add_blank_lines_for_python_control_statements', 'reorder-python-imports', 'remove_trailing_lines', 'trim_whitespace',
+      \     'add_blank_lines_for_python_control_statements',
+      \     'reorder-python-imports',
+      \     'remove_trailing_lines',
+      \     'trim_whitespace',
       \   ],
       \   'rust': [
       \     'rustfmt', 'remove_trailing_lines', 'trim_whitespace',
@@ -628,6 +634,10 @@ let ale_fixers = {
       \   'xml': [
       \     'xmllint',
       \   ],
+      \ }
+
+let ale_linter_aliases = {
+      \   'jsonc': 'json',
       \ }
 
 let ale_javascript_prettier_options = join([
