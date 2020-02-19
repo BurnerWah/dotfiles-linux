@@ -1,66 +1,54 @@
 [core]
   editor = nvim
-  # use neovim as the editor
   pager = less
-  excludesfile = /home/jadenpleasants/.config/git/global.gitignore
+  excludesFile = ~/.config/git/global.gitignore
 [user]
+  # user info
   name = Jaden Pleasants
   email = jadenpleasants@fastmail.com
-  signingkey = jadenpleasants@fastmail.com
+  signingKey = jadenpleasants@fastmail.com
+
+[alias]
+  # aliases
+  aliases = config --get-regexp alias
+
+[blame]
+  coloring = highlightRecent
 [commit]
-  gpgsign = true
-  # force commits to be signed with GPG
-[advice]
-  # provide help to new git users
-  pushUpdateRejected = true
-  pushUnqualifiedRefname = true
-  statusHints = true
-  statusUoption = true
-  resetQuiet = true
-  resolveConflict = true
-  implicitIdentity = true
-  detachedHead = true
-  checkoutAmbiguousRemoteBranceName = true
-  amWorkDir = true
-  rmHints = true
-  addEmbeddedRepo = true
-  ignoredHook = true
-  waitingForEditor = true
-[diff]
-  tool = vimdiff
-  # use neovim as a diff tool
-  guitool = meld
-  # use GNOME Meld when using the GUI
-[difftool]
-  prompt = false
-  # keep git quiet when opening a diff tool
-[difftool "vimdiff"]
-  path = nvim
-  # force nvim over vim
-[difftool "vimdiff2"]
-  path = nvim
-  # force nvim over vim
-[difftool "vimdiff3"]
-  path = nvim
-  # force nvim over vim
+  gpgSign = true  # sign commits w/ GPG
+[fetch]
+  parallel = 0
+  # Run a reasonable number of fetch operations at once
+[help]
+  format = man
+[index]
+  threads = true  # multi-threaded index
 [merge]
-  tool = vimdiff
-  # use neovim as a merge tool
-  guitool = meld
-  # use GNOME Meld when using the GUI
+  # controls mergeing
+  # [diff] sometimes falls back to this
+  tool = vimdiff  # use nvim for diff & merge
+  guitool = meld  # use meld for diff & merge in a GUI
 [mergetool]
-  prompt = false # keep git quiet when opening a merge tool
+  prompt = false
 [mergetool "vimdiff"]
   path = nvim
-  # force nvim over vim
+  path = vim
 [mergetool "vimdiff2"]
   path = nvim
-  # force nvim over vim
+  path = vim
 [mergetool "vimdiff3"]
   path = nvim
-  # force nvim over vim
-[gpg]
-  program = gpg
+  path = vim
+[mergetool "meld"]
+  path = org.gnome.meld # Flatpak support?
+  path = meld # fallback to normal install
+[pack]
+  threads = 0 # multi-threaded packing
+[submodule]
+  fetchJobs = 0 # clone a reasonable number of submodules at once
+[web]
+  browser = xdg-open  # use default browser
+
 [color]
   ui = true
 [color "branch"]
@@ -81,15 +69,21 @@
   added = yellow
   changed = green
   untracked = cyan
-[web]
-  browser = xdg-open
-  # open URLs in the best program available, or the default browser
-[alias]
-  aliases = config --get-regexp alias
-[submodule]
-  fetchJobs = 0
-[help]
-  format = man
-[blame]
-  coloring = highlightRecent
+
+[advice]
+  # provide help to new git users
+  pushUpdateRejected = true
+  pushUnqualifiedRefname = true
+  statusHints = true
+  statusUoption = true
+  resetQuiet = true
+  resolveConflict = true
+  implicitIdentity = true
+  detachedHead = true
+  checkoutAmbiguousRemoteBranceName = true
+  amWorkDir = true
+  rmHints = true
+  addEmbeddedRepo = true
+  ignoredHook = true
+  waitingForEditor = true
 # vim:ft=gitconfig
