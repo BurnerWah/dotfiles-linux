@@ -1,0 +1,3 @@
+{
+  "NotebookApp": { "nbserver_extensions": { "ipyparallel.nbextension": true } }
+}

@@ -1,0 +1,7 @@
+/commands
+/*.json
+/lists
+*mru
+/sh
+/extensions
+!/extensions/package.json
