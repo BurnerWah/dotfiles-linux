@@ -51,11 +51,6 @@
       "filetypes": ["fortran"],
       "rootPatterns": [".fortls", ".git/"]
     },
-    "gluon_language_server": {
-      "command": "gluon_language-server",
-      "filetypes": ["gluon"],
-      "settings": { "gluon.language-server.path": "gluon_language-server" }
-    },
     "gopls": {
       "command": "gopls",
       "filetypes": ["go"],
@@ -80,20 +75,6 @@
           }
         }
       }
-    },
-    "srcy": {
-      "command": "srcy",
-      "filetypes": ["crystal"],
-      "rootPatterns": ["shard.yml", ".git/"]
-    },
-    "terraform_lsp": {
-      "command": "terraform-lsp",
-      "filetypes": ["terraform"]
-    },
-    "vls": {
-      "command": "vala-language-server",
-      "filetypes": ["vala"],
-      "rootPatterns": [".vala-lint.conf", "compile_commands.json", ".git/"]
     }
   },
   "coc.preferences.extensionUpdateCheck": "never",
@@ -128,37 +109,39 @@
   },
   "highlight.colors.enable": false, // We have another plugin set up to handle this
   "json.schemas": [
+    /*
+     * https://schemastore.azurewebsites.net is the backend for
+     * http://schemastore.org
+     * technically you're not supposed to use it, but it supports HTTPS so I'm
+     * using it anyway.
+     */
     {
       "fileMatch": ["bower.json", ".bower.json"],
-      "url": "http://json.schemastore.org/bower"
-    },
-    {
-      "fileMatch": ["c_cpp_properties.json"],
-      "url": "https://github.com/microsoft/vscode-cpptools/raw/master/Extension/c_cpp_properties.schema.json"
+      "url": "https://schemastore.azurewebsites.net/schemas/json/bower.json"
     },
     {
       "fileMatch": ["coffeelint.json"],
-      "url": "http://json.schemastore.org/coffeelint"
+      "url": "https://schemastore.azurewebsites.net/schemas/json/coffeelint.json"
+    },
+    {
+      "fileMatch": ["compile_commands.json"],
+      "url": "https://schemastore.azurewebsites.net/schemas/json/compile-commands.json"
     },
     {
       "fileMatch": ["composer.json"],
-      "url": "http://json.schemastore.org/composer"
+      "url": "https://schemastore.azurewebsites.net/schemas/json/composer.json"
     },
     {
       "fileMatch": [".csslintrc"],
-      "url": "http://json.schemastore.org/csslintrc"
+      "url": "https://schemastore.azurewebsites.net/schemas/json/csslintrc.json"
     },
     {
       "fileMatch": ["*.ipynb"],
-      "url": "https://raw.githubusercontent.com/jupyter/nbformat/master/nbformat/v4/nbformat.v4.schema.json"
+      "url": "https://github.com/jupyter/nbformat/raw/master/nbformat/v4/nbformat.v4.schema.json"
     },
     {
-      "fileMatch": ["*.tmLanguage.json"],
-      "url": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json"
-    },
-    {
-      "fileMatch": ["pyconfig.json"],
-      "url": "https://github.com/tht13/Python-vscode/raw/master/schemas/pyconfig.schema.json"
+      "fileMatch": ["package.json"],
+      "url": "https://schemastore.azurewebsites.net/schemas/json/package.json"
     }
   ],
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
@@ -167,9 +150,6 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "project.dbpath": "~/.config/coc/projects.json",
-  "python.jediEnabled": false,
-  "python.autoComplete.addBrackets": true,
-  "powershell.powerShellExePath": "~/.local/bin/pwsh",
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",
@@ -183,16 +163,16 @@
   "yaml.format.enable": true,
   "yaml.format.singleQuote": true,
   "yaml.schemas": {
-    "http://json.schemastore.org/appveyor": "?(.)appveyor.yml",
-    "http://json.schemastore.org/circleciconfig": "/.circleci/config.yml",
-    "http://json.schemastore.org/cirrus": "/.cirrus.yml",
-    "http://json.schemastore.org/codecov": "?(.)codecov.yml",
-    "http://json.schemastore.org/eslintrc": ".eslintrc.yml",
-    "http://json.schemastore.org/gitlab-ci": "/.gitlab-ci.yml",
-    "http://json.schemastore.org/github-action": "/action.yml",
-    "http://json.schemastore.org/github-workflow": "/.github/workflows/**.yml",
-    "http://json.schemastore.org/travis": "/.travis.yml",
-    "https://raw.githubusercontent.com/snapcore/snapcraft/master/schema/snapcraft.json": "?(.)snapcraft.yaml"
+    "https://schemastore.azurewebsites.net/api/json/appveyor.json": "?(.)appveyor.yml",
+    "https://schemastore.azurewebsites.net/api/json/circleciconfig.json": "/.circleci/config.yml",
+    "https://schemastore.azurewebsites.net/api/json/cirrus.json": "/.cirrus.yml",
+    "https://schemastore.azurewebsites.net/api/json/codecov.json": "?(.)codecov.yml",
+    "https://schemastore.azurewebsites.net/api/json/eslintrc.json": ".eslintrc.yml",
+    "https://schemastore.azurewebsites.net/api/json/gitlab-ci.json": "/.gitlab-ci.yml",
+    "https://schemastore.azurewebsites.net/api/json/github-action.json": "/action.yml",
+    "https://schemastore.azurewebsites.net/api/json/github-workflow.json": "/.github/workflows/**.yml",
+    "https://schemastore.azurewebsites.net/api/json/travis.json": "/.travis.yml",
+    "https://github.com/snapcore/snapcraft/raw/master/schema/snapcraft.json": "?(.)snapcraft.yaml"
   }
   // vim:ft=jsonc
 }
