@@ -107,21 +107,24 @@ if dein#load_state('~/.local/share/dein')
 
   " Helpful variables {{{2
   let s:gitlab = 'https://gitlab.com/'
-  let s:gh_raw = 'https://raw.githubusercontent.com'
+  let s:gh_raw = 'https://raw.githubusercontent.com/'
 
   " Core plugins {{{2
-  call dein#add('neoclide/coc.nvim', {'merged': v:false, 'rev': 'release'})
+  call dein#add('neoclide/coc.nvim', {
+        \ 'if': (executable('node') &&
+        \       (executable('npm')  ||
+        \       (executable('yarn') || executable('yarnpkg')))),
+        \ 'merged': v:false,
+        \ 'rev': 'release',
+        \ })
 
   call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:false})
 
   call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
 
   " Snippets & Templates {{{2
-  " call dein#add('neoclide/coc-snippets', {'build': 'yarnpkg install --frozen-lockfile'})
   " call dein#add('honza/vim-snippets')
   " vim-snippets is selectively linked in via stow
-  " call dein#add('Krazeus/ApiDocSnippets', {'merged': v:false})
-  " call dein#add('Rpinski/vscode-shebang-snippets', {'merged': v:false})
 
   " Language agnostic stuff {{{2
   " Polyglot used to be in here but it tends to break stuff so I don't use it
@@ -142,27 +145,6 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim')
 
-  " Brainfuck: {{{3
-  call dein#add('vim-scripts/brainfuck-syntax')
-
-  " CoffeeScript: {{{3
-  call dein#add('kchmck/vim-coffee-script')
-
-  " CQL: Cassandra CQL {{{3
-  call dein#add('elubow/cql-vim')
-
-  " Crystal: {{{3
-  let loaded_syntastic_crystal_filetype = 0
-  call dein#add('rhysd/vim-crystal')
-
-  " CSV: comma-separated values {{{3
-  " call dein#add('chrisbra/csv.vim', {'lazy': v:true, 'on_ft': ['csv']})
-  " Has a plugin file but it probably shouldn't.
-  " replacing with local fork temporarily
-
-  " Cue: cue sheets {{{3
-  call dein#add('mgrabovsky/vim-cuesheet')
-
   " CXX: {{{3
   " FTDetect: $VIMRUNTIME
   " FTPlugin: $VIMRUNTIME
@@ -176,41 +158,24 @@ if dein#load_state('~/.local/share/dein')
   " Provides enhanced highlighting. It requires the base CXX syntax definition.
 
   call dein#add('Shougo/neoinclude.vim')
-  call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
-
-  " Dart: {{{3
-  " call dein#add('dart-lang/dart-vim-plugin', {'lazy': v:true, 'on_ft': ['dart']})
-  " Official dart syntax
-  " Load lazily to prevent plugin from sourcing when it doesn't need to
-  " Probably can be manually converted to an ftplugin.
+  call dein#add('jsfaint/coc-neoinclude', {
+        \ 'depends': ['coc.nvim', 'neoinclude.vim'],
+        \ })
 
   " Docker: dockerfile, docker-compose {{{3
   " FTDetect: Dockerfile.vim
   " FTPlugin: Dockerfile.vim
   " Syntax: Dockerfile.vim
   " Format: Dockerfile.vim
-  " Linter: ALE, coc-docker
-  " Completion: coc-docker
+  " Linter: ALE, language server
+  " Completion: language server
   " Snippets: Dockerfile.vim
 
   call dein#add('ekalinin/Dockerfile.vim')
 
-  " Fennel: {{{3
-  call dein#add('bakpakin/fennel.vim')
-  call dein#add('jaawerth/fennel-nvim')
-
   " Fish: {{{3
   " call dein#add('blankname/vim-fish')
   " Maintained fork of dag/vim-fish
-
-  " Gluon: {{{3
-  " FTDetect: vim-gluon
-  " Syntax: vim-gluon
-  " Format: vim-gluon
-  " Completion: language server (not working)
-
-  call dein#add('gluon-lang/vim-gluon')
-  " Official gluon syntax
 
   " Go: {{{3
   " FTDetect: vim-go, $VIMRUNTIME
@@ -218,19 +183,13 @@ if dein#load_state('~/.local/share/dein')
   " Syntax: vim-go
   " Format: ALE, vim-go
   " Linter: ALE, vim-go?
-  " Completion: gopls
+  " Completion: language server
   " Snippets: vim-go, vim-snippets
   " Compiler: vim-go
   call dein#add('fatih/vim-go')
 
   " I3: {{{3
   call dein#add('mboughaba/i3config.vim')
-
-  " Irdis: {{{3
-  call dein#add('idris-hackers/idris-vim')
-
-  " JavaScript: {{{3
-  call dein#add('othree/yajs.vim')
 
   " JSON: {{{3
   " FTDetect: vim-json, $VIMRUNTIME
@@ -242,46 +201,41 @@ if dein#load_state('~/.local/share/dein')
   " Snippets: coc-json
   call dein#add('elzr/vim-json')
 
-  " Julia: {{{3
-  call dein#add('JuliaEditorSupport/julia-vim')
-
-  " Kotlin: {{{3
-  call dein#add('udalov/kotlin-vim')
-
   " LLVM: {{{3
   " The llvm highlighting is in a subdirectory of llvm-mirror/llvm, which is a
   " 500mb repository. You're better off directly adding stuff.
   " See: https://github.com/llvm-mirror/llvm/tree/master/utils/vim
-  let s:llvm_raw = s:gh_raw.'/llvm-mirror/llvm/master/utils/vim'
-  call dein#add(s:llvm_raw.'/ftdetect/llvm-lit.vim', {'script_type': 'ftdetect'})
+  let s:llvm_raw = s:gh_raw.'llvm-mirror/llvm/master/utils/vim/'
+  call dein#add(s:llvm_raw.'ftdetect/llvm-lit.vim', {'script_type': 'ftdetect'})
 
-  call dein#add(s:llvm_raw.'/ftdetect/tablegen.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:llvm_raw.'/ftplugin/tablegen.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:llvm_raw.'/syntax/tablegen.vim', {'script_type': 'syntax'})
+  call dein#add(s:llvm_raw.'ftdetect/tablegen.vim', {'script_type': 'ftdetect'})
+  call dein#add(s:llvm_raw.'ftplugin/tablegen.vim', {'script_type': 'ftplugin'})
+  call dein#add(s:llvm_raw.'syntax/tablegen.vim', {'script_type': 'syntax'})
 
-  call dein#add(s:llvm_raw.'/ftdetect/llvm.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:llvm_raw.'/ftplugin/llvm.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:llvm_raw.'/syntax/llvm.vim', {'script_type': 'syntax'})
-  call dein#add(s:llvm_raw.'/indent/llvm.vim', {'script_type': 'indent'})
+  call dein#add(s:llvm_raw.'ftdetect/llvm.vim', {'script_type': 'ftdetect'})
+  call dein#add(s:llvm_raw.'ftplugin/llvm.vim', {'script_type': 'ftplugin'})
+  call dein#add(s:llvm_raw.'syntax/llvm.vim', {'script_type': 'syntax'})
+  call dein#add(s:llvm_raw.'indent/llvm.vim', {'script_type': 'indent'})
   unlet s:llvm_raw
 
   " Lua: {{{3
   call dein#add('bfredl/nvim-luadev')
 
   " Markdown: {{{3
-  " call dein#add('iamcco/markdown-preview.nvim', {
-  "       \ 'lazy': v:true,
-  "       \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
-  "       \ 'build': 'cd app && npm install --no-bin-links'
-  "       \ })
+  call dein#add('iamcco/markdown-preview.nvim', {
+        \ 'if': executable('node'),
+        \ 'lazy': v:true,
+        \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
+        \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"'
+        \ })
 
   " Meson: {{{3
   " Official meson syntax is similar to the official llvm syntax
-  let s:meson_raw = s:gh_raw.'/mesonbuild/meson/master/data/syntax-highlighting/vim'
-  call dein#add(s:meson_raw.'/ftdetect/meson.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:meson_raw.'/ftplugin/meson.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:meson_raw.'/indent/meson.vim', {'script_type': 'indent'})
-  call dein#add(s:meson_raw.'/syntax/meson.vim', {'script_type': 'syntax'})
+  let s:meson_raw = s:gh_raw.'mesonbuild/meson/master/data/syntax-highlighting/vim/'
+  call dein#add(s:meson_raw.'ftdetect/meson.vim', {'script_type': 'ftdetect'})
+  call dein#add(s:meson_raw.'ftplugin/meson.vim', {'script_type': 'ftplugin'})
+  call dein#add(s:meson_raw.'indent/meson.vim', {'script_type': 'indent'})
+  call dein#add(s:meson_raw.'syntax/meson.vim', {'script_type': 'syntax'})
   unlet s:meson_raw
 
   " MoonScript: {{{3
@@ -290,12 +244,6 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('svermeulen/nvim-moonmaker', {'merged': v:false})
   " This plugin deletes files in it's lua dir, so we can't safely merge it.
 
-  " Nim: {{{3
-  call dein#add('zah/nim.vim')
-
-  " PHP: {{{3
-  " call dein#add('jm-mwi/vscode-php-snippets', {'merged': v:false})
-
   " Powershell: {{{3
   call dein#add('PProvost/vim-ps1')
 
@@ -303,33 +251,24 @@ if dein#load_state('~/.local/share/dein')
   " FTDetect: $VIMRUNTIME
   " FTPlugin: $VIMRUNTIME
   " Syntax: Semshi, python-syntax
-  " Format: ALE, coc-pyls, coc-python, isort.nvim
-  " Linter: ALE, coc-pyls, coc-python
-  " Completion: coc-pyls, coc-python
+  " Format: ALE, language server, isort.nvim
+  " Linter: ALE, language server, coc-pyright
+  " Completion: language server
   " Snippets: vim-snippets
-  " I used to use python-mode but it turns out that plugin causes more
-  " problems than it solves.
+  " I used to use python-mode but it turns out that plugin causes more problems
+  " than it solves.
 
   call dein#add('vim-python/python-syntax')
+  call dein#add('Vimjas/vim-python-pep8-indent')
 
-  call dein#add(s:gh_raw.'/Vimjas/vim-python-pep8-indent/master/indent/python.vim', {'script_type': 'indent'})
-  " I'm really not sure why this plugin has so much stuff in it's repo. Do you
-  " really need a dockerfile, a makefile, a gemfile, a docker compose
-  " configuration, and continuous integration for one file?
-  " One file? Just one file?
-
-  call dein#add('numirias/semshi', {
-        \ 'if': has('nvim') && has('python3'),
-        \ 'merged': v:true,
-        \ })
+  call dein#add('numirias/semshi', {'if': has('python3'), 'merged': v:true})
   " Semshi provides semantic highlighting for Python code.
 
   call dein#add('bfredl/nvim-ipy', {'if': has('python3'), 'merged': v:true})
-  call dein#add('stsewd/isort.nvim', {'if': has('python3'), 'merged': v:true})
-
-  " call dein#add('ylcnfrht/vscode-python-snippet-pack', {'merged': v:false})
-  " call dein#add('vahidk/tensorflow-snippets', {'merged': v:false})
-  " call dein#add('SvenBecker/vscode-pytorch', {'merged': v:false})
+  call dein#add('stsewd/isort.nvim', {
+        \ 'if': (has('python3') && executable('isort')),
+        \ 'merged': v:true,
+        \ })
 
   " QML: {{{3
   call dein#add('peterhoeg/vim-qml')
@@ -349,48 +288,22 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('mhinz/vim-crates')
   " Info on crates
 
-  " Solidity: {{{3
-  call dein#add('tomlion/vim-solidity')
-
-  " SQL: {{{3
-  " call dein#add('SadeghPM/sql-vscode-snipptes', {'merged': v:false})
-
-  " SVG: {{{3
-  call dein#add(s:gh_raw.'/jasonshell/vim-svg-indent/master/indent/svg.vim', {'script_type': 'indent'})
-  " call dein#add('sidthesloth92/vsc_svg_snippets', {'merged': v:false})
-
-  " Terraform: {{{3
-  call dein#add('hashivim/vim-terraform')
-
   " TeX: {{{3
   " FTDetect: $VIMRUNTIME
   " FTPlugin: vimtex
   " Syntax: vimtex
   " Linter: ALE, coc-texlab
   " Completion: coc-texlab, coc-vimtex
-  " Snippets: vim-snippets, latex-snippets, coc-texlab?
-  call dein#add('lervag/vimtex', {
-        \ 'type__depth': 1,
-        \ })
-  " call dein#add('sabertazimi/LaTeX-snippets', {'merged': v:false})
+  " Snippets: vim-snippets, coc-texlab?
+  " There isn't a good way to install gillescastel/latex-snippets so I'm not
+  " using it right now.
+  call dein#add('lervag/vimtex', {'type__depth': 1})
 
   " TOML: {{{3
   call dein#add('cespare/vim-toml')
-  " call dein#add('kevinkassimo/cargo-toml-snippets', {'merged': v:false})
-
-  " TypeScript: {{{3
-  call dein#add('HerringtonDarkholme/yats.vim')
 
   " Vala: {{{3
   call dein#add('arrufat/vala.vim')
-
-  " Vifm: vifm configuration {{{3
-  " call dein#add('vifm/vifm.vim')
-  let s:vifm_raw = s:gh_raw.'/vifm/vifm.vim/master'
-  call dein#add(s:vifm_raw.'/ftdetect/vifm.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:vifm_raw.'/ftplugin/vifm.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:vifm_raw.'/syntax/vifm.vim', {'script_type': 'syntax'})
-  unlet s:vifm_raw
 
   " VimL: {{{3
   call dein#add('Shougo/neco-vim')
@@ -402,7 +315,7 @@ if dein#load_state('~/.local/share/dein')
 
   " For the most part, I'm using a heavily modified version of the Zsh syntax.
   call dein#add('tjdevries/coc-zsh', {
-        \ 'if': !empty(exepath('zsh')),
+        \ 'if': executable('zsh'),
         \ 'depends': ['coc.nvim'],
         \ 'merged': v:true,
         \ })
@@ -424,17 +337,18 @@ if dein#load_state('~/.local/share/dein')
   " This seems to make nvim segfault sometimes
 
   " General utilities {{{2
-  call dein#add('vimwiki/vimwiki',)
+  call dein#add('vimwiki/vimwiki')
   " call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/nvimux')
   call dein#add('liuchengxu/vim-clap', {
+        \ 'if': has('nvim-0.4.2'),
         \ 'build': join([
         \   'cargo build --release',
         \   'cd pythonx/clap',
         \   'make build',
-        \ ], ';')
+        \ ], ';'),
         \ })
-  call dein#add('liuchengxu/vista.vim',)
+  call dein#add('liuchengxu/vista.vim')
 
   " User interface {{{2
   call dein#add('ryanoasis/vim-devicons')
@@ -442,7 +356,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
   call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
   call dein#add('sakhnik/nvim-gdb')
-  call dein#add('liuchengxu/vim-which-key',)
+  call dein#add('liuchengxu/vim-which-key')
 
   call dein#add('rhysd/git-messenger.vim', {
         \ 'lazy': v:true,
@@ -462,7 +376,9 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('norcalli/nvim-colorizer.lua')
   " nvim colorizer highlights colors really quickly.
 
-  call dein#add('meain/vim-package-info', {'build': 'npm install --no-link'})
+  call dein#add('meain/vim-package-info', {
+        \ 'build': 'yarn install --ignore-optional --link-duplicates',
+        \ })
   " Shows package information in package.json, cargo.toml, etc.
   " Very simple plugin right now, no need to lazy-load.
 
