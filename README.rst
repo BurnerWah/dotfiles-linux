@@ -10,13 +10,12 @@ Things I use
 * I use Fedora_ 31 as my main OS.
 * My desktop environment is GNOME_.
 * My preferred editor is NeoVim_.
-* My default shell is Zsh_.
+* My default shell is Zsh, but for interactive shells I use Fish.
 * My primary python REPL is IPython_.
 
 .. _Fedora: https://getfedora.org/
 .. _GNOME: https://www.gnome.org/
 .. _NeoVim: https://neovim.io/
-.. _Zsh: https://www.zsh.org/
 .. _IPython: https://ipython.org/
 
 Oddities
