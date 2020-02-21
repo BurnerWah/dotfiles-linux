@@ -57,6 +57,7 @@ setopt HIST_REDUCE_BLANKS
 setopt SHARE_HISTORY
 setopt NO_BEEP
 setopt REMATCH_PCRE
+setopt CSH_JUNKIE_LOOPS # fuck you this is better
 bindkey -v
 
 
@@ -95,18 +96,23 @@ compdef _gnu_generic \
 # 2}}}
 
 # Main settings
-zstyle ':completion:*' auto-description 'specify: %d' # default description template for completions
-zstyle ':completion:*' use-cache on                   # Cache complex completions
-zstyle ':completion:*' cache-path "$HOME/.cache/zsh/" # Place completion cache in standard folder
+zstyle ':completion:*' auto-description 'specify: %d'
+# default description template for completions
+zstyle ':completion:*' use-cache on
+# Cache complex completions
+zstyle ':completion:*' cache-path "$HOME/.cache/zsh/"
+# Place completion cache in standard folder
 zstyle ':completion:*' completer _complete _match _correct _approximate
 zstyle ':completion:*:match:*' original only
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle -e ':completion:*:approximate:*' max-errors \
+  'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' matcher-list \
+  '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' use-compctl false
@@ -117,22 +123,11 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 zstyle ':completion:*:commands' ignored-patterns \
-  '\[' 'aclocal-*' 'automake-*' 'autopep8-*' 'black(|d)-*' ccmake3 \
-  chrome-gnome-shell cmake3 cpack3 ctest3 dnf-3 'easy_install-*' 'f2py?##' \
-  'flake8-*' 'futurize-*' fzf-tmux genq 'git-*' gnome-keyring-3 gnuplot-qt \
-  gpg2 gpgv2 ipdb3 ipython3 'isort-*' 'luajit-*' 'msgfmt?##.py' nodeenv \
-  'nu_plugin_*' 'pasteurize-*' pbr-3 'pip(|-)[0-9.]##' printenv 'py[0-9.]##' \
-  'pycodestyle-*' 'pycompleter?##' 'pydoc[0-9.]##' 'pyflakes-*' \
-  'pygettext?##.py' '(|e)pylint-*' 'pyreverse-*' 'pystache(|-test)-[0-9.]##' \
-  'pyvenv-*' sk-tmux 'sphinx-(apidoc|autogen|build|quickstart)-*' 'symilar-*' \
-  'trial-*' 'twistd-*' 'vala(|-gen-introspect|c)-[0-9.]##' 'vapigen-*' yum \
-  python-argcomplete-check-easy-install-script
+  'cargo-*' 'git-*'
 
 zstyle ':completion:*:functions' ignored-patterns \
-  '-*' ':chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history[-_]substring[-_]*' \
-  '_#p9k_*' '_#gitstatus_*' 'prompt_(^(*_setup))' getColorCode get_icon_names \
-  edit-command-line p10k 'powerlevel9k_*' 'powerlevel10k_*' print_icon set_prompt \
-  'zsh_math_func_*'
+  '-*' ':chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history?substring[-_]*' \
+  '_#p(|owerlevel)<->k(|_*)' '_#gitstatus_*' 'prompt_*' 'zsh_math_func_*'
 
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.1' ignored-patterns \
@@ -142,26 +137,34 @@ zstyle ':completion:*:manuals.1' ignored-patterns \
 
 
 zstyle ':completion:*:parameters' ignored-patterns \
-  '_#POWERLEVEL9K_*' '_#p9k_*' '_#P9K_*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
-  '_#ZSH_HIGHLIGHT_*' '_#_#FAST_*' '_#_#fast_*' 'HISTORY_SUBSTRING_SEARCH_*' \
-  '_history_substring_search_*'
+  '(#i)_#p(|owerlevel)<->k*' '_#GITSTATUS_*' '_#ZSH_AUTOSUGGEST_*' \
+  '_#ZSH_HIGHLIGHT_*' '(#i)_#fast_*' '(#i)_#history_substring_search_*'
 
 zstyle ':completion:*:styles' ignored-patterns ':zle:(autosuggest|orig)-*'
+
+zstyle ':completion:*:users' ignored-patterns \
+  bin daemon sync shutdown halt games nobody operator
 
 zstyle ':completion:*:user-math-functions' ignored-patterns fsh_sy_h_append
 
 zstyle ':completion:*:widgets' ignored-patterns '(autosuggest|orig)-*'
 
 
+# Special contexts
+zstyle ':completion:*:-tilde-:*:users' ignored-patterns \
+  $(rg '^(.+?):.*:/(?:s?bin|dev/null)?:[^:]+$' -r '$1' /etc/passwd)
+# filter out stuff that it's useless to access via ~user
+
 # Everything else
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
+
 zstyle ':completion:*:-DISPLAY-:*:hosts' command :
 zstyle ':completion:*:-DISPLAY-:*:hosts' use-ip
 
 zstyle ':completion:*:cdr:*:*' menu selection
-zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS' '(*/)#.git' # Ignore VCS folders
 
-zstyle ':completion:*:docker*:*' menu selection
-zstyle ':completion:*:docker*:*' option-stacking yes
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS' '(*/)#.git'
+# Ignore VCS folders
 
 zstyle ':completion:*:fd:*:options' ignored-patterns --maxdepth --search-path -u
 
@@ -179,22 +182,35 @@ zstyle ':completion:*:git*:*' menu selection
   zstyle ':completion:*:git:*' user-commands ${${${(M)${(k)commands}:#git-*}/git-/}:|remove}
 }
 
-zstyle ':completion:*:git*:*:commits'      list-colors '=(#b)([[:xdigit:]]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
-zstyle ':completion:*:git*:*:heads(|-remote|-local)' list-colors '=(#b)([[:ascii:]]##)*=0=0;35'
+zstyle ':completion:*:git*:*:commits' list-colors \
+  '=(#b)([0-9a-f]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
+# Regex: /([0-9a-f]+)  -- \[.*?\]/
+zstyle ':completion:*:git*:*:heads(|-remote|-local)' list-colors \
+  '=(#b)([[:ascii:]]##)*=0=0;35'
+# Regex: /(\S+)/
+# Yes, that really is the regex equivalent of this shit. The entire thing is
+# just 5 fucking characters. Hell, if you know how to use regex you probably
+# don't even need to look up what a single one of them does. You just know that
+# \S is the inverse of \s, and that just covers whitespace. Even if you didn't
+# know that, you might be able to figure out that the '+' means "1 or more".
+# Well guess what? In zsh you have to use the actual names of character
+# classes, and the "at least 1" quantifier is '##' which makes total sense
+# because '#' is zero or more and '###' is a nonsense statement.
 
 zstyle ':completion:*:git-add:*:*-files' menu interactive
 
-# TODO: Add more colors to kill completions
 zstyle ':completion:*:kill:*:processes' list-colors \
-  '=(#b) #([[:digit:]]#) #([[:digit:]]#.[[:digit:]]#)*=0=01;31=01;32'
+  '=(#b) #([0-9]#) #([0-9]#.[0-9]#)*=0=01;31=01;32'
+# Regex: /(\d+) *(\d*\.\d*)/
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+zstyle ':completion:*:rm:*' file-patterns '*:all-files'
 
 zstyle ':completion:*:task:*:descriptions' format '%U%B%d%b%u'
 
-zstyle ':completion:*:tmux:*:subcommands' mode 'commands'
-zstyle ':completion:*:tmux:*:subcommands' ignored-patterns \
-  'choose-*' 'confirm-before' 'find-window'
-
+zstyle ':completion:*:su:*:users' ignored-patterns \
+  $(rg '^(.+?):.*:/sbin/nologin$' -r '$1' /etc/passwd)
+# Filter out users we can't log into
 
 # Source key database {{{1
 if [[ -e $ZDOTDIR/.zkbd/${TERM}-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]] {
