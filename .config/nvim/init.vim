@@ -54,7 +54,7 @@ let fennel_nvim_auto_init = v:false
 
 " Maybe someday I'll be able to remove this block
 if &shell =~# 'fish$'
-  set shell=zsh
+  set shell=bash
 endif
 
 " Dein: plugin manager {{{1
@@ -357,6 +357,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
   call dein#add('sakhnik/nvim-gdb')
   call dein#add('liuchengxu/vim-which-key')
+  call dein#add('camspiers/animate.vim')
+  call dein#add('camspiers/lens.vim')
 
   call dein#add('rhysd/git-messenger.vim', {
         \ 'lazy': v:true,
@@ -631,9 +633,6 @@ let vim_json_syntax_conceal = v:true  " Enable conceal for json
 
 " Python
 let python_highlight_all = 1
-
-" Rust
-let rust_conceal = v:true " Conceal markers for rust
 
 " Tex
 let tex_flavor = 'latex'

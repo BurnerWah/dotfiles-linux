@@ -63,7 +63,7 @@
       "filetypes": ["python"],
       "settings": {
         "pyls": {
-          "enable": false,
+          "enable": true,
           "plugins": {
             "flake8": {
               "enabled": true,
@@ -149,7 +149,6 @@
   "npm.binPath": "yarnpkg",
   "prettier.semi": false,
   "prettier.singleQuote": true,
-  "project.dbpath": "~/.config/coc/projects.json",
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true, // I don't use rustup
   "session.directory": "~/.local/share/nvim/sessions",

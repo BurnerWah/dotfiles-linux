@@ -68,22 +68,6 @@ syn match vimMapRhs contained '.*\ze\s\+|$' contains=vimNotation,vimCtrlChar
 syn clear vimMapRhsExtend
 syn match vimMapRhsExtend contained '^\s*\\[^|].*$' contains=vimContinue
 
-" Operators: equivalence {{{2
-syn match vimOper '==[#?]\?' conceal cchar== skipwhite nextgroup=vimString,vimSpecFile
-syn match vimOper '!=[#?]\?' conceal cchar=≠ skipwhite nextgroup=vimString,vimSpecFile
-" Operators: greater {{{2
-syn match vimOper '>[#?]' conceal cchar=> skipwhite nextgroup=vimString,vimSpecFile
-syn match vimOper '>=[#?]\?' conceal cchar=≥ skipwhite nextgroup=vimString,vimSpecFile
-" Operators: less {{{2
-syn match vimOper '<[#?]' conceal cchar=< skipwhite nextgroup=vimString,vimSpecFile
-syn match vimOper '<=[#?]\?' conceal cchar=≤ skipwhite nextgroup=vimString,vimSpecFile
-" Operators: regex {{{2
-syn match vimOper '=\~[#?]\?' conceal cchar=≃ skipwhite nextgroup=vimString,vimSpecFile
-syn match vimOper '!\~[#?]\?' conceal cchar=≄ skipwhite nextgroup=vimString,vimSpecFile
-" Operators: congruency {{{2
-syn match vimOper '\<is[#?]\?\>' conceal cchar=≡ skipwhite nextgroup=vimString,vimSpecFile
-syn match vimOper '\<isnot[#?]\?\>' conceal cchar=≢ skipwhite nextgroup=vimString,vimSpecFile
-
 " Regexp: hidden {{{2
 syn match vimRegHide    contained transparent conceal '\\'
 syn match vimRegHideStr contained transparent conceal '\\_'
@@ -185,14 +169,14 @@ syn region vimOperParen
 " define strings first.
 " then keys to override strings.
 " then matches that override erroneous keys.
-" syn region vimDictString contained oneline keepend 
+" syn region vimDictString contained oneline keepend
 "       \ matchgroup=vimDictQuoteS
 "       \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
 "       \ skip=+\\\\\|\\\z1+
 "       \ end=+\z1+
 "       \ contains=@vimStringGroup
 
-" syn region vimDictKey contained oneline keepend 
+" syn region vimDictKey contained oneline keepend
 "       \ matchgroup=vimDictQuoteK
 "       \ start=+[^a-zA-Z>!\\@]\z(['"]\)+lc=1
 "       \ skip=+\\\\\|\\\z1+
