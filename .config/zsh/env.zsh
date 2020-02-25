@@ -15,6 +15,8 @@ typeset -U path
   # Append elements
   path+=(
     "${FLATPAK_SYSTEM_DIR:-/var/lib/flatpak}/exports/bin"
+    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/bin"
+    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/sbin"
   )
   # Remove unwanted elements
   for element ( "$HOME/bin" ) path[${path[(i)$element]}]=()
