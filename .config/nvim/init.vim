@@ -89,6 +89,7 @@ endif
 " Settings {{{2
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
 let dein#enable_notification = v:true
+let dein#install_progress_type = 'tabline'
 
 " Required {{{2
 " Technically dein requires nocompatible to be set, but that's always true
@@ -367,6 +368,9 @@ if dein#load_state('~/.local/share/dein')
         \ })
   " View git commit messages in a floating window.
 
+  " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
+  " the moment it won't install.
+
   " Mode-line {{{3
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes', {'depends': ['vim-airline']})
@@ -579,6 +583,11 @@ let chromatica#global_args = [
       \ '-isystem/usr/include/c++/9/backward',
       \ '-isystem/usr/lib64/clang/9.0.0/include',
       \ '-isystem/usr/local/include',
+      \ ]
+
+" Lens: Automatic Window Resizing {{{2
+let lens#disabled_filetypes = [
+      \   'vista',
       \ ]
 
 " VimWiki: Note-taking tool {{{2
