@@ -1,67 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-  <mime-type type="application/x-zsh">
-    <comment>Zsh script</comment>
-    <sub-class-of type="application/x-shellscript"/>
-    <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-script"/>
-    <glob pattern="*.zsh"/>
-    <glob pattern="*.zshrc"/>
-    <glob pattern="*.zshenv"/>
-    <glob pattern="*.zprofile"/>
-    <glob pattern="*.zlogin"/>
-    <glob pattern="*.zlogout"/>
-    <glob pattern="*.zsh-theme"/>
-    <glob pattern="zshrc"/>
-    <glob pattern="zshenv"/>
-    <glob pattern="zprofile"/>
-    <glob pattern="zlogin"/>
-    <glob pattern="zlogout"/>
-    <magic priority="50">
-      <match type="string" offset="0" value="#compdef"/>
-      <match type="string" offset="0" value="#autoload"/>
-      <match type="string" offset="0" value="#!/bin/zsh"/>
-      <match type="string" offset="0" value="#!/bin/env zsh"/>
-      <match type="string" offset="0" value="#!/usr/bin/zsh"/>
-      <match type="string" offset="0" value="#!/usr/bin/env zsh"/>
-    </magic>
-  </mime-type>
-  <mime-type type="application/x-bash">
-    <comment>Bash script</comment>
-    <sub-class-of type="application/x-shellscript"/>
-    <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-script"/>
-    <glob pattern="*.bash"/>
-    <glob pattern="*.bashrc"/>
-    <glob pattern="*.bash_profile"/>
-    <glob pattern="*.bash_logout"/>
-    <glob pattern="bashrc"/>
-    <magic priority="50">
-      <match type="string" offset="0" value="#!bash"/>
-      <match type="string" offset="0" value="#!/bin/bash"/>
-      <match type="string" offset="0" value="#!/bin/env bash"/>
-      <match type="string" offset="0" value="#!/usr/bin/bash"/>
-      <match type="string" offset="0" value="#!/usr/bin/env bash"/>
-    </magic>
-  </mime-type>
-  <mime-type type="application/x-cshell">
-    <comment>C-Shell script</comment>
-    <sub-class-of type="application/x-shellscript"/>
-    <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-script"/>
-    <glob pattern="*.csh"/>
-    <glob pattern="*.cshrc"/>
-    <magic priority="50">
-      <match type="string" offset="0" value="#!/bin/csh"/>
-      <match type="string" offset="0" value="#!/bin/tcsh"/>
-      <match type="string" offset="0" value="#!/bin/env csh"/>
-      <match type="string" offset="0" value="#!/bin/env tcsh"/>
-      <match type="string" offset="0" value="#!/usr/bin/csh"/>
-      <match type="string" offset="0" value="#!/usr/bin/tcsh"/>
-      <match type="string" offset="0" value="#!/usr/bin/env csh"/>
-      <match type="string" offset="0" value="#!/usr/bin/env tcsh"/>
-    </magic>
-  </mime-type>
   <mime-type type="application/x-fish">
     <comment>Fish script</comment>
     <sub-class-of type="application/x-shellscript"/>
@@ -69,8 +7,8 @@
     <generic-icon name="text-x-script"/>
     <glob pattern="*.fish"/>
     <magic priority="50">
-      <match type="string" offset="0" value="#!/usr/bin/fish"/>
-      <match type="string" offset="0" value="#!/usr/bin/env fish"/>
+      <match type="string" value="/bin/fish" offset="2:16"/>
+      <match type="string" value="/bin/env fish" offset="2:16"/>
     </magic>
   </mime-type>
   <mime-type type="application/vim">
@@ -82,28 +20,12 @@
     <glob pattern="vimrc"/>
     <glob pattern="virc"/>
   </mime-type>
-  <mime-type type="application/typescript">
+  <mime-type type="text/typescript">
     <comment>TypeScript program</comment>
+    <alias type="text/x-typescript"/>
     <sub-class-of type="application/javascript"/>
     <generic-icon name="application-javascript"/>
     <glob pattern="*.ts"/>
-  </mime-type>
-  <mime-type type="application/coffeescript">
-    <comment>CoffeeScript program</comment>
-    <sub-class-of type="application/javascript"/>
-    <generic-icon name="application-javascript"/>
-    <glon pattern="*.coffee"/>
-  </mime-type>
-  <mime-type type="application/nodejs">
-    <comment>JavaScript program</comment>
-    <sub-class-of type="application/javascript"/>
-    <generic-icon name="application-javascript"/>
-    <magic priority="50">
-      <match type="string" offset="0" value="#!/bin/node"/>
-      <match type="string" offset="0" value="#!/usr/bin/node"/>
-      <match type="string" offset="0" value="#!/bin/env node"/>
-      <match type="string" offset="0" value="#!/usr/bin/env node"/>
-    </magic>
   </mime-type>
   <mime-type type="text/fennel">
     <comment>Fennel lisp source code</comment>
@@ -118,10 +40,8 @@
     <generic-icon name="text-x-lua"/>
     <glob pattern="*.moon"/>
     <magic priority="50">
-      <match type="string" offset="0" value="#!/bin/moon"/>
-      <match type="string" offset="0" value="#!/usr/bin/moon"/>
-      <match type="string" offset="0" value="#!/bin/env moon"/>
-      <match type="string" offset="0" value="#!/usr/bin/env moon"/>
+      <match type="string" value="/bin/moon" offset="2:16"/>
+      <match type="string" value="/bin/env moon" offset="2:16"/>
     </magic>
   </mime-type>
   <mime-type type="text/toml">
@@ -129,5 +49,76 @@
     <sub-class-of type="text/plain"/>
     <generic-icon name="text-x-generic"/>
     <glob pattern="*.toml"/>
+  </mime-type>
+  <!-- extra globs, magics, & aliases for types I didn't define -->
+  <mime-type type="application/javascript">
+    <alias type="text/x-javascript"/>
+    <magic priority="50">
+      <match type="string" value="/bin/node" offset="2:16"/>
+      <match type="string" value="/bin/env node" offset="2:16"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-shellscript">
+    <glob pattern="*.bash"/>
+    <glob pattern="*.bash_logout"/>
+    <glob pattern="*.bash_profile"/>
+    <glob pattern="*.bashrc"/>
+    <glob pattern="*.zlogin"/>
+    <glob pattern="*.zlogout"/>
+    <glob pattern="*.zprofile"/>
+    <glob pattern="*.zsh"/>
+    <glob pattern="*.zsh-theme"/>
+    <glob pattern="*.zshenv"/>
+    <glob pattern="*.zshrc"/>
+    <glob pattern="bashrc"/>
+    <glob pattern="zlogin"/>
+    <glob pattern="zlogout"/>
+    <glob pattern="zprofile"/>
+    <glob pattern="zshenv"/>
+    <glob pattern="zshrc"/>
+    <magic priority="50">
+      <match type="string" value="#compdef" offset="0"/>
+      <match type="string" value="#autoload" offset="0"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-csh">
+    <glob pattern="*.cshrc"/>
+  </mime-type>
+  <mime-type type="text/x-python3">
+    <magic priority="60">
+      <match type="string" value="/bin/pypy3" offset="2:16"/>
+      <match type="string" value="/bin/env pypy3" offset="2:16"/>
+    </magic>
+  </mime-type>
+  <mime-type type="text/x-c++src">
+    <alias type="text/x-c++"/>
+  </mime-type>
+  <mime-type type="text/x-c++hdr">
+    <sub-class-of type="text/x-c++src"/>
+  </mime-type>
+  <mime-type type="application/x-asp">
+    <alias type="text/x-asp-src"/>
+  </mime-type>
+  <mime-type type="text/x-bibtex">
+    <alias type="text/x-bib"/>
+  </mime-type>
+  <mime-type type="text/x-texinfo">
+    <alias type="application/x-texinfo"/>
+  </mime-type>
+  <mime-type type="text/x-txt2tags">
+    <alias type="text/txt2tags"/>
+  </mime-type>
+  <mime-type type="text/vnd.graphvix">
+    <alias type="text/x-dot"/>
+  </mime-type>
+  <mime-type type="text/x-matlab">
+    <alias type="text/octave"/>
+  </mime-type>
+  <mime-type type="application/x-awk">
+    <alias type="text/x-awk"/>
+  </mime-type>
+  <mime-type type="application/vnd.coffeescript">
+    <alias type="text/x-coffeescript"/>
+    <alias type="application/x-coffeescript"/>
   </mime-type>
 </mime-info>
