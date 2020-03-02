@@ -1,10 +1,3 @@
-" Buffer variables
-let b:coc_root_patterns = ['.git', 'go.mod', 'Gopkg.toml']
-let b:undo_ftplugin = join([
-      \ get(b:, 'undo_ftplugin', ''),
-      \ 'exe "au! user_ftplugin_go * <buffer>"',
-      \ ], ' | ')
-
 " Maps
 nmap <buffer> <silent> gD <Plug>(coc-definition)
 nmap <buffer> <silent> <C-]> <Plug>(coc-definition)

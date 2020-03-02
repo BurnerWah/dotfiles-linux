@@ -48,8 +48,8 @@ if has('conceal')
   set concealcursor =nv
 endif
 
-" let loaded_ruby_provider = 0
-" let loaded_node_provider = 0
+let node_host_prog = exepath('neovim-node-host')
+let ruby_host_prog = exepath('neovim-ruby-host')
 let fennel_nvim_auto_init = v:false
 
 " Maybe someday I'll be able to remove this block
@@ -144,7 +144,10 @@ if dein#load_state('~/.local/share/dein')
   " Linter: ALE
   " Snippets: vim-snippets
 
-  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim')
+  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
+        \ 'if': (has('nvim') && executable('awk')),
+        \ 'merged': v:true,
+        \ })
 
   " CXX: {{{3
   " FTDetect: $VIMRUNTIME
@@ -155,7 +158,10 @@ if dein#load_state('~/.local/share/dein')
   " Completion: language server, neoinclude
   " Snippets: vim-snippets
 
-  call dein#add('arakashic/chromatica.nvim')
+  call dein#add('arakashic/chromatica.nvim', {
+        \ 'if': has('python3'),
+        \ 'merged': v:true,
+        \ })
   " Provides enhanced highlighting. It requires the base CXX syntax definition.
 
   call dein#add('Shougo/neoinclude.vim')
@@ -187,7 +193,11 @@ if dein#load_state('~/.local/share/dein')
   " Completion: language server
   " Snippets: vim-go, vim-snippets
   " Compiler: vim-go
-  call dein#add('fatih/vim-go')
+
+  call dein#add('fatih/vim-go', {
+        \ 'if': has('nvim-0.3.2'),
+        \ 'merged': v:true,
+        \ })
 
   " I3: {{{3
   call dein#add('mboughaba/i3config.vim')
@@ -204,20 +214,11 @@ if dein#load_state('~/.local/share/dein')
 
   " LLVM: {{{3
   " The llvm highlighting is in a subdirectory of llvm-mirror/llvm, which is a
-  " 500mb repository. You're better off directly adding stuff.
+  " 500mb repository. You're better off directly adding stuff or using a repo
+  " based on it.
   " See: https://github.com/llvm-mirror/llvm/tree/master/utils/vim
-  let s:llvm_raw = s:gh_raw.'llvm-mirror/llvm/master/utils/vim/'
-  call dein#add(s:llvm_raw.'ftdetect/llvm-lit.vim', {'script_type': 'ftdetect'})
 
-  call dein#add(s:llvm_raw.'ftdetect/tablegen.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:llvm_raw.'ftplugin/tablegen.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:llvm_raw.'syntax/tablegen.vim', {'script_type': 'syntax'})
-
-  call dein#add(s:llvm_raw.'ftdetect/llvm.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:llvm_raw.'ftplugin/llvm.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:llvm_raw.'syntax/llvm.vim', {'script_type': 'syntax'})
-  call dein#add(s:llvm_raw.'indent/llvm.vim', {'script_type': 'indent'})
-  unlet s:llvm_raw
+  call dein#add('rhysd/vim-llvm')
 
   " Lua: {{{3
   call dein#add('bfredl/nvim-luadev')
@@ -227,17 +228,17 @@ if dein#load_state('~/.local/share/dein')
         \ 'if': executable('node'),
         \ 'lazy': v:true,
         \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
-        \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"'
+        \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
         \ })
 
   " Meson: {{{3
-  " Official meson syntax is similar to the official llvm syntax
-  let s:meson_raw = s:gh_raw.'mesonbuild/meson/master/data/syntax-highlighting/vim/'
-  call dein#add(s:meson_raw.'ftdetect/meson.vim', {'script_type': 'ftdetect'})
-  call dein#add(s:meson_raw.'ftplugin/meson.vim', {'script_type': 'ftplugin'})
-  call dein#add(s:meson_raw.'indent/meson.vim', {'script_type': 'indent'})
-  call dein#add(s:meson_raw.'syntax/meson.vim', {'script_type': 'syntax'})
-  unlet s:meson_raw
+  " Official meson syntax is similar to the official llvm syntax, although we
+  " can get the reposotory size down to about 21MB (at time of writing) by
+  " cloning with a low depth.
+  call dein#add('mesonbuild/meson', {
+        \ 'rtp': 'data/syntax-highlighting/vim',
+        \ 'type__depth': 1,
+        \ })
 
   " MoonScript: {{{3
   call dein#add('leafo/moonscript-vim')
@@ -342,7 +343,7 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
   call dein#add('Vigemus/nvimux')
   call dein#add('liuchengxu/vim-clap', {
-        \ 'if': has('nvim-0.4.2'),
+        \ 'if': (has('nvim-0.4.2') && has('python3') && executable('cargo')),
         \ 'build': join([
         \   'cargo build --release',
         \   'cd pythonx/clap',
@@ -356,7 +357,13 @@ if dein#load_state('~/.local/share/dein')
   " call dein#add('Shougo/deol.nvim', {'depends': ['denite.nvim']})
   call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
   call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
-  call dein#add('sakhnik/nvim-gdb')
+  call dein#add('sakhnik/nvim-gdb', {
+        \ 'if': (has('python3')     &&
+        \       (executable('gdb')  ||
+        \        executable('lldb') ||
+        \        executable('bashdb'))),
+        \ 'merged': v:true,
+        \ })
   call dein#add('liuchengxu/vim-which-key')
   call dein#add('camspiers/animate.vim')
   call dein#add('camspiers/lens.vim')
@@ -383,6 +390,7 @@ if dein#load_state('~/.local/share/dein')
   " nvim colorizer highlights colors really quickly.
 
   call dein#add('meain/vim-package-info', {
+        \ 'if': has('node'),
         \ 'build': 'yarn install --ignore-optional --link-duplicates',
         \ })
   " Shows package information in package.json, cargo.toml, etc.

@@ -1,12 +1,6 @@
 " Options
 setl formatexpr=CocAction('formatSelected')
-setl foldmethod=syntax
-
-" Buffer variables
-let b:undo_ftplugin = join([
-      \ get(b:, 'undo_ftplugin', ''),
-      \ 'exe "au! user_ftplugin_json * <buffer>"',
-      \ ], ' | ')
+setl fdm=syntax
 
 " Commands
 com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')

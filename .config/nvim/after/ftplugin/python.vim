@@ -1,9 +1,10 @@
 " File: after/ftplugin/python.vim
 " Author: Jaden Pleasants
 " Description: Improvements to python editing
-
 " Commands
+com! -buffer -nargs=0 Autopep8 :ALEFix autopep8
 com! -buffer -nargs=0 Black :ALEFix black
+com! -buffer -nargs=0 Yapf :ALEFix yapf
 
 " Maps
 nmap <buffer> <silent> <leader>rr :Semshi rename<CR>

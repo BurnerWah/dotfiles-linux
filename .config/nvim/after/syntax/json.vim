@@ -4,13 +4,18 @@
 " Last Modified: November 08, 2019
 
 " Fix spelling issues
-syn match  jsonStringMatch /"\([^"]\|\\\"\)\+"\ze[[:blank:]\r\n]*[,}\]]/ contains=jsonString,@Spell
+syn match jsonStringMatch /"\([^"]\|\\\"\)\+"\ze[[:blank:]\r\n]*[,}\]]/ contains=jsonString,@Spell
 
 if exists('b:is_jsonc')
   syn clear jsonCommentError
 
-  syn region jsonComment start='\%(^\|\s\+\)//' end='$' contains=jsonTodo,@Spell fold oneline
-  syn region jsonComment start='/\*' end='\*/' contains=jsonTodo,@Spell fold
+  syn region jsonComment fold oneline
+        \ start=+\%(^\|\s\+\)//+
+        \ end=+$+
+        \ contains=jsonTodo,@Spell
+  syn region jsonComment fold
+        \ start=+/\*+ end=+\*/+
+        \ contains=jsonTodo,@Spell
 
   syn keyword jsonTodo contained TODO FIXME XXX NOTE
 

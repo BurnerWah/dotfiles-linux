@@ -15,21 +15,13 @@ syn cluster vimRegCluster contains=vimRegFlag,vimRegErr,vimRegNumber,@vimRegAnch
 syn cluster vimDictGroup contains=vimDictString,vimDictKey,vimDictStrFix,vimDictPrimitive,@vimOperGroup
 
 syn cluster vimOperGroup add=vimVar
-syn cluster vimStringGroup    add=@vimRegCluster
-syn cluster vimSubstList      add=@vimRegCluster
-syn cluster vimSynRegGroup    add=@vimRegCluster
+syn cluster vimStringGroup add=@vimRegCluster
+syn cluster vimSubstList add=@vimRegCluster
+syn cluster vimSynRegGroup add=@vimRegCluster
 syn cluster vimSynRegPatGroup add=@vimRegCluster
 
 
 " Syntax definitions {{{1
-" Functions {{{2
-syn match vimRichFunc transparent 'get(\s*\zs[bwtglsav]:\s*,\s*[\'"]\h\w*\%(\.\h\w*\)*[\'"]\ze' contains=vimRichFuncGetConceal,vimRichFuncGetHL
-syn match vimRichFuncGetConceal contained '[bwtglsav]:\zs\s*,\s*\ze[\'"]' conceal transparent
-syn match vimRichFuncGetHL contained '[bwtglsav]:'
-syn match vimRichFuncGetHL contained '\h\w*\%(\.\h\w*\)*'
-
-hi def link vimRichFungGetHL vimVar
-
 " Syntax: multi-line commands {{{2
 " The expression for a continuation line is `/^\s*\\/`.
 " So for us to properly extend weird regions, such as the ones used for
@@ -47,6 +39,15 @@ syn region vimSynRegion contained keepend
       \ end=+^\%(\s*\\\)\@!+
       \ contains=@vimSynRegGroup,vimContinue
 
+syn region vimSynMatchRegion contained keepend
+      \ matchgroup=vimGroupName
+      \ start=+\h\w*+
+      \ skip=+\\\\\|\\|+
+      \ matchgroup=vimSep
+      \ end=+|+
+      \ end=+^\%(\s*\\\)\@!+
+      \ contains=@vimSynMtchGroup
+
 " Syntax: conceal {{{2
 " This was outright missing from the default syntax. Why I don't know.
 syn match vimSynType contained skipwhite 'conceal' nextgroup=vimSynConcealOpt
@@ -57,13 +58,22 @@ syn keyword vimSynConcealOpt contained on off
 " Stupidly enough, we can get a list of Vim vars by listing the keys in v:.
 exe 'syn match vimConstant contained /\<v:\%('.join(keys(v:), '\|').'\)/ containedin=vimVar'
 
+" Variables: Booleans & nulls {{{2
+" I was going to write a comment here about how stupid it is that booleans and
+" nulls are actually v: variables, but shellscript hasn't even thought to add
+" concepts such as booleans to it so I'll take what I can get.
+syn match vimBoolean contained '\<v:\%(true\|false\)\>'
+      \ containedin=vimVar contains=vimBoolHide
+syn match vimBoolHide contained transparent conceal '\<v:'
+
 " Autocmd {{{2
-syn match vimAutoCmdSfxList contained '\S*' nextgroup=vimCommand,vimAutoCmdExtend skipwhite
+syn match vimAutoCmdSfxList contained skipwhite '\S*'
+      \ nextgroup=vimCommand,vimAutoCmdExtend
 syn match vimAutoCmdExtend contained '^\s*\\|.*$' contains=vimContinue
 
 " Maps {{{2
-"syn match vimMapRhs contained '.*\ze\s*[^|]$' contains=vimNotation,vimCtrlChar skipnl nextgroup=vimMapRhsExtend
-syn match vimMapRhs contained '.*\%(\s*|$\)\@!' contains=vimNotation,vimCtrlChar skipnl nextgroup=vimMapRhsExtend
+syn match vimMapRhs contained skipnl '.*\%(\s*|$\)\@!'
+      \ contains=vimNotation,vimCtrlChar nextgroup=vimMapRhsExtend
 syn match vimMapRhs contained '.*\ze\s\+|$' contains=vimNotation,vimCtrlChar
 syn clear vimMapRhsExtend
 syn match vimMapRhsExtend contained '^\s*\\[^|].*$' contains=vimContinue
@@ -107,7 +117,8 @@ syn match vimRegMatch  contained '\%(\\\\\)*\zs\\z[se]'
 syn match vimRegWord   contained '\%(\\\\\)*\zs\\[<>]' contains=vimRegHide
 
 " Regexp: Quantifiers {{{2
-syn match vimRegQuantity contained '\%(\\\\\)*\zs\\{-\?\d*\%(,\d*\)\?}' contains=vimRegUnsafeNumber,vimRegHide
+syn match vimRegQuantity contained '\%(\\\\\)*\zs\\{-\?\d*\%(,\d*\)\?}'
+      \ contains=vimRegUnsafeNumber,vimRegHide
 syn match vimReg1OrMore contained '\%(\\\\\)*\zs\\+' contains=vimRegHide
 syn match vimReg0Or1    contained '\%(\\\\\)*\zs\\?' contains=vimRegHide
 syn match vimReg0Or1    contained '\%(\\\\\)*\zs\\=' conceal cchar=?
@@ -116,6 +127,9 @@ syn match vimRegGreedy  contained '\%(\\\\\)*\zs\\{}' conceal cchar=*
 " NOTE: People who use {} deserve the death
 
 " Regexp: Groups {{{2
+" NOTE: While a region would be preferable for this, there doesn't seem to be
+" any way to only conceal a part of the ends. It's either 'concealends', which
+" conceals nothing, or this, which at least looks the way it's supposed to.
 syn match vimRegGroup contained '\%(\\\\\)*\zs\\%\?(' contains=vimRegHideGrp
 syn match vimRegGroup contained '\%(\\\\\)*\zs\\)' contains=vimRegHide
 syn match vimRegEither contained '\%(\\\\\)*\zs\\|' contains=vimRegHide
@@ -138,8 +152,10 @@ syn match vimRegUnsafeNumber contained '\d\+'
 " Regexp: Errors {{{2
 " These errors will cause the regex engine to fail.
 syn match vimRegErr contained '\%(\\\\\)*\zs\\%#=\%(\ze[\'"/]\|[^012]\)'
-syn match vimRegErr contained '\%(\\\\\)*\zs\\z\%(\ze[\'"/]\|[^se[:digit:](]\)'
-syn match vimRegErr contained '\%(\\\\\)*\zs\\_\%(\ze[\'"/]\|\c[^ikfpsdxowhalu\^$.\[]\)'
+syn match vimRegErr contained
+      \ '\%(\\\\\)*\zs\\z\%(\ze[\'"/]\|[^se[:digit:](]\)'
+syn match vimRegErr contained
+      \ '\%(\\\\\)*\zs\\_\%(\ze[\'"/]\|\c[^ikfpsdxowhalu\^$.\[]\)'
 
 " These are just bad syntax
 syn match vimRegErr contained '\%(\\\\\)*\zs\\[ETRBNgGjJqQ]' " reserved escapes
@@ -222,6 +238,7 @@ hi def link vimRegErr Error
 
 hi def link vimSynConcealOpt vimSynType
 hi def link vimConstant Constant
+hi def link vimBoolean Boolean
 
 hi def link vimDictString vimString
 hi def link vimDictQuoteS vimDictString

@@ -1,0 +1,2 @@
+" Options
+setl nospell
