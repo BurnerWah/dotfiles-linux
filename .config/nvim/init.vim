@@ -501,7 +501,6 @@ let ale_linters_ignore = {
       \   'cpp': ['ccls', 'clangd'],
       \   'css': ['stylelint'],
       \   'fortran': ['language_server'],
-      \   'gitcommit': ['gitlint'],
       \   'go': ['golangserver', 'gopls'],
       \   'javascript': ['tsserver'],
       \   'less': ['stylelint'],
@@ -589,7 +588,7 @@ let chromatica#global_args = [
       \ '-isystem/usr/include/c++/9',
       \ '-isystem/usr/include/c++/9/x86_64-redhat-linux',
       \ '-isystem/usr/include/c++/9/backward',
-      \ '-isystem/usr/lib64/clang/9.0.0/include',
+      \ '-isystem/usr/lib64/clang/9.0.1/include',
       \ '-isystem/usr/local/include',
       \ ]
 

@@ -29,7 +29,7 @@ The biggest real problems with Coc.nvim_ would have to be:
 
 * There isn't a (good) way to disable it for a buffer
 * It can screw with your ``runtimepath``
-* It doesn't really play very nicely with other plugins
+* It doesn't really play nicely with other plugins
 
 Non of those are really deal breakers, but they're worth keeping in mind if you
 decide you use it.
