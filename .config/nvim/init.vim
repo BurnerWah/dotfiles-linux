@@ -469,8 +469,6 @@ let snips_email  = 'jadenpleasants@fastmail.com'
 let git_messenger_always_into_popup = v:true
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-lua require("navigation")
-
 exe 'luafile '.stdpath('config').'/config.lua'
 
 " Colorscheme: Currently set to a fork of quantum {{{2
@@ -665,11 +663,6 @@ let markdown_fenced_languages = ['go']
 cabbrev Vi Vista
 
 " Keybindings {{{1
-
-nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
-nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
-nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
-nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
