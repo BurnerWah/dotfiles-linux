@@ -12,15 +12,9 @@
       "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/"],
       "initializationOptions": {
         "cache": { "directory": ".ccls-cache" },
-        "clang": { "resourceDir": "/usr/lib64/clang/9.0.0" },
+        "clang": { "resourceDir": "/usr/lib64/clang/9.0.1" },
         "highlight": { "lsRanges": true }
       }
-    },
-    "clangd": {
-      "command": "clangd",
-      "args": ["--background-index"],
-      "filetypes": ["c", "cpp", "objc", "objcpp"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".git/"]
     },
     "cmake": {
       "command": "cmake-language-server",
@@ -54,7 +48,8 @@
     "gopls": {
       "command": "gopls",
       "filetypes": ["go"],
-      "rootPatterns": ["go.mod", "Gopkg.toml", ".git/"],
+      "rootPatterns": ["go.mod", "Gopkg.toml"],
+      "disableWorkspaceFolders": true,
       "initializationOptions": { "usePlaceholders": true }
     },
     "pyls": {
@@ -75,7 +70,8 @@
           }
         }
       }
-    }
+    },
+    "lua": { "command": "lua-lsp", "filetypes": ["lua"] }
   },
   "coc.preferences.extensionUpdateCheck": "never",
   "coc.preferences.formatOnSaveFiletypes": [
@@ -88,6 +84,7 @@
   ],
   "coc.preferences.hoverTarget": "float",
   "diagnostic-languageserver.filetypes": {
+    "vim": "vint",
     "sh": "shellcheck"
   },
   "highlight.colors.enable": false, // We have another plugin set up to handle this
@@ -128,7 +125,6 @@
     }
   ],
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
-  "lua.commandPath": "/home/jadenpleasants/.local/bin/lua-lsp",
   "npm.binPath": "yarnpkg",
   "prettier.semi": false,
   "prettier.singleQuote": true,

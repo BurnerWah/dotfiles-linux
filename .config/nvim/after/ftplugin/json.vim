@@ -9,7 +9,8 @@ com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.form
 nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
 
 " autocmds
-aug user_ftplugin_json
+aug user_ftplugin
   au! * <buffer>
   au BufWritePre <buffer> call CocAction('runCommand', 'prettier.formatFile')
+  au CursorHold <buffer> silent call CocActionAsync('highlight')
 aug END

@@ -594,6 +594,8 @@ let chromatica#global_args = [
 
 " Lens: Automatic Window Resizing {{{2
 let lens#disabled_filetypes = [
+      \   'list',
+      \   'qf',
       \   'vista',
       \ ]
 
@@ -672,7 +674,6 @@ nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 nnoremap <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
 
 xmap ga <Plug>(LiveEasyAlign)
@@ -733,8 +734,6 @@ aug init
   au!
   au FileType list setl nospell
   au FileType gitmessengerpopup setl winblend=10
-  " Highlight symbol under cursor on CursorHold
-  au CursorHold * silent call CocActionAsync('highlight')
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
