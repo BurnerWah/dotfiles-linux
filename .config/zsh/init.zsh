@@ -225,9 +225,9 @@ add-zsh-hook preexec terminal_title_preexec
 
 
 # Prompt setup {{{1
-autoload -Uz promptinit && promptinit
-prompt powerlevel10k
-zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
+# autoload -Uz promptinit && promptinit
+# prompt powerlevel10k
+# zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
 
 
 # Settings {{{1
@@ -244,7 +244,7 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
   local plugins=(
     'zsh-autosuggestions'
     'zsh-history-substring-search'
-    'fast-syntax-highlighting.plugin'
+    # 'fast-syntax-highlighting.plugin'
   )
   for plugin in $plugins; do
     zrecompile $plugin_dir/**/$plugin.zsh

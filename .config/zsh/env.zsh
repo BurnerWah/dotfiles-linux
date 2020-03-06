@@ -15,8 +15,8 @@ typeset -U path
   # Append elements
   path+=(
     "${FLATPAK_SYSTEM_DIR:-/var/lib/flatpak}/exports/bin"
-    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/bin"
     "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/sbin"
+    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/bin"
   )
   # Remove unwanted elements
   for element ( "$HOME/bin" ) path[${path[(i)$element]}]=()
@@ -55,6 +55,7 @@ fpath=(
   "$ZDOTDIR/functions/Misc"     # Stuff
   "$ZDOTDIR/functions/Completion" # Custom completions
   "$XDG_DATA_HOME/zsh/site-functions" # not standard but useful with GNU Stow
+  "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/share/zsh/site-functions"
 )
 
 # vim:ft=zsh fdm=marker
