@@ -202,6 +202,9 @@ if dein#load_state('~/.local/share/dein')
   " I3: {{{3
   call dein#add('mboughaba/i3config.vim')
 
+  " Ion: Redox Shell
+  call dein#add('https://gitlab.redox-os.org/redox-os/ion-vim')
+
   " JSON: {{{3
   " FTDetect: vim-json, $VIMRUNTIME
   " FTPlugin: vim-json
