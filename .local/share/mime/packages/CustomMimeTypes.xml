@@ -121,4 +121,7 @@
     <alias type="text/x-coffeescript"/>
     <alias type="application/x-coffeescript"/>
   </mime-type>
+  <mime-type type="image/jpeg">
+    <glob pattern="*.jfif"/>
+  </mime-type>
 </mime-info>
