@@ -426,6 +426,7 @@ archives:
     - .xz
     - .z
     - .zip
+    - .zst
 
 executable:
   windows: [.bat, .com, .exe]

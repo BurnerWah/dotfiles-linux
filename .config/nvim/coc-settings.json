@@ -12,7 +12,7 @@
       "rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/"],
       "initializationOptions": {
         "cache": { "directory": ".ccls-cache" },
-        "clang": { "resourceDir": "/usr/lib64/clang/9.0.1" },
+        "clang": { "resourceDir": "/usr/lib64/clang/10.0.0" },
         "highlight": { "lsRanges": true }
       }
     },

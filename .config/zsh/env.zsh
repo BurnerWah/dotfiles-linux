@@ -30,6 +30,9 @@ export FZF_DEFAULT_COMMAND='fd -t f'
 # things I just don't want in the $HOME folder
 export WORKON_HOME=${WORKON_HOME:-$HOME/.var/lib/virtualenv}
 
+# i don't fucking care
+export BRZ_LOG=/dev/null
+
 # zsh-specific variables
 typeset ZSH_AUTOSUGGEST_USE_ASYNC=''
 

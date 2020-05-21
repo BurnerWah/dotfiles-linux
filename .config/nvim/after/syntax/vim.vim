@@ -46,7 +46,16 @@ syn region vimSynMatchRegion contained keepend
       \ matchgroup=vimSep
       \ end=+|+
       \ end=+^\%(\s*\\\)\@!+
-      \ contains=@vimSynMtchGroup
+      \ contains=@vimSynMtchGroup,vimContinue
+
+syn region vimSynKeyRegion contained keepend
+      \ matchgroup=vimGroupName
+      \ start=+\h\w*+
+      \ skip=+\\\\\|\\|+
+      \ matchgroup=vimSep
+      \ end=+|+
+      \ end=+^\%(\s*\\\)\@!+
+      \ contains=@vimSynKeyGroup,vimContinue
 
 " Syntax: conceal {{{2
 " This was outright missing from the default syntax. Why I don't know.

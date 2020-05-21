@@ -586,10 +586,10 @@ let chromatica#enable_at_startup = v:true " auto-enable Chromatica when relevant
 let chromatica#responsive_mode   = v:true " Continuously highlight files
 " Without the following args, chromatica won't highlight files correctly.
 let chromatica#global_args = [
-      \ '-isystem/usr/include/c++/9',
-      \ '-isystem/usr/include/c++/9/x86_64-redhat-linux',
-      \ '-isystem/usr/include/c++/9/backward',
-      \ '-isystem/usr/lib64/clang/9.0.1/include',
+      \ '-isystem/usr/include/c++/10',
+      \ '-isystem/usr/include/c++/10/x86_64-redhat-linux',
+      \ '-isystem/usr/include/c++/10/backward',
+      \ '-isystem/usr/lib64/clang/10.0.0/include',
       \ '-isystem/usr/local/include',
       \ ]
 
