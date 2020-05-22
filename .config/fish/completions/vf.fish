@@ -1,0 +1,15 @@
+# vf completion extension
+# this just adds descriptions to subcommands
+complete -c vf -xa "activate"       -d "Activate a virtualenv"                                     -n "__vfcompletion_needs_command"
+complete -c vf -xa "addpath"        -d "Adds a path to sys.path in this virtualenv"                -n "__vfcompletion_needs_command"
+complete -c vf -xa "all"            -d "Run a command in all virtualenvs sequentially"             -n "__vfcompletion_needs_command"
+complete -c vf -xa "cd"             -d "Change directory to this virtualenv"                       -n "__vfcompletion_needs_command"
+complete -c vf -xa "cdpackages"     -d "Change to the site-packages directory of this virtualenv"  -n "__vfcompletion_needs_command"
+complete -c vf -xa "connect"        -d "Connect this virtualenv to the current directory"          -n "__vfcompletion_needs_command"
+complete -c vf -xa "deactivate"     -d "Deactivate this virtualenv"                                -n "__vfcompletion_needs_command"
+complete -c vf -xa "globalpackages" -d "Toggle global site packages"                               -n "__vfcompletion_needs_command"
+complete -c vf -xa "help"           -d "Print VirtualFish usage information"                       -n "__vfcompletion_needs_command"
+complete -c vf -xa "ls"             -d "List all of the available virtualenvs"                     -n "__vfcompletion_needs_command"
+complete -c vf -xa "new"            -d "Create a new virtualenv"                                   -n "__vfcompletion_needs_command"
+complete -c vf -xa "rm"             -d "Delete a virtualenv"                                       -n "__vfcompletion_needs_command"
+complete -c vf -xa "tmp"            -d "Create a virtualenv that will be removed when deactivated" -n "__vfcompletion_needs_command"
