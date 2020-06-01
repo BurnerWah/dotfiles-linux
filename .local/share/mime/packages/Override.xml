@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-7z-compressed-tar">
+    <!-- I couldn't find this in any of my existing mime packages -->
+    <comment>Tar archive (7-zip compressed)</comment>
+    <generic-icon name="package-x-generic"/>
+    <sub-class-of type="application/x-7z-compressed"/>
+    <glob pattern="*.tar.7z"/>
+  </mime-type>
+  <mime-type type="application/x-brotli">
+    <!-- Can't find another mime-type for this.
+    It's probably in another distribution. -->
+    <comment>Brotli archive</comment>
+    <generic-icon name="package-x-generic"/>
+    <glob pattern="*.br"/>
+  </mime-type>
   <mime-type type="application/x-fish">
     <comment>Fish script</comment>
+    <generic-icon name="text-x-script"/>
     <sub-class-of type="application/x-shellscript"/>
     <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-script"/>
     <glob pattern="*.fish"/>
     <magic priority="50">
       <match type="string" value="/bin/fish" offset="2:16"/>
       <match type="string" value="/bin/env fish" offset="2:16"/>
     </magic>
+  </mime-type>
+  <mime-type type="application/x-rzip">
+    <!-- I think this is a dead format -->
+    <comment>rzip archive</comment>
+    <generic-icon name="package-x-generic"/>
+    <glob pattern="*.rz"/>
+  </mime-type>
+  <mime-type type="application/x-rzip-compressed-tar">
+    <comment>Tar archive (rzip compressed)</comment>
+    <generic-icon name="package-x-generic"/>
+    <sub-class-of type="application/x-rzip"/>
+    <glob pattern="*.tar.rz"/>
+  </mime-type>
+  <mime-type type="application/x-webarchive">
+    <!-- Again, I can't find this in an existing mime package -->
+    <comment>Web page archive file</comment>
+    <generic-icon name="package-x-generic"/>
+    <sub-class-of type="application/zip"/>
+    <alias type="application/x-war"/>
+    <glob pattern="*.webarchive"/>
+    <glob pattern="*.war"/>
   </mime-type>
   <mime-type type="application/vim">
     <comment>Vim script</comment>
@@ -22,22 +57,22 @@
   </mime-type>
   <mime-type type="text/typescript">
     <comment>TypeScript program</comment>
-    <alias type="text/x-typescript"/>
-    <sub-class-of type="application/javascript"/>
     <generic-icon name="application-javascript"/>
+    <sub-class-of type="application/javascript"/>
     <glob pattern="*.ts"/>
+    <alias type="text/x-typescript"/>
   </mime-type>
   <mime-type type="text/fennel">
     <comment>Fennel lisp source code</comment>
+    <generic-icon name="text-x-lua"/>
     <sub-class-of type="text/x-emacs-lisp"/>
     <sub-class-of type="text/x-lua"/>
-    <generic-icon name="text-x-lua"/>
     <glob pattern="*.fnl"/>
   </mime-type>
   <mime-type type="text/moonscript">
     <comment>Moonscript source code</comment>
-    <sub-class-of type="text/x-lua"/>
     <generic-icon name="text-x-lua"/>
+    <sub-class-of type="text/x-lua"/>
     <glob pattern="*.moon"/>
     <magic priority="50">
       <match type="string" value="/bin/moon" offset="2:16"/>
@@ -46,97 +81,153 @@
   </mime-type>
   <mime-type type="text/toml">
     <comment>Tom's Obvious Markup Language</comment>
-    <sub-class-of type="text/plain"/>
     <generic-icon name="text-x-generic"/>
+    <sub-class-of type="text/plain"/>
     <glob pattern="*.toml"/>
   </mime-type>
-  <mime-type type="image/generic">
-  </mime-type>
   <!-- extra globs, magics, & aliases for types I didn't define -->
+  <!--
+  application/*
+    -->
   <mime-type type="application/javascript">
-    <alias type="text/x-javascript"/>
+    <!-- JavaScript program
+    Matches add support for files meant to be executed by NodeJS -->
     <magic priority="50">
       <match type="string" value="/bin/node" offset="2:16"/>
       <match type="string" value="/bin/env node" offset="2:16"/>
     </magic>
+    <alias type="text/x-javascript"/>
+    <alias type="text/x-js"/>
   </mime-type>
   <mime-type type="application/json">
+    <!-- JSON doc -->
     <alias type="text/json"/>
   </mime-type>
   <mime-type type="application/mathml+xml">
+    <!-- MathML doc -->
     <alias type="text/mml"/>
   </mime-type>
   <mime-type type="application/msword">
+    <!-- Microsoft Word Doc -->
     <alias type="application/x-doc"/>
   </mime-type>
   <mime-type type="application/pdf">
+    <!-- PDF doc -->
     <alias type="application/x-ext-pdf"/>
   </mime-type>
   <mime-type type="application/postscript">
+    <!-- PostScript doc -->
     <alias type="application/x-ext-ps"/>
   </mime-type>
   <mime-type type="application/smil+xml">
+    <!-- Synchronized Multimedia Integration Language doc -->
     <alias type="application/x-smil"/>
   </mime-type>
   <mime-type type="application/xhtml+xml">
+    <!-- XHTML page -->
     <alias type="application/xhtml_xml"/>
   </mime-type>
   <mime-type type="application/vnd.coffeescript">
-    <alias type="text/x-coffeescript"/>
+    <!-- CoffeeScript doc -->
     <alias type="application/x-coffeescript"/>
+    <alias type="text/x-coffeescript"/>
   </mime-type>
   <mime-type type="application/vnd.ms-asf">
+    <!-- Advanced Streaming Format video -->
     <alias type="audio/x-ms-asf"/>
   </mime-type>
   <mime-type type="application/vnd.ms-cab-compressed">
+    <!-- Microsoft Cabinet archive -->
     <alias type="application/x-cabinet"/>
   </mime-type>
   <mime-type type="application/vnd.ms-excel">
+    <!-- Microsoft Excel Worksheet -->
     <alias type="application/excel"/>
     <alias type="application/x-excel"/>
     <alias type="application/x-ms-excel"/>
     <alias type="application/x-dos_ms_excel"/>
   </mime-type>
   <mime-type type="application/vnd.stardivision.calc">
+    <!-- StarCalc spreadsheet -->
     <alias type="application/x-starcalc"/>
   </mime-type>
   <mime-type type="application/vnd.stardivision.draw">
+    <!-- StarDraw drawing -->
     <alias type="application/x-stardraw"/>
   </mime-type>
   <mime-type type="application/vnd.stardivision.writer">
+    <!-- StarWriter doc -->
     <alias type="application/x-starwriter"/>
   </mime-type>
   <mime-type type="application/x-appleworks-document">
+    <!-- AppleWorks doc -->
     <alias type="application/clarisworks"/>
   </mime-type>
   <mime-type type="application/x-archive">
+    <!-- AR archive -->
     <alias type="application/x-ar"/>
   </mime-type>
   <mime-type type="application/x-asp">
+    <!-- Active Server Page -->
     <alias type="text/x-asp-src"/>
   </mime-type>
   <mime-type type="application/x-awk">
+    <!-- AWK script
+    AWK just stands for the last names of AWK's designers -->
     <alias type="text/x-awk"/>
   </mime-type>
+  <mime-type type="application/x-bzip">
+    <!-- Bzip archive
+    This will probably be fine -->
+    <alias type="application/x-bzip1"/>
+  </mime-type>
+  <mime-type type="application/x-bzip-compressed-tar">
+    <!-- Tar archive (bzip-compressed)
+    This will probably be fine -->
+    <alias type="application/x-bzip1-compressed-tar"/>
+  </mime-type>
   <mime-type type="application/x-cbt">
+    <!-- Comic Book Archive (tar-based) -->
     <alias type="application/x-ext-cbt"/>
   </mime-type>
   <mime-type type="application/x-cb7">
+    <!-- Comic Book Archive (7zip-based) -->
     <alias type="application/x-ext-cb7"/>
   </mime-type>
   <mime-type type="application/vnd.comicbook+zip">
+    <!-- Comic Book Archive (zip-based) -->
     <alias type="application/x-ext-cbz"/>
   </mime-type>
   <mime-type type="application/vnd.comicbook-rar">
+    <!-- Comic Book Archive (rar-based) -->
     <alias type="application/x-ext-cbr"/>
   </mime-type>
   <mime-type type="application/x-csh">
+    <!-- C Shell Script -->
     <glob pattern="*.cshrc"/>
   </mime-type>
   <mime-type type="application/x-dvi">
+    <!-- TeX DVI doc -->
     <alias type="application/x-ext-dvi"/>
   </mime-type>
+  <mime-type type="application/x-php">
+    <!-- PHP Script
+    PHP stands for "PHP: Hypertext Preprocessor", and I'm not putting that in
+    the mime info because that's dumb. -->
+    <alias type="application/x-php-source"/>
+    <alias type="text/x-php-source"/>
+    <alias type="text/x-php"/>
+  </mime-type>
+  <mime-type type="application/x-quicktime-media-link">
+    <!-- QuickTime playlist -->
+    <alias type="application/x-quicktime-player"/>
+  </mime-type>
+  <mime-type type="application/x-ruby">
+    <!-- Ruby script -->
+    <alias type="text/x-ruby"/>
+  </mime-type>
   <mime-type type="application/x-shellscript">
+    <!-- Shell Script -->
     <glob pattern="*.bash"/>
     <glob pattern="*.bash_logout"/>
     <glob pattern="*.bash_profile"/>
@@ -158,12 +249,19 @@
       <match type="string" value="#compdef" offset="0"/>
       <match type="string" value="#autoload" offset="0"/>
     </magic>
+    <alias type="text/x-shellscript"/>
   </mime-type>
-  <!-- -->
+  <!--
+  audio/*
+    -->
   <mime-type type="audio/flac">
+    <!-- FLAC audio -->
+    <acronym>FLAC</acronym>
+    <expanded-acronym>Free Lossless Audio Codec</expanded-acronym>
     <alias type="application/x-flac"/>
   </mime-type>
   <mime-type type="audio/mpeg">
+    <!-- MP3 audio -->
     <alias type="audio/mpg"/>
     <!-- MPEG-1 Audio Layer 1 is apparently able to map to this, so I'm going
         to go ahead and to that. -->
@@ -171,111 +269,152 @@
     <alias type="audio/x-mp1"/>
   </mime-type>
   <mime-type type="audio/mp4">
+    <!-- MPEG-4 audio
+    Honestly this is mostly a video codec. -->
     <alias type="audio/mpeg4"/>
+    <alias type="application/x-extension-m4a"/>
   </mime-type>
   <mime-type type="audio/vnd.rn-realaudio">
-    <alias type="audio/x-real-audio"/>
+    <!-- RealAudio doc -->
     <alias type="audio/x-realaudio"/>
+    <alias type="audio/x-real-audio"/>
   </mime-type>
   <mime-type type="audio/x-ape">
+    <!-- Monkey's audio
+    Very clever mime type guys. -->
     <alias type="audio/ape"/>
   </mime-type>
   <mime-type type="audio/x-aiff">
+    <!-- AIFF/Amiga/Mac audio -->
     <alias type="audio/aiff"/>
     <alias type="audio/x-pn-aiff"/>
   </mime-type>
   <mime-type type="audio/x-ms-asx">
+    <!-- Microsoft ASX playlist -->
     <alias type="audio/x-ms-wax"/>
     <alias type="video/x-ms-asx"/>
   </mime-type>
   <mime-type type="audio/x-ms-wma">
     <alias type="audio/x-wma"/>
+    <!-- Windows Media Audio -->
   </mime-type>
   <mime-type type="audio/x-musepack">
+    <!-- Musepack audio -->
     <alias type="audio/x-mpc"/>
   </mime-type>
   <mime-type type="audio/x-opus+ogg">
+    <!-- Opus audio -->
     <alias type="audio/opus"/>
   </mime-type>
   <mime-type type="audio/x-wav">
+    <!-- WAV audio -->
     <alias type="audio/x-pn-wav"/>
   </mime-type>
-  <!-- -->
+  <!--
+  image/*
+    -->
   <mime-type type="image/jpeg">
+    <!-- JPEG image
+    .jfif is defined by wine for some reason.
+    .jfi & .jif are listed on Wikipedia. -->
+    <glob pattern="*.jfif"/>
+    <glob pattern="*.jfi"/>
+    <glob pattern="*.jif"/>
     <alias type="image/jpg"/>
     <alias type="image/x-jpeg"/>
-    <glob pattern="*.jfif"/>
   </mime-type>
   <mime-type type="image/png">
+    <!-- PNG image -->
+    <acronym>PNG</acronym>
+    <expanded-acronym>Portable Network Graphics</expanded-acronym>
     <alias type="image/x-png"/>
   </mime-type>
-  <mime-type type="image/svg+xml">
-    <sub-class-of type="image/generic"/>
-  </mime-type>
   <mime-type type="image/vnd.djvu+multipage">
+    <!-- DjVu doc -->
     <alias type="application/x-ext-djv"/>
     <alias type="application/x-ext-djvu"/>
   </mime-type>
   <mime-type type="image/x-eps">
+    <!-- Encapsulated PostScript image -->
     <alias type="application/x-ext-eps"/>
   </mime-type>
-  <!-- -->
+  <!--
+  text/*
+    -->
   <mime-type type="text/csv">
+    <!-- CSV doc -->
     <alias type="application/csv"/>
     <alias type="text/comma-separated-values"/>
   </mime-type>
   <mime-type type="text/plain">
+    <!-- plaintext doc -->
     <alias type="application/x-extension-txt"/>
     <alias type="text/english"/>
   </mime-type>
   <mime-type type="text/tab-separated-values">
+    <!-- TSV doc -->
     <alias type="application/tab-separated-values"/>
   </mime-type>
   <mime-type type="text/vnd.graphvix">
+    <!-- Graphviz DOT graph -->
     <alias type="text/x-dot"/>
   </mime-type>
   <mime-type type="text/x-bibtex">
+    <!-- BibTeX doc -->
     <alias type="text/x-bib"/>
   </mime-type>
   <mime-type type="text/x-chdr">
+    <!-- C header -->
     <glob pattern="*.h.in"/>
   </mime-type>
   <mime-type type="text/x-cmake">
+    <!-- CMake source -->
     <glob pattern="*.cmake.in"/>
   </mime-type>
   <mime-type type="text/x-c++hdr">
+    <!-- C++ header -->
     <sub-class-of type="text/x-c++src"/>
   </mime-type>
   <mime-type type="text/x-c++src">
+    <!-- C++ source -->
     <alias type="text/x-c++"/>
-  </mime-type>
-  <mime-type type="text/x-matlab">
-    <alias type="text/octave"/>
+    <alias type="text/x-cpp"/>
   </mime-type>
   <mime-type type="text/x-python3">
+    <!-- Python 3 script
+    Matches add support for pypy -->
     <magic priority="60">
       <match type="string" value="/bin/pypy3" offset="2:16"/>
       <match type="string" value="/bin/env pypy3" offset="2:16"/>
     </magic>
+    <alias type="application/x-python"/>
   </mime-type>
   <mime-type type="text/x-texinfo">
+    <!-- TeXInfo doc -->
     <alias type="application/x-texinfo"/>
   </mime-type>
   <mime-type type="text/x-txt2tags">
+    <!-- txt2tags doc -->
     <alias type="text/txt2tags"/>
   </mime-type>
-  <!-- -->
+  <!--
+  video/*
+    -->
   <mime-type type="video/dv">
+    <!-- DV video
+    It stands for Digital Video but that's really stupid. -->
     <alias type="audio/dv"/>
   </mime-type>
   <mime-type type="video/mp4">
+    <!-- MPEG-4 video -->
     <alias type="application/x-extension-mp4"/>
-    <alias type="application/x-extension-m4a"/>
   </mime-type>
   <mime-type type="video/x-flic">
+    <!-- FLIC animation -->
     <alias type="video/x-flc"/>
   </mime-type>
   <mime-type type="video/x-ms-wmv">
+    <!-- Windows Media Video -->
     <alias type="audio/x-ms-wmv"/>
     <alias type="video/x-wmv"/>
   </mime-type>
