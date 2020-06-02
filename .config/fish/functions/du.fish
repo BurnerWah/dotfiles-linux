@@ -23,3 +23,6 @@ function du
     command $cmd $argv
   end
 end
+
+# Add missing completions without a whole completion file
+complete -c du -s J -l json -d "Use JSON output format"
