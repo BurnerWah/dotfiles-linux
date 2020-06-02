@@ -1,7 +1,7 @@
 function ip -d "Show/manipulate routing, network devices, interfaces & tunnels"
-  if isatty stdout && command -qs grc
-    command grc ip $argv
-  else
-    command ip $argv
+  set -l cmd ip
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

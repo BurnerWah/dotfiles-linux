@@ -1,7 +1,7 @@
 function ifconfig
-  if isatty stdout && command -qs grc
-    command grc ifconfig $argv
-  else
-    command ifconfig $argv
+  set -l cmd ifconfig
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

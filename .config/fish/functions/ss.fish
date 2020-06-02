@@ -1,7 +1,7 @@
 function ss -d "Utility to investigate sockets"
-  if isatty stdout && command -qs grc
-    command grc ss $argv
-  else
-    command ss $argv
+  set -l cmd ss
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

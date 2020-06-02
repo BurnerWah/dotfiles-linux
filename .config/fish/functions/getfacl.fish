@@ -1,7 +1,7 @@
 function getfacl
-  if isatty stdout && command -qs grc
-    command grc getfacl $argv
-  else
-    command getfacl $argv
+  set -l cmd getfacl
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

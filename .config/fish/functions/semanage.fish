@@ -1,7 +1,7 @@
 function semanage
-  if isatty stdout && command -qs grc
-    command grc semanage $argv
-  else
-    command semanage $argv
+  set -l cmd semanage
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

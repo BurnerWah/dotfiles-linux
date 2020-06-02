@@ -1,7 +1,7 @@
 function iptables
-  if isatty stdout && command -qs grc
-    command grc iptables $argv
-  else
-    command iptables $argv
+  set -l cmd iptables
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

@@ -1,7 +1,7 @@
 function findmnt
-  if isatty stdout && command -qs grc
-    command grc findmnt $argv
-  else
-    command findmnt $argv
+  set -l cmd findmnt
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

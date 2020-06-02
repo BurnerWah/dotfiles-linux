@@ -1,7 +1,7 @@
 function getsebool
-  if isatty stdout && command -qs grc
-    command grc getsebool $argv
-  else
-    command getsebool $argv
+  set -l cmd getsebool
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

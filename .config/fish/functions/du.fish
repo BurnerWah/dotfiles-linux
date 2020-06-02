@@ -1,7 +1,7 @@
 function du
   set -l cmd du
   if isatty stdout
-    set -a cmd --human-readable --si
+    set -p argv --human-readable --si
     command -qs grc && set -p cmd grc
   end
   command $cmd $argv

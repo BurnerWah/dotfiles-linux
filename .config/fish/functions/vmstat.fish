@@ -2,7 +2,7 @@
 function vmstat
   set -l cmd vmstat
   if isatty stdout
-    set -a cmd --unit k
+    set -p argv --unit k
     command -qs grc && set -p cmd grc
   end
   command $cmd $argv

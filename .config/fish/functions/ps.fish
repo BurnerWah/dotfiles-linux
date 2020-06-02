@@ -1,7 +1,7 @@
 function ps -d "Information about running processes"
-  if isatty stdout && command -qs grc
-    command grc ps $argv
-  else
-    command ps $argv
+  set -l cmd ps
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

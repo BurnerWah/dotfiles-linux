@@ -1,7 +1,7 @@
 function fdisk
-  if isatty stdout && command -qs grc
-    command grc fdisk $argv
-  else
-    command fdisk $argv
+  set -l cmd fdisk
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

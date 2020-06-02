@@ -1,7 +1,7 @@
 function traceroute
-  if isatty stdout && command -qs grc
-    command grc traceroute $argv
-  else
-    command traceroute $argv
+  set -l cmd traceroute
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

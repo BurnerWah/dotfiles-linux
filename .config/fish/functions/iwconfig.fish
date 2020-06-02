@@ -1,7 +1,7 @@
 function iwconfig
-  if isatty stdout && command -qs grc
-    command grc iwconfig $argv
-  else
-    command iwconfig $argv
+  set -l cmd iwconfig
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

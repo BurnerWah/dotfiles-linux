@@ -1,7 +1,7 @@
 function mtr
-  if isatty stdout && command -qs grc
-    command grc mtr $argv
-  else
-    command mtr $argv
+  set -l cmd mtr
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end

@@ -1,7 +1,7 @@
 function blkid
-  if isatty stdout && command -qs grc
-    command grc blkid $argv
-  else
-    command blkid $argv
+  set -l cmd blkid
+  if isatty stdout
+    command -qs grc && set -p cmd grc
   end
+  command $cmd $argv
 end
