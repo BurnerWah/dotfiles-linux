@@ -9,14 +9,14 @@
 #
 
 # rules = [<const: All rules enabled>]
-# exclude_rules = []
-# wait_command = 3
-# require_confirmation = True
-# no_colors = False
-# debug = False
-# priority = {}
-# history_limit = None
-# alter_history = True
-# wait_slow_command = 15
-# slow_commands = ['lein', 'react-native', 'gradle', './gradlew', 'vagrant']
-# env = {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}
+exclude_rules = []
+require_confirmation = True
+wait_command = 3
+no_colors = False
+debug = False
+priority = {}
+history_limit = None
+alter_history = True
+wait_slow_command = 15
+slow_commands = ['lein', 'react-native', 'gradle', './gradlew', 'vagrant']
+env = {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}
