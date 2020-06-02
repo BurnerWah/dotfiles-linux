@@ -8,10 +8,7 @@ function du
     return
   else if set -q _flag_J && command -qs jc
     if isatty stdout && [ (command -s prettier tput bat | count) = 3 ]
-      command $cmd $argv \
-         | jc --du \
-         | prettier --parser json --print-width (tput cols) \
-         | bat --language=json --paging=never --color=always --style=plain
+      command $cmd $argv | jc --du | _printers::json
     else
       command $cmd $argv | jc --du
     end

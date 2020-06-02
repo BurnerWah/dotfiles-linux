@@ -28,10 +28,7 @@ function id -d "Display current user and group identity"
     if isatty stdout && [ (command -s prettier tput bat | count) = 3 ]
       # If we're outputting data to a TTY we should also make the output easy
       # to read
-      command $cmd $argv \
-         | jc --id \
-         | prettier --parser json --print-width (tput cols) \
-         | bat --language=json --paging=never --color=always --style=plain
+      command $cmd $argv | jc --id | _printers::json
     else
       # If there isn't a TTY involved we shouldn't fuck with the output
       command $cmd $argv | jc --id
