@@ -152,6 +152,8 @@ text:
     - .devhelp2
     - .gir
     - .glade
+    - .gschema.override
+    - .gschema.xml
     - mimeapps.list
 
   other:
@@ -317,9 +319,15 @@ media:
     - .bmp
     - .gif
     - .ico
+    - .jfi
+    - .jfif
+    - .jif
+    - .jpe
     - .jpeg
     - .jpf
     - .jpg
+    - .jpgm
+    - .jpx
     - .pbm
     - .pgm
     - .png
@@ -337,8 +345,10 @@ media:
     lossy:
       - .aac
       - .aif
+      - .aiff
       - .m4a
       - .mid
+      - .midi
       - .mka
       - .mp3
       - .ogg
@@ -379,11 +389,16 @@ media:
 
 office:
   document:
+    - .azw3
     - .doc
     - .docx
     - .epub
+    - .fb2
+    - .kfx
+    - .mobi
     - .odt
     - .pdf
+    - .prc
     - .ps
     - .rtf
     - .sxw
@@ -405,24 +420,37 @@ office:
   calendar: [.ics]
 
 archives:
-  packages: [.apk, .deb, .rpm, .whl]
+  packages: [.apk, .deb, .rpm, .whl, .udeb]
   ros: [.bag]
-  images: [.bin, .dmg, .img, .iso, .toast, .vcd]
+  images: [.bin, .dmg, .img, .iso, .iso9660, .raw-disk-image, .toast, .vcd]
   other:
     - .7z
+    - .Z
     - .arj
+    - .br
     - .bz
     - .bz2
+    - .gtar
     - .gz
     - .jar
+    - .lrz
+    - .lz
     - .lz4
     - .lzma
     - .pkg
     - .rar
     - .tar
+    - .taz
+    - .tb2
     - .tbz
     - .tbz2
     - .tgz
+    - .tlrz
+    - .tlz
+    - .txz
+    - .tzst
+    - .ustar
+    - .xar
     - .xz
     - .z
     - .zip
