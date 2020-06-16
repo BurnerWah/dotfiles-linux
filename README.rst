@@ -7,7 +7,7 @@ Configuration files for a bunch of random programs.
 Things I use
 ############
 
-* I use Fedora_ 31 as my main OS.
+* I use Fedora_ 32 as my main OS.
 * My desktop environment is GNOME_.
 * My preferred editor is NeoVim_.
 * My default shell is Zsh, but for interactive shells I use Fish.
