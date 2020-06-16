@@ -1,6 +1,6 @@
 [core]
   editor = nvim
-  pager = less
+  pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
   excludesFile = ~/.config/git/global.gitignore
 [user]
   # user info
@@ -23,6 +23,8 @@
   format = man
 [index]
   threads = true  # multi-threaded index
+[interactive]
+  diffFilter = delta --color-only
 [merge]
   # controls mergeing
   # [diff] sometimes falls back to this
