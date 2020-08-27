@@ -31,6 +31,9 @@ aug userft
   " Lua
   au BufNewFile,BufRead *.luacheckrc setf lua
 
+  " Registry
+  au BufNewFile,BufRead *.reg setf registry
+
   " Snippets
   au BufNewFile,BufRead *.snippets setf snippets
 
