@@ -15,23 +15,17 @@ typeset -U path
   # Append elements
   path+=(
     "${FLATPAK_SYSTEM_DIR:-/var/lib/flatpak}/exports/bin"
-    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/sbin"
-    "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/bin"
+    # "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/sbin"
+    # "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/bin"
   )
   # Remove unwanted elements
-  for element ( "$HOME/bin" ) path[${path[(i)$element]}]=()
+  # for element ( "$HOME/bin" ) path[${path[(i)$element]}]=()
 }
 rehash
 
 # Set core variables {{{1
-# Command vars
-export FZF_DEFAULT_COMMAND='fd -t f'
-
 # things I just don't want in the $HOME folder
 export WORKON_HOME=${WORKON_HOME:-$HOME/.var/lib/virtualenv}
-
-# i don't fucking care
-export BRZ_LOG=/dev/null
 
 # zsh-specific variables
 typeset ZSH_AUTOSUGGEST_USE_ASYNC=''

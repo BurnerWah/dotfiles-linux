@@ -63,7 +63,10 @@ bindkey -v
 
 # Interactive variables {{{1
 export LS_COLORS="${LS_COLORS:-$(vivid generate burner)}"
+
 if [[ $COLORTERM == "truecolor" ]] local -x MICRO_TRUECOLOR=1
+
+export FZF_DEFAULT_COMMAND='fd -tf'
 
 
 # Early autoloads {{{1
@@ -225,9 +228,9 @@ add-zsh-hook preexec terminal_title_preexec
 
 
 # Prompt setup {{{1
-# autoload -Uz promptinit && promptinit
-# prompt powerlevel10k
-# zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
+autoload -Uz promptinit && promptinit
+prompt powerlevel10k
+zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
 
 
 # Settings {{{1
@@ -244,7 +247,7 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
   local plugins=(
     'zsh-autosuggestions'
     'zsh-history-substring-search'
-    # 'fast-syntax-highlighting.plugin'
+    'fast-syntax-highlighting.plugin'
   )
   for plugin in $plugins; do
     zrecompile $plugin_dir/**/$plugin.zsh
@@ -253,6 +256,7 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
 }
 if (( $+commands[z.lua] )) eval "$(z.lua --init zsh enhanced once)"
 if (( $+commands[direnv] )) eval "$(direnv hook zsh)"
+if (( $+commands[broot] )) eval "$(broot --print-shell-function zsh)"
 #autoload -Uz abbrev-alias && abbrev-alias --init
 
 
@@ -276,15 +280,16 @@ source $ZDOTDIR/ZLE.zsh
 if [[ "$options[interactive]" == on ]] source $ZDOTDIR/var_hider.zsh
 
 # User dirs
-local -Hhr \
-  cargo=~/.local/lib64/cargo \
-  flatpak=/var/lib/flatpak \
-  golang=~/.local/lib64/golang \
-  lutris=~/.local/share/lutris \
-  retroarch=~/.var/app/org.libretro.RetroArch/config/retroarch \
-  steam=~/.local/share/Steam \
-  zealdocs=~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets
+# this is no longer used
+# local -Hhr \
+#   cargo=~/.local/lib64/cargo \
+#   flatpak=/var/lib/flatpak \
+#   golang=~/.local/lib64/golang \
+#   lutris=~/.local/share/lutris \
+#   retroarch=~/.var/app/org.libretro.RetroArch/config/retroarch \
+#   steam=~/.local/share/Steam \
+#   zealdocs=~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets
 
-: ~cargo ~flatpak ~golang ~lutris ~retroarch ~steam ~zealdocs
+# : ~cargo ~flatpak ~golang ~lutris ~retroarch ~steam ~zealdocs
 
 # vim:ft=zsh fdm=marker
