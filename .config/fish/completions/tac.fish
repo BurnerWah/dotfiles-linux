@@ -1,0 +1,5 @@
+complete -c tac -s b -l before -d "Attach the separator before instead of after"
+complete -c tac -s r -l regex -d "Interpret the separator as a regular expression"
+complete -c tac -x -s s -l seperator -d "Use STRING as the separator instead of newline"
+complete -c tac -l help -d "Display help & exit"
+complete -c tac -l version -d "Display version & exit"

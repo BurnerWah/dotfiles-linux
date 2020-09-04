@@ -1,0 +1,5 @@
+complete -c pathchk -s p -d "Check for most POSIX systems" -n "! __fish_contains_opt portability"
+complete -c pathchk -s P -d "Check for empty names and leading '-'" -n "! __fish_contains_opt portability"
+complete -c pathchk -l portability -d "Check for all POSIX systems"
+complete -c pathchk -l help -d "Display help & exit"
+complete -c pathchk -l version -d "Display version & exit"

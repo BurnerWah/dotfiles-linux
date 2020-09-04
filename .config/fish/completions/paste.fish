@@ -1,0 +1,5 @@
+complete -c paste -x -s d -l delimiters -d "Reuse characters from LIST instead of TABs"
+complete -c paste -s s -l serial -d "Paste one file at a time instead of in parallel"
+complete -c paste -s z -l zero-terminated -d "Line delimiter is NUL, not newline"
+complete -c paste -l help -d "Display help & exit"
+complete -c paste -l version -d "Display version & exit"
