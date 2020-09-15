@@ -414,6 +414,7 @@ office:
     - .odp
     - .pps
     - .ppt
+    - .pptm
     - .pptx
     - .sxi
 
@@ -498,6 +499,7 @@ unimportant:
     - .swp
     - .tmp
     - .bak
+    - .!qB
 
   other:
     - .cache

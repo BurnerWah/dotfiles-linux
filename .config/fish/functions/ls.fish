@@ -1,5 +1,5 @@
 if command -qs exa
-  function ls -w exa -d "List contents of directory"
+  function ls -w "exa -F" -d "List contents of directory"
     set -l cmd ls
     set -l param --color=auto
     if isatty stdout
