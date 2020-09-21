@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Passthrough
+MimeType=application/x-mswinurl;
+Exec=open_mswinurl.py %f
+TryExec=open_mswinurl.py
+NoDisplay=true
