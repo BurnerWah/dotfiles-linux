@@ -35,6 +35,10 @@
   <mime-type type="application/smil+xml">
     <alias type="application/x-smil"/>
   </mime-type>
+  <!-- application/winhlp: WinHelp help file {{{2 -->
+  <mime-type type="application/winhlp">
+    <alias type="application/x-winhelp"/>
+  </mime-type>
   <!-- application/xhtml+xml: XHTML page {{{2 -->
   <mime-type type="application/xhtml+xml">
     <alias type="application/xhtml_xml"/>
@@ -67,6 +71,10 @@
     <alias type="application/x-ms-excel"/>
     <alias type="application/x-dos_ms_excel"/>
   </mime-type>
+  <!-- application/vnd.ms-visio.drawing.main+xml: Office Open XML Visio drawing -->
+  <mime-type type="application/vnd.ms-visio.drawing.main+xml">
+    <alias type="application/visio.drawing"/>
+  </mime-type>
   <!-- application/vnd.stardivision.calc: StarCalc spreadsheet {{{2 -->
   <mime-type type="application/vnd.stardivision.calc">
     <alias type="application/x-starcalc"/>
@@ -79,19 +87,27 @@
   <mime-type type="application/vnd.stardivision.writer">
     <alias type="application/x-starwriter"/>
   </mime-type>
+  <!-- application/vnd.visio: Microsoft Visio document -->
+  <mime-type type="application/vnd.visio">
+    <alias type="application/visio"/>
+    <alias type="application/vsd"/>
+    <alias type="application/x-visio"/>
+    <alias type="application/x-vsd"/>
+    <alias type="image/x-vsd"/>
+  </mime-type>
   <!-- application/x-7z-compressed-tar: Tar archive (7-zip compressed) {{{2 -->
   <mime-type type="application/x-7z-compressed-tar">
     <!-- I couldn't find this in any of my existing mime packages -->
     <comment>Tar archive (7-zip compressed)</comment>
     <generic-icon name="package-x-generic"/>
     <sub-class-of type="application/x-7z-compressed"/>
-    <glob pattern="*.tar.7z"/>
+    <glob weight="60" pattern="*.tar.7z"/>
   </mime-type>
   <!-- application/x-appleworks-document: AppleWorks document {{{2 -->
   <mime-type type="application/x-appleworks-document">
     <alias type="application/clarisworks"/>
   </mime-type>
-  <!-- application/x-ar: AR archive {{{2 -->
+  <!-- application/x-archive: AR archive {{{2 -->
   <mime-type type="application/x-archive">
     <alias type="application/x-ar"/>
   </mime-type>
@@ -151,6 +167,22 @@
       <match type="string" value="/bin/fish" offset="2:16"/>
       <match type="string" value="/bin/env fish" offset="2:16"/>
     </magic>
+  </mime-type>
+  <!-- application/x-gnu-texinfo: GNU Info document -->
+  <mime-type type="application/x-gnu-texinfo">
+    <!-- this is the compiled version of a .texi document -->
+    <comment>GNU Info document</comment>
+    <sub-class-of type="text/plain"/>
+    <generic-icon name="text-x-generic"/>
+  </mime-type>
+  <!-- application/x-gnu-texinfo-compressed: GNU Info document (gzip compressed) -->
+  <mime-type type="application/x-gnu-texinfo-compressed">
+    <comment>GNU Info document (gzip compressed)</comment>
+    <sub-class-of type="application/gzip"/>
+    <generic-icon name="text-x-generic"/>
+    <!-- Single info files -->
+    <glob weight="60" pattern="*.info.gz"/>
+    <!-- Globs for split info files don't seem to work -->
   </mime-type>
   <!-- application/x-php: PHP Script {{{2 -->
   <mime-type type="application/x-php">
@@ -220,6 +252,31 @@
     </magic>
     <alias type="text/x-shellscript"/>
   </mime-type>
+  <!-- application/x-troff-man: Manpage manual document {{{2 -->
+  <mime-type type="application/x-troff-man">
+    <sub-class-of type="text/troff"/>
+  </mime-type>
+  <!-- application/x-troff-man-compressed: manual page (compressed) {{{2 -->
+  <mime-type type="application/x-troff-man-compressed">
+    <glob weight="60" pattern="*.0p.gz"/>
+    <glob weight="60" pattern="*.[1-9].gz"/>
+    <glob weight="60" pattern="*.[1-9]x.gz"/>
+    <glob weight="60" pattern="*.1m.gz"/>
+    <glob weight="60" pattern="*.1p.gz"/>
+    <glob weight="60" pattern="*.1ssl.gz"/>
+    <glob weight="60" pattern="*.3am.gz"/>
+    <glob weight="60" pattern="*.3p.gz"/>
+    <glob weight="60" pattern="*.3pm.gz"/>
+    <glob weight="60" pattern="*.3ssl.gz"/>
+    <glob weight="60" pattern="*.5ssl.gz"/>
+    <glob weight="60" pattern="*.7ssl.gz"/>
+    <glob weight="60" pattern="*.n.gz"/>
+    <glob weight="60" pattern="*.l.gz"/>
+    <glob weight="60" pattern="*.l.gz"/>
+    <glob weight="60" pattern="*.p.gz"/>
+    <glob weight="60" pattern="*.o.gz"/>
+    <sub-class-of type="application/gzip"/>
+  </mime-type>
   <!-- application/x-webarchive: Web page archive file {{{2 -->
   <mime-type type="application/x-webarchive">
     <!-- Again, I can't find this in an existing mime package -->
@@ -249,6 +306,7 @@
   <mime-type type="audio/mp4">
     <!-- Honestly this is mostly a video codec. -->
     <alias type="audio/mpeg4"/>
+    <!-- audio/mpeg4 isn't on IANA -->
     <alias type="application/x-extension-m4a"/>
   </mime-type>
   <!-- audio/vnd.rn-realaudio: RealAudio document {{{2 -->
@@ -260,10 +318,12 @@
   <mime-type type="audio/x-ape">
     <!-- Very clever mime type guys. -->
     <alias type="audio/ape"/>
+    <!-- audio/ape doesn't seem to be compliant -->
   </mime-type>
   <!-- audio/x-aiff: AIFF/Amiga/Mac audio {{{2 -->
   <mime-type type="audio/x-aiff">
     <alias type="audio/aiff"/>
+    <!-- audio/aiff doesn't seem to be compliant -->
     <alias type="audio/x-pn-aiff"/>
   </mime-type>
   <!-- audio/x-ms-asx: Microsoft ASX playlist {{{2 -->
@@ -281,6 +341,7 @@
   </mime-type>
   <!-- audio/x-opus+ogg: Opus audio {{{2 -->
   <mime-type type="audio/x-opus+ogg">
+    <!-- This should really be moved to audio/opus -->
     <alias type="audio/opus"/>
   </mime-type>
   <!-- audio/x-wav: WAV audio {{{2 -->
@@ -304,6 +365,10 @@
     <expanded-acronym>Portable Network Graphics</expanded-acronym>
     <alias type="image/x-png"/>
   </mime-type>
+  <!-- image/webp: WebP image -->
+  <mime-type type="image/webp">
+    <alias type="image/x-webp"/>
+  </mime-type>
   <!-- image/vnd.djvu+multipage: DjVu document {{{2 -->
   <mime-type type="image/vnd.djvu+multipage">
     <alias type="application/x-ext-djv"/>
@@ -312,6 +377,13 @@
   <!-- image/x-eps: Encapsulated PostScript image {{{2 -->
   <mime-type type="image/x-eps">
     <alias type="application/x-ext-eps"/>
+  </mime-type>
+  <!-- image/x-psp: Paint Shop Pro Document -->
+  <mime-type type="image/x-psp">
+    <comment>Paint Shop Pro Document</comment>
+    <glob pattern="*.psp"/>
+    <glob pattern="*.tub"/>
+    <glob pattern="*.pspimage"/>
   </mime-type>
   <!-- text/* {{{1 -->
   <!-- text/csv: CSV document {{{2 -->
@@ -327,16 +399,6 @@
   <!-- text/tab-separated-values: TSV document {{{2 -->
   <mime-type type="text/tab-separated-values">
     <alias type="application/tab-separated-values"/>
-  </mime-type>
-  <!-- text/toml: TOML document {{{2 -->
-  <mime-type type="text/toml">
-    <!-- Made this because I could -->
-    <comment>TOML document</comment>
-    <acronym>TOML</acronym>
-    <expanded-acronym>Tom's Obvious Markup Language</expanded-acronym>
-    <generic-icon name="text-x-generic"/>
-    <sub-class-of type="text/plain"/>
-    <glob pattern="*.toml"/>
   </mime-type>
   <!-- text/vnd.grahviz: Graphviz DOT graph {{{2 -->
   <mime-type type="text/vnd.graphviz">
@@ -362,6 +424,17 @@
   <mime-type type="text/x-c++src">
     <alias type="text/x-c++"/>
     <alias type="text/x-cpp"/>
+  </mime-type>
+  <!-- text/x-pkg-config: pkg-config file -->
+  <mime-type type="text/x-pkg-config">
+    <comment>pkg-config file</comment>
+    <generic-icon name="text-x-generic"/>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.pc"/>
+  </mime-type>
+  <!-- text/x-ms-regedit: Windows Registry extract -->
+  <mime-type type="text/x-ms-regedit">
+    <alias type="text/x-wine-extension-reg"/>
   </mime-type>
   <!-- text/x-python: Python script {{{2 -->
   <mime-type type="text/x-python">
@@ -391,6 +464,16 @@
   <!-- text/x-texinfo: TeXInfo document {{{2 -->
   <mime-type type="text/x-texinfo">
     <alias type="application/x-texinfo"/>
+  </mime-type>
+  <!-- text/x-toml: TOML document {{{2 -->
+  <mime-type type="text/x-toml">
+    <!-- Made this because I could -->
+    <comment>TOML document</comment>
+    <acronym>TOML</acronym>
+    <expanded-acronym>Tom's Obvious Markup Language</expanded-acronym>
+    <generic-icon name="text-x-generic"/>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.toml"/>
   </mime-type>
   <!-- text/x-txt2tags: txt2tags document {{{2 -->
   <mime-type type="text/x-txt2tags">
