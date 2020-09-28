@@ -18,6 +18,8 @@ HISTFILE=~/.local/share/bash_history
 
 source ~/.local/share/bash-completion/completions/*
 
+eval "$(zoxide init bash)"
+
 # User specific aliases and functions
 alias ls=exa
 alias ll='ls -l'

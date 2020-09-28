@@ -254,7 +254,8 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
     source $plugin_dir/**/$plugin.zsh
   done
 }
-if (( $+commands[z.lua] )) eval "$(z.lua --init zsh enhanced once)"
+# if (( $+commands[z.lua] )) eval "$(z.lua --init zsh enhanced once)"
+if (( $+commands[zoxide] )) eval "$(zoxide init zsh)"
 if (( $+commands[direnv] )) eval "$(direnv hook zsh)"
 if (( $+commands[broot] )) eval "$(broot --print-shell-function zsh)"
 #autoload -Uz abbrev-alias && abbrev-alias --init
