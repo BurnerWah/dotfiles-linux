@@ -3,5 +3,6 @@
 /lists
 *mru
 /sh
-/extensions
-!/extensions/package.json
+/extensions/db.json
+/extensions/node_modules
+/extensions/*-data
