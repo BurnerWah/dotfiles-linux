@@ -589,7 +589,7 @@ let chromatica#global_args = [
       \ '-isystem/usr/include/c++/10',
       \ '-isystem/usr/include/c++/10/x86_64-redhat-linux',
       \ '-isystem/usr/include/c++/10/backward',
-      \ '-isystem/usr/lib64/clang/10.0.0/include',
+      \ '-isystem/usr/lib64/clang/10.0.1/include',
       \ '-isystem/usr/local/include',
       \ ]
 

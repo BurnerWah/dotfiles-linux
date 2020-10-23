@@ -7,6 +7,7 @@ aug userft
 
   " DosINI
   au BufNewFile,BufRead *.coveragerc setf dosini
+  au BufNewFile,BufRead */tmp/*.repo setf dosini " YUM repos in sudoedit
 
   " GDBInit
   au BufNewFile,BufRead /etc/gdbinit setf gdb
