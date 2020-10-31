@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+if type -f dijo > /dev/null 2>&1; then
+  dijo -c "track-up commits"
+fi

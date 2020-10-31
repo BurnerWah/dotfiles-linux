@@ -2,6 +2,7 @@
   editor = nvim
   pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
   excludesFile = ~/.config/git/global.gitignore
+  hooksPath = ~/.config/git/hooks
 [user]
   # user info
   name = Jaden Pleasants
