@@ -8,4 +8,6 @@ if command -qs exa
     end
     command $cmd $param $argv
   end
+else if [ -e $__fish_data_dir/functions/ls.fish ]
+  source $__fish_data_dir/functions/ls.fish
 end

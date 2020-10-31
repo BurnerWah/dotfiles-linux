@@ -259,6 +259,7 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
 
+/.config/nvim/spell
 /.config/zsh/.zkbd
 
 # vim: ft=zsh
