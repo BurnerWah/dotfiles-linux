@@ -179,15 +179,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('iamcco/markdown-preview.nvim', {
         \ 'if': (executable('node') && executable('yarn')),
         \ 'lazy': v:true,
-        \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
+        \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
         \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
         \ })
   " Markdown live preview
   " Instructions suggest lazy loading with on_ft
-  "
-  " TODO let this actually work with vimwiki
-  " vimwiki replaces the markdown syntax, so I need to add compatibility with
-  " it.
 
   " Meson: {{{3
   call dein#add('mesonbuild/meson', {
@@ -209,7 +205,14 @@ if dein#load_state('~/.local/share/dein')
   " Provides semantic highlighting for Python code.
   " Probably will be replaced by tree sitter when nvim 0.5.0 releases
 
-  call dein#add('bfredl/nvim-ipy', {'if': has('python3'), 'merged': v:true})
+  call dein#add('bfredl/nvim-ipy', {
+        \ 'if': has('python3'),
+        \ 'merged': v:true,
+        \ 'hook_post_source': join([
+        \   'delcommand IPython2',
+        \   'delcommand IJulia',
+        \ ], "\n"),
+        \ })
   " Python REPL
   " Dependency checking is kinda lackluster, but the simplest check if we can
   " import `jupyter_client` since everything else it seems to need can be
@@ -224,7 +227,12 @@ if dein#load_state('~/.local/share/dein')
 
   " Rust: {{{3
 
-  call dein#add('rust-lang/rust.vim')
+  call dein#add('rust-lang/rust.vim', {
+        \ 'hook_post_source': join([
+        \   'unlet g:syntastic_rust_checkers',
+        \   'unlet g:syntastic_extra_filetypes',
+        \ ], "\n"),
+        \ })
   " Official rust syntax
   "
   " NOTE plugin/rust.vim doesn't do anything with my configuration.
@@ -244,7 +252,9 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('elzr/vim-json')
   call dein#add('leafo/moonscript-vim')
   call dein#add('cespare/vim-toml')
-  call dein#add('arrufat/vala.vim')
+  call dein#add('arrufat/vala.vim', {
+        \ 'hook_add': 'let g:loaded_vala_vim = 1',
+        \ })
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
         \ 'if': (has('nvim') && executable('awk')),
@@ -299,7 +309,12 @@ if dein#load_state('~/.local/share/dein')
         \ })
 
   " User interface {{{2
-  call dein#add('ryanoasis/vim-devicons')
+  call dein#add('ryanoasis/vim-devicons', {
+        \ 'hook_post_source': join([
+        \   'unlet g:NERDTreeUpdateOnCursorHold',
+        \   'unlet g:NERDTreeGitStatusUpdateOnCursorHold',
+        \ ], "\n"),
+        \ })
 
   call dein#add('liuchengxu/vim-which-key', {
         \ 'lazy': v:true,
@@ -372,10 +387,6 @@ endif
 filetype plugin indent on
 syn enable
 
-" Install missing plugins on startup {{{2
-if dein#check_install()
-  call dein#install()
-endif
 
 " Plugin Settings {{{1
 
@@ -409,58 +420,58 @@ let airline#extensions#tabline#formatter = 'unique_tail_improved'
 let ale_fix_on_save = v:true
 
 let ale_linters_ignore = {
-      \   'c': ['ccls', 'clangd'],
-      \   'cpp': ['ccls', 'clangd'],
-      \   'css': ['stylelint'],
-      \   'fortran': ['language_server'],
-      \   'go': ['golangserver', 'gopls'],
-      \   'javascript': ['tsserver'],
-      \   'less': ['stylelint'],
-      \   'lua': ['luacheck'],
-      \   'markdown': ['markdownlint'],
-      \   'nim': ['nimlsp'],
-      \   'objc': ['ccls', 'clangd'],
-      \   'objcpp': ['clangd'],
-      \   'python': ['flake8', 'mypy', 'pyls', 'pylint'],
-      \   'rust': ['rls'],
-      \   'sass': ['stylelint'],
-      \   'scss': ['stylelint'],
-      \   'sh': ['language_server', 'shellcheck'],
-      \   'tex': ['texlab'],
-      \   'typescript': ['tsserver'],
-      \   'vim': ['vint'],
-      \   'yaml': ['yamllint'],
+      \ 'c': ['ccls', 'clangd'],
+      \ 'cpp': ['ccls', 'clangd'],
+      \ 'css': ['stylelint'],
+      \ 'fortran': ['language_server'],
+      \ 'go': ['golangserver', 'gopls'],
+      \ 'javascript': ['tsserver'],
+      \ 'less': ['stylelint'],
+      \ 'lua': ['luacheck'],
+      \ 'markdown': ['markdownlint'],
+      \ 'nim': ['nimlsp'],
+      \ 'objc': ['ccls', 'clangd'],
+      \ 'objcpp': ['clangd'],
+      \ 'python': ['flake8', 'mypy', 'pyls', 'pylint'],
+      \ 'rust': ['rls'],
+      \ 'sass': ['stylelint'],
+      \ 'scss': ['stylelint'],
+      \ 'sh': ['language_server', 'shellcheck'],
+      \ 'tex': ['texlab'],
+      \ 'typescript': ['tsserver'],
+      \ 'vim': ['vint'],
+      \ 'yaml': ['yamllint'],
       \ }
 
 let ale_fixers = {
-      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \   'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'cpp': [
-      \     'clang-format',
-      \     'clangtidy',
-      \     'remove_trailing_lines',
-      \     'trim_whitespace',
-      \   ],
-      \   'go': [
-      \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'html': ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'less': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'python': [
-      \     'add_blank_lines_for_python_control_statements',
-      \     'reorder-python-imports',
-      \     'remove_trailing_lines',
-      \     'trim_whitespace',
-      \   ],
-      \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'scss': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
-      \   'xml': ['xmllint'],
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'cpp': [
+      \   'clang-format',
+      \   'clangtidy',
+      \   'remove_trailing_lines',
+      \   'trim_whitespace',
+      \ ],
+      \ 'go': [
+      \   'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
+      \ ],
+      \ 'html': ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'less': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': [
+      \   'add_blank_lines_for_python_control_statements',
+      \   'reorder-python-imports',
+      \   'remove_trailing_lines',
+      \   'trim_whitespace',
+      \ ],
+      \ 'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'scss': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
+      \ 'xml': ['xmllint'],
       \ }
 
 let ale_linter_aliases = {
-      \   'jsonc': 'json',
+      \ 'jsonc': 'json',
       \ }
 
 let ale_javascript_prettier_options = join([
@@ -468,38 +479,35 @@ let ale_javascript_prettier_options = join([
       \ '--single-quote',
       \ ])
 
-let ale_sh_shfmt_options = join([
-      \ '-i=2',
-      \ '-ci',
-      \ ])
+let ale_sh_shfmt_options = join(['-i=2', '-ci'])
 
 " VimWiki: Note-taking tool {{{2
 let vimwiki_list = [{
-      \   'path': '~/Documents/VimWiki',
-      \   'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
+      \ 'path': '~/Documents/VimWiki',
+      \ 'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
       \ }]
 
 " Vista: replacement for tagbar {{{2
 let vista#renderer#enable_icon = 1
 let vista_executive_for = {
-      \   'c': 'coc',
-      \   'cpp': 'coc',
-      \   'css': 'coc',
-      \   'go': 'coc',
-      \   'html': 'coc',
-      \   'javascript': 'coc',
-      \   'json': 'coc',
-      \   'lua': 'coc',
-      \   'markdown': 'toc',
-      \   'pandoc': 'markdown',
-      \   'python': 'coc',
-      \   'tex': 'coc',
-      \   'typescript': 'coc',
-      \   'vala': 'coc',
-      \   'vimwiki': 'markdown',
-      \   'xml': 'coc',
-      \   'yaml': 'coc',
-      \   'vim': 'coc',
+      \ 'c': 'coc',
+      \ 'cpp': 'coc',
+      \ 'css': 'coc',
+      \ 'go': 'coc',
+      \ 'html': 'coc',
+      \ 'javascript': 'coc',
+      \ 'json': 'coc',
+      \ 'lua': 'coc',
+      \ 'markdown': 'toc',
+      \ 'pandoc': 'markdown',
+      \ 'python': 'coc',
+      \ 'tex': 'coc',
+      \ 'typescript': 'coc',
+      \ 'vala': 'coc',
+      \ 'vim': 'coc',
+      \ 'vimwiki': 'markdown',
+      \ 'xml': 'coc',
+      \ 'yaml': 'coc',
       \ }
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
 if executable('gotags')
@@ -602,5 +610,6 @@ aug init
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
+  au VimEnter * call dein#call_hook('post_source')
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker
