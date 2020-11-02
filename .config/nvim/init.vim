@@ -57,6 +57,11 @@ if &shell =~# 'fish$'
   set shell=bash
 endif
 
+" Run any python code that our vimrc needs
+py3 << EOF
+import os
+EOF
+
 " Dein: plugin manager {{{1
 " Notes {{{2
 " dein is a fairly capable plugin manager, but it has it's limitations. It
@@ -90,6 +95,7 @@ endif
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
 let dein#enable_notification = v:true
 let dein#install_progress_type = 'tabline'
+let dein#install_max_processes = py3eval('os.cpu_count()')
 
 " Required {{{2
 " Technically dein requires nocompatible to be set, but that's always true
@@ -106,22 +112,19 @@ if dein#load_state('~/.local/share/dein')
   " Required
   call dein#add('~/.local/share/dein/repos/github.com/Shougo/dein.vim')
 
-  " Helpful variables {{{2
+  " Helpful tools {{{2
   let s:gitlab = 'https://gitlab.com/'
   let s:gh_raw = 'https://raw.githubusercontent.com/'
 
   " Core plugins {{{2
   call dein#add('neoclide/coc.nvim', {
         \ 'if': (executable('node') &&
-        \       (executable('npm')  ||
-        \       (executable('yarn') || executable('yarnpkg')))),
+        \       (executable('npm') || executable('yarn'))),
         \ 'merged': v:false,
         \ 'rev': 'release',
         \ })
 
   call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:false})
-
-  call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
 
   " Snippets & Templates {{{2
   " call dein#add('honza/vim-snippets')
@@ -132,134 +135,70 @@ if dein#load_state('~/.local/share/dein')
   " anymore.
 
   call dein#add('dense-analysis/ale', {'type__depth': 1})
-  call dein#add('iyuuya/denite-ale', {'depends': ['denite.nvim', 'ale']})
   " Asynchronous linting engine
 
   " Language-specific stuff {{{2
-  " AWK: {{{3
-  " FTDetect: $VIMRUNTIME
-  " FTPlugin: $VIMRUNTIME
-  " Syntax: $VIMRUNTIME
-  " Format: $VIMRUNTIME
-  " Linter: ALE
-  " Snippets: vim-snippets
-
-  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
-        \ 'if': (has('nvim') && executable('awk')),
-        \ 'merged': v:true,
-        \ })
-
   " CXX: {{{3
-  " FTDetect: $VIMRUNTIME
-  " FTPlugin: $VIMRUNTIME
-  " Syntax: chromatica.nvim, $VIMRUNTIME
-  " Format: ALE, language server, $VIMRUNTIME
-  " Linter: ALE, language server
-  " Completion: language server, neoinclude
-  " Snippets: vim-snippets
-
-  call dein#add('arakashic/chromatica.nvim', {
-        \ 'if': has('python3'),
+  call dein#add('jackguo380/vim-lsp-cxx-highlight', {
+        \ 'if': (has('nvim') &&
+        \       (executable('ccls') || executable('clangd') || executable('cquery'))),
         \ 'merged': v:true,
         \ })
-  " Provides enhanced highlighting. It requires the base CXX syntax definition.
+  " Provides enhanced highlighting
+  " It requires a compatible language server and a language client. The `if`
+  " key handles checking for a compatible language server, but checking for a
+  " language client isn't really possible.
 
   call dein#add('Shougo/neoinclude.vim')
-  call dein#add('jsfaint/coc-neoinclude', {
-        \ 'depends': ['coc.nvim', 'neoinclude.vim'],
-        \ })
-
-  " Docker: dockerfile, docker-compose {{{3
-  " FTDetect: Dockerfile.vim
-  " FTPlugin: Dockerfile.vim
-  " Syntax: Dockerfile.vim
-  " Format: Dockerfile.vim
-  " Linter: ALE, language server
-  " Completion: language server
-  " Snippets: Dockerfile.vim
-
-  call dein#add('ekalinin/Dockerfile.vim')
+  call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
+  " Provides completion for #include statements
 
   " Fish: {{{3
   " call dein#add('blankname/vim-fish')
   " Maintained fork of dag/vim-fish
 
   " Go: {{{3
-  " FTDetect: vim-go, $VIMRUNTIME
-  " FTPlugin: vim-go
-  " Syntax: vim-go
-  " Format: ALE, vim-go
-  " Linter: ALE, vim-go?
-  " Completion: language server
-  " Snippets: vim-go, vim-snippets
-  " Compiler: vim-go
-
-  call dein#add('fatih/vim-go', {
-        \ 'if': has('nvim-0.3.2'),
-        \ 'merged': v:true,
-        \ })
-
-  " I3: {{{3
-  call dein#add('mboughaba/i3config.vim')
-
-  " Ion: Redox Shell
-  call dein#add('https://gitlab.redox-os.org/redox-os/ion-vim')
-
-  " JSON: {{{3
-  " FTDetect: vim-json, $VIMRUNTIME
-  " FTPlugin: vim-json
-  " Syntax: vim-json, custom
-  " Format: coc-json, ALE, vim-json
-  " Linter: coc-json, ALE, vim-json
-  " Completion: coc-json
-  " Snippets: coc-json
-  call dein#add('elzr/vim-json')
+  call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': v:true})
 
   " LLVM: {{{3
+  call dein#add('rhysd/vim-llvm')
   " The llvm highlighting is in a subdirectory of llvm-mirror/llvm, which is a
   " 500mb repository. You're better off directly adding stuff or using a repo
   " based on it.
   " See: https://github.com/llvm-mirror/llvm/tree/master/utils/vim
-
-  call dein#add('rhysd/vim-llvm')
+  "
+  " Has no plugin, so always merge.
 
   " Lua: {{{3
   call dein#add('bfredl/nvim-luadev')
+  " Lua REPL
+  " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
+  " be lazily loaded.
 
   " Markdown: {{{3
   call dein#add('iamcco/markdown-preview.nvim', {
-        \ 'if': executable('node'),
+        \ 'if': (executable('node') && executable('yarn')),
         \ 'lazy': v:true,
         \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
         \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
         \ })
+  " Markdown live preview
+  " Instructions suggest lazy loading with on_ft
+  "
+  " TODO let this actually work with vimwiki
+  " vimwiki replaces the markdown syntax, so I need to add compatibility with
+  " it.
 
   " Meson: {{{3
-  " Official meson syntax is similar to the official llvm syntax, although we
-  " can get the reposotory size down to about 21MB (at time of writing) by
-  " cloning with a low depth.
   call dein#add('mesonbuild/meson', {
         \ 'rtp': 'data/syntax-highlighting/vim',
         \ 'type__depth': 1,
         \ })
-
-  " MoonScript: {{{3
-  call dein#add('leafo/moonscript-vim')
-
-  " call dein#add('svermeulen/nvim-moonmaker', {'merged': v:false})
-  " This plugin deletes files in it's lua dir, so we can't safely merge it.
-
-  " Powershell: {{{3
-  call dein#add('PProvost/vim-ps1')
+  " Official meson syntax is similar to the official llvm syntax, although we
+  " can get the reposotory size down to about 21MB (at time of writing) by
+  " cloning with a low depth.
 
   " Python: {{{3
-  " FTDetect: $VIMRUNTIME
-  " FTPlugin: $VIMRUNTIME
-  " Syntax: Semshi, python-syntax
-  " Format: ALE, language server, isort.nvim
-  " Linter: ALE, language server, coc-pyright
-  " Completion: language server
-  " Snippets: vim-snippets
   " I used to use python-mode but it turns out that plugin causes more problems
   " than it solves.
 
@@ -267,133 +206,135 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('Vimjas/vim-python-pep8-indent')
 
   call dein#add('numirias/semshi', {'if': has('python3'), 'merged': v:true})
-  " Semshi provides semantic highlighting for Python code.
+  " Provides semantic highlighting for Python code.
+  " Probably will be replaced by tree sitter when nvim 0.5.0 releases
 
   call dein#add('bfredl/nvim-ipy', {'if': has('python3'), 'merged': v:true})
+  " Python REPL
+  " Dependency checking is kinda lackluster, but the simplest check if we can
+  " import `jupyter_client` since everything else it seems to need can be
+  " assumed to be installed.
+
   call dein#add('stsewd/isort.nvim', {
         \ 'if': (has('python3') && executable('isort')),
         \ 'merged': v:true,
         \ })
-
-  " QML: {{{3
-  call dein#add('peterhoeg/vim-qml')
+  " Remote plugin for isort
+  " No plugin files, so don't load lazily.
 
   " Rust: {{{3
-  " FTDetect: rust.vim
-  " FTPlugin: rust.vim
-  " Syntax: rust.vim
-  " Format: rust.vim, ale, coc-rls?
-  " Linter: ale, coc-rls
-  " Completion: coc-rls
-  " Snippets: vim-snippets, coc-rls
 
   call dein#add('rust-lang/rust.vim')
   " Official rust syntax
+  "
+  " NOTE plugin/rust.vim doesn't do anything with my configuration.
 
   " call dein#add('mhinz/vim-crates')
   " Info on crates
-
-  " TeX: {{{3
-  " FTDetect: $VIMRUNTIME
-  " FTPlugin: vimtex
-  " Syntax: vimtex
-  " Linter: ALE, coc-texlab
-  " Completion: coc-texlab, coc-vimtex
-  " Snippets: vim-snippets, coc-texlab?
-  " There isn't a good way to install gillescastel/latex-snippets so I'm not
-  " using it right now.
-  call dein#add('lervag/vimtex', {'type__depth': 1})
-
-  " TOML: {{{3
-  call dein#add('cespare/vim-toml')
-
-  " Vala: {{{3
-  call dein#add('arrufat/vala.vim')
+  "
+  " Not needed thanks to vim-package-info
 
   " VimL: {{{3
   call dein#add('Shougo/neco-vim')
   call dein#add('neoclide/coc-neco', {'depends': ['coc.nvim', 'neco-vim']})
+  " VimL completion
 
-  " Zsh: {{{3
-  " Syntax: mine
-  " Completion: coc-zsh
+  " Other: {{{3
+  call dein#add('ekalinin/Dockerfile.vim')
+  call dein#add('elzr/vim-json')
+  call dein#add('leafo/moonscript-vim')
+  call dein#add('cespare/vim-toml')
+  call dein#add('arrufat/vala.vim')
 
-  " For the most part, I'm using a heavily modified version of the Zsh syntax.
-  call dein#add('tjdevries/coc-zsh', {
-        \ 'if': executable('zsh'),
-        \ 'depends': ['coc.nvim'],
+  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
+        \ 'if': (has('nvim') && executable('awk')),
         \ 'merged': v:true,
         \ })
-  " Zsh completions in Zsh scripts.
 
   " Integration: Work with other things {{{2
-  " zealvim was removed because it was too agressive with it's mappings
+  " zealvim was removed because it was too aggressive with it's mappings
+  " discord.nvim was removed because it often renders nvim inoperable
 
+  call dein#add('editorconfig/editorconfig-vim') " editorconfig support
+  call dein#add('tpope/vim-dadbod') " Access databases, etc.
   call dein#add('tpope/vim-fugitive')
+  " git support
   " Fugitive resolves symlinks for git repos, which breaks a lot of random
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
 
-  call dein#add('tpope/vim-dadbod')
-
   call dein#add('neoclide/denite-git', {'depends': ['denite.nvim']})
-  call dein#add('Vigemus/iron.nvim')
-  " call dein#add('aurieh/discord.nvim')
-  " This seems to make nvim segfault sometimes
 
-  " General utilities {{{2
+  call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': v:true})
+  " Set $EDITOR to current nvim instance
+
+  " Utilities {{{2
   call dein#add('vimwiki/vimwiki')
-  " call dein#add('dunstontc/projectile.nvim', {'depends': ['denite.nvim']})
-  call dein#add('Vigemus/nvimux')
+  call dein#add('liuchengxu/vista.vim', {'hook_add': 'cabbrev Vi Vista'})
+  call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': v:true})
+  " General REPL plugin
+
+  call dein#add('fszymanski/fzf-gitignore', {
+        \ 'if': (has('python3') && executable('fzf')),
+        \ 'merged': v:true,
+        \ })
+
   call dein#add('liuchengxu/vim-clap', {
         \ 'if': (has('nvim-0.4.2') && has('python3') && executable('cargo')),
-        \ 'build': join([
-        \   'cargo build --release',
-        \   'cd pythonx/clap',
-        \   'make build',
-        \ ], ';'),
+        \ 'build': 'cd pythonx/clap; make build',
+        \ 'hook_post_update': { -> clap#installer#download_binary() },
         \ })
-  call dein#add('liuchengxu/vista.vim')
+  " Using a build step and a post update hook is inelegant as fuck, but it's
+  " the fastest way to get clap up and running after an update. The build step
+  " builds a python native library that improves performance by a lot, and the
+  " post update hook downloads the binaries needed for clap to work. We could
+  " build that locally but it takes a while and uses up a lot of space.
+  " The lambda is there to minimize issues with post update hooks. Passing the
+  " function to dein returns an error, and hooks are a little inconsistent.
+
+  call dein#add('sakhnik/nvim-gdb', {
+        \ 'if': (has('nvim') &&
+        \       (executable('gdb') || executable('lldb') || executable('bashdb'))),
+        \ 'merged': v:true,
+        \ })
 
   " User interface {{{2
   call dein#add('ryanoasis/vim-devicons')
-  " call dein#add('Shougo/deol.nvim', {'depends': ['denite.nvim']})
-  call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
-  call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
-  call dein#add('sakhnik/nvim-gdb', {
-        \ 'if': (has('python3')     &&
-        \       (executable('gdb')  ||
-        \        executable('lldb') ||
-        \        executable('bashdb'))),
-        \ 'merged': v:true,
-        \ })
-  call dein#add('liuchengxu/vim-which-key')
-  call dein#add('camspiers/animate.vim')
-  call dein#add('camspiers/lens.vim')
 
-  call dein#add('rhysd/git-messenger.vim', {
+  call dein#add('liuchengxu/vim-which-key', {
         \ 'lazy': v:true,
-        \ 'on_cmd': 'GitMessenger',
-        \ 'on_map': '<Plug>(git-messenger',
+        \ 'on_cmd': ['WhichKey', 'WhichKey!', 'WhichKeyVisual', 'WhichKeyVisual!'],
         \ })
+  " Show which keys are available in a pop-up
+
+  call dein#add('rhysd/git-messenger.vim')
   " View git commit messages in a floating window.
+  " Lazy loading is suggested in plugin readme, but performance benefit is
+  " negligible.
 
   " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
   " the moment it won't install.
 
+  " Denite {{{3
+  call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
+  call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
+  call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
+  call dein#add('iyuuya/denite-ale', {'depends': ['denite.nvim', 'ale']})
+
   " Mode-line {{{3
+  " I'm considering switching from airline over to something more neovim
+  " oriented, or else over to lightline.
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes', {'depends': ['vim-airline']})
 
   " Visual helpers {{{3
-  let g:line_number_interval#enable_at_startup = v:true
-  call dein#add('IMOKURI/line-number-interval.nvim')
+  call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
 
-  call dein#add('norcalli/nvim-colorizer.lua')
-  " nvim colorizer highlights colors really quickly.
+  call dein#add('norcalli/nvim-colorizer.lua', {'if': has('nvim-0.4.0'), 'merged': v:true})
+  " Highlights colors really quickly.
 
   call dein#add('meain/vim-package-info', {
-        \ 'if': has('node'),
+        \ 'if': (has('node') && executable('yarn')),
         \ 'build': 'yarn install --ignore-optional --link-duplicates',
         \ })
   " Shows package information in package.json, cargo.toml, etc.
@@ -404,18 +345,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('mhinz/vim-signify')
 
   " Color schemes {{{3
-  " call dein#add('keitanakamura/neodark.vim')
   " call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
-  " call dein#add('liuchengxu/space-vim-theme',)
-  " call dein#add('sickill/vim-monokai')
-  " call dein#add('joshdick/onedark.vim')
-  " call dein#add('challenger-deep-theme/vim', {'name': 'challenger_deep.vim'})
-  " call dein#add('jaredgorski/SpaceCamp')
-  " call dein#add('nanotech/jellybeans.vim')
-  " call dein#add('rakr/vim-one')
-  " call dein#add('arcticicestudio/nord-vim')
-  " call dein#add('ajmwagar/vim-deus')
 
   " Text-editing {{{2
   call dein#add('tpope/vim-abolish')
@@ -424,33 +355,14 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('tpope/vim-commentary')
   call dein#add('tpope/vim-repeat')
   call dein#add('tpope/vim-speeddating')
-
-  call dein#add('farmergreg/vim-lastplace')
-  " Open files wherever you were last editing them
-
+  call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
+  call dein#add('AndrewRadev/splitjoin.vim')
   call dein#add('junegunn/vim-easy-align')
   " Align text to certain characters.
+  " Can be loaded lazily, but performance benefit is negligible
 
   " call dein#add('meain/vim-colorswitch', {'if': has('python3'), 'merged': v:true})
   " Cycle between hex, rgb, and hsl colors
-
-  " Uncategorized {{{2
-  " call dein#add('ctrlpvim/ctrlp.vim')
-  call dein#add('rliang/termedit.nvim')
-  call dein#add('fszymanski/fzf-gitignore')
-  call dein#add('editorconfig/editorconfig-vim')
-  " call dein#add('Shougo/context_filetype.vim')
-  " call dein#add('easymotion/vim-easymotion')
-
-  " call dein#add('Yggdroot/LeaderF', {
-  "       \ 'merged': v:true,
-  "       \ 'build': 'bash install.sh',
-  "       \ })
-
-  " call dein#add('Shougo/vimproc.vim', {
-  "       \ 'merged': v:true,
-  "       \ 'build': 'make && strip lib/vimproc_linux64.so',
-  "       \ })
 
   " Required {{{2
   call dein#end()
@@ -469,7 +381,6 @@ endif
 
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
-let git_messenger_always_into_popup = v:true
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
 exe 'luafile '.stdpath('config').'/config.lua'
@@ -522,12 +433,8 @@ let ale_linters_ignore = {
       \ }
 
 let ale_fixers = {
-      \   '*': [
-      \     'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'cmake': [
-      \     'cmakeformat', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
+      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \   'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
       \   'cpp': [
       \     'clang-format',
       \     'clangtidy',
@@ -537,33 +444,19 @@ let ale_fixers = {
       \   'go': [
       \     'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \   ],
-      \   'html': [
-      \     'tidy', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'less': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
+      \   'html': ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'less': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
       \   'python': [
       \     'add_blank_lines_for_python_control_statements',
       \     'reorder-python-imports',
       \     'remove_trailing_lines',
       \     'trim_whitespace',
       \   ],
-      \   'rust': [
-      \     'rustfmt', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'scss': [
-      \     'prettier', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'sh': [
-      \     'shfmt', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'sql': [
-      \     'sql-format', 'remove_trailing_lines', 'trim_whitespace',
-      \   ],
-      \   'xml': [
-      \     'xmllint',
-      \   ],
+      \   'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'scss': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
+      \   'xml': ['xmllint'],
       \ }
 
 let ale_linter_aliases = {
@@ -579,26 +472,6 @@ let ale_sh_shfmt_options = join([
       \ '-i=2',
       \ '-ci',
       \ ])
-
-" Chromatica: Remote plugin that enhances clang highlighting {{{2
-let chromatica#libclang_path     = '/usr/lib64/libclang.so'
-let chromatica#enable_at_startup = v:true " auto-enable Chromatica when relevant
-let chromatica#responsive_mode   = v:true " Continuously highlight files
-" Without the following args, chromatica won't highlight files correctly.
-let chromatica#global_args = [
-      \ '-isystem/usr/include/c++/10',
-      \ '-isystem/usr/include/c++/10/x86_64-redhat-linux',
-      \ '-isystem/usr/include/c++/10/backward',
-      \ '-isystem/usr/lib64/clang/10.0.1/include',
-      \ '-isystem/usr/local/include',
-      \ ]
-
-" Lens: Automatic Window Resizing {{{2
-let lens#disabled_filetypes = [
-      \   'list',
-      \   'qf',
-      \   'vista',
-      \ ]
 
 " VimWiki: Note-taking tool {{{2
 let vimwiki_list = [{
@@ -618,16 +491,23 @@ let vista_executive_for = {
       \   'json': 'coc',
       \   'lua': 'coc',
       \   'markdown': 'toc',
+      \   'pandoc': 'markdown',
       \   'python': 'coc',
       \   'tex': 'coc',
       \   'typescript': 'coc',
       \   'vala': 'coc',
+      \   'vimwiki': 'markdown',
       \   'xml': 'coc',
       \   'yaml': 'coc',
+      \   'vim': 'coc',
       \ }
-let vista_ctags_cmd = {
-      \   'go': 'gotags',
-      \ }
+let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
+if executable('gotags')
+  let vista_ctags_cmd.go = 'gotags'
+endif
+
+" Other: {{{2
+let neoinclude#max_processes = py3eval('os.cpu_count()')
 
 " Syntax Settings {{{1
 " Go
@@ -662,21 +542,18 @@ let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 " Markdown
 let markdown_fenced_languages = ['go']
 
-" Commands {{{1
-cabbrev Vi Vista
-
 " Keybindings {{{1
 
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-nnoremap <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
+nnor <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
 
 xmap ga <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " Trigger completion on menu key
-inoremap <silent><expr> <F16> coc#refresh()
+inor <silent><expr> <F16> coc#refresh()
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -714,14 +591,6 @@ omap af <Plug>(coc-funcobj-a)
 nmap <silent> <C-d> <Plug>(coc-range-select)
 xmap <silent> <C-d> <Plug>(coc-range-select)
 
-" nmap <silent> f <Plug>(coc-smartf-forward)
-" nmap <silent> F <Plug>(coc-smartf-backward)
-" nmap <silent> ; <Plug>(coc-smartf-repeat)
-" nmap <silent> , <Plug>(coc-smartf-repeat-opposite)
-
-" nmap <silent> <C-c> <Plug>(coc-cursors-position)
-" nmap <silent> <C-d> <Plug>(coc-cursors-word)
-" xmap <silent> <C-d> <Plug>(coc-cursors-range)
 " use normal command like `<leader>xi(`
 nmap <leader>x  <Plug>(coc-cursors-operator)
 

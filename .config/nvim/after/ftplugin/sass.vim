@@ -1,11 +1,15 @@
-" Commands
-com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
+if exists('did_coc_loaded')
+  " Commands
+  com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
 
-" Maps
-nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+  " Maps
+  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+endif
 
 " autocmds
 aug user_ftplugin
   au! * <buffer>
-  au CursorHold <buffer> silent call CocActionAsync('highlight')
+  if exists('did_coc_loaded')
+    au CursorHold <buffer> silent call CocActionAsync('highlight')
+  endif
 aug END

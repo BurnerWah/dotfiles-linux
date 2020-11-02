@@ -1,2 +1,4 @@
-" Commands
-com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
+if exists('did_coc_loaded')
+  " Commands
+  com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
+endif

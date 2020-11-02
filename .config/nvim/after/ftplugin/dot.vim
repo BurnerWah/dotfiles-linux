@@ -1,9 +1,13 @@
-" Maps
-nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+if exists('did_coc_loaded')
+  " Maps
+  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+end
 
 " autocmds
 aug user_ftplugin
   au! * <buffer>
-  " Highlight symbol under cursor on CursorHold
-  au CursorHold <buffer> silent call CocActionAsync('highlight')
+  if exists('did_coc_loaded')
+    " Highlight symbol under cursor on CursorHold
+    au CursorHold <buffer> silent call CocActionAsync('highlight')
+  endif
 aug END

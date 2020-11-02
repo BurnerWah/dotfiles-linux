@@ -1,16 +1,18 @@
-" Options
-setl formatexpr=CocAction('formatSelected')
 setl fdm=syntax
 
-" Commands
-com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
+if exists('did_coc_loaded')
+  setl formatexpr=CocAction('formatSelected')
 
-" Maps
-nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+  com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
+
+  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+endif
 
 " autocmds
 aug user_ftplugin
   au! * <buffer>
-  au BufWritePre <buffer> call CocAction('runCommand', 'prettier.formatFile')
-  au CursorHold <buffer> silent call CocActionAsync('highlight')
+  if exists('did_coc_loaded')
+    au BufWritePre <buffer> call CocAction('runCommand', 'prettier.formatFile')
+    au CursorHold <buffer> silent call CocActionAsync('highlight')
+  endif
 aug END
