@@ -602,6 +602,12 @@ xmap <silent> <C-d> <Plug>(coc-range-select)
 " use normal command like `<leader>xi(`
 nmap <leader>x  <Plug>(coc-cursors-operator)
 
+" map the Terminal function in the lua module to some shortcuts
+nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
+nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
+nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
+nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
+
 " Init augroup {{{1
 aug init
   au!

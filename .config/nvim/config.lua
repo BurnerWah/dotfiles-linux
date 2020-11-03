@@ -37,3 +37,5 @@ iron.core.set_config {
     zsh = "zsh"
   }
 }
+
+require("navigation")
