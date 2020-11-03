@@ -1,6 +1,7 @@
 require 'colorizer'.setup {
   'kitty';
   css = { css = true; };
+  lua = { RGB = false; RRGGBB = true; names = false; };
   vim = { RGB = false; RRGGBB = true; names = false; };
   zsh = { RGB = true;  RRGGBB = true; names = false; };
 }
