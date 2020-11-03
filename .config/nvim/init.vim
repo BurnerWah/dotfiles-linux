@@ -57,10 +57,8 @@ if &shell =~# 'fish$'
   set shell=bash
 endif
 
-" Run any python code that our vimrc needs
-py3 << EOF
-import os
-EOF
+" Load python utilities
+exe printf('py3file %s/util.py', stdpath('config'))
 
 " Dein: plugin manager {{{1
 " Notes {{{2
