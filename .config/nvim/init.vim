@@ -405,7 +405,7 @@ let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-lua require('user_config')
+lua require('user.config')
 
 " Colorscheme: Currently set to a fork of quantum {{{2
 " set background=dark
