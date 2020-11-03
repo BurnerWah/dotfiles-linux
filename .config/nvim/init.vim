@@ -137,6 +137,15 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('dense-analysis/ale', {'type__depth': 1})
   " Asynchronous linting engine
 
+  call dein#add('nvim-treesitter/nvim-treesitter', {
+        \ 'if': (luaeval('pcall(require,"vim.treesitter.query")') &&
+        \       (executable('git') ||
+        \       (executable('tar') && executable('curl'))) &&
+        \        executable('cc')),
+        \ })
+  " This doesn't work at time of writing on the nightly repo, but I don't know
+  " how to check for that.
+
   " Language-specific stuff {{{2
   " CXX: {{{3
   call dein#add('jackguo380/vim-lsp-cxx-highlight', {
@@ -360,6 +369,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('mhinz/vim-signify')
 
   " Color schemes {{{3
+  call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': v:true})
+  call dein#add('Th3Whit3Wolf/onebuddy', {'depends': 'colorbuddy.nvim'})
   " call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
 
@@ -394,10 +405,10 @@ let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 
-exe 'luafile '.stdpath('config').'/config.lua'
+lua require('user_config')
 
 " Colorscheme: Currently set to a fork of quantum {{{2
-set background=dark
+" set background=dark
 let quantum_black   = v:true
 let quantum_italics = v:true
 
