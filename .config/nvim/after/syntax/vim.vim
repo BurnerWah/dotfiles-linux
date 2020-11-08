@@ -75,6 +75,11 @@ syn match vimBoolean contained '\<v:\%(true\|false\)\>'
       \ containedin=vimVar contains=vimBoolHide
 syn match vimBoolHide contained transparent conceal '\<v:'
 
+" Variables: Missing scopes & edge cases {{{2
+syn match vimVar '\[\zs&\a\+\>' " options in 'let []'
+syn match vimVar contained '\zs&\a\+\>' containedin=vimFuncBodyList
+syn match vimVar '&\<[lg]:\a\+\>' " local/global options
+
 " Autocmd {{{2
 syn match vimAutoCmdSfxList contained skipwhite '\S*'
       \ nextgroup=vimCommand,vimAutoCmdExtend

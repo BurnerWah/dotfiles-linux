@@ -41,6 +41,9 @@ aug userft
   " SSH
   au BufNewFile,BufRead /etc/ssh/ssh_config.d/* setf sshconfig
 
+  " uBlock
+  au BufNewFile,BufRead *.ublock.txt setf ublock
+
   " VimL
   au BufNewFile,BufRead /etc/virc setf vim
 

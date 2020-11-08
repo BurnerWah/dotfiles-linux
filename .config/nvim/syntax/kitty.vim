@@ -3,7 +3,9 @@
 " Maintainer: Jaden Pleasants
 
 " Pre-work {{{1
-if exists('b:current_syntax')|fini|en
+if exists('b:current_syntax')
+  finish
+endif
 
 let s:cpo_save = &cpoptions
 set cpoptions&vim

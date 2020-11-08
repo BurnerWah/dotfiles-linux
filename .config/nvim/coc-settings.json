@@ -64,6 +64,7 @@
     "yaml"
   ],
   "coc.preferences.hoverTarget": "float",
+  "diagnostic.filetypeMap": { "markdown": "vimwiki" },
   "diagnostic-languageserver.filetypes": {
     "vim": "vint",
     "sh": "shellcheck"

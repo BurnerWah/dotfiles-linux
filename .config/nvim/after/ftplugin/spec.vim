@@ -1,2 +1,2 @@
-" setl comments=
-setl commentstring=#%s
+" Options
+setl comments=:# commentstring=#\ %s

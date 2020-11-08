@@ -1,1 +1,1 @@
-setl commentstring=#%s comments=:#
+setl comments=:# commentstring=#%s

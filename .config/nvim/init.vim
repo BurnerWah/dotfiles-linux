@@ -48,14 +48,12 @@ if has('conceal')
   set concealcursor =nv
 endif
 
+let [g:loaded_python_provider, g:loaded_perl_provider] = [0, 0]
 let node_host_prog = exepath('neovim-node-host')
 let ruby_host_prog = exepath('neovim-ruby-host')
-let fennel_nvim_auto_init = v:false
 
-" Maybe someday I'll be able to remove this block
-if &shell =~# 'fish$'
-  set shell=bash
-endif
+" Fish can cause problems with plugins
+let &shell = (&shell =~# 'fish$') ? 'bash' : &shell
 
 " Load python utilities
 exe printf('py3file %s/util.py', stdpath('config'))
@@ -89,6 +87,14 @@ exe printf('py3file %s/util.py', stdpath('config'))
 " It's also worth mentioning that while there is a third-party user interface
 " for dein available, it seems to be pretty buggy. I don't use it personally.
 "
+" For dependency management, please note the following:
+" * executable() assumptions:
+"   - 'tar': true - basically required on any system
+"   - 'curl': true - basically required on any system
+"   - 'git': true - needed for plugin manager
+"   - 'yarn': implies 'node' - dependency
+"   - 'npm': implies 'node' - dependency
+"
 " Settings {{{2
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
 let dein#enable_notification = v:true
@@ -116,13 +122,12 @@ if dein#load_state('~/.local/share/dein')
 
   " Core plugins {{{2
   call dein#add('neoclide/coc.nvim', {
-        \ 'if': (executable('node') &&
-        \       (executable('npm') || executable('yarn'))),
+        \ 'if': (executable('npm') || executable('yarn')),
         \ 'merged': v:false,
         \ 'rev': 'release',
         \ })
 
-  call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': v:false})
+  call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': 0})
 
   " Snippets & Templates {{{2
   " call dein#add('honza/vim-snippets')
@@ -137,8 +142,6 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('nvim-treesitter/nvim-treesitter', {
         \ 'if': (luaeval('pcall(require,"vim.treesitter.query")') &&
-        \       (executable('git') ||
-        \       (executable('tar') && executable('curl'))) &&
         \        executable('cc')),
         \ })
   " This doesn't work at time of writing on the nightly repo, but I don't know
@@ -148,7 +151,7 @@ if dein#load_state('~/.local/share/dein')
   " CXX: {{{3
   call dein#add('jackguo380/vim-lsp-cxx-highlight', {
         \ 'if': (has('nvim') &&
-        \       (executable('ccls') || executable('clangd') || executable('cquery'))),
+        \        py3eval('has_any_cmd("ccls", "clangd", "cquery")')),
         \ 'merged': v:true,
         \ })
   " Provides enhanced highlighting
@@ -165,7 +168,7 @@ if dein#load_state('~/.local/share/dein')
   " Maintained fork of dag/vim-fish
 
   " Go: {{{3
-  call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': v:true})
+  call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': 1})
 
   " LLVM: {{{3
   call dein#add('rhysd/vim-llvm')
@@ -184,7 +187,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Markdown: {{{3
   call dein#add('iamcco/markdown-preview.nvim', {
-        \ 'if': (executable('node') && executable('yarn')),
+        \ 'if': executable('yarn'),
         \ 'lazy': v:true,
         \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
         \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
@@ -208,12 +211,12 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('vim-python/python-syntax')
   call dein#add('Vimjas/vim-python-pep8-indent')
 
-  call dein#add('numirias/semshi', {'if': has('python3'), 'merged': v:true})
+  call dein#add('numirias/semshi', {'if': has('python3'), 'merged': 1})
   " Provides semantic highlighting for Python code.
   " Probably will be replaced by tree sitter when nvim 0.5.0 releases
 
   call dein#add('bfredl/nvim-ipy', {
-        \ 'if': has('python3'),
+        \ 'if': (has('python3') && py3eval('has_module("jupyter_client")')),
         \ 'merged': v:true,
         \ 'hook_post_source': join([
         \   'delcommand IPython2',
@@ -221,9 +224,6 @@ if dein#load_state('~/.local/share/dein')
         \ ], "\n"),
         \ })
   " Python REPL
-  " Dependency checking is kinda lackluster, but the simplest check if we can
-  " import `jupyter_client` since everything else it seems to need can be
-  " assumed to be installed.
 
   call dein#add('stsewd/isort.nvim', {
         \ 'if': (has('python3') && executable('isort')),
@@ -234,12 +234,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Rust: {{{3
 
-  call dein#add('rust-lang/rust.vim', {
-        \ 'hook_post_source': join([
-        \   'unlet g:syntastic_rust_checkers',
-        \   'unlet g:syntastic_extra_filetypes',
-        \ ], "\n"),
-        \ })
+  call dein#add('rust-lang/rust.vim')
   " Official rust syntax
   "
   " NOTE plugin/rust.vim doesn't do anything with my configuration.
@@ -259,9 +254,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('elzr/vim-json')
   call dein#add('leafo/moonscript-vim')
   call dein#add('cespare/vim-toml')
-  call dein#add('arrufat/vala.vim', {
-        \ 'hook_add': 'let g:loaded_vala_vim = 1',
-        \ })
+  call dein#add('arrufat/vala.vim')
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
         \ 'if': (has('nvim') && executable('awk')),
@@ -280,15 +273,13 @@ if dein#load_state('~/.local/share/dein')
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
 
-  call dein#add('neoclide/denite-git', {'depends': ['denite.nvim']})
-
-  call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': v:true})
+  call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': 1})
   " Set $EDITOR to current nvim instance
 
   " Utilities {{{2
   call dein#add('vimwiki/vimwiki')
   call dein#add('liuchengxu/vista.vim', {'hook_add': 'cabbrev Vi Vista'})
-  call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': v:true})
+  call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': 1})
   " General REPL plugin
 
   call dein#add('fszymanski/fzf-gitignore', {
@@ -310,24 +301,31 @@ if dein#load_state('~/.local/share/dein')
   " function to dein returns an error, and hooks are a little inconsistent.
 
   call dein#add('sakhnik/nvim-gdb', {
-        \ 'if': (has('nvim') &&
-        \       (executable('gdb') || executable('lldb') || executable('bashdb'))),
+        \ 'if': (has('nvim') && has('python3') &&
+        \        py3eval('has_any_cmd("gdb", "lldb", "bashdb")')),
         \ 'merged': v:true,
         \ })
 
   " User interface {{{2
+  " let webdevicons_enable_nerdtree = 0
   call dein#add('ryanoasis/vim-devicons', {
+        \ 'hook_add': 'let g:webdevicons_enable_nerdtree = 0',
         \ 'hook_post_source': join([
-        \   'unlet g:NERDTreeUpdateOnCursorHold',
-        \   'unlet g:NERDTreeGitStatusUpdateOnCursorHold',
+        \   'unlet! '.join([
+        \     'g:NERDTreeGitStatusUpdateOnCursorHold',
+        \     'g:NERDTreeUpdateOnCursorHold',
+        \     'g:WebDevIconsNerdTreeBeforeGlyphPadding',
+        \     'g:WebDevIconsNerdTreeAfterGlyphPadding',
+        \     'g:WebDevIconsNerdTreeGitPluginForceVAlign',
+        \     'g:webdevicons_conceal_nerdtree_brackets',
+        \   ]),
+        \   'delfu! NERDTreeWebDevIconsRefreshListener',
         \ ], "\n"),
         \ })
-
-  call dein#add('liuchengxu/vim-which-key', {
-        \ 'lazy': v:true,
-        \ 'on_cmd': ['WhichKey', 'WhichKey!', 'WhichKeyVisual', 'WhichKeyVisual!'],
-        \ })
-  " Show which keys are available in a pop-up
+  " devicons doesn't check if nerdtree is installed before configuring a lot
+  " of it, so it pollutes our setup with a bunch of unnecessary things to
+  " remove.
+  " Honestly devicons just has way too many variables.
 
   call dein#add('rhysd/git-messenger.vim')
   " View git commit messages in a floating window.
@@ -338,8 +336,9 @@ if dein#load_state('~/.local/share/dein')
   " the moment it won't install.
 
   " Denite {{{3
-  call dein#add('notomo/denite-autocmd', {'depends': ['denite.nvim']})
-  call dein#add('zacharied/denite-nerdfont', {'depends': ['denite.nvim']})
+  call dein#add('neoclide/denite-git', {'depends': 'denite.nvim'})
+  call dein#add('notomo/denite-autocmd', {'depends': 'denite.nvim'})
+  call dein#add('zacharied/denite-nerdfont', {'depends': 'denite.nvim'})
   call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
   call dein#add('iyuuya/denite-ale', {'depends': ['denite.nvim', 'ale']})
 
@@ -347,12 +346,12 @@ if dein#load_state('~/.local/share/dein')
   " I'm considering switching from airline over to something more neovim
   " oriented, or else over to lightline.
   call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes', {'depends': ['vim-airline']})
+  call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline'})
 
   " Visual helpers {{{3
   call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
 
-  call dein#add('norcalli/nvim-colorizer.lua', {'if': has('nvim-0.4.0'), 'merged': v:true})
+  call dein#add('norcalli/nvim-colorizer.lua', {'if': has('nvim-0.4.0'), 'merged': 1})
   " Highlights colors really quickly.
 
   call dein#add('meain/vim-package-info', {
@@ -367,7 +366,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('mhinz/vim-signify')
 
   " Color schemes {{{3
-  call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': v:true})
+  call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
   call dein#add('Th3Whit3Wolf/onebuddy', {'depends': 'colorbuddy.nvim'})
   " call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
@@ -385,7 +384,10 @@ if dein#load_state('~/.local/share/dein')
   " Align text to certain characters.
   " Can be loaded lazily, but performance benefit is negligible
 
-  " call dein#add('meain/vim-colorswitch', {'if': has('python3'), 'merged': v:true})
+  call dein#add('meain/vim-colorswitch', {
+        \ 'if': (has('python3') && py3eval('has_module("colour")')),
+        \ 'merged': v:true
+        \ })
   " Cycle between hex, rgb, and hsl colors
 
   " Required {{{2
@@ -397,6 +399,20 @@ filetype plugin indent on
 syn enable
 
 
+" Cleanup {{{1
+" This is just to get rid of weird stuff that shouldn't be created with my
+" configuration. We delay them with an autocmd group since directly calling
+" them seems to do nothing.
+" autocommands should always hare the ++once flag here as a safety measure,
+" and commands should generally be prefixed with sil! so they don't cause any
+" errors.
+aug init_cleanup
+  au!
+  au VimEnter * ++once sil! unlet
+        \ g:syntastic_extra_filetypes
+        \ g:syntastic_rust_checkers g:syntastic_vala_checkers
+aug END
+
 " Plugin Settings {{{1
 
 let snips_author = 'Jaden Pleasants'
@@ -406,9 +422,7 @@ let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
 lua require('user.config')
 
 " Colorscheme: Currently set to a fork of quantum {{{2
-" set background=dark
-let quantum_black   = v:true
-let quantum_italics = v:true
+let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
 
 colors quantum
 
@@ -519,9 +533,6 @@ let vista_executive_for = {
       \ 'yaml': 'coc',
       \ }
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
-if executable('gotags')
-  let vista_ctags_cmd.go = 'gotags'
-endif
 
 " Other: {{{2
 let neoinclude#max_processes = py3eval('os.cpu_count()')
@@ -625,6 +636,6 @@ aug init
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   au CompleteDone * if pumvisible() == 0 | pclose | endif
-  au VimEnter * call dein#call_hook('post_source')
+  au VimEnter * ++once call dein#call_hook('post_source')
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker
