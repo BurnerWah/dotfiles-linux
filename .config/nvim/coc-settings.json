@@ -1,11 +1,5 @@
 {
   "languageserver": {
-    "bashls": {
-      "command": "bash-language-server",
-      "args": ["start"],
-      "filetypes": ["sh"],
-      "ignoredRootPaths": ["~"]
-    },
     "ccls": {
       "command": "ccls",
       "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
@@ -26,11 +20,6 @@
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
     },
-    "dockerls": {
-      "command": "docker-langserver",
-      "args": ["--stdio"],
-      "filetypes": ["dockerfile"]
-    },
     "dotls": {
       "command": "dot-language-server",
       "args": ["--stdio"],
@@ -38,7 +27,7 @@
     },
     "efm": {
       "command": "efm-langserver",
-      "filetypes": ["eruby", "yaml"]
+      "filetypes": ["eruby"]
     },
     "fortls": {
       "command": "fortls",
@@ -60,14 +49,94 @@
     "html",
     "javascript",
     "json",
+    "lua",
+    "sh",
     "typescript",
     "yaml"
   ],
   "coc.preferences.hoverTarget": "float",
   "diagnostic.filetypeMap": { "markdown": "vimwiki" },
+  "diagnostic-languageserver.linters": {
+    /*
+     * The following programs don't return exit code 0 after linting:
+     * checkmake, luacheck, rstcheck.
+     * Without changes to diagnostic-ls, they aren't usable.
+     *
+     * bash/zsh have errors that end up after the file so they're left to ALE.
+     */
+    "fish": {
+      "sourceName": "fish",
+      "command": "fish",
+      "args": ["-n", "%tempfile"], // using %tempfile lets us lint w/o saving the file
+      "isStdout": false,
+      "isStderr": true,
+      "formatLines": 1,
+      "formatPattern": [
+        "^.*\\(line (\\d+)\\): (.*)$",
+        { "line": 1, "message": 2 }
+      ]
+    },
+    "rst-lint": {
+      "sourceName": "rst-lint",
+      "command": "rst-lint",
+      "args": ["--format", "json", "%file"],
+      "parseJson": {
+        "line": "line",
+        "endLine": "line",
+        "security": "level",
+        "message": "${message}"
+      },
+      "securities": { "1": "info", "2": "warning", "3": "error", "4": "error" }
+    }
+  },
   "diagnostic-languageserver.filetypes": {
+    "asciidoc": ["languagetool", "write-good"],
+    "bats": "shellcheck",
+    "c": "cpplint",
+    "cpp": "cpplint",
+    "css": "stylelint",
+    "dockerfile": "hadolint",
+    "Dockerfile": "hadolint",
+    "elixir": "mix_credo",
+    "fish": "fish",
+    // go - golangci-lint, revive disabled by default
+    "graphql": "eslint",
+    // haskell - hlint not available in coc-diagnostic
+    // help - all linters disabled by default
+    "html": ["tidy", "write-good"],
+    "javascript": ["eslint", "standard"],
+    "less": "stylelint",
+    "mail": "languagetool",
+    "markdown": ["languagetool", "write-good"],
+    "nroff": "write-good",
+    "php": ["phpcs", "phpstan", "psalm"],
+    "po": "write-good",
+    "pod": "write-good",
+    // python - pylint, mypy not available in coc-diagnostic
+    "rst": ["rst-lint", "write-good"],
+    "sass": "stylelint",
+    "scss": "stylelint",
+    "sh": "shellcheck",
+    "stylus": "stylelint",
+    "sugarss": "stylelint",
+    "tex": "write-good",
+    "texinfo": "write-good",
+    "text": "languagetool", // write-good is disabled by default in ALE
+    "typescript": ["eslint", "standard"],
     "vim": "vint",
-    "sh": "shellcheck"
+    "xhtml": "write-good",
+    "yaml": "yamllint"
+  },
+  "diagnostic-languageserver.formatters": {
+    // shfmt has annoying defaults so we override them
+    "shfmt": { "command": "shfmt", "args": ["-i=2", "-ci"] }
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    // fish_indent has issues, don't use it.
+    "dart": "dartfmt",
+    "elixir": "mix_format",
+    "lua": "lua-format",
+    "sh": "shfmt"
   },
   "highlight.colors.enable": false, // We have another plugin set up to handle this
   "json.schemas": [

@@ -282,6 +282,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': 1})
   " General REPL plugin
 
+  call dein#add('romgrk/todoist.nvim', {'build': 'npm install'})
+
   call dein#add('fszymanski/fzf-gitignore', {
         \ 'if': (has('python3') && executable('fzf')),
         \ 'merged': v:true,
@@ -299,6 +301,7 @@ if dein#load_state('~/.local/share/dein')
   " build that locally but it takes a while and uses up a lot of space.
   " The lambda is there to minimize issues with post update hooks. Passing the
   " function to dein returns an error, and hooks are a little inconsistent.
+  call dein#add('vn-ki/coc-clap', {'depends': ['coc.nvim', 'vim-clap']})
 
   call dein#add('sakhnik/nvim-gdb', {
         \ 'if': (has('nvim') && has('python3') &&
@@ -442,29 +445,53 @@ let airline#extensions#tabline#formatter = 'unique_tail_improved'
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
 
+" This is mostly to disable linters which are better handled by another
+" extension (I.E. Language servers, stuff covered by diagnostic-ls & efm).
 let ale_linters_ignore = {
-      \ 'c': ['ccls', 'clangd'],
-      \ 'cpp': ['ccls', 'clangd'],
+      \ 'asciidoc': ['languagetool', 'writegood'],
+      \ 'bats': ['shellcheck'],
+      \ 'c': ['ccls', 'clangd', 'cpplint', 'cquery'],
+      \ 'cpp': ['ccls', 'clangd', 'cpplint', 'cquery'],
       \ 'css': ['stylelint'],
+      \ 'dart': ['language_server'],
+      \ 'dockerfile': ['hadolint'],
+      \ 'Dockerfile': ['hadolint'],
+      \ 'elixir': ['credo'],
+      \ 'fish': ['fish'],
       \ 'fortran': ['language_server'],
       \ 'go': ['golangserver', 'gopls'],
-      \ 'javascript': ['tsserver'],
+      \ 'graphql': ['eslint'],
+      \ 'help': ['writegood'],
+      \ 'html': ['tidy', 'writegood'],
+      \ 'javascript': ['eslint', 'standard', 'tsserver'],
       \ 'less': ['stylelint'],
       \ 'lua': ['luacheck'],
-      \ 'markdown': ['markdownlint'],
+      \ 'mail': ['languagetool'],
+      \ 'markdown': ['languagetool', 'markdownlint', 'writegood'],
+      \ 'nroff': ['writegood'],
       \ 'nim': ['nimlsp'],
       \ 'objc': ['ccls', 'clangd'],
       \ 'objcpp': ['clangd'],
-      \ 'python': ['flake8', 'mypy', 'pyls', 'pylint'],
+      \ 'php': ['phpcs', 'phpstan', 'psalm'],
+      \ 'po': ['writegood'],
+      \ 'pod': ['writegood'],
+      \ 'python': ['flake8', 'mypy', 'pyls', 'pylint', 'pyright'],
+      \ 'rst': ['writegood'],
       \ 'rust': ['rls'],
       \ 'sass': ['stylelint'],
       \ 'scss': ['stylelint'],
       \ 'sh': ['language_server', 'shellcheck'],
-      \ 'tex': ['texlab'],
-      \ 'typescript': ['tsserver'],
-      \ 'vim': ['vint'],
+      \ 'stylus': ['stylelint'],
+      \ 'sugarss': ['stylelint'],
+      \ 'tex': ['texlab', 'writegood'],
+      \ 'texinfo': ['writegood'],
+      \ 'text': ['languagetool', 'writegood'],
+      \ 'typescript': ['eslint', 'standard', 'tsserver'],
+      \ 'vim': ['vimls', 'vint'],
+      \ 'xhtml': ['writegood'],
       \ 'yaml': ['yamllint'],
       \ }
+" go - golangci-lint, revive disabled by default
 
 let ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -488,14 +515,19 @@ let ale_fixers = {
       \ ],
       \ 'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
       \ 'scss': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'sh': ['shfmt', 'remove_trailing_lines', 'trim_whitespace'],
       \ 'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
       \ 'xml': ['xmllint'],
       \ }
+" sh - shfmt moved to diagnostic-ls
 
 let ale_linter_aliases = {
       \ 'jsonc': 'json',
       \ }
+
+" Fedora exports autopep8 as autopep8-3 but that might be erroneous
+if executable('autopep8-3') && !executable('autopep8')
+  let ale_python_autopep8_executable = 'autopep8-3'
+endif
 
 let ale_javascript_prettier_options = join([
       \ '--no-semi',
@@ -504,11 +536,19 @@ let ale_javascript_prettier_options = join([
 
 let ale_sh_shfmt_options = join(['-i=2', '-ci'])
 
+" Clap: search {{{2
+let clap_theme = 'material_design_dark'
+let clap_provider_todoist = {
+      \ 'source': {-> Todoist__listProjects()},
+      \ 'sink': 'Todoist',
+      \ }
+
 " VimWiki: Note-taking tool {{{2
 let vimwiki_list = [{
       \ 'path': '~/Documents/VimWiki',
       \ 'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
       \ }]
+let vimwiki_folding = 'expr'
 
 " Vista: replacement for tagbar {{{2
 let vista#renderer#enable_icon = 1
@@ -635,6 +675,8 @@ aug init
   au FileType gitmessengerpopup setl winblend=10
   " Update signature help on jump placeholder
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  " Clean up Coc floating windows
+  au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au VimEnter * ++once call dein#call_hook('post_source')
 aug END

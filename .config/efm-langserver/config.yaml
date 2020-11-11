@@ -6,15 +6,19 @@ languages:
     lint-offset: 1
     format-command: 'htmlbeautifier'
 
-  vim:
-    lint-command: 'vint -'
-    lint-stdin: true
+  lua:
+    format-command: 'lua-format -i'
+    format-stdin: true
 
   markdown:
     lint-command: 'markdownlint -s'
     lint-stdin: true
     lint-formats:
       - '%f: %l: %m'
+
+  vim:
+    lint-command: 'vint --enable-neovim -'
+    lint-stdin: true
 
   yaml:
     lint-command: 'yamllint -f parsable -'

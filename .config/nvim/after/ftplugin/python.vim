@@ -3,9 +3,15 @@
 " Description: Improvements to python editing
 
 if exists(':ALEFix')
-  com! -buffer -nargs=0 Autopep8 :ALEFix autopep8
-  com! -buffer -nargs=0 Black :ALEFix black
-  com! -buffer -nargs=0 Yapf :ALEFix yapf
+  if executable(get(g:, 'ale_python_autopep8_executable', 'autopep8'))
+    com! -buffer -nargs=0 Autopep8 :ALEFix autopep8
+  endif
+  if executable(get(g:, 'ale_python_black_executable', 'black'))
+    com! -buffer -nargs=0 Black :ALEFix black
+  endif
+  if executable(get(g:, 'ale_python_yapf_executable', 'yapf'))
+    com! -buffer -nargs=0 Yapf :ALEFix yapf
+  endif
 endif
 
 if exists(':Semshi')

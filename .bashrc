@@ -18,12 +18,12 @@ HISTFILE=~/.local/share/bash_history
 
 source ~/.local/share/bash-completion/completions/*
 
-if type -f zoxide > /dev/null 2>&1; then
+if type -f zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
 fi
 
 # User specific aliases and functions
-if type -f exa > /dev/null 2>&1; then
+if type -f exa >/dev/null 2>&1; then
   alias ls=exa
   alias ll='ls -l'
   alias la='ll -a'
