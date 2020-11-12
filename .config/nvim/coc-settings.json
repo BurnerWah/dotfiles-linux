@@ -16,10 +16,6 @@
       "rootPatterns": ["build/"],
       "initializationOptions": { "buildDirectory": "build" }
     },
-    "digestif": {
-      "command": "digestif",
-      "filetypes": ["tex", "plaintex", "context"]
-    },
     "dotls": {
       "command": "dot-language-server",
       "args": ["--stdio"],
@@ -41,7 +37,8 @@
       "disableWorkspaceFolders": true,
       "initializationOptions": { "usePlaceholders": true }
     },
-    "lua": { "command": "lua-lsp", "filetypes": ["lua"] }
+    "sumneko_lua": { "command": "lua-language-server", "filetypes": ["lua"] }
+    // "lua": { "command": "lua-lsp", "filetypes": ["lua"] }
   },
   "coc.preferences.extensionUpdateCheck": "never",
   "coc.preferences.formatOnSaveFiletypes": [
@@ -49,7 +46,6 @@
     "html",
     "javascript",
     "json",
-    "lua",
     "sh",
     "typescript",
     "yaml"

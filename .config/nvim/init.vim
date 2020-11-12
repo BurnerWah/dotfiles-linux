@@ -32,8 +32,8 @@ set report      =0     " Always report changed lines.
 set synmaxcol   =250   " Only highlight the first 250 columns.
 set mouse       =a     " Mouse support
 set termguicolors      " Truecolor mode
-set spell              " Enable spell correction
-set spelllang   =en_us " Set language for spelling
+" set spell              " Enable spell correction
+" set spelllang   =en_us " Set language for spelling
 set pumblend    =10    " Slightly transparent menus
 set sessionoptions  =blank,curdir,folds,help,localoptions,tabpages,winpos,winsize
 set updatetime  =300
@@ -146,6 +146,9 @@ if dein#load_state('~/.local/share/dein')
         \ })
   " This doesn't work at time of writing on the nightly repo, but I don't know
   " how to check for that.
+  call dein#add('nvim-treesitter/nvim-treesitter-refactor', {'depends': 'nvim-treesitter'})
+  call dein#add('nvim-treesitter/nvim-treesitter-textobjects', {'depends': 'nvim-treesitter'})
+  call dein#add('nvim-treesitter/playground', {'depends': 'nvim-treesitter'})
 
   " Language-specific stuff {{{2
   " CXX: {{{3
@@ -168,7 +171,9 @@ if dein#load_state('~/.local/share/dein')
   " Maintained fork of dag/vim-fish
 
   " Go: {{{3
-  call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': 1})
+  " call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': 1})
+  " vim-go causes a lot of problems since it's hard to stop it from launching
+  " another copy of gopls.
 
   " LLVM: {{{3
   call dein#add('rhysd/vim-llvm')
@@ -180,12 +185,18 @@ if dein#load_state('~/.local/share/dein')
   " Has no plugin, so always merge.
 
   " Lua: {{{3
+  call dein#add('euclidianAce/BetterLua.vim')
+  call dein#add('rafcamlet/nvim-luapad')
+  call dein#add('rafcamlet/coc-nvim-lua', {'depends': ['coc.nvim']})
   call dein#add('bfredl/nvim-luadev')
   " Lua REPL
   " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
   " be lazily loaded.
 
   " Markdown: {{{3
+  call dein#add('npxbr/glow.nvim', {
+        \ 'hook_post_update': 'GlowInstall',
+        \ })
   call dein#add('iamcco/markdown-preview.nvim', {
         \ 'if': executable('yarn'),
         \ 'lazy': v:true,
@@ -204,9 +215,14 @@ if dein#load_state('~/.local/share/dein')
   " can get the reposotory size down to about 21MB (at time of writing) by
   " cloning with a low depth.
 
+  " Moonscript: {{{3
+  call dein#add('leafo/moonscript-vim')
+  call dein#add('svermeulen/nvim-moonmaker', {'merged': 0})
+
   " Python: {{{3
   " I used to use python-mode but it turns out that plugin causes more problems
   " than it solves.
+  " stsewd/isort.nvim has issues
 
   call dein#add('vim-python/python-syntax')
   call dein#add('Vimjas/vim-python-pep8-indent')
@@ -224,13 +240,6 @@ if dein#load_state('~/.local/share/dein')
         \ ], "\n"),
         \ })
   " Python REPL
-
-  call dein#add('stsewd/isort.nvim', {
-        \ 'if': (has('python3') && executable('isort')),
-        \ 'merged': v:true,
-        \ })
-  " Remote plugin for isort
-  " No plugin files, so don't load lazily.
 
   " Rust: {{{3
 
@@ -252,7 +261,6 @@ if dein#load_state('~/.local/share/dein')
   " Other: {{{3
   call dein#add('ekalinin/Dockerfile.vim')
   call dein#add('elzr/vim-json')
-  call dein#add('leafo/moonscript-vim')
   call dein#add('cespare/vim-toml')
   call dein#add('arrufat/vala.vim')
 
@@ -265,6 +273,7 @@ if dein#load_state('~/.local/share/dein')
   " zealvim was removed because it was too aggressive with it's mappings
   " discord.nvim was removed because it often renders nvim inoperable
 
+  call dein#add('romgrk/todoist.nvim', {'build': 'yarn install'})
   call dein#add('editorconfig/editorconfig-vim') " editorconfig support
   call dein#add('tpope/vim-dadbod') " Access databases, etc.
   call dein#add('tpope/vim-fugitive')
@@ -272,17 +281,17 @@ if dein#load_state('~/.local/share/dein')
   " Fugitive resolves symlinks for git repos, which breaks a lot of random
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
+  call dein#add('f-person/git-blame.nvim')
 
   call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': 1})
   " Set $EDITOR to current nvim instance
 
   " Utilities {{{2
+  call dein#add('haya14busa/dein-command.vim')
   call dein#add('vimwiki/vimwiki')
   call dein#add('liuchengxu/vista.vim', {'hook_add': 'cabbrev Vi Vista'})
   call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': 1})
   " General REPL plugin
-
-  call dein#add('romgrk/todoist.nvim', {'build': 'npm install'})
 
   call dein#add('fszymanski/fzf-gitignore', {
         \ 'if': (has('python3') && executable('fzf')),
@@ -292,7 +301,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('liuchengxu/vim-clap', {
         \ 'if': (has('nvim-0.4.2') && has('python3') && executable('cargo')),
         \ 'build': 'cd pythonx/clap; make build',
-        \ 'hook_post_update': { -> clap#installer#download_binary() },
+        \ 'hook_post_update': { -> clap#installer#force_download() },
         \ })
   " Using a build step and a post update hook is inelegant as fuck, but it's
   " the fastest way to get clap up and running after an update. The build step
@@ -310,7 +319,10 @@ if dein#load_state('~/.local/share/dein')
         \ })
 
   " User interface {{{2
-  " let webdevicons_enable_nerdtree = 0
+  " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
+  " the moment it won't install.
+
+  call dein#add('kyazdani42/nvim-web-devicons')
   call dein#add('ryanoasis/vim-devicons', {
         \ 'hook_add': 'let g:webdevicons_enable_nerdtree = 0',
         \ 'hook_post_source': join([
@@ -335,8 +347,8 @@ if dein#load_state('~/.local/share/dein')
   " Lazy loading is suggested in plugin readme, but performance benefit is
   " negligible.
 
-  " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
-  " the moment it won't install.
+  call dein#add('wfxr/minimap.vim', {'if': (has('nvim-0.5.0') && executable('code-minimap'))})
+  call dein#add('kyazdani42/nvim-tree.lua')
 
   " Denite {{{3
   call dein#add('neoclide/denite-git', {'depends': 'denite.nvim'})
@@ -350,6 +362,7 @@ if dein#load_state('~/.local/share/dein')
   " oriented, or else over to lightline.
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline'})
+  call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
 
   " Visual helpers {{{3
   call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
@@ -371,6 +384,11 @@ if dein#load_state('~/.local/share/dein')
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
   call dein#add('Th3Whit3Wolf/onebuddy', {'depends': 'colorbuddy.nvim'})
+  call dein#add('tjdevries/gruvbuddy.nvim', {'depends': 'colorbuddy.nvim'})
+  call dein#add('Th3Whit3Wolf/spacebuddy', {'depends': 'colorbuddy.nvim'})
+  call dein#add('bluz71/vim-moonfly-colors')
+  call dein#add('sainnhe/sonokai')
+  call dein#add('Iron-E/nvim-highlite', {'if': has('nvim-0.5.0'), 'merged': 1})
   " call dein#add('tyrannicaltoucan/vim-quantum')
   call dein#add('morhetz/gruvbox')
 
@@ -421,13 +439,14 @@ aug END
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
+let minimap_block_filetypes = ['fugitive', 'nerdtree', 'LuaTree', 'tagbar', 'todoist']
 
 lua require('user.config')
 
 " Colorscheme: Currently set to a fork of quantum {{{2
 let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
 
-colors quantum
+lua require('colorbuddy').colorscheme('user_colors')
 
 " Airline: Bottom bar for Vim. {{{2
 
@@ -437,13 +456,9 @@ let airline_detect_spelllang = v:false " Cleans up stuff a little
 " let airline_inactive_collapse = 1
 let airline_skip_empty_sections = 1
 
-" Extensions
-
-let airline#extensions#tabline#enabled   = v:true " airline tabs
-let airline#extensions#tabline#formatter = 'unique_tail_improved'
-
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
+let ale_disable_lsp = v:true
 
 " This is mostly to disable linters which are better handled by another
 " extension (I.E. Language servers, stuff covered by diagnostic-ls & efm).
@@ -455,7 +470,6 @@ let ale_linters_ignore = {
       \ 'css': ['stylelint'],
       \ 'dart': ['language_server'],
       \ 'dockerfile': ['hadolint'],
-      \ 'Dockerfile': ['hadolint'],
       \ 'elixir': ['credo'],
       \ 'fish': ['fish'],
       \ 'fortran': ['language_server'],
@@ -492,6 +506,10 @@ let ale_linters_ignore = {
       \ 'yaml': ['yamllint'],
       \ }
 " go - golangci-lint, revive disabled by default
+
+" let ale_linters = {
+"       \ 'todoist': [],
+"       \ }
 
 let ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
@@ -537,7 +555,7 @@ let ale_javascript_prettier_options = join([
 let ale_sh_shfmt_options = join(['-i=2', '-ci'])
 
 " Clap: search {{{2
-let clap_theme = 'material_design_dark'
+" let clap_theme = 'material_design_dark'
 let clap_provider_todoist = {
       \ 'source': {-> Todoist__listProjects()},
       \ 'sink': 'Todoist',
@@ -578,23 +596,6 @@ let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
 let neoinclude#max_processes = py3eval('os.cpu_count()')
 
 " Syntax Settings {{{1
-" Go
-let go_code_completion_enabled         = v:false " Let coc handle completion
-let go_def_mapping_enabled             = v:false
-let go_doc_keywordprg_enabled          = v:false
-let go_highlight_build_constraints     = v:true
-let go_highlight_extra_types           = v:true
-let go_highlight_fiels                 = v:true
-let go_highlight_function_calls        = v:true
-let go_highlight_function_parameters   = v:true
-let go_highlight_functions             = v:true
-let go_highlight_generate_tags         = v:true
-let go_highlight_operators             = v:true
-let go_highlight_types                 = v:true
-let go_highlight_variable_assingments  = v:true
-let go_highlight_variable_declarations = v:true
-let go_textobj_enabled                 = v:false
-
 " JSON
 let vim_json_syntax_conceal = v:true  " Enable conceal for json
 
@@ -606,9 +607,6 @@ let tex_flavor = 'latex'
 
 " VimL
 let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
-
-" Markdown
-let markdown_fenced_languages = ['go']
 
 " Keybindings {{{1
 
