@@ -2,6 +2,7 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
+  # shellcheck disable=1091
   source /etc/bashrc
 fi
 
@@ -18,9 +19,8 @@ HISTFILE=~/.local/share/bash_history
 
 source ~/.local/share/bash-completion/completions/*
 
-if type -f zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init bash)"
-fi
+# shellcheck source=/dev/null
+source <(zoxide init bash 2>/dev/null)
 
 # User specific aliases and functions
 if type -f exa >/dev/null 2>&1; then
@@ -35,7 +35,7 @@ if [ -f /run/.containerenv ] && [ -f /run/.toolboxenv ]; then
   if [[ -z "$TERMINFO_DIRS" ]]; then
     TERMINFO_DIRS="/usr/local/share/terminfo:/usr/share/terminfo"
   fi
-  if ! [[ "$TERMINFO_DIRS" =~ "$HOME/.local/share/terminfo" ]]; then
+  if ! [[ "$TERMINFO_DIRS" =~ $HOME/.local/share/terminfo ]]; then
     TERMINFO_DIRS="$HOME/.local/share/terminfo:$TERMINFO_DIRS"
   fi
   export TERMINFO_DIRS

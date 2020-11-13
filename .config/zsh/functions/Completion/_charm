@@ -1,0 +1,3 @@
+#compdef charm
+eval "$(charm completion zsh)"
+_charm "$@"

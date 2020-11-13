@@ -186,8 +186,10 @@ if dein#load_state('~/.local/share/dein')
 
   " Lua: {{{3
   call dein#add('euclidianAce/BetterLua.vim')
+  call dein#add('tjdevries/manillua.nvim')
   call dein#add('rafcamlet/nvim-luapad')
   call dein#add('rafcamlet/coc-nvim-lua', {'depends': ['coc.nvim']})
+  call dein#add('tjdevries/nlua.nvim')
   call dein#add('bfredl/nvim-luadev')
   " Lua REPL
   " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
@@ -263,6 +265,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('elzr/vim-json')
   call dein#add('cespare/vim-toml')
   call dein#add('arrufat/vala.vim')
+  call dein#add('ron-rs/ron.vim')
+  call dein#add('bakpakin/fennel.vim')
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
         \ 'if': (has('nvim') && executable('awk')),
@@ -383,14 +387,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
-  call dein#add('Th3Whit3Wolf/onebuddy', {'depends': 'colorbuddy.nvim'})
-  call dein#add('tjdevries/gruvbuddy.nvim', {'depends': 'colorbuddy.nvim'})
-  call dein#add('Th3Whit3Wolf/spacebuddy', {'depends': 'colorbuddy.nvim'})
-  call dein#add('bluz71/vim-moonfly-colors')
-  call dein#add('sainnhe/sonokai')
-  call dein#add('Iron-E/nvim-highlite', {'if': has('nvim-0.5.0'), 'merged': 1})
   " call dein#add('tyrannicaltoucan/vim-quantum')
-  call dein#add('morhetz/gruvbox')
 
   " Text-editing {{{2
   call dein#add('tpope/vim-abolish')

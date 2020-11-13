@@ -1,0 +1,6 @@
+git_protocol: ssh # Protocol to use when performing git operations
+editor:
+prompt: enabled # When to interactively prompt
+pager:
+aliases:
+  co: pr checkout
