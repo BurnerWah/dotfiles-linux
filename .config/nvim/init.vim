@@ -278,7 +278,7 @@ if dein#load_state('~/.local/share/dein')
   " discord.nvim was removed because it often renders nvim inoperable
 
   call dein#add('romgrk/todoist.nvim', {'build': 'yarn install'})
-  call dein#add('editorconfig/editorconfig-vim') " editorconfig support
+  call dein#add('editorconfig/editorconfig-vim', {'type__depth': 1}) " editorconfig support
   call dein#add('tpope/vim-dadbod') " Access databases, etc.
   call dein#add('tpope/vim-fugitive')
   " git support
@@ -366,7 +366,12 @@ if dein#load_state('~/.local/share/dein')
   " oriented, or else over to lightline.
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline'})
-  call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
+
+  " call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
+  " Barbar is bugged in problematic ways. At time of writing, filetype icons
+  " have broken highlighting, and opening Vista often breaks barbar. It also
+  " will get stuck not knowing what buffer you're on at times.
+  " Once fixed, it'll replace airline's tab bar.
 
   " Visual helpers {{{3
   call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
@@ -436,13 +441,20 @@ aug END
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
-let minimap_block_filetypes = ['fugitive', 'nerdtree', 'LuaTree', 'tagbar', 'todoist']
+let minimap_block_filetypes = [
+      \ 'denite',
+      \ 'denite-filter',
+      \ 'fugitive',
+      \ 'nerdtree',
+      \ 'list',
+      \ 'LuaTree',
+      \ 'tagbar',
+      \ 'todoist',
+      \ 'vista',
+      \ ]
 
 lua require('user.config')
-
-" Colorscheme: Currently set to a fork of quantum {{{2
-let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
-
+" let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
 lua require('colorbuddy').colorscheme('user_colors')
 
 " Airline: Bottom bar for Vim. {{{2
@@ -452,6 +464,26 @@ let airline_powerline_fonts  = v:true " Airline + Powerline
 let airline_detect_spelllang = v:false " Cleans up stuff a little
 " let airline_inactive_collapse = 1
 let airline_skip_empty_sections = 1
+let airline#extensions#tabline#enabled = 1
+let airline_filetype_overrides = {
+      \ 'coc-explorer':  ['CoC Explorer', ''],
+      \ 'defx':  ['defx', '%{b:defx.paths[0]}'],
+      \ 'fugitive': ['fugitive', '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'],
+      \ 'gundo': ['Gundo', ''],
+      \ 'LuaTree': ['LuaTree', ''],
+      \ 'minibufexpl': ['MiniBufExplorer', ''],
+      \ 'minimap': ['Map', ''],
+      \ 'startify': ['startify', ''],
+      \ 'todoist': ['Todoist', ''],
+      \ 'tsplayground': ['Tree-Sitter Playground', ''],
+      \ 'vim-plug': ['Plugins', ''],
+      \ 'vimfiler': ['vimfiler', '%{vimfiler#get_status_string()}'],
+      \ 'vimshell': ['vimshell', '%{vimshell#get_status_string()}'],
+      \ 'vista': ['Vista', ''],
+      \ 'vista_kind': ['Vista', ''],
+      \ 'vaffle' : ['Vaffle', '%{b:vaffle.dir}'],
+      \ }
+      " \ 'help':  ['Help', '%f'],
 
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
@@ -488,7 +520,7 @@ let ale_linters_ignore = {
       \ 'pod': ['writegood'],
       \ 'python': ['flake8', 'mypy', 'pyls', 'pylint', 'pyright'],
       \ 'rst': ['writegood'],
-      \ 'rust': ['rls'],
+      \ 'rust': ['cargo', 'rls'],
       \ 'sass': ['stylelint'],
       \ 'scss': ['stylelint'],
       \ 'sh': ['language_server', 'shellcheck'],
@@ -567,7 +599,9 @@ let vimwiki_folding = 'expr'
 
 " Vista: replacement for tagbar {{{2
 let vista#renderer#enable_icon = 1
+let vista_echo_cursor_strategy = 'floating_win' " Floating vista window is super clean
 let vista_executive_for = {
+      \ 'apiblueprint': 'markdown',
       \ 'c': 'coc',
       \ 'cpp': 'coc',
       \ 'css': 'coc',
@@ -579,6 +613,7 @@ let vista_executive_for = {
       \ 'markdown': 'toc',
       \ 'pandoc': 'markdown',
       \ 'python': 'coc',
+      \ 'rst': 'toc',
       \ 'tex': 'coc',
       \ 'typescript': 'coc',
       \ 'vala': 'coc',
@@ -674,5 +709,6 @@ aug init
   au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au VimEnter * ++once call dein#call_hook('post_source')
+  au BufEnter * if (winnr('$') == 1 && &filetype =~# 'vista') | quit | endif
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker

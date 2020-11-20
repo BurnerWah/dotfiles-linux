@@ -9,12 +9,21 @@ if expand('%') =~# '.wiki$'
   let b:ale_linters = ['alex', 'languagetool', 'proselint', 'redpen', 'textlint', 'vale', 'writegood']
 endif
 
-" This adds markdown preview support, but I haven't found a good way to ensure
-" that the plugin is actually installed.
-com! -buffer MarkdownPreview call mkdp#util#open_preview_page()
-nore <buffer> <silent> <Plug>MarkdownPreview :call mkdp#util#open_preview_page()<CR>
-inor <buffer> <silent> <Plug>MarkdownPreview <Esc>:call mkdp#util#open_preview_page()<CR>a
-nore <buffer> <silent> <Plug>MarkdownPreviewStop :call mkdp#util#stop_preview()<CR>
-inor <buffer> <silent> <Plug>MarkdownPreviewStop <Esc>:call mkdp#util#stop_preview()<CR>a
-nnor <buffer> <silent> <Plug>MarkdownPreviewToggle :call mkdp#util#toggle_preview()<CR>
-inor <buffer> <silent> <Plug>MarkdownPreviewToggle <Esc>:call mkdp#util#toggle_preview()<CR>
+if expand('%') =~# '.md$'
+  com! -buffer MarkdownPreview call mkdp#util#open_preview_page()
+  nore <buffer> <silent> <Plug>MarkdownPreview :call mkdp#util#open_preview_page()<CR>
+  inor <buffer> <silent> <Plug>MarkdownPreview <Esc>:call mkdp#util#open_preview_page()<CR>a
+  nore <buffer> <silent> <Plug>MarkdownPreviewStop :call mkdp#util#stop_preview()<CR>
+  inor <buffer> <silent> <Plug>MarkdownPreviewStop <Esc>:call mkdp#util#stop_preview()<CR>a
+  nnor <buffer> <silent> <Plug>MarkdownPreviewToggle :call mkdp#util#toggle_preview()<CR>
+  inor <buffer> <silent> <Plug>MarkdownPreviewToggle <Esc>:call mkdp#util#toggle_preview()<CR>
+  " This adds markdown preview support, but I haven't found a good way to
+  " ensure that the plugin is actually installed.
+endif
+
+" Why is this needed? There shouldn't be any autocmds for vimwiki buffers in
+" the first place so... Why the coc highlighting CursorHold get initialized?
+" On markdown files specifically?
+aug user_ftplugin
+  au! * <buffer>
+aug END

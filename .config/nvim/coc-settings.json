@@ -135,6 +135,8 @@
     "sh": "shfmt"
   },
   "highlight.colors.enable": false, // We have another plugin set up to handle this
+  "highlight.disableLanguages": ["markdown"],
+  "highlight.colorNames.enable": false,
   "json.schemas": [
     /*
      * https://schemastore.azurewebsites.net is the backend for

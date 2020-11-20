@@ -9,3 +9,5 @@ sign-git-commit=true
 sign-git-tag=true
 link=true
 update-notifier=false
+store-dir=${HOME}/.local/lib/pnpm/store
+global-dir=${HOME}/.local/lib/pnpm/global
