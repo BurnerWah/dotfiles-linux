@@ -1,3 +1,6 @@
+" Use tree-sitter handle folding
+setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+
 if exists('did_coc_loaded')
   " Options
   setl formatexpr=CocAction('formatSelected')

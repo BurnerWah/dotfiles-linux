@@ -62,6 +62,7 @@ Group.new('VertSplit',    c.gray_4, c.gray_1, s.NONE)
 Group.new('Visual',       c.gray_5, c.gray_3)
 Group.new('WarningMsg',   c.red,    nil)
 Group.new('WildMenu',     c.gray_2, c.cyan)
+Group.new('Conceal',      c.indigo, nil,  s.bold)
 
 -- Core - Standard syntax
 --        group,        fg,       bg,       styles

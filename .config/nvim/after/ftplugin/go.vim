@@ -1,3 +1,6 @@
+" Use tree-sitter handle folding
+setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+
 " Coc.nvim
 if exists('did_coc_loaded')
   " Maps

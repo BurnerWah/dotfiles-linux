@@ -125,9 +125,14 @@ if dein#load_state('~/.local/share/dein')
         \ 'if': (executable('npm') || executable('yarn')),
         \ 'merged': v:false,
         \ 'rev': 'release',
+        \ 'type__depth': 1,
         \ })
 
-  call dein#add('Shougo/denite.nvim', {'if': has('python3'), 'merged': 0})
+  call dein#add('Shougo/denite.nvim', {
+        \ 'if': has('python3'),
+        \ 'merged': v:false,
+        \ 'type__depth': 1,
+        \ })
 
   " Snippets & Templates {{{2
   " call dein#add('honza/vim-snippets')
@@ -198,12 +203,14 @@ if dein#load_state('~/.local/share/dein')
   " Markdown: {{{3
   call dein#add('npxbr/glow.nvim', {
         \ 'hook_post_update': 'GlowInstall',
+        \ 'type__depth': 1,
         \ })
   call dein#add('iamcco/markdown-preview.nvim', {
         \ 'if': executable('yarn'),
         \ 'lazy': v:true,
         \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
         \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
+        \ 'type__depth': 1,
         \ })
   " Markdown live preview
   " Instructions suggest lazy loading with on_ft
@@ -245,7 +252,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Rust: {{{3
 
-  call dein#add('rust-lang/rust.vim')
+  call dein#add('rust-lang/rust.vim', {'type__depth': 1})
   " Official rust syntax
   "
   " NOTE plugin/rust.vim doesn't do anything with my configuration.
@@ -267,6 +274,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('arrufat/vala.vim')
   call dein#add('ron-rs/ron.vim')
   call dein#add('bakpakin/fennel.vim')
+  call dein#add('aklt/plantuml-syntax')
+  call dein#add('tikhomirov/vim-glsl')
+  call dein#add('udalov/kotlin-vim')
+  call dein#add('YaBoiBurner/requirements.txt.vim') " Fork of raimon49/requirements.txt.vim
+  call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
         \ 'if': (has('nvim') && executable('awk')),
@@ -277,7 +289,9 @@ if dein#load_state('~/.local/share/dein')
   " zealvim was removed because it was too aggressive with it's mappings
   " discord.nvim was removed because it often renders nvim inoperable
 
-  call dein#add('romgrk/todoist.nvim', {'build': 'yarn install'})
+  call dein#add('romgrk/todoist.nvim', {
+        \ 'build': 'yarn install --ignore-optional --link-duplicates --no-lockfile'
+        \ })
   call dein#add('editorconfig/editorconfig-vim', {'type__depth': 1}) " editorconfig support
   call dein#add('tpope/vim-dadbod') " Access databases, etc.
   call dein#add('tpope/vim-fugitive')
@@ -340,6 +354,7 @@ if dein#load_state('~/.local/share/dein')
         \   ]),
         \   'delfu! NERDTreeWebDevIconsRefreshListener',
         \ ], "\n"),
+        \ 'type__depth': 1,
         \ })
   " devicons doesn't check if nerdtree is installed before configuring a lot
   " of it, so it pollutes our setup with a bunch of unnecessary things to
@@ -364,8 +379,8 @@ if dein#load_state('~/.local/share/dein')
   " Mode-line {{{3
   " I'm considering switching from airline over to something more neovim
   " oriented, or else over to lightline.
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline'})
+  call dein#add('vim-airline/vim-airline', {'type__depth': 1})
+  call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline', 'type__depth': 1})
 
   " call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
   " Barbar is bugged in problematic ways. At time of writing, filetype icons
@@ -388,7 +403,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Signcolumn {{{3
   " call dein#add('airblade/vim-gitgutter')
-  call dein#add('mhinz/vim-signify')
+  call dein#add('mhinz/vim-signify', {'type__depth': 1})
 
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
@@ -452,6 +467,7 @@ let minimap_block_filetypes = [
       \ 'todoist',
       \ 'vista',
       \ ]
+let mkdp_filetypes = ['markdown', 'vimwiki']
 
 lua require('user.config')
 " let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
@@ -483,7 +499,6 @@ let airline_filetype_overrides = {
       \ 'vista_kind': ['Vista', ''],
       \ 'vaffle' : ['Vaffle', '%{b:vaffle.dir}'],
       \ }
-      " \ 'help':  ['Help', '%f'],
 
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
@@ -596,6 +611,7 @@ let vimwiki_list = [{
       \ 'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
       \ }]
 let vimwiki_folding = 'expr'
+let vimwiki_listsyms = '✗○◐●✓'
 
 " Vista: replacement for tagbar {{{2
 let vista#renderer#enable_icon = 1
@@ -698,6 +714,17 @@ nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 
+" Debugger
+nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <silent> <leader>dl :lua require'dap'.repl.run_last()<CR>
+
 " Init augroup {{{1
 aug init
   au!
@@ -709,6 +736,6 @@ aug init
   au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au VimEnter * ++once call dein#call_hook('post_source')
-  au BufEnter * if (winnr('$') == 1 && &filetype =~# 'vista') | quit | endif
+  au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker

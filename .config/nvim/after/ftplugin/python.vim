@@ -2,6 +2,9 @@
 " Author: Jaden Pleasants
 " Description: Improvements to python editing
 
+" Use tree-sitter handle folding
+setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+
 if exists(':ALEFix')
   if executable(get(g:, 'ale_python_autopep8_executable', 'autopep8'))
     com! -buffer -nargs=0 Autopep8 :ALEFix autopep8
