@@ -519,22 +519,12 @@ let airline_detect_spelllang = v:false " Cleans up stuff a little
 let airline_skip_empty_sections = 1
 let airline#extensions#tabline#enabled = 1
 let airline_filetype_overrides = {
-      \ 'coc-explorer':  ['CoC Explorer', ''],
-      \ 'defx':  ['defx', '%{b:defx.paths[0]}'],
-      \ 'fugitive': ['fugitive', '%{airline#util#wrap(airline#extensions#branch#get_head(),80)}'],
-      \ 'gundo': ['Gundo', ''],
       \ 'LuaTree': ['LuaTree', ''],
-      \ 'minibufexpl': ['MiniBufExplorer', ''],
       \ 'minimap': ['Map', ''],
-      \ 'startify': ['startify', ''],
       \ 'todoist': ['Todoist', ''],
       \ 'tsplayground': ['Tree-Sitter Playground', ''],
-      \ 'vim-plug': ['Plugins', ''],
-      \ 'vimfiler': ['vimfiler', '%{vimfiler#get_status_string()}'],
-      \ 'vimshell': ['vimshell', '%{vimshell#get_status_string()}'],
       \ 'vista': ['Vista', ''],
       \ 'vista_kind': ['Vista', ''],
-      \ 'vaffle' : ['Vaffle', '%{b:vaffle.dir}'],
       \ }
 
 " ALE: Async linter {{{2
@@ -610,10 +600,6 @@ let ale_linters_ignore = {
       \ }
 " go - golangci-lint, revive disabled by default
 
-let ale_linters = {
-      \ 'todoist': [],
-      \ }
-
 let ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
       \ 'cpp': ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
@@ -650,13 +636,6 @@ let ale_javascript_prettier_options = join([
       \ ])
 
 let ale_sh_shfmt_options = join(['-i=2', '-ci'])
-
-" Clap: search {{{2
-" let clap_theme = 'material_design_dark'
-let clap_provider_todoist = {
-      \ 'source': {-> Todoist__listProjects()},
-      \ 'sink': 'Todoist',
-      \ }
 
 " VimWiki: Note-taking tool {{{2
 let vimwiki_list = [{
