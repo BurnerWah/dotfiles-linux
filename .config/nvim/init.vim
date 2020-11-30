@@ -303,7 +303,7 @@ if dein#load_state('~/.local/share/dein')
   " Set $EDITOR to current nvim instance
 
   " Utilities {{{2
-  call dein#add('haya14busa/dein-command.vim')
+  call dein#add('haya14busa/dein-command.vim') " Commands for Dein
   call dein#add('vimwiki/vimwiki')
   call dein#add('liuchengxu/vista.vim', {'hook_add': 'cabbrev Vi Vista'})
   call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': 1})
@@ -364,7 +364,11 @@ if dein#load_state('~/.local/share/dein')
   " Lazy loading is suggested in plugin readme, but performance benefit is
   " negligible.
 
-  call dein#add('wfxr/minimap.vim', {'if': (has('nvim-0.5.0') && executable('code-minimap'))})
+  call dein#add('Xuyuanp/scrollbar.nvim')
+  call dein#add('wfxr/minimap.vim', {
+        \ 'if': (has('nvim-0.5.0') && executable('code-minimap')),
+        \ 'merged': v:true,
+        \ })
   call dein#add('kyazdani42/nvim-tree.lua')
 
   " Denite {{{3
@@ -405,7 +409,9 @@ if dein#load_state('~/.local/share/dein')
 
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
-  " call dein#add('tyrannicaltoucan/vim-quantum')
+  call dein#add('tyrannicaltoucan/vim-quantum')
+  " I'm using a colorbyddy implementation of this theme, but it's useful to
+  " include the original theme to get some of the resources from it.
 
   " Text-editing {{{2
   call dein#add('tpope/vim-abolish')
@@ -453,8 +459,12 @@ aug END
 
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
-let EditorConfig_exclude_patterns = ['fugitive://.\*', 'scp://.\*']
+let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*']
 let minimap_block_filetypes = [
+      \ 'ale-fix-suggest',
+      \ 'ale-preview-selection',
+      \ 'ale-preview',
+      \ 'coc-explorer',
       \ 'denite',
       \ 'denite-filter',
       \ 'fugitive',
@@ -463,12 +473,41 @@ let minimap_block_filetypes = [
       \ 'LuaTree',
       \ 'tagbar',
       \ 'todoist',
+      \ 'tsplayground',
       \ 'vista',
+      \ 'vista_kind',
+      \ 'vista_markdown',
+      \ ]
+let scrollbar_excluded_filetypes = [
+      \ 'ale-fix-suggest',
+      \ 'ale-preview-selection',
+      \ 'ale-preview',
+      \ 'coc-explorer',
+      \ 'denite',
+      \ 'denite-filter',
+      \ 'fugitive',
+      \ 'nerdtree',
+      \ 'minimap',
+      \ 'list',
+      \ 'LuaTree',
+      \ 'tagbar',
+      \ 'todoist',
+      \ 'vista',
+      \ 'vista_kind',
+      \ 'vista_markdown',
       \ ]
 let mkdp_filetypes = ['markdown', 'vimwiki']
+let neoinclude#max_processes = py3eval('os.cpu_count()')
+let todoist = {
+      \   'icons': {
+      \     'unchecked': '  ',
+      \     'checked': '  ',
+      \     'loading': '  ',
+      \     'error': '  ',
+      \   },
+      \ }
 
 lua require('user.config')
-" let [g:quantum_black, g:quantum_italics] = [v:true, v:true]
 lua require('colorbuddy').colorscheme('user_colors')
 
 " Airline: Bottom bar for Vim. {{{2
@@ -657,9 +696,6 @@ let vista_executive_for = {
       \ 'yaml': 'coc',
       \ }
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
-
-" Other: {{{2
-let neoinclude#max_processes = py3eval('os.cpu_count()')
 
 " Syntax Settings {{{1
 " JSON

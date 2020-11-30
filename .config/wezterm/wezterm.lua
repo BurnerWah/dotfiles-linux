@@ -1,4 +1,6 @@
+local wezterm = require 'wezterm'
 return {
-  color_scheme = "ChallengerDeep",
-  default_prog = {"fish"},
+  font = wezterm.font('JetBrains Mono'),
+  color_scheme = 'ChallengerDeep',
+  default_prog = {'fish'},
 }
