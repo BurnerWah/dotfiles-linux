@@ -1,6 +1,6 @@
 if exists('did_coc_loaded')
   " Maps
-  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+  nn <buffer> <silent> K :call CocActionAsync('doHover')<CR>
 end
 
 " autocmds

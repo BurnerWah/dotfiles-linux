@@ -1,16 +1,29 @@
 aug userft
+
+  " Alsa config
+  au BufNewFile,BufRead */etc/alsa/*.conf setf alsaconf
+  au BufNewFile,BufRead */share/alsa/alsa.conf.d/* setf alsaconf
+
   " Brainfuck
   au BufNewFile,BufRead *.bf setf brainfuck
 
+  " Crontab
+  au BufNewFile,BufRead */etc/anacrontab setf crontab
+
   " Desktop files
   au BufNewFile,BufRead /var/lib/flatpak/app/*/*/*/metadata setf desktop
+  au BufNewFile,BufRead */flatpak/overrides/* setf desktop
+  au BufNewFile,BufRead */mimeapps.list setf desktop
+
+  " DirColors
+  au BufNewFile,BufRead */etc/DIR_COLORS.* setf dircolors
 
   " DosINI
   au BufNewFile,BufRead *.coveragerc setf dosini
   au BufNewFile,BufRead */tmp/*.repo setf dosini " YUM repos in sudoedit
 
   " GDBInit
-  au BufNewFile,BufRead /etc/gdbinit setf gdb
+  au BufNewFile,BufRead */etc/gdbinit setf gdb
   au BufNewFile,BufRead *.gdb setf gdb
   au BufNewFile,BufRead */.config/gdbinit setf gdb
 
@@ -18,7 +31,7 @@ aug userft
   au BufNewFile,BufRead */go.mod setf gomod
 
   " JSON
-  au BufNewFile,BufRead /etc/proselintrc,*.proselintrc  setf json
+  au BufNewFile,BufRead */etc/proselintrc,*.proselintrc  setf json
   au BufNewFile,BufRead *.luacompleterc setf json
   au BufNewFile,BufRead *.arcconfig,*.arclint setf json
   au BufNewFile,BufRead *.tcelldb setf json
@@ -32,6 +45,9 @@ aug userft
   " Lua
   au BufNewFile,BufRead *.luacheckrc setf lua
 
+  " ManDB Config
+  au BufNewFile,BufRead */etc/man_db.conf setf manconf
+
   " Registry
   au BufNewFile,BufRead *.reg setf registry
 
@@ -39,16 +55,17 @@ aug userft
   au BufNewFile,BufRead *.snippets setf snippets
 
   " SSH
-  au BufNewFile,BufRead /etc/ssh/ssh_config.d/* setf sshconfig
+  au BufNewFile,BufRead */etc/ssh/ssh_config.d/* setf sshconfig
 
   " uBlock
   au BufNewFile,BufRead *.ublock.txt setf ublock
 
   " VimL
-  au BufNewFile,BufRead /etc/virc setf vim
+  au BufNewFile,BufRead */etc/virc setf vim
 
   " XML
   au BufNewFile,BufRead *.doap,*.tmLanguage,*.natvis setf xml
+  au BufNewFile,BufRead */etc/dbus-1/*.conf setf xml
 
   " YAML
   au BufNewFile,BufRead *.sublime-syntax setf yaml

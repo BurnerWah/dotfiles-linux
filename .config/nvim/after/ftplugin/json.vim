@@ -5,7 +5,7 @@ if exists('did_coc_loaded')
 
   com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
 
-  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+  nn <buffer> <silent> K :call CocActionAsync('doHover')<CR>
 endif
 
 " autocmds
@@ -13,6 +13,5 @@ aug user_ftplugin
   au! * <buffer>
   if exists('did_coc_loaded')
     au BufWritePre <buffer> call CocAction('runCommand', 'prettier.formatFile')
-    au CursorHold <buffer> silent call CocActionAsync('highlight')
   endif
 aug END

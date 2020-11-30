@@ -8,7 +8,7 @@ if exists('did_coc_loaded')
   nmap <buffer> <silent> <C-]> <Plug>(coc-definition)
   nmap <buffer> <silent> <C-LeftMouse> <LeftMouse> <Plug>(coc-definition)
   nmap <buffer> <silent> g<LeftMouse> <LeftMouse> <Plug>(coc-definition)
-  nnor <buffer> <silent> K :call CocActionAsync('doHover')<CR>
+  nn   <buffer> <silent> K :call CocActionAsync('doHover')<CR>
 endif
 
 if exists('vista_ctags_cmd') && executable('gotags')

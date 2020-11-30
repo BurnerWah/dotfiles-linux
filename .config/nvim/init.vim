@@ -227,6 +227,7 @@ if dein#load_state('~/.local/share/dein')
   " Moonscript: {{{3
   call dein#add('leafo/moonscript-vim')
   call dein#add('svermeulen/nvim-moonmaker', {'merged': 0})
+  " nvim-moonmaker can't be safely merged, as it'll delete merged lua files.
 
   " Python: {{{3
   " I used to use python-mode but it turns out that plugin causes more problems
@@ -286,9 +287,6 @@ if dein#load_state('~/.local/share/dein')
         \ })
 
   " Integration: Work with other things {{{2
-  " zealvim was removed because it was too aggressive with it's mappings
-  " discord.nvim was removed because it often renders nvim inoperable
-
   call dein#add('romgrk/todoist.nvim', {
         \ 'build': 'yarn install --ignore-optional --link-duplicates --no-lockfile'
         \ })
@@ -502,7 +500,6 @@ let airline_filetype_overrides = {
 
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
-let ale_disable_lsp = v:true
 
 " This is mostly to disable linters which are better handled by another
 " extension (I.E. Language servers, stuff covered by diagnostic-ls & efm).
@@ -510,60 +507,77 @@ let ale_linters_ignore = {
       \ 'asciidoc': ['languagetool', 'writegood'],
       \ 'bats': ['shellcheck'],
       \ 'c': ['ccls', 'clangd', 'cpplint', 'cquery'],
+      \ 'cmake': ['cmakelint'],
       \ 'cpp': ['ccls', 'clangd', 'cpplint', 'cquery'],
       \ 'css': ['stylelint'],
+      \ 'd': ['dls'],
       \ 'dart': ['language_server'],
       \ 'dockerfile': ['hadolint'],
-      \ 'elixir': ['credo'],
+      \ 'elixir': ['credo', 'elixir-ls'],
+      \ 'elm': ['elm_ls'],
+      \ 'eruby': ['erb'],
       \ 'fish': ['fish'],
       \ 'fortran': ['language_server'],
-      \ 'go': ['golangserver', 'gopls'],
+      \ 'gitcommit': ['gitlint'],
+      \ 'glsl': ['glslls'],
+      \ 'go': ['bingo', 'golangserver', 'gopls'],
       \ 'graphql': ['eslint'],
+      \ 'hack': ['hack', 'hhast'],
+      \ 'haskell': ['hie'],
       \ 'help': ['writegood'],
       \ 'html': ['tidy', 'writegood'],
+      \ 'ink': ['ink-language-server'],
+      \ 'java': ['eclipselsp', 'javalsp'],
       \ 'javascript': ['eslint', 'standard', 'tsserver'],
+      \ 'julia': ['languageserver'],
+      \ 'kotlin': ['languageserver'],
       \ 'less': ['stylelint'],
-      \ 'lua': ['luacheck'],
       \ 'mail': ['languagetool'],
       \ 'markdown': ['languagetool', 'markdownlint', 'writegood'],
       \ 'nroff': ['writegood'],
       \ 'nim': ['nimlsp'],
       \ 'objc': ['ccls', 'clangd'],
       \ 'objcpp': ['clangd'],
-      \ 'php': ['phpcs', 'phpstan', 'psalm'],
+      \ 'ocaml': ['ols'],
+      \ 'php': ['intelephense', 'langserver', 'phpcs', 'phpstan', 'psalm'],
       \ 'po': ['writegood'],
       \ 'pod': ['writegood'],
-      \ 'python': ['flake8', 'mypy', 'pyls', 'pylint', 'pyright'],
-      \ 'rst': ['writegood'],
-      \ 'rust': ['cargo', 'rls'],
+      \ 'purescript': ['purescript-language-server'],
+      \ 'python': ['jedils', 'flake8', 'mypy', 'pylint', 'pyls', 'pyre', 'pyright'],
+      \ 'puppet': ['languageserver'],
+      \ 'r': ['languageserver'],
+      \ 'reason': ['reason-language-server', 'ols'],
+      \ 'rst': ['rstcheck', 'writegood'],
+      \ 'ruby': ['solargraph', 'sorbet'],
+      \ 'rust': ['analyzer', 'cargo', 'rls'],
       \ 'sass': ['stylelint'],
+      \ 'scala': ['metals', 'sbtserver'],
       \ 'scss': ['stylelint'],
       \ 'sh': ['language_server', 'shellcheck'],
       \ 'stylus': ['stylelint'],
       \ 'sugarss': ['stylelint'],
+      \ 'switf': ['sourcekitlsp'],
+      \ 'terraform': ['terraform_lsp'],
       \ 'tex': ['texlab', 'writegood'],
       \ 'texinfo': ['writegood'],
       \ 'text': ['languagetool', 'writegood'],
       \ 'typescript': ['eslint', 'standard', 'tsserver'],
       \ 'vim': ['vimls', 'vint'],
+      \ 'vue': ['vls'],
       \ 'xhtml': ['writegood'],
       \ 'yaml': ['yamllint'],
+      \ 'yang': ['yang_lsp'],
+      \ 'zig': ['zls'],
       \ }
 " go - golangci-lint, revive disabled by default
 
-" let ale_linters = {
-"       \ 'todoist': [],
-"       \ }
+let ale_linters = {
+      \ 'todoist': [],
+      \ }
 
 let ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \ 'cmake': ['cmakeformat', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'cpp': [
-      \   'clang-format',
-      \   'clangtidy',
-      \   'remove_trailing_lines',
-      \   'trim_whitespace',
-      \ ],
+      \ 'cpp': ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
       \ 'go': [
       \   'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \ ],
@@ -620,13 +634,17 @@ let vista_executive_for = {
       \ 'apiblueprint': 'markdown',
       \ 'c': 'coc',
       \ 'cpp': 'coc',
+      \ 'cuda': 'coc',
       \ 'css': 'coc',
       \ 'go': 'coc',
       \ 'html': 'coc',
       \ 'javascript': 'coc',
       \ 'json': 'coc',
+      \ 'jsonc': 'coc',
       \ 'lua': 'coc',
       \ 'markdown': 'toc',
+      \ 'objc': 'coc',
+      \ 'objcpp': 'coc',
       \ 'pandoc': 'markdown',
       \ 'python': 'coc',
       \ 'rst': 'toc',
@@ -713,17 +731,6 @@ nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
 nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
-
-" Debugger
-nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
-nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
-nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
-nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
-nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
-nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
-nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-nnoremap <silent> <leader>dl :lua require'dap'.repl.run_last()<CR>
 
 " Init augroup {{{1
 aug init
