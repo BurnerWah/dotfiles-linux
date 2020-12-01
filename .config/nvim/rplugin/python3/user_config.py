@@ -19,7 +19,8 @@ class UserConfig:
     @pynvim.autocmd('VimEnter')
     def event_vim_enter(self):
         def push_secret_to_env(id, var):
-            self.nvim.command('let ${} = "{}"'.format(var, Secret.password_lookup_sync(self.schema, {'nvim_id': id}, None)))
+            secure = Secret.password_lookup_sync(self.schema, {'nvim_id': id}, None)
+            self.nvim.command(f'let ${var} = "{secure}"')
 
         push_secret_to_env('coc-git-github-token', 'GITHUB_API_TOKEN')
         push_secret_to_env('coc-git-gitlab-token', 'GITLAB_PRIVATE_TOKEN')

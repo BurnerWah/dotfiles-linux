@@ -60,6 +60,45 @@
      *
      * bash/zsh have errors that end up after the file so they're left to ALE.
      */
+    "alex": {
+      "sourceName": "alex",
+      "command": "alex",
+      "args": ["--", "%file"],
+      "isStdout": false,
+      "isStderr": true,
+      "formatLines": 1,
+      "formatPattern": [
+        "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
+        { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
+      ],
+      "securities": { "undefined": "warning" }
+    },
+    "alex_text": {
+      "sourceName": "alex",
+      "command": "alex",
+      "args": ["--text", "--", "%file"],
+      "isStdout": false,
+      "isStderr": true,
+      "formatLines": 1,
+      "formatPattern": [
+        "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
+        { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
+      ],
+      "securities": { "undefined": "warning" }
+    },
+    "alex_html": {
+      "sourceName": "alex",
+      "command": "alex",
+      "args": ["--html", "--", "%file"],
+      "isStdout": false,
+      "isStderr": true,
+      "formatLines": 1,
+      "formatPattern": [
+        "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
+        { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
+      ],
+      "securities": { "undefined": "warning" }
+    },
     "cmakelint": {
       "sourceName": "cmakelint",
       "command": "cmakelint",
@@ -95,6 +134,25 @@
       "formatLines": 1,
       "formatPattern": ["^(\\d+): (.*)$", { "line": 1, "message": [2] }]
     },
+    "luacheck": {
+      "sourceName": "luacheck",
+      "command": "luacheck",
+      "args": ["--formatter", "plain", "--codes", "--ranges", "-", "-g", "-u"],
+      "isStdout": true,
+      "isStderr": false,
+      "formatLines": 1,
+      "formatPattern": [
+        "^.+?:(\\d+):(\\d+)-(\\d+): (\\(([WE])\\d+\\) .*)$",
+        {
+          "line": 1,
+          "column": 2,
+          "endColumn": 3,
+          "security": 5,
+          "message": [4]
+        }
+      ],
+      "securities": { "W": "warning", "error": "E" }
+    },
     "rstcheck": {
       "sourceName": "rstcheck",
       "command": "rstcheck",
@@ -107,12 +165,7 @@
         "^[^:]+:(\\d+): \\(.+?/(\\d)\\) (.*)$",
         { "line": 1, "security": 2, "message": [3] }
       ],
-      "securities": {
-        "1": "info",
-        "2": "warning",
-        "3": "error",
-        "4": "error"
-      }
+      "securities": { "1": "info", "2": "warning", "3": "error", "4": "error" }
     },
     "rst-lint": {
       "sourceName": "rst-lint",
@@ -125,10 +178,38 @@
         "message": "${message}"
       },
       "securities": { "1": "info", "2": "warning", "3": "error", "4": "error" }
+    },
+    "vint": {
+      "sourceName": "vint",
+      "command": "vint",
+      "args": ["--enable-neovim", "--json", "-"],
+      "debounce": 100,
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "parseJson": {
+        "line": "line_number",
+        "column": "column_number",
+        "security": "severity",
+        "message": "${description} [${policy_name}]"
+      }
+    },
+    "write-good": {
+      "command": "write-good",
+      "debounce": 100,
+      "args": ["%tempfile"],
+      "offsetLine": 0,
+      "offsetColumn": 1,
+      "sourceName": "write-good",
+      "formatLines": 1,
+      "formatPattern": [
+        "(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$",
+        { "line": 2, "column": 3, "message": 1 }
+      ],
+      "securities": { "undefined": "hint" }
     }
   },
   "diagnostic-languageserver.filetypes": {
-    "asciidoc": ["languagetool", "write-good"],
+    "asciidoc": ["alex_text", "languagetool", "write-good"],
     "bats": "shellcheck",
     "c": "cpplint",
     "cmake": "cmakelint",
@@ -143,28 +224,30 @@
     "graphql": "eslint",
     // haskell - hlint not available in coc-diagnostic
     // help - all linters disabled by default
-    "html": ["tidy", "write-good"],
+    "html": ["alex_html", "tidy", "write-good"],
     "javascript": ["eslint", "standard"],
     "less": "stylelint",
-    "mail": "languagetool",
-    "markdown": ["languagetool", "write-good"],
-    "nroff": "write-good",
+    "lua": "luacheck",
+    "mail": ["alex_text", "languagetool"],
+    "markdown": ["alex", "languagetool", "write-good"],
+    "nroff": ["alex_text", "write-good"],
     "php": ["phpcs", "phpstan"], // psalm can be a language server
-    "po": "write-good",
-    "pod": "write-good",
+    "po": ["alex", "write-good"],
+    "pod": ["alex", "write-good"],
     // python - pylint, mypy not available in coc-diagnostic
-    "rst": ["rstcheck", "rst-lint", "write-good"],
+    "rst": ["alex_text", "rstcheck", "rst-lint", "write-good"],
     "sass": "stylelint",
     "scss": "stylelint",
     "sh": "shellcheck",
     "stylus": "stylelint",
     "sugarss": "stylelint",
-    "tex": "write-good",
-    "texinfo": "write-good",
-    "text": "languagetool", // write-good is disabled by default in ALE
+    "tex": ["alex_text", "write-good"],
+    "texinfo": ["alex_text", "write-good"],
+    "text": "languagetool", // only languagetool in enabled by default
     "typescript": ["eslint", "standard"],
     "vim": "vint",
-    "xhtml": "write-good",
+    "vimwiki": ["alex_text", "languagetool", "write-good"],
+    "xhtml": ["alex_text", "write-good"],
     "yaml": "yamllint"
   },
   "diagnostic-languageserver.formatters": {

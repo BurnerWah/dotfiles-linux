@@ -6,7 +6,7 @@ endif
 
 if expand('%') =~# '.wiki$'
   " Disable markdown-only linters for vimwiki
-  let b:ale_linters = ['alex', 'languagetool', 'proselint', 'redpen', 'textlint', 'vale', 'writegood']
+  let b:ale_linters_ignore = extend(['markdownlint', 'mdl', 'remark-lint'], get(g:ale_linters_ignore, 'vimwiki', []))
 endif
 
 " Why is this needed? There shouldn't be any autocmds for vimwiki buffers in

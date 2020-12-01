@@ -2,10 +2,10 @@
  Neovim Configuration
 ######################
 
-Neovim_ is my preferred text editor. While Vim is perfectly acceptable, neovim
+Neovim_ is my preferred text editor. While Vim is acceptable, neovim
 gives it that little push it needs to become a proper IDE.
 
-My preferred plugin manager right now is Dein.vim_, which doesn't really have
+My preferred plugin manager right now is Dein.vim_, which doesn't have
 much in the way of compatibility with other plugin managers.
 
 Some of the essential plugins I'm using include:
@@ -16,10 +16,10 @@ Some of the essential plugins I'm using include:
 Dependency Checking
 ###################
 
-There's an argument to be made that dependency checks aren't really needed, but
+There's an argument to that dependency checks aren't needed, but
 I feel like they're a good practice nonetheless.
 
-Generally, we should only check for dependencies that might not be present. So,
+Generally, we should check for dependencies that might not be present. So,
 checking for a command like ``git`` is generally unhelpful, since it's required
 by Dein.vim_. Checking for something from ``coreutils`` is unhelpfil, since it's
 present on any linux system.
@@ -57,10 +57,10 @@ expect that to also appear in the Coc equivalent.
 The biggest real problems with Coc_ would have to be:
 
 * There isn't a (good) way to disable it for a buffer
-* It can screw with your ``runtimepath``
-* It doesn't really play nicely with other plugins
+* It can mess with your ``runtimepath``
+* It doesn't play nicely with other plugins
 
-Non of those are really deal breakers, but they're worth keeping in mind if you
+None of those are deal breakers, but they're worth keeping in mind if you
 decide you use it.
 
 .. _Coc: https://github.com/neoclide/coc.nvim
@@ -82,7 +82,7 @@ while efm-ls_ is a standalone Go binary.
 The best source for diagnostics is always the language server. After that,
 diagnostic-ls_ & efm-ls_ to manage linters. Then, ALE_ if nothing else works.
 
-Language servers are always disabled in ALE_ since we never want duplicate
+Language servers are always turned off in ALE_ since we never want duplicate
 servers running.
 
 .. _ALE: https://github.com/dense-analysis/ale

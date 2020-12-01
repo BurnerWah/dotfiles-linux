@@ -298,6 +298,7 @@ if dein#load_state('~/.local/share/dein')
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
   call dein#add('f-person/git-blame.nvim')
+  call dein#add('yuki-ycino/fzf-preview.vim', {'rev': 'release', 'merged': 0})
 
   call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': 1})
   " Set $EDITOR to current nvim instance
@@ -457,9 +458,10 @@ aug END
 
 " Plugin Settings {{{1
 
+let coc_filetype_map = #{ vimwiki: 'markdown' }
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
-let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*']
+let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*', 'term://.\*']
 let minimap_block_filetypes = [
       \ 'ale-fix-suggest',
       \ 'ale-preview-selection',
@@ -525,78 +527,55 @@ let airline_filetype_overrides = {
       \ 'tsplayground': ['Tree-Sitter Playground', ''],
       \ 'vista': ['Vista', ''],
       \ 'vista_kind': ['Vista', ''],
+      \ 'vista_markdown': ['Vista', ''],
       \ }
 
 " ALE: Async linter {{{2
 let ale_fix_on_save = v:true
+let ale_disable_lsp = v:true
 
 " This is mostly to disable linters which are better handled by another
 " extension (I.E. Language servers, stuff covered by diagnostic-ls & efm).
 let ale_linters_ignore = {
-      \ 'asciidoc': ['languagetool', 'writegood'],
+      \ 'asciidoc': ['alex', 'languagetool', 'writegood'],
       \ 'bats': ['shellcheck'],
-      \ 'c': ['ccls', 'clangd', 'cpplint', 'cquery'],
+      \ 'c': ['cpplint'],
       \ 'cmake': ['cmakelint'],
-      \ 'cpp': ['ccls', 'clangd', 'cpplint', 'cquery'],
+      \ 'cpp': ['cpplint'],
       \ 'css': ['stylelint'],
-      \ 'd': ['dls'],
-      \ 'dart': ['language_server'],
       \ 'dockerfile': ['hadolint'],
-      \ 'elixir': ['credo', 'elixir-ls'],
-      \ 'elm': ['elm_ls'],
+      \ 'elixir': ['credo'],
       \ 'eruby': ['erb'],
       \ 'fish': ['fish'],
-      \ 'fortran': ['language_server'],
       \ 'gitcommit': ['gitlint'],
-      \ 'glsl': ['glslls'],
-      \ 'go': ['bingo', 'golangserver', 'gopls'],
       \ 'graphql': ['eslint'],
-      \ 'hack': ['hack', 'hhast'],
-      \ 'haskell': ['hie'],
-      \ 'help': ['writegood'],
+      \ 'help': ['alex', 'writegood'],
       \ 'html': ['tidy', 'writegood'],
-      \ 'ink': ['ink-language-server'],
-      \ 'java': ['eclipselsp', 'javalsp'],
-      \ 'javascript': ['eslint', 'standard', 'tsserver'],
-      \ 'julia': ['languageserver'],
-      \ 'kotlin': ['languageserver'],
+      \ 'javascript': ['eslint', 'flow', 'standard'],
       \ 'less': ['stylelint'],
-      \ 'mail': ['languagetool'],
+      \ 'lua': ['luacheck'],
+      \ 'mail': ['alex', 'languagetool'],
       \ 'markdown': ['languagetool', 'markdownlint', 'writegood'],
-      \ 'nroff': ['writegood'],
-      \ 'nim': ['nimlsp'],
-      \ 'objc': ['ccls', 'clangd'],
-      \ 'objcpp': ['clangd'],
-      \ 'ocaml': ['ols'],
-      \ 'php': ['intelephense', 'langserver', 'phpcs', 'phpstan', 'psalm'],
-      \ 'po': ['writegood'],
-      \ 'pod': ['writegood'],
-      \ 'purescript': ['purescript-language-server'],
-      \ 'python': ['jedils', 'flake8', 'mypy', 'pylint', 'pyls', 'pyre', 'pyright'],
-      \ 'puppet': ['languageserver'],
-      \ 'r': ['languageserver'],
-      \ 'reason': ['reason-language-server', 'ols'],
-      \ 'rst': ['rstcheck', 'writegood'],
-      \ 'ruby': ['solargraph', 'sorbet'],
-      \ 'rust': ['analyzer', 'cargo', 'rls'],
+      \ 'nroff': ['alex', 'writegood'],
+      \ 'php': ['phpcs', 'phpstan'],
+      \ 'po': ['alex', 'writegood'],
+      \ 'pod': ['alex', 'writegood'],
+      \ 'python': ['flake8', 'mypy', 'pylint'],
+      \ 'rst': ['alex', 'rstcheck', 'writegood'],
+      \ 'rust': ['cargo'],
       \ 'sass': ['stylelint'],
-      \ 'scala': ['metals', 'sbtserver'],
       \ 'scss': ['stylelint'],
-      \ 'sh': ['language_server', 'shellcheck'],
+      \ 'sh': ['shellcheck'],
       \ 'stylus': ['stylelint'],
       \ 'sugarss': ['stylelint'],
-      \ 'switf': ['sourcekitlsp'],
-      \ 'terraform': ['terraform_lsp'],
-      \ 'tex': ['texlab', 'writegood'],
-      \ 'texinfo': ['writegood'],
-      \ 'text': ['languagetool', 'writegood'],
-      \ 'typescript': ['eslint', 'standard', 'tsserver'],
-      \ 'vim': ['vimls', 'vint'],
-      \ 'vue': ['vls'],
-      \ 'xhtml': ['writegood'],
+      \ 'tex': ['alex', 'writegood'],
+      \ 'texinfo': ['alex', 'writegood'],
+      \ 'text': ['alex', 'languagetool', 'writegood'],
+      \ 'typescript': ['eslint', 'standard', 'tslint'],
+      \ 'vim': ['vint'],
+      \ 'vimwiki': ['alex', 'languagetool', 'markdownlint', 'writegood'],
+      \ 'xhtml': ['alex', 'writegood'],
       \ 'yaml': ['yamllint'],
-      \ 'yang': ['yang_lsp'],
-      \ 'zig': ['zls'],
       \ }
 " go - golangci-lint, revive disabled by default
 
