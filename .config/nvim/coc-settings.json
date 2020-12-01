@@ -134,6 +134,37 @@
       "formatLines": 1,
       "formatPattern": ["^(\\d+): (.*)$", { "line": 1, "message": [2] }]
     },
+    "jshint": {
+      "sourceName": "jshint",
+      "command": "jshint",
+      "args": [
+        "--reporter",
+        "unix",
+        "--extract",
+        "auto",
+        "--filename",
+        "%filepath",
+        "-"
+      ],
+      "formatLines": 1,
+      "formatPattern": [
+        "^[^:]+:(\\d+):(\\d+): (.+)$",
+        { "line": 1, "column": 2, "message": [3] }
+      ],
+      "securities": { "undefined": "warning" }
+    },
+    "jsonlint": {
+      "sourceName": "jsonlint",
+      "command": "jsonlint",
+      "args": ["--compact", "-"],
+      "isStdout": false,
+      "isStderr": true,
+      "formatLines": 1,
+      "formatPattern": [
+        "^line (\\d+), col (\\d+), (.*)$",
+        { "line": 1, "column": 2, "message": [3] }
+      ]
+    },
     "luacheck": {
       "sourceName": "luacheck",
       "command": "luacheck",
@@ -193,6 +224,19 @@
         "message": "${description} [${policy_name}]"
       }
     },
+    "xmllint": {
+      "sourceName": "xmllint",
+      "command": "xmllint",
+      "args": ["--noout", "-"],
+      "isStdout": false,
+      "isStderr": true,
+      "offsetColumn": -1,
+      "formatPattern": [
+        "^[^:]+:(\\d+):\\s*(([^:]+)\\s*:.*)$",
+        { "line": 1, "security": 3, "message": [2] }
+      ],
+      "securities": { "warning": "warning" }
+    },
     "write-good": {
       "command": "write-good",
       "debounce": 100,
@@ -225,7 +269,8 @@
     // haskell - hlint not available in coc-diagnostic
     // help - all linters disabled by default
     "html": ["alex_html", "tidy", "write-good"],
-    "javascript": ["eslint", "standard"],
+    "javascript": ["eslint", "jshint", "standard"],
+    "json": ["jsonlint"],
     "less": "stylelint",
     "lua": "luacheck",
     "mail": ["alex_text", "languagetool"],
@@ -243,11 +288,12 @@
     "sugarss": "stylelint",
     "tex": ["alex_text", "write-good"],
     "texinfo": ["alex_text", "write-good"],
-    "text": "languagetool", // only languagetool in enabled by default
+    "text": "languagetool", // ALE only turns on languagetool by default
     "typescript": ["eslint", "standard"],
     "vim": "vint",
     "vimwiki": ["alex_text", "languagetool", "write-good"],
     "xhtml": ["alex_text", "write-good"],
+    "xml": "xmllint",
     "yaml": "yamllint"
   },
   "diagnostic-languageserver.formatters": {
@@ -273,15 +319,13 @@
     }
   ],
   "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
-  "npm.binPath": "yarnpkg",
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "python.jediEnabled": false, // enable Microsoft Python LS
   "rust.clippy_preference": "on",
-  "rust-client.disableRustup": true, // I don't use rustup
+  "rust-client.disableRustup": true,
   "session.directory": "~/.local/share/nvim/sessions",
   "signature.target": "float",
-  "snippets.ultisnips.directories": ["UltiSnips", "gosnippets/UltiSnips"], // vim-go support
   "suggest.labelMaxLength": 100,
   "vimlsp.suggest.fromRuntimepath": true, // vimlsp runs quickly enough for this to work fine I guess
   "xml.catalogs": ["/etc/xml/catalog"],

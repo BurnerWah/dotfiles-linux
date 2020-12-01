@@ -137,7 +137,7 @@ syn match vimReg1OrMore contained '\%(\\\\\)*\zs\\+' contains=vimRegHide
 syn match vimReg0Or1    contained '\%(\\\\\)*\zs\\?' contains=vimRegHide
 syn match vimReg0Or1    contained '\%(\\\\\)*\zs\\=' conceal cchar=?
 syn match vimRegGreedy  contained '\%(\\\\\)*\zs\*'
-syn match vimRegGreedy  contained '\%(\\\\\)*\zs\\{}' conceal cchar=*
+syn match vimRegGreedy  contained '\%(\\\\\)*\zs\\{-\?}' conceal cchar=*
 " NOTE: People who use {} deserve the death
 
 " Regexp: Groups {{{2
@@ -175,16 +175,45 @@ syn match vimRegErr contained
 syn match vimRegErr contained '\%(\\\\\)*\zs\\[ETRBNgGjJqQ]' " reserved escapes
 syn match vimRegErr contained '\%(\\\\\)*\zs\\{-,}' " syntax error, not too problematic
 
+" Dictionaries: Enhanced #{} dictionaries {{{2
+" Some of this still runs into edge cases that I need to fix, but its mostly
+" when there are errors so it's low priority.
+" The easiest one to cause is with a string and a string key on one line.
+syn cluster vimHashDictGroup contains=vimHashDictKey,vimHashDictKeyError
+syn region vimOperParen
+      \ matchgroup=vimSep
+      \ start="#{" end="}"
+      \ contains=@vimOperGroup,@vimHashDictGroup
+      \ nextgroup=vimVar,vimFuncVar
+
+" Keys can only consist of ASCII letters, digits, '-', and '_'
+syn match vimHashDictKeyError contained '\%(:\s\+\)\@<!\S\+\ze\s*:' nextgroup=@vimOperGroup
+
+" We CANNOT use `'key':`.
+" This is based on vimString.
+syn region vimHashDictKeyError
+      \ contained oneline keepend
+      \ start=+[^a-zA-Z>!\\@]"+lc=1
+      \ skip=+\\\\\|\\"+
+      \ end=+"\ze\s*:+
+syn region vimHashDictKeyError
+      \ contained oneline keepend
+      \ start=+[^a-zA-Z>!\\@]'+lc=1
+      \ end=+'\ze\s*:+
+
+" XXX I don't think it's possible to check for other errors
+
+syn match vimHashDictKey contained '\%(:\s\+\)\@<![0-9A-Za-z_-]\+\ze\s*:' nextgroup=@vimOperGroup
 
 " Dictionaries: make it look like JSON {{{2
 " Effectively concealing dictionaries is a pain in the ass, but it can be
 " done. Normally they're handled by vimOperParen but this overrides that.
 
-syn region vimOperParen
-      \ matchgroup=vimSep
-      \ start=+{+ end=+}+
-      \ contains=@vimDictGroup
-      \ nextgroup=vimVar,vimFuncVar
+" syn region vimOperParen
+"       \ matchgroup=vimSep
+"       \ start=+{+ end=+}+
+"       \ contains=@vimDictGroup
+"       \ nextgroup=vimVar,vimFuncVar
 
 " For keys and strings, things get a little stupid. If we define keys first,
 " then strings will override them. But if we define strings first, keys will
@@ -259,3 +288,6 @@ hi def link vimDictQuoteS vimDictString
 hi def link vimDictKey Keyword
 hi def link vimDictQuoteK vimDictKey
 hi def link vimDictPrimitive vimConstant
+
+hi def link vimHashDictKey Label
+hi def link vimHashDictKeyError Error

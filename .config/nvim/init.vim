@@ -38,7 +38,7 @@ set pumblend    =10    " Slightly transparent menus
 set sessionoptions  =blank,curdir,folds,help,localoptions,tabpages,winpos,winsize
 set updatetime  =300
 set list               " Show non-printable characters.
-if has('multi_byte') && &encoding ==# 'utf-8'
+if ( has('multi_byte') && &encoding ==# 'utf-8' )
   let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
 else
   let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
@@ -95,6 +95,9 @@ exe printf('py3file %s/util.py', stdpath('config'))
 "   - 'yarn': implies 'node' - dependency
 "   - 'npm': implies 'node' - dependency
 "
+" For configuration:
+" * `if` makes `merged` default to v:false
+" * `rev` breaks `type__depth`
 " Settings {{{2
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
 let dein#enable_notification = v:true
@@ -121,18 +124,8 @@ if dein#load_state('~/.local/share/dein')
   let s:gh_raw = 'https://raw.githubusercontent.com/'
 
   " Core plugins {{{2
-  call dein#add('neoclide/coc.nvim', {
-        \ 'if': (executable('npm') || executable('yarn')),
-        \ 'merged': v:false,
-        \ 'rev': 'release',
-        \ 'type__depth': 1,
-        \ })
-
-  call dein#add('Shougo/denite.nvim', {
-        \ 'if': has('python3'),
-        \ 'merged': v:false,
-        \ 'type__depth': 1,
-        \ })
+  call dein#add('neoclide/coc.nvim', #{ if: executable('npm'), rev: 'release' })
+  call dein#add('Shougo/denite.nvim', #{ if: has('python3'), type__depth: 1 })
 
   " Snippets & Templates {{{2
   " call dein#add('honza/vim-snippets')
@@ -142,58 +135,43 @@ if dein#load_state('~/.local/share/dein')
   " Polyglot used to be in here but it tends to break stuff so I don't use it
   " anymore.
 
-  call dein#add('dense-analysis/ale', {'type__depth': 1})
+  call dein#add('dense-analysis/ale', #{ type__depth: 1 })
   " Asynchronous linting engine
 
-  call dein#add('nvim-treesitter/nvim-treesitter', {
-        \ 'if': (luaeval('pcall(require,"vim.treesitter.query")') &&
-        \        executable('cc')),
+  call dein#add('nvim-treesitter/nvim-treesitter', #{
+        \ if: ( luaeval('pcall(require,"vim.treesitter.query")') && executable('cc') ),
         \ })
   " This doesn't work at time of writing on the nightly repo, but I don't know
   " how to check for that.
-  call dein#add('nvim-treesitter/nvim-treesitter-refactor', {'depends': 'nvim-treesitter'})
-  call dein#add('nvim-treesitter/nvim-treesitter-textobjects', {'depends': 'nvim-treesitter'})
-  call dein#add('nvim-treesitter/playground', {'depends': 'nvim-treesitter'})
+  call dein#add('nvim-treesitter/nvim-treesitter-refactor', #{ depends: 'nvim-treesitter' })
+  call dein#add('nvim-treesitter/nvim-treesitter-textobjects', #{ depends: 'nvim-treesitter' })
+  call dein#add('nvim-treesitter/playground', #{ depends: 'nvim-treesitter' })
 
   " Language-specific stuff {{{2
   " CXX: {{{3
-  call dein#add('jackguo380/vim-lsp-cxx-highlight', {
-        \ 'if': (has('nvim') &&
-        \        py3eval('has_any_cmd("ccls", "clangd", "cquery")')),
-        \ 'merged': v:true,
+  call dein#add('jackguo380/vim-lsp-cxx-highlight', #{
+        \ if: ( executable('ccls') || executable('clangd') ),
+        \ merged: v:true,
         \ })
   " Provides enhanced highlighting
   " It requires a compatible language server and a language client. The `if`
   " key handles checking for a compatible language server, but checking for a
   " language client isn't really possible.
+  " We don't check for cquery because it's not maintained.
 
   call dein#add('Shougo/neoinclude.vim')
-  call dein#add('jsfaint/coc-neoinclude', {'depends': ['coc.nvim', 'neoinclude.vim']})
+  call dein#add('jsfaint/coc-neoinclude', #{ depends: ['coc.nvim', 'neoinclude.vim'] })
   " Provides completion for #include statements
 
   " Fish: {{{3
   " call dein#add('blankname/vim-fish')
   " Maintained fork of dag/vim-fish
 
-  " Go: {{{3
-  " call dein#add('fatih/vim-go', {'if': has('nvim-0.3.2'), 'merged': 1})
-  " vim-go causes a lot of problems since it's hard to stop it from launching
-  " another copy of gopls.
-
-  " LLVM: {{{3
-  call dein#add('rhysd/vim-llvm')
-  " The llvm highlighting is in a subdirectory of llvm-mirror/llvm, which is a
-  " 500mb repository. You're better off directly adding stuff or using a repo
-  " based on it.
-  " See: https://github.com/llvm-mirror/llvm/tree/master/utils/vim
-  "
-  " Has no plugin, so always merge.
-
   " Lua: {{{3
   call dein#add('euclidianAce/BetterLua.vim')
   call dein#add('tjdevries/manillua.nvim')
   call dein#add('rafcamlet/nvim-luapad')
-  call dein#add('rafcamlet/coc-nvim-lua', {'depends': ['coc.nvim']})
+  call dein#add('rafcamlet/coc-nvim-lua', #{ depends: 'coc.nvim' })
   call dein#add('tjdevries/nlua.nvim')
   call dein#add('bfredl/nvim-luadev')
   " Lua REPL
@@ -201,24 +179,21 @@ if dein#load_state('~/.local/share/dein')
   " be lazily loaded.
 
   " Markdown: {{{3
-  call dein#add('npxbr/glow.nvim', {
-        \ 'hook_post_update': 'GlowInstall',
-        \ 'type__depth': 1,
-        \ })
-  call dein#add('iamcco/markdown-preview.nvim', {
-        \ 'if': executable('yarn'),
-        \ 'lazy': v:true,
-        \ 'on_ft': ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
-        \ 'build': 'sh -c "cd app && yarn install --ignore-optional --link-duplicates"',
-        \ 'type__depth': 1,
+  call dein#add('npxbr/glow.nvim', #{ hook_post_update: 'GlowInstall', type__depth: 1 })
+  call dein#add('iamcco/markdown-preview.nvim', #{
+        \ if: executable('yarn'),
+        \ lazy: v:true,
+        \ on_ft: ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
+        \ build: 'sh -c "cd app && yarn install"',
+        \ type__depth: 1,
         \ })
   " Markdown live preview
   " Instructions suggest lazy loading with on_ft
 
   " Meson: {{{3
-  call dein#add('mesonbuild/meson', {
-        \ 'rtp': 'data/syntax-highlighting/vim',
-        \ 'type__depth': 1,
+  call dein#add('mesonbuild/meson', #{
+        \ rtp: 'data/syntax-highlighting/vim',
+        \ type__depth: 1,
         \ })
   " Official meson syntax is similar to the official llvm syntax, although we
   " can get the reposotory size down to about 21MB (at time of writing) by
@@ -226,7 +201,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Moonscript: {{{3
   call dein#add('leafo/moonscript-vim')
-  call dein#add('svermeulen/nvim-moonmaker', {'merged': 0})
+  call dein#add('svermeulen/nvim-moonmaker', #{ merged: v:false })
   " nvim-moonmaker can't be safely merged, as it'll delete merged lua files.
 
   " Python: {{{3
@@ -237,14 +212,14 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('vim-python/python-syntax')
   call dein#add('Vimjas/vim-python-pep8-indent')
 
-  call dein#add('numirias/semshi', {'if': has('python3'), 'merged': 1})
+  call dein#add('numirias/semshi', #{ if: has('python3'), merged: v:true })
   " Provides semantic highlighting for Python code.
   " Probably will be replaced by tree sitter when nvim 0.5.0 releases
 
-  call dein#add('bfredl/nvim-ipy', {
-        \ 'if': (has('python3') && py3eval('has_module("jupyter_client")')),
-        \ 'merged': v:true,
-        \ 'hook_post_source': join([
+  call dein#add('bfredl/nvim-ipy', #{
+        \ if: ( has('python3') && py3eval('has_module("jupyter_client")') ),
+        \ merged: v:true,
+        \ hook_post_source: join([
         \   'delcommand IPython2',
         \   'delcommand IJulia',
         \ ], "\n"),
@@ -253,7 +228,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Rust: {{{3
 
-  call dein#add('rust-lang/rust.vim', {'type__depth': 1})
+  call dein#add('rust-lang/rust.vim', #{ type__depth: 1 })
   " Official rust syntax
   "
   " NOTE plugin/rust.vim doesn't do anything with my configuration.
@@ -265,10 +240,11 @@ if dein#load_state('~/.local/share/dein')
 
   " VimL: {{{3
   call dein#add('Shougo/neco-vim')
-  call dein#add('neoclide/coc-neco', {'depends': ['coc.nvim', 'neco-vim']})
+  call dein#add('neoclide/coc-neco', #{ depends: ['coc.nvim', 'neco-vim'] })
   " VimL completion
 
   " Other: {{{3
+  call dein#add('rhysd/vim-llvm') " Mirror of syntax from llvm repo
   call dein#add('ekalinin/Dockerfile.vim')
   call dein#add('elzr/vim-json')
   call dein#add('cespare/vim-toml')
@@ -281,16 +257,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('YaBoiBurner/requirements.txt.vim') " Fork of raimon49/requirements.txt.vim
   call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
 
-  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', {
-        \ 'if': (has('nvim') && executable('awk')),
-        \ 'merged': v:true,
-        \ })
+  call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', #{ if: executable('awk'), merged: 1 })
 
   " Integration: Work with other things {{{2
-  call dein#add('romgrk/todoist.nvim', {
-        \ 'build': 'yarn install --ignore-optional --link-duplicates --no-lockfile'
-        \ })
-  call dein#add('editorconfig/editorconfig-vim', {'type__depth': 1}) " editorconfig support
+  call dein#add('romgrk/todoist.nvim', #{ if: has('node'), build: 'npm i' })
+  call dein#add('editorconfig/editorconfig-vim') " editorconfig support
   call dein#add('tpope/vim-dadbod') " Access databases, etc.
   call dein#add('tpope/vim-fugitive')
   " git support
@@ -298,51 +269,53 @@ if dein#load_state('~/.local/share/dein')
   " stuff. If there's a way to fix that I'd be very happy but for now I'm just
   " not gonna use it.
   call dein#add('f-person/git-blame.nvim')
-  call dein#add('yuki-ycino/fzf-preview.vim', {'rev': 'release', 'merged': 0})
+  call dein#add('yuki-ycino/fzf-preview.vim', #{
+        \ if: ( has('node') && executable('fzf') ),
+        \ rev: 'release',
+        \ })
 
-  call dein#add('rliang/termedit.nvim', {'if': has('python3'), 'merged': 1})
+  call dein#add('rliang/termedit.nvim', #{ if: has('python3'), merged: v:true })
   " Set $EDITOR to current nvim instance
 
   " Utilities {{{2
   call dein#add('haya14busa/dein-command.vim') " Commands for Dein
   call dein#add('vimwiki/vimwiki')
-  call dein#add('liuchengxu/vista.vim', {'hook_add': 'cabbrev Vi Vista'})
-  call dein#add('Vigemus/iron.nvim', {'if': has('nvim'), 'merged': 1})
-  " General REPL plugin
+  call dein#add('liuchengxu/vista.vim', #{ hook_add: 'cabbrev Vi Vista' })
+  call dein#add('Vigemus/iron.nvim') " General REPL plugin
 
-  call dein#add('fszymanski/fzf-gitignore', {
-        \ 'if': (has('python3') && executable('fzf')),
-        \ 'merged': v:true,
+  call dein#add('fszymanski/fzf-gitignore', #{
+        \ if: ( has('python3') && executable('fzf') ),
+        \ merged: v:true,
         \ })
 
-  call dein#add('liuchengxu/vim-clap', {
-        \ 'if': (has('nvim-0.4.2') && has('python3') && executable('cargo')),
-        \ 'build': 'cd pythonx/clap; make build',
-        \ 'hook_post_update': { -> clap#installer#force_download() },
+  call dein#add('liuchengxu/vim-clap', #{
+        \ if: ( has('python3') && executable('cargo') ),
+        \ build: 'cd pythonx/clap; make build',
+        \ hook_post_update: 'call clap#installer#force_download()',
         \ })
   " Using a build step and a post update hook is inelegant as fuck, but it's
   " the fastest way to get clap up and running after an update. The build step
   " builds a python native library that improves performance by a lot, and the
   " post update hook downloads the binaries needed for clap to work. We could
   " build that locally but it takes a while and uses up a lot of space.
-  " The lambda is there to minimize issues with post update hooks. Passing the
-  " function to dein returns an error, and hooks are a little inconsistent.
-  call dein#add('vn-ki/coc-clap', {'depends': ['coc.nvim', 'vim-clap']})
+  call dein#add('vn-ki/coc-clap', #{ depends: ['coc.nvim', 'vim-clap'] })
 
-  call dein#add('sakhnik/nvim-gdb', {
-        \ 'if': (has('nvim') && has('python3') &&
-        \        py3eval('has_any_cmd("gdb", "lldb", "bashdb")')),
-        \ 'merged': v:true,
+  call dein#add('sakhnik/nvim-gdb', #{
+        \ if: ( has('python3') && ( executable('gdb') || executable('lldb') ) ),
+        \ merged: v:true,
         \ })
+  " Debugging plugin
+  " We don't bother checking for `bashdb` since it's unlikely that it's the
+  " only debugger installed.
 
   " User interface {{{2
   " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
   " the moment it won't install.
 
   call dein#add('kyazdani42/nvim-web-devicons')
-  call dein#add('ryanoasis/vim-devicons', {
-        \ 'hook_add': 'let g:webdevicons_enable_nerdtree = 0',
-        \ 'hook_post_source': join([
+  call dein#add('ryanoasis/vim-devicons', #{
+        \ hook_add: 'let g:webdevicons_enable_nerdtree = 0',
+        \ hook_post_source: join([
         \   'unlet! '.join([
         \     'g:NERDTreeGitStatusUpdateOnCursorHold',
         \     'g:NERDTreeUpdateOnCursorHold',
@@ -353,7 +326,7 @@ if dein#load_state('~/.local/share/dein')
         \   ]),
         \   'delfu! NERDTreeWebDevIconsRefreshListener',
         \ ], "\n"),
-        \ 'type__depth': 1,
+        \ type__depth: 1,
         \ })
   " devicons doesn't check if nerdtree is installed before configuring a lot
   " of it, so it pollutes our setup with a bunch of unnecessary things to
@@ -366,24 +339,24 @@ if dein#load_state('~/.local/share/dein')
   " negligible.
 
   call dein#add('Xuyuanp/scrollbar.nvim')
-  call dein#add('wfxr/minimap.vim', {
-        \ 'if': (has('nvim-0.5.0') && executable('code-minimap')),
-        \ 'merged': v:true,
+  call dein#add('wfxr/minimap.vim', #{
+        \ if: ( has('nvim-0.5.0') && executable('code-minimap') ),
+        \ merged: v:true,
         \ })
   call dein#add('kyazdani42/nvim-tree.lua')
 
   " Denite {{{3
-  call dein#add('neoclide/denite-git', {'depends': 'denite.nvim'})
-  call dein#add('notomo/denite-autocmd', {'depends': 'denite.nvim'})
-  call dein#add('zacharied/denite-nerdfont', {'depends': 'denite.nvim'})
-  call dein#add('neoclide/coc-denite', {'depends': ['denite.nvim', 'coc.nvim']})
-  call dein#add('iyuuya/denite-ale', {'depends': ['denite.nvim', 'ale']})
+  call dein#add('neoclide/denite-git', #{ depends: 'denite.nvim' })
+  call dein#add('notomo/denite-autocmd', #{ depends: 'denite.nvim' })
+  call dein#add('zacharied/denite-nerdfont', #{ depends: 'denite.nvim' })
+  call dein#add('neoclide/coc-denite', #{ depends: ['denite.nvim', 'coc.nvim'] })
+  call dein#add('iyuuya/denite-ale', #{ depends: ['denite.nvim', 'ale'] })
 
   " Mode-line {{{3
   " I'm considering switching from airline over to something more neovim
   " oriented, or else over to lightline.
-  call dein#add('vim-airline/vim-airline', {'type__depth': 1})
-  call dein#add('vim-airline/vim-airline-themes', {'depends': 'vim-airline', 'type__depth': 1})
+  call dein#add('vim-airline/vim-airline', #{ type__depth: 1 })
+  call dein#add('vim-airline/vim-airline-themes', #{ depends: 'vim-airline', type__depth: 1 })
 
   " call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
   " Barbar is bugged in problematic ways. At time of writing, filetype icons
@@ -394,22 +367,19 @@ if dein#load_state('~/.local/share/dein')
   " Visual helpers {{{3
   call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
 
-  call dein#add('norcalli/nvim-colorizer.lua', {'if': has('nvim-0.4.0'), 'merged': 1})
+  call dein#add('norcalli/nvim-colorizer.lua')
   " Highlights colors really quickly.
 
-  call dein#add('meain/vim-package-info', {
-        \ 'if': (has('node') && executable('yarn')),
-        \ 'build': 'yarn install --ignore-optional --link-duplicates',
-        \ })
+  call dein#add('meain/vim-package-info', #{ if: has('node'), build: 'npm i' })
   " Shows package information in package.json, cargo.toml, etc.
   " Very simple plugin right now, no need to lazy-load.
 
   " Signcolumn {{{3
   " call dein#add('airblade/vim-gitgutter')
-  call dein#add('mhinz/vim-signify', {'type__depth': 1})
+  call dein#add('mhinz/vim-signify', #{ type__depth: 1 })
 
   " Color schemes {{{3
-  call dein#add('tjdevries/colorbuddy.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
+  call dein#add('tjdevries/colorbuddy.nvim', #{ if: has('nvim-0.5.0'), merged: 1 })
   call dein#add('tyrannicaltoucan/vim-quantum')
   " I'm using a colorbyddy implementation of this theme, but it's useful to
   " include the original theme to get some of the resources from it.
@@ -427,9 +397,9 @@ if dein#load_state('~/.local/share/dein')
   " Align text to certain characters.
   " Can be loaded lazily, but performance benefit is negligible
 
-  call dein#add('meain/vim-colorswitch', {
-        \ 'if': (has('python3') && py3eval('has_module("colour")')),
-        \ 'merged': v:true
+  call dein#add('meain/vim-colorswitch', #{
+        \ if: ( has('python3') && py3eval('has_module("colour")') ),
+        \ merged: v:true,
         \ })
   " Cycle between hex, rgb, and hsl colors
 
@@ -500,12 +470,12 @@ let scrollbar_excluded_filetypes = [
       \ ]
 let mkdp_filetypes = ['markdown', 'vimwiki']
 let neoinclude#max_processes = py3eval('os.cpu_count()')
-let todoist = {
-      \   'icons': {
-      \     'unchecked': '  ',
-      \     'checked': '  ',
-      \     'loading': '  ',
-      \     'error': '  ',
+let todoist = #{
+      \   icons: #{
+      \     unchecked: '  ',
+      \     checked: '  ',
+      \     loading: '  ',
+      \     error: '  ',
       \   },
       \ }
 
@@ -520,14 +490,14 @@ let airline_detect_spelllang = v:false " Cleans up stuff a little
 " let airline_inactive_collapse = 1
 let airline_skip_empty_sections = 1
 let airline#extensions#tabline#enabled = 1
-let airline_filetype_overrides = {
-      \ 'LuaTree': ['LuaTree', ''],
-      \ 'minimap': ['Map', ''],
-      \ 'todoist': ['Todoist', ''],
-      \ 'tsplayground': ['Tree-Sitter Playground', ''],
-      \ 'vista': ['Vista', ''],
-      \ 'vista_kind': ['Vista', ''],
-      \ 'vista_markdown': ['Vista', ''],
+let airline_filetype_overrides = #{
+      \ LuaTree: ['LuaTree', ''],
+      \ minimap: ['Map', ''],
+      \ todoist: ['Todoist', ''],
+      \ tsplayground: ['Tree-Sitter Playground', ''],
+      \ vista: ['Vista', ''],
+      \ vista_kind: ['Vista', ''],
+      \ vista_markdown: ['Vista', ''],
       \ }
 
 " ALE: Async linter {{{2
@@ -536,73 +506,74 @@ let ale_disable_lsp = v:true
 
 " This is mostly to disable linters which are better handled by another
 " extension (I.E. Language servers, stuff covered by diagnostic-ls & efm).
-let ale_linters_ignore = {
-      \ 'asciidoc': ['alex', 'languagetool', 'writegood'],
-      \ 'bats': ['shellcheck'],
-      \ 'c': ['cpplint'],
-      \ 'cmake': ['cmakelint'],
-      \ 'cpp': ['cpplint'],
-      \ 'css': ['stylelint'],
-      \ 'dockerfile': ['hadolint'],
-      \ 'elixir': ['credo'],
-      \ 'eruby': ['erb'],
-      \ 'fish': ['fish'],
-      \ 'gitcommit': ['gitlint'],
-      \ 'graphql': ['eslint'],
-      \ 'help': ['alex', 'writegood'],
-      \ 'html': ['tidy', 'writegood'],
-      \ 'javascript': ['eslint', 'flow', 'standard'],
-      \ 'less': ['stylelint'],
-      \ 'lua': ['luacheck'],
-      \ 'mail': ['alex', 'languagetool'],
-      \ 'markdown': ['languagetool', 'markdownlint', 'writegood'],
-      \ 'nroff': ['alex', 'writegood'],
-      \ 'php': ['phpcs', 'phpstan'],
-      \ 'po': ['alex', 'writegood'],
-      \ 'pod': ['alex', 'writegood'],
-      \ 'python': ['flake8', 'mypy', 'pylint'],
-      \ 'rst': ['alex', 'rstcheck', 'writegood'],
-      \ 'rust': ['cargo'],
-      \ 'sass': ['stylelint'],
-      \ 'scss': ['stylelint'],
-      \ 'sh': ['shellcheck'],
-      \ 'stylus': ['stylelint'],
-      \ 'sugarss': ['stylelint'],
-      \ 'tex': ['alex', 'writegood'],
-      \ 'texinfo': ['alex', 'writegood'],
-      \ 'text': ['alex', 'languagetool', 'writegood'],
-      \ 'typescript': ['eslint', 'standard', 'tslint'],
-      \ 'vim': ['vint'],
-      \ 'vimwiki': ['alex', 'languagetool', 'markdownlint', 'writegood'],
-      \ 'xhtml': ['alex', 'writegood'],
-      \ 'yaml': ['yamllint'],
+let ale_linters_ignore = #{
+      \ asciidoc:   ['alex', 'languagetool', 'writegood'],
+      \ bats:       ['shellcheck'],
+      \ c:          ['cpplint'],
+      \ cmake:      ['cmakelint'],
+      \ cpp:        ['cpplint'],
+      \ css:        ['stylelint'],
+      \ dockerfile: ['hadolint'],
+      \ elixir:     ['credo'],
+      \ eruby:      ['erb'],
+      \ fish:       ['fish'],
+      \ gitcommit:  ['gitlint'],
+      \ graphql:    ['eslint'],
+      \ help:       ['alex', 'writegood'],
+      \ html:       ['tidy', 'writegood'],
+      \ javascript: ['eslint', 'flow', 'standard'],
+      \ json:       ['jsonlint'],
+      \ jsonc:      ['jsonlint'],
+      \ less:       ['stylelint'],
+      \ lua:        ['luacheck'],
+      \ mail:       ['alex', 'languagetool'],
+      \ markdown:   ['languagetool', 'markdownlint', 'writegood'],
+      \ nroff:      ['alex', 'writegood'],
+      \ php:        ['phpcs', 'phpstan'],
+      \ po:         ['alex', 'writegood'],
+      \ pod:        ['alex', 'writegood'],
+      \ python:     ['flake8', 'mypy', 'pylint'],
+      \ rst:        ['alex', 'rstcheck', 'writegood'],
+      \ rust:       ['cargo'],
+      \ sass:       ['stylelint'],
+      \ scss:       ['stylelint'],
+      \ sh:         ['shellcheck'],
+      \ stylus:     ['stylelint'],
+      \ sugarss:    ['stylelint'],
+      \ tex:        ['alex', 'writegood'],
+      \ texinfo:    ['alex', 'writegood'],
+      \ text:       ['alex', 'languagetool', 'writegood'],
+      \ typescript: ['eslint', 'standard', 'tslint'],
+      \ vim:        ['vint'],
+      \ vimwiki:    ['alex', 'languagetool', 'markdownlint', 'writegood'],
+      \ xhtml:      ['alex', 'writegood'],
+      \ xml:        ['xmllint'],
+      \ yaml:       ['yamllint'],
       \ }
 " go - golangci-lint, revive disabled by default
 
-let ale_fixers = {
-      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \ 'cpp': ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'go': [
+let ale_fixers = #{
+      \ cpp: ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
+      \ go: [
       \   'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \ ],
-      \ 'html': ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'less': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'python': [
+      \ html: ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
+      \ less: ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+      \ python: [
       \   'add_blank_lines_for_python_control_statements',
       \   'reorder-python-imports',
       \   'remove_trailing_lines',
       \   'trim_whitespace',
       \ ],
-      \ 'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'scss': ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'sql': ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
-      \ 'xml': ['xmllint'],
+      \ rust: ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
+      \ scss: ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
+      \ sql: ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
+      \ xml: ['xmllint'],
       \ }
+let ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
 " sh - shfmt moved to diagnostic-ls
 
-let ale_linter_aliases = {
-      \ 'jsonc': 'json',
-      \ }
+let ale_linter_aliases = #{ jsonc: 'json' }
 
 " Fedora exports autopep8 as autopep8-3 but that might be erroneous
 if executable('autopep8-3') && !executable('autopep8')
@@ -627,31 +598,31 @@ let vimwiki_listsyms = '✗○◐●✓'
 " Vista: replacement for tagbar {{{2
 let vista#renderer#enable_icon = 1
 let vista_echo_cursor_strategy = 'floating_win' " Floating vista window is super clean
-let vista_executive_for = {
-      \ 'apiblueprint': 'markdown',
-      \ 'c': 'coc',
-      \ 'cpp': 'coc',
-      \ 'cuda': 'coc',
-      \ 'css': 'coc',
-      \ 'go': 'coc',
-      \ 'html': 'coc',
-      \ 'javascript': 'coc',
-      \ 'json': 'coc',
-      \ 'jsonc': 'coc',
-      \ 'lua': 'coc',
-      \ 'markdown': 'toc',
-      \ 'objc': 'coc',
-      \ 'objcpp': 'coc',
-      \ 'pandoc': 'markdown',
-      \ 'python': 'coc',
-      \ 'rst': 'toc',
-      \ 'tex': 'coc',
-      \ 'typescript': 'coc',
-      \ 'vala': 'coc',
-      \ 'vim': 'coc',
-      \ 'vimwiki': 'markdown',
-      \ 'xml': 'coc',
-      \ 'yaml': 'coc',
+let vista_executive_for = #{
+      \ apiblueprint: 'markdown',
+      \ c: 'coc',
+      \ cpp: 'coc',
+      \ cuda: 'coc',
+      \ css: 'coc',
+      \ go: 'coc',
+      \ html: 'coc',
+      \ javascript: 'coc',
+      \ json: 'coc',
+      \ jsonc: 'coc',
+      \ lua: 'coc',
+      \ markdown: 'toc',
+      \ objc: 'coc',
+      \ objcpp: 'coc',
+      \ pandoc: 'markdown',
+      \ python: 'coc',
+      \ rst: 'toc',
+      \ tex: 'coc',
+      \ typescript: 'coc',
+      \ vala: 'coc',
+      \ vim: 'coc',
+      \ vimwiki: 'markdown',
+      \ xml: 'coc',
+      \ yaml: 'coc',
       \ }
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
 
