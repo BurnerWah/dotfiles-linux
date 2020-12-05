@@ -35,12 +35,16 @@ aug userft
   au BufNewFile,BufRead *.luacompleterc setf json
   au BufNewFile,BufRead *.arcconfig,*.arclint setf json
   au BufNewFile,BufRead *.tcelldb setf json
+  au BufNewFile,BufRead *.jshintrc setf json
 
   " JSON w/ comments
   au BufNewFile,BufRead */coc-settings.json setf jsonc
   au BufNewFile,BufRead */tsconfig.json setf jsonc
   au BufNewFile,BufRead */.vscode/*.json setf jsonc
   au BufNewFile,BufRead */waybar/config setf jsonc
+
+  " Lisp
+  au BufNewFile,BufRead *.xlisp setf lisp
 
   " Lua
   au BufNewFile,BufRead *.luacheckrc setf lua
@@ -66,6 +70,9 @@ aug userft
   " XML
   au BufNewFile,BufRead *.doap,*.tmLanguage,*.natvis setf xml
   au BufNewFile,BufRead */etc/dbus-1/*.conf setf xml
+  au BufNewFile,BufRead *.aiml setf xml
+  au BufNewFile,BufRead *.lzx setf xml
+  au BufNewFile,BufRead *.posxml setf xml
 
   " YAML
   au BufNewFile,BufRead *.sublime-syntax setf yaml

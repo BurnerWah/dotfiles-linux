@@ -8,8 +8,10 @@ import os
 from importlib.util import find_spec
 from shutil import which
 
+
 def has_module(module):
     return find_spec(module) is not None
+
 
 def has_any_cmd(*commands):
     for command in commands:

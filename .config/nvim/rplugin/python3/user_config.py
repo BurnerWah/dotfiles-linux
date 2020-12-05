@@ -1,5 +1,3 @@
-import os
-
 import gi
 import pynvim
 
@@ -13,8 +11,7 @@ class UserConfig:
         self.nvim = nvim
         self.schema = Secret.Schema.new('io.neovim.user',
                                         Secret.SchemaFlags.NONE,
-                                        { 'nvim_id': Secret.SchemaAttributeType.STRING })
-
+                                        {'nvim_id': Secret.SchemaAttributeType.STRING})
 
     @pynvim.autocmd('VimEnter')
     def event_vim_enter(self):

@@ -53,6 +53,18 @@ tools:
     lint-command: 'yamllint -f parsable -'
     lint-stdin: true
 
+  zsh-noexec: &zsh-noexec
+    lint-command: 'zsh -n /dev/stdin'
+    lint-stdin: true
+    lint-ignore-exit-code: true
+    lint-formats:
+      - '/dev/stdin:%l: %m'
+
+  # Custom script to attemt to provide hover functionality
+  zsh-man: &zsh-man
+    hover-command: 'efm_hover_zsh.sh'
+    hover-stdin: true
+
 languages:
   eruby:
     - <<: *eruby-erb
@@ -77,3 +89,7 @@ languages:
 
   yaml:
     - <<: *yaml-yamllint
+
+  zsh:
+    # - <<: *zsh-noexec
+    - <<: *zsh-man

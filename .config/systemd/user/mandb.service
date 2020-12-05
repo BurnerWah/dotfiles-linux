@@ -1,6 +1,7 @@
 [Unit]
 Description=User man-db update
 Documentation=man:man(1) man:mandb(8)
+ConditionFileIsExecutable=/usr/bin/mandb
 
 [Service]
 Type=oneshot

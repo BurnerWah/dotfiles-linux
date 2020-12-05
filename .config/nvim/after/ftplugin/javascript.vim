@@ -2,6 +2,8 @@
 setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
 
 if exists('did_coc_loaded')
+  setl formatexpr=CocAction('formatSelected')
+
   " Commands
   com! -buffer -nargs=0 Prettier :call CocActionAsync('runCommand', 'prettier.formatFile')
 

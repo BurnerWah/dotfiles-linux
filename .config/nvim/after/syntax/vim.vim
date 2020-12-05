@@ -92,6 +92,10 @@ syn match vimMapRhs contained '.*\ze\s\+|$' contains=vimNotation,vimCtrlChar
 syn clear vimMapRhsExtend
 syn match vimMapRhsExtend contained '^\s*\\[^|].*$' contains=vimContinue
 
+" Regexp: rewritten enhancements {{{2
+" Clusters {{{3
+" Entrypoints {{{3
+
 " Regexp: hidden {{{2
 syn match vimRegHide    contained transparent conceal '\\'
 syn match vimRegHideStr contained transparent conceal '\\_'
@@ -120,7 +124,7 @@ syn match vimRegWeird contained '\%(\\\\\)*\zs\\%\%([\^$V#]\|[<>]\?\'m\)'
 syn match vimRegWeird contained '\%(\\\\\)*\zs\\%[<>]\?\d+[lcv]'
 
 " Regexp: flags {{{2
-syn match vimRegFlag contained '\%(\\\\\)*\zs\\[mMvVcCZ]'
+" syn match vimRegFlag contained '\%(\\\\\)*\zs\\[mMvVcCZ]'
 syn match vimRegFlag contained '\%(\\\\\)*\zs\\%#=[012]'
 
 " Regexp: Anchors {{{2

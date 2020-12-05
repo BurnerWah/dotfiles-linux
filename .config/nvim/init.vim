@@ -14,11 +14,9 @@
 "
 " Core settings {{{1
 scriptenc 'utf-8'
-filetype plugin indent on " Load plugins according to detected filetype.
 syn enable             " Enable syntax highlighting.
 
 set expandtab          " Use spaces instead of tabs.
-set tabstop     =8
 set softtabstop =2     " Tab key indents by 2 spaces.
 set shiftwidth  =2     " >> indents by 2 spaces.
 set shiftround         " >> indents to next multiple of 'shiftwidth'.
@@ -39,9 +37,9 @@ set sessionoptions  =blank,curdir,folds,help,localoptions,tabpages,winpos,winsiz
 set updatetime  =300
 set list               " Show non-printable characters.
 if ( has('multi_byte') && &encoding ==# 'utf-8' )
-  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±'
+  let &listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-'
 else
-  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:.'
+  let &listchars = 'tab:> ,extends:>,precedes:<,nbsp:+,trail:-'
 endif
 if has('conceal')
   set conceallevel  =2
@@ -55,49 +53,12 @@ let ruby_host_prog = exepath('neovim-ruby-host')
 " Fish can cause problems with plugins
 let &shell = (&shell =~# 'fish$') ? 'bash' : &shell
 
+let g:gitblame_enabled = 0 " Mitigation for #11
+
 " Load python utilities
 exe printf('py3file %s/util.py', stdpath('config'))
 
 " Dein: plugin manager {{{1
-" Notes {{{2
-" dein is a fairly capable plugin manager, but it has it's limitations. It
-" tries to merge plugins together, which is an interesting idea that I think
-" could've been executed better.
-"
-" * Plugins are merged using rsync, and dein does basically nothing to track
-"   which files came from what plugins. As a result, remote plugins can
-"   sometimes break when their configuration is changed (for instance, a plugin
-"   that used to be merged isn't able to be merged anymore).
-" * rsync also wastes a lot of space, and can slow the update process
-"   unnecessarily when there aren't any new files.
-" * Lastly, the rsync method doesn't seem to allow for any way to really
-"   resolve conflicts between plugins. If two plugins include
-"   rtp:/syntax/vim.json, there isn't a meaningful way to specify which one
-"   should override the other.
-"
-" I think that while it would be more complex, there would be ways to avoid
-" this issue. For instance:
-" * Using symlinks to files to merge plugins would almost eliminate the
-"   excess space used by dein, and would speed up updates when there weren't
-"   any new files.
-" * Using a traditional FUSE mount (similar to overlayfs or MOVFS) could hide
-"   the fact that plugins were merged at all, let dein resolve conflicts, and
-"   maintain an overwrite folder for files created at runtime.
-"
-" It's also worth mentioning that while there is a third-party user interface
-" for dein available, it seems to be pretty buggy. I don't use it personally.
-"
-" For dependency management, please note the following:
-" * executable() assumptions:
-"   - 'tar': true - basically required on any system
-"   - 'curl': true - basically required on any system
-"   - 'git': true - needed for plugin manager
-"   - 'yarn': implies 'node' - dependency
-"   - 'npm': implies 'node' - dependency
-"
-" For configuration:
-" * `if` makes `merged` default to v:false
-" * `rev` breaks `type__depth`
 " Settings {{{2
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
 let dein#enable_notification = v:true
@@ -135,14 +96,11 @@ if dein#load_state('~/.local/share/dein')
   " Polyglot used to be in here but it tends to break stuff so I don't use it
   " anymore.
 
-  call dein#add('dense-analysis/ale', #{ type__depth: 1 })
-  " Asynchronous linting engine
+  call dein#add('dense-analysis/ale', #{ type__depth: 1 }) " Asynchronous linting engine
 
   call dein#add('nvim-treesitter/nvim-treesitter', #{
-        \ if: ( luaeval('pcall(require,"vim.treesitter.query")') && executable('cc') ),
+        \ if: ( has('nvim-0.5.0') && executable('cc') ),
         \ })
-  " This doesn't work at time of writing on the nightly repo, but I don't know
-  " how to check for that.
   call dein#add('nvim-treesitter/nvim-treesitter-refactor', #{ depends: 'nvim-treesitter' })
   call dein#add('nvim-treesitter/nvim-treesitter-textobjects', #{ depends: 'nvim-treesitter' })
   call dein#add('nvim-treesitter/playground', #{ depends: 'nvim-treesitter' })
@@ -154,14 +112,9 @@ if dein#load_state('~/.local/share/dein')
         \ merged: v:true,
         \ })
   " Provides enhanced highlighting
-  " It requires a compatible language server and a language client. The `if`
-  " key handles checking for a compatible language server, but checking for a
-  " language client isn't really possible.
-  " We don't check for cquery because it's not maintained.
 
-  call dein#add('Shougo/neoinclude.vim')
+  call dein#add('Shougo/neoinclude.vim') " Provides completion for #include statements
   call dein#add('jsfaint/coc-neoinclude', #{ depends: ['coc.nvim', 'neoinclude.vim'] })
-  " Provides completion for #include statements
 
   " Fish: {{{3
   " call dein#add('blankname/vim-fish')
@@ -173,13 +126,12 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('rafcamlet/nvim-luapad')
   call dein#add('rafcamlet/coc-nvim-lua', #{ depends: 'coc.nvim' })
   call dein#add('tjdevries/nlua.nvim')
-  call dein#add('bfredl/nvim-luadev')
-  " Lua REPL
+  call dein#add('bfredl/nvim-luadev') " Lua REPL
   " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
   " be lazily loaded.
 
   " Markdown: {{{3
-  call dein#add('npxbr/glow.nvim', #{ hook_post_update: 'GlowInstall', type__depth: 1 })
+  call dein#add('npxbr/glow.nvim', #{ hook_post_update: 'GlowInstall' })
   call dein#add('iamcco/markdown-preview.nvim', #{
         \ if: executable('yarn'),
         \ lazy: v:true,
@@ -226,25 +178,13 @@ if dein#load_state('~/.local/share/dein')
         \ })
   " Python REPL
 
-  " Rust: {{{3
-
-  call dein#add('rust-lang/rust.vim', #{ type__depth: 1 })
-  " Official rust syntax
-  "
-  " NOTE plugin/rust.vim doesn't do anything with my configuration.
-
-  " call dein#add('mhinz/vim-crates')
-  " Info on crates
-  "
-  " Not needed thanks to vim-package-info
-
   " VimL: {{{3
-  call dein#add('Shougo/neco-vim')
+  call dein#add('Shougo/neco-vim') " VimL completion
   call dein#add('neoclide/coc-neco', #{ depends: ['coc.nvim', 'neco-vim'] })
-  " VimL completion
 
   " Other: {{{3
   call dein#add('rhysd/vim-llvm') " Mirror of syntax from llvm repo
+  call dein#add('rust-lang/rust.vim') " Official rust syntax
   call dein#add('ekalinin/Dockerfile.vim')
   call dein#add('elzr/vim-json')
   call dein#add('cespare/vim-toml')
@@ -254,6 +194,13 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('aklt/plantuml-syntax')
   call dein#add('tikhomirov/vim-glsl')
   call dein#add('udalov/kotlin-vim')
+  " call dein#add('kchmck/vim-coffee-script')
+  " call dein#add('zah/nim.vim')
+  call dein#add('jparise/vim-graphql')
+  call dein#add('tomlion/vim-solidity')
+  call dein#add('evanleck/vim-svelte')
+  " call dein#add('keith/swift.vim', #{ hook_post_source: 'unlet! g:tagbar_type_swift' })
+  " call dein#add('rvesse/vim-sparql')
   call dein#add('YaBoiBurner/requirements.txt.vim') " Fork of raimon49/requirements.txt.vim
   call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
 
@@ -263,11 +210,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('romgrk/todoist.nvim', #{ if: has('node'), build: 'npm i' })
   call dein#add('editorconfig/editorconfig-vim') " editorconfig support
   call dein#add('tpope/vim-dadbod') " Access databases, etc.
-  call dein#add('tpope/vim-fugitive')
-  " git support
-  " Fugitive resolves symlinks for git repos, which breaks a lot of random
-  " stuff. If there's a way to fix that I'd be very happy but for now I'm just
-  " not gonna use it.
+  call dein#add('tpope/vim-fugitive') " git support
   call dein#add('f-person/git-blame.nvim')
   call dein#add('yuki-ycino/fzf-preview.vim', #{
         \ if: ( has('node') && executable('fzf') ),
@@ -290,14 +233,9 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('liuchengxu/vim-clap', #{
         \ if: ( has('python3') && executable('cargo') ),
-        \ build: 'cd pythonx/clap; make build',
+        \ build: 'make python-dynamic-module',
         \ hook_post_update: 'call clap#installer#force_download()',
         \ })
-  " Using a build step and a post update hook is inelegant as fuck, but it's
-  " the fastest way to get clap up and running after an update. The build step
-  " builds a python native library that improves performance by a lot, and the
-  " post update hook downloads the binaries needed for clap to work. We could
-  " build that locally but it takes a while and uses up a lot of space.
   call dein#add('vn-ki/coc-clap', #{ depends: ['coc.nvim', 'vim-clap'] })
 
   call dein#add('sakhnik/nvim-gdb', #{
@@ -338,12 +276,15 @@ if dein#load_state('~/.local/share/dein')
   " Lazy loading is suggested in plugin readme, but performance benefit is
   " negligible.
 
-  call dein#add('Xuyuanp/scrollbar.nvim')
   call dein#add('wfxr/minimap.vim', #{
         \ if: ( has('nvim-0.5.0') && executable('code-minimap') ),
         \ merged: v:true,
         \ })
-  call dein#add('kyazdani42/nvim-tree.lua')
+  call dein#add('kyazdani42/nvim-tree.lua', #{
+        \ if: has('nvim-0.5.0'),
+        \ depends: 'nvim-web-devicons',
+        \ merged: v:true,
+        \ })
 
   " Denite {{{3
   call dein#add('neoclide/denite-git', #{ depends: 'denite.nvim' })
@@ -355,8 +296,8 @@ if dein#load_state('~/.local/share/dein')
   " Mode-line {{{3
   " I'm considering switching from airline over to something more neovim
   " oriented, or else over to lightline.
-  call dein#add('vim-airline/vim-airline', #{ type__depth: 1 })
-  call dein#add('vim-airline/vim-airline-themes', #{ depends: 'vim-airline', type__depth: 1 })
+  call dein#add('vim-airline/vim-airline', #{ merged: v:false })
+  call dein#add('vim-airline/vim-airline-themes', #{ depends: 'vim-airline' })
 
   " call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
   " Barbar is bugged in problematic ways. At time of writing, filetype icons
@@ -366,9 +307,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Visual helpers {{{3
   call dein#add('IMOKURI/line-number-interval.nvim') " Highlights line numbers
-
-  call dein#add('norcalli/nvim-colorizer.lua')
-  " Highlights colors really quickly.
+  call dein#add('norcalli/nvim-colorizer.lua') " Highlights colors quickly.
 
   call dein#add('meain/vim-package-info', #{ if: has('node'), build: 'npm i' })
   " Shows package information in package.json, cargo.toml, etc.
@@ -376,7 +315,7 @@ if dein#load_state('~/.local/share/dein')
 
   " Signcolumn {{{3
   " call dein#add('airblade/vim-gitgutter')
-  call dein#add('mhinz/vim-signify', #{ type__depth: 1 })
+  call dein#add('mhinz/vim-signify')
 
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', #{ if: has('nvim-0.5.0'), merged: 1 })
@@ -393,9 +332,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('tpope/vim-speeddating')
   call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
   call dein#add('AndrewRadev/splitjoin.vim')
-  call dein#add('junegunn/vim-easy-align')
-  " Align text to certain characters.
-  " Can be loaded lazily, but performance benefit is negligible
+  call dein#add('junegunn/vim-easy-align') " Align text to certain characters.
 
   call dein#add('meain/vim-colorswitch', #{
         \ if: ( has('python3') && py3eval('has_module("colour")') ),
@@ -408,7 +345,6 @@ if dein#load_state('~/.local/share/dein')
   call dein#save_state()
 endif
 
-filetype plugin indent on
 syn enable
 
 
@@ -428,7 +364,7 @@ aug END
 
 " Plugin Settings {{{1
 
-let coc_filetype_map = #{ vimwiki: 'markdown' }
+let coc_filetype_map = #{ catalog: 'xml', dtd: 'xml', vimwiki: 'markdown', smil: 'xml', svg: 'xml', xsd: 'xml' }
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*', 'term://.\*']
@@ -450,24 +386,6 @@ let minimap_block_filetypes = [
       \ 'vista_kind',
       \ 'vista_markdown',
       \ ]
-let scrollbar_excluded_filetypes = [
-      \ 'ale-fix-suggest',
-      \ 'ale-preview-selection',
-      \ 'ale-preview',
-      \ 'coc-explorer',
-      \ 'denite',
-      \ 'denite-filter',
-      \ 'fugitive',
-      \ 'nerdtree',
-      \ 'minimap',
-      \ 'list',
-      \ 'LuaTree',
-      \ 'tagbar',
-      \ 'todoist',
-      \ 'vista',
-      \ 'vista_kind',
-      \ 'vista_markdown',
-      \ ]
 let mkdp_filetypes = ['markdown', 'vimwiki']
 let neoinclude#max_processes = py3eval('os.cpu_count()')
 let todoist = #{
@@ -478,6 +396,7 @@ let todoist = #{
       \     error: '  ',
       \   },
       \ }
+let WebDevIconsOS = 'Fedora'
 
 lua require('user.config')
 lua require('colorbuddy').colorscheme('user_colors')
@@ -487,9 +406,17 @@ lua require('colorbuddy').colorscheme('user_colors')
 " Main settings
 let airline_powerline_fonts  = v:true " Airline + Powerline
 let airline_detect_spelllang = v:false " Cleans up stuff a little
+let airline_detect_crypt     = v:false " Unavailable in neovim
 " let airline_inactive_collapse = 1
 let airline_skip_empty_sections = 1
+
+let airline_symbols = get(g:, 'airline_symbols', {})
+let airline_symbols['dirty'] = ' ' " Show an icon that's at least sorta correct
+
+let airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
+
 let airline#extensions#tabline#enabled = 1
+
 let airline_filetype_overrides = #{
       \ LuaTree: ['LuaTree', ''],
       \ minimap: ['Map', ''],
@@ -509,9 +436,9 @@ let ale_disable_lsp = v:true
 let ale_linters_ignore = #{
       \ asciidoc:   ['alex', 'languagetool', 'writegood'],
       \ bats:       ['shellcheck'],
-      \ c:          ['cpplint'],
+      \ c:          ['cc', 'clangtidy', 'cpplint'],
       \ cmake:      ['cmakelint'],
-      \ cpp:        ['cpplint'],
+      \ cpp:        ['cc', 'clangtidy', 'cpplint'],
       \ css:        ['stylelint'],
       \ dockerfile: ['hadolint'],
       \ elixir:     ['credo'],
@@ -521,7 +448,7 @@ let ale_linters_ignore = #{
       \ graphql:    ['eslint'],
       \ help:       ['alex', 'writegood'],
       \ html:       ['tidy', 'writegood'],
-      \ javascript: ['eslint', 'flow', 'standard'],
+      \ javascript: ['eslint', 'jshint', 'flow', 'standard', 'xo'],
       \ json:       ['jsonlint'],
       \ jsonc:      ['jsonlint'],
       \ less:       ['stylelint'],
@@ -529,6 +456,8 @@ let ale_linters_ignore = #{
       \ mail:       ['alex', 'languagetool'],
       \ markdown:   ['languagetool', 'markdownlint', 'writegood'],
       \ nroff:      ['alex', 'writegood'],
+      \ objc:       ['clang'],
+      \ objcpp:     ['clang'],
       \ php:        ['phpcs', 'phpstan'],
       \ po:         ['alex', 'writegood'],
       \ pod:        ['alex', 'writegood'],
@@ -540,17 +469,26 @@ let ale_linters_ignore = #{
       \ sh:         ['shellcheck'],
       \ stylus:     ['stylelint'],
       \ sugarss:    ['stylelint'],
+      \ teal:       ['tlcheck'],
       \ tex:        ['alex', 'writegood'],
       \ texinfo:    ['alex', 'writegood'],
-      \ text:       ['alex', 'languagetool', 'writegood'],
-      \ typescript: ['eslint', 'standard', 'tslint'],
+      \ typescript: ['eslint', 'standard', 'tslint', 'xo'],
       \ vim:        ['vint'],
       \ vimwiki:    ['alex', 'languagetool', 'markdownlint', 'writegood'],
+      \ vue:        ['eslint'],
       \ xhtml:      ['alex', 'writegood'],
+      \ xsd:        ['xmllint'],
       \ xml:        ['xmllint'],
+      \ xslt:       ['xmllint'],
       \ yaml:       ['yamllint'],
+      \ zsh:        ['shell'],
       \ }
-" go - golangci-lint, revive disabled by default
+
+" Aliases
+call extend(ale_linters_ignore, #{
+      \ Dockerfile: ale_linters_ignore['dockerfile'],
+      \ plaintex: ale_linters_ignore['tex'],
+      \ })
 
 let ale_fixers = #{
       \ cpp: ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
@@ -558,7 +496,6 @@ let ale_fixers = #{
       \   'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \ ],
       \ html: ['tidy', 'remove_trailing_lines', 'trim_whitespace'],
-      \ less: ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
       \ python: [
       \   'add_blank_lines_for_python_control_statements',
       \   'reorder-python-imports',
@@ -566,12 +503,12 @@ let ale_fixers = #{
       \   'trim_whitespace',
       \ ],
       \ rust: ['rustfmt', 'remove_trailing_lines', 'trim_whitespace'],
-      \ scss: ['prettier', 'remove_trailing_lines', 'trim_whitespace'],
       \ sql: ['sql-format', 'remove_trailing_lines', 'trim_whitespace'],
       \ xml: ['xmllint'],
       \ }
 let ale_fixers['*'] = ['remove_trailing_lines', 'trim_whitespace']
 " sh - shfmt moved to diagnostic-ls
+" less, scss - prettier moved to coc
 
 let ale_linter_aliases = #{ jsonc: 'json' }
 
@@ -644,7 +581,7 @@ let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-nnor <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
+nnor <silent> <leader>h :call CocActionAsync('doHover')<cr>
 
 xmap ga <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -706,6 +643,7 @@ aug init
   au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   " Clean up Coc floating windows
   au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
+  au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au VimEnter * ++once call dein#call_hook('post_source')
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif

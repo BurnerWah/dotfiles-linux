@@ -17,14 +17,13 @@
       "initializationOptions": { "buildDirectory": "build" }
     },
     "dotls": {
-      "command": "dot-language-server",
-      "args": ["--stdio"],
+      "module": "~/.local/lib/node_modules/dot-language-server/bin/server.js",
+      "args": ["--node-ipc"],
       "filetypes": ["dot"]
     },
     "efm": {
-      // Unfortunately, efm gets stuck with a somewhat useless name.
       "command": "efm-langserver",
-      "filetypes": ["eruby", "gitcommit", "make"]
+      "filetypes": ["eruby", "make", "zsh"]
     },
     "fortls": {
       "command": "fortls",
@@ -38,6 +37,34 @@
       "disableWorkspaceFolders": true,
       "initializationOptions": { "usePlaceholders": true }
     },
+    "pyls": {
+      "command": "pyls",
+      "filetypes": ["python"],
+      "settings": {
+        "pyls": {
+          "configurationSources": ["pyflakes", "pycodestyle"],
+          "plugins": {
+            "jedi_completion": { "enabled": true },
+            "jedi_hover": { "enabled": true },
+            "jedi_references": { "enabled": true },
+            "jedi_signature_help": { "enabled": true },
+            "jedi_symbols": { "enabled": true, "all_scopes": true },
+            "mccabe": { "enabled": true, "threshold": 15 },
+            "preload": { "enabled": true },
+            "pycodestyle": { "enabled": true },
+            "pydocstyle": { "enabled": false },
+            "pyflakes": { "enabled": false },
+            "rope_completion": { "enabled": true },
+            "yapf": { "enabled": true }
+          }
+        }
+      }
+    },
+    "sqlls": {
+      "module": "~/.local/lib/node_modules/sql-language-server/npm_bin/cli.js",
+      "args": ["up"],
+      "filetypes": ["sql"]
+    },
     "sumneko_lua": { "command": "lua-language-server", "filetypes": ["lua"] }
     // "lua": { "command": "lua-lsp", "filetypes": ["lua"] }
   },
@@ -48,25 +75,22 @@
     "html",
     "javascript",
     "json",
+    "less",
+    "scss",
     "sh",
     "typescript",
     "yaml"
   ],
   "coc.preferences.hoverTarget": "float",
+  "codeLens.enable": true,
   "diagnostic.filetypeMap": { "markdown": "vimwiki" },
   "diagnostic-languageserver.linters": {
-    /*
-     * checkmake just generally doesn't work. It's unclear why.
-     *
-     * bash/zsh have errors that end up after the file so they're left to ALE.
-     */
     "alex": {
       "sourceName": "alex",
       "command": "alex",
       "args": ["--", "%file"],
       "isStdout": false,
       "isStderr": true,
-      "formatLines": 1,
       "formatPattern": [
         "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
         { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
@@ -79,7 +103,6 @@
       "args": ["--text", "--", "%file"],
       "isStdout": false,
       "isStderr": true,
-      "formatLines": 1,
       "formatPattern": [
         "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
         { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
@@ -92,7 +115,6 @@
       "args": ["--html", "--", "%file"],
       "isStdout": false,
       "isStderr": true,
-      "formatLines": 1,
       "formatPattern": [
         "^ *(\\d+):(\\d+)-(\\d+):(\\d+) +warning +(.+?)  +(.+?)  +(.+)$",
         { "line": 1, "column": 2, "endLine": 3, "endColumn": 4, "message": 5 }
@@ -103,21 +125,17 @@
       "sourceName": "cmakelint",
       "command": "cmakelint",
       "args": ["%file"],
-      "isStdout": true,
-      "isStderr": false,
-      "offsetColumn": -1, // This limits messages to one line
-      "formatLines": 1,
+      "offsetColumn": -1,
       "formatPattern": ["^.+?:(\\d+): (.*)$", { "line": 1, "message": [2] }],
       "securities": { "undefined": "warning" }
     },
     "fish": {
       "sourceName": "fish",
       "command": "fish",
-      "args": ["-n", "%tempfile"], // using %tempfile lets us lint w/o saving the file
+      "args": ["-n", "%file"],
       "isStdout": false,
       "isStderr": true,
-      "offsetColumn": -1, // This limits messages to one line
-      "formatLines": 1,
+      "offsetColumn": -1,
       "formatPattern": [
         "^.*\\(line (\\d+)\\): (.*)$",
         { "line": 1, "message": 2 }
@@ -127,12 +145,12 @@
       // This has a weird issue where some lines just don't show up
       "sourceName": "gitlint",
       "command": "gitlint",
-      "args": ["lint"],
+      "args": ["--msg-filename", "%tempfile"],
       "isStdout": false,
       "isStderr": true,
-      "offsetColumn": -1, // This limits messages to one line
-      "formatLines": 1,
-      "formatPattern": ["^(\\d+): (.*)$", { "line": 1, "message": [2] }]
+      "offsetColumn": -1,
+      "formatPattern": ["^(\\d+): (.*)$", { "line": 1, "message": 2 }],
+      "securities": { "undefined": "warning" }
     },
     "jshint": {
       "sourceName": "jshint",
@@ -146,12 +164,11 @@
         "%filepath",
         "-"
       ],
-      "formatLines": 1,
       "formatPattern": [
         "^[^:]+:(\\d+):(\\d+): (.+)$",
         { "line": 1, "column": 2, "message": [3] }
       ],
-      "securities": { "undefined": "warning" }
+      "securities": { "undefined": "hint" }
     },
     "jsonlint": {
       "sourceName": "jsonlint",
@@ -159,7 +176,6 @@
       "args": ["--compact", "-"],
       "isStdout": false,
       "isStderr": true,
-      "formatLines": 1,
       "formatPattern": [
         "^line (\\d+), col (\\d+), (.*)$",
         { "line": 1, "column": 2, "message": [3] }
@@ -169,9 +185,6 @@
       "sourceName": "luacheck",
       "command": "luacheck",
       "args": ["--formatter", "plain", "--codes", "--ranges", "-", "-g", "-u"],
-      "isStdout": true,
-      "isStderr": false,
-      "formatLines": 1,
       "formatPattern": [
         "^.+?:(\\d+):(\\d+)-(\\d+): (\\(([WE])\\d+\\) .*)$",
         {
@@ -184,14 +197,51 @@
       ],
       "securities": { "W": "warning", "error": "E" }
     },
+    "mypy": {
+      "sourceName": "mypy",
+      "command": "mypy",
+      "args": [
+        "--no-color-output",
+        "--no-error-summary",
+        "--show-column-numbers",
+        "--follow-imports=silent",
+        "--ignore-missing-imports",
+        "%file"
+      ],
+      "formatPattern": [
+        "^.*:(\\d+?):(\\d+?): ([a-z]+?): (.*)$",
+        { "line": 1, "column": 2, "security": 3, "message": 4 }
+      ],
+      "securities": { "error": "error", "note": "hint" }
+    },
+    "pylint": {
+      "sourceName": "pylint",
+      "command": "pylint",
+      "args": ["--output-format", "json", "--score", "no", "%file"],
+      "parseJson": {
+        "line": "line",
+        "column": "column",
+        "security": "type",
+        "message": "${message} (${message-id}:${symbol})"
+      },
+      "rootPatterns": [".git", "pyproject.toml", "setup.py"],
+      "securities": {
+        "informational": "hint",
+        "refactor": "info",
+        "convention": "info",
+        "warning": "warning",
+        "error": "error",
+        "fatal": "error"
+      },
+      "offsetColumn": 1
+    },
     "rstcheck": {
       "sourceName": "rstcheck",
       "command": "rstcheck",
       "args": ["-"],
       "isStdout": false,
       "isStderr": true,
-      "offsetColumn": -1, // This limits messages to one line
-      "formatLines": 1,
+      "offsetColumn": -1,
       "formatPattern": [
         "^[^:]+:(\\d+): \\(.+?/(\\d)\\) (.*)$",
         { "line": 1, "security": 2, "message": [3] }
@@ -202,7 +252,7 @@
       "sourceName": "rst-lint",
       "command": "rst-lint",
       "args": ["--format", "json", "%file"],
-      "offsetColumn": -1, // This limits messages to one line
+      "offsetColumn": -1,
       "parseJson": {
         "line": "line",
         "security": "level",
@@ -210,19 +260,44 @@
       },
       "securities": { "1": "info", "2": "warning", "3": "error", "4": "error" }
     },
+    "tlcheck": {
+      "sourceName": "tlcheck",
+      "command": "tl",
+      "args": ["check", "%file"],
+      "isStderr": true,
+      "formatPattern": [
+        "^[^:]+:(\\d+):(\\d+): (.*)$",
+        { "line": 1, "column": 2, "message": 3 }
+      ]
+    },
     "vint": {
       "sourceName": "vint",
       "command": "vint",
-      "args": ["--enable-neovim", "--json", "-"],
+      "args": ["--enable-neovim", "--json", "--style-problem", "-"],
       "debounce": 100,
-      "offsetLine": 0,
-      "offsetColumn": 0,
       "parseJson": {
         "line": "line_number",
         "column": "column_number",
         "security": "severity",
         "message": "${description} [${policy_name}]"
+      },
+      "securities": {
+        "warning": "warning",
+        "error": "error",
+        "style_problem": "hint"
       }
+    },
+    "write-good": {
+      "command": "write-good",
+      "debounce": 100,
+      "args": ["%tempfile"],
+      "offsetColumn": 1,
+      "sourceName": "write-good",
+      "formatPattern": [
+        "(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$",
+        { "line": 2, "column": 3, "message": 1 }
+      ],
+      "securities": { "undefined": "hint" }
     },
     "xmllint": {
       "sourceName": "xmllint",
@@ -237,104 +312,136 @@
       ],
       "securities": { "warning": "warning" }
     },
-    "write-good": {
-      "command": "write-good",
+    "xo": {
+      "sourceName": "xo",
+      "command": "xo",
+      "rootPatterns": ["package.json", ".git"],
       "debounce": 100,
-      "args": ["%tempfile"],
-      "offsetLine": 0,
-      "offsetColumn": 1,
-      "sourceName": "write-good",
-      "formatLines": 1,
-      "formatPattern": [
-        "(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$",
-        { "line": 2, "column": 3, "message": 1 }
+      "args": [
+        "--reporter",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "%filepath"
       ],
-      "securities": { "undefined": "hint" }
+      "parseJson": {
+        "errorsRoot": "[0].messages",
+        "line": "line",
+        "column": "column",
+        "endLine": "endLine",
+        "endColumn": "endColumn",
+        "message": "[xo] ${message} [${ruleId}]",
+        "security": "severity"
+      },
+      "securities": { "2": "error", "1": "warning" }
+    },
+    "zsh": {
+      "sourceName": "zsh",
+      "command": "linter_run_zsh.sh",
+      "args": ["%tempfile"],
+      "offsetColumn": -1,
+      "formatPattern": ["^[^:]+:(\\d+): (.*)$", { "line": 1, "message": [2] }]
     }
   },
   "diagnostic-languageserver.filetypes": {
     "asciidoc": ["alex_text", "languagetool", "write-good"],
     "bats": "shellcheck",
-    "c": "cpplint",
     "cmake": "cmakelint",
-    "cpp": "cpplint",
     "css": "stylelint",
     "dockerfile": "hadolint",
     "Dockerfile": "hadolint",
     "elixir": "mix_credo",
     "fish": "fish",
     "gitcommit": "gitlint",
-    // go - golangci-lint, revive disabled by default
     "graphql": "eslint",
-    // haskell - hlint not available in coc-diagnostic
-    // help - all linters disabled by default
     "html": ["alex_html", "tidy", "write-good"],
-    "javascript": ["eslint", "jshint", "standard"],
+    "javascript": ["eslint", "jshint", "standard", "xo"],
     "json": ["jsonlint"],
     "less": "stylelint",
     "lua": "luacheck",
     "mail": ["alex_text", "languagetool"],
     "markdown": ["alex", "languagetool", "write-good"],
     "nroff": ["alex_text", "write-good"],
-    "php": ["phpcs", "phpstan"], // psalm can be a language server
+    "python": ["mypy", "pylint"],
+    "php": ["phpcs", "phpstan"],
     "po": ["alex", "write-good"],
     "pod": ["alex", "write-good"],
-    // python - pylint, mypy not available in coc-diagnostic
     "rst": ["alex_text", "rstcheck", "rst-lint", "write-good"],
     "sass": "stylelint",
     "scss": "stylelint",
     "sh": "shellcheck",
     "stylus": "stylelint",
     "sugarss": "stylelint",
+    "teal": "tlcheck",
     "tex": ["alex_text", "write-good"],
     "texinfo": ["alex_text", "write-good"],
-    "text": "languagetool", // ALE only turns on languagetool by default
-    "typescript": ["eslint", "standard"],
-    "vim": "vint",
+    "typescript": ["eslint", "standard", "xo"],
     "vimwiki": ["alex_text", "languagetool", "write-good"],
+    "vue": ["eslint"],
     "xhtml": ["alex_text", "write-good"],
     "xml": "xmllint",
-    "yaml": "yamllint"
+    "yaml": "yamllint",
+    "zsh": "zsh"
   },
   "diagnostic-languageserver.formatters": {
-    // shfmt has annoying defaults so we override them
     "shfmt": { "command": "shfmt", "args": ["-i=2", "-ci"] },
-    "cmakeformalt": { "command": "cmake-format" }
+    "cmakeformalt": { "command": "cmake-format" },
+    "isort": { "command": "isort", "args": ["-q", "-"] }
   },
   "diagnostic-languageserver.formatFiletypes": {
-    // fish_indent has issues, don't use it.
     "cmake": "cmakeformat",
     "dart": "dartfmt",
     "elixir": "mix_format",
     "lua": "lua-format",
     "sh": "shfmt"
   },
-  "highlight.colors.enable": false, // We have another plugin set up to handle this
+  "highlight.colors.enable": false,
   "highlight.disableLanguages": ["markdown"],
   "highlight.colorNames.enable": false,
+  "jedi.markupKindPreferred": "markdown",
+  "jedi.startupMessage": false,
   "json.schemas": [
     {
       "fileMatch": ["*.ipynb"],
       "url": "https://github.com/jupyter/nbformat/raw/master/nbformat/v4/nbformat.v4.schema.json"
     }
   ],
-  "list.source.tags.command": "ptags", // ptags is faster than ctags but only works in git repos
   "prettier.semi": false,
   "prettier.singleQuote": true,
-  "python.jediEnabled": false, // enable Microsoft Python LS
+  "python.formatting.provider": "yapf",
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true,
   "session.directory": "~/.local/share/nvim/sessions",
   "signature.target": "float",
   "suggest.labelMaxLength": 100,
-  "vimlsp.suggest.fromRuntimepath": true, // vimlsp runs quickly enough for this to work fine I guess
-  "xml.catalogs": ["/etc/xml/catalog"],
-  "xml.java.home": "/usr/lib/jvm/jre", // Needs to point to a JRE
+  "tabnine.disable_filetypes": ["rst", "markdown", "vimwiki"],
+  "vimlsp.suggest.fromRuntimepath": true,
+  "xml.catalogs": [
+    "/etc/xml/catalog",
+    "/home/jadenpleasants/.config/xml/catalog.xml"
+  ],
+  "xml.codeLens.enabled": true,
+  "xml.fileAssociations": [
+    {
+      "pattern": "**/*.aiml",
+      "systemId": "https://github.com/dotcypress/aiml/raw/master/AIML.xsd"
+    },
+    { "pattern": "**/*.doap", "systemId": "http://usefulinc.com/ns/doap" },
+    {
+      "pattern": "**/*.smil",
+      "systemId": "https://www.w3.org/2008/SMIL30/SMIL30Language.dtd"
+    },
+    {
+      "pattern": "**/*.svg",
+      "systemId": "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+    }
+  ],
+  "xml.java.home": "/usr/lib/jvm/jre",
   "xml.server.workDir": "~/.cache/lsp4xml", // By default places random shit in home folder
   "yaml.format.enable": true,
   "yaml.format.singleQuote": true,
   "yaml.schemas": {
-    "https://github.com/mattn/efm-langserver/raw/master/schema.json": "/.config/efm-langserver/config.yaml"
+    "https://github.com/mattn/efm-langserver/raw/master/schema.json": "/efm-langserver/config.yaml"
   }
   // vim:ft=jsonc
 }

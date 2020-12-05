@@ -15,11 +15,11 @@ function Terminal(nr, ...)
     -- change to that buffer
     vim.api.nvim_set_current_buf(buf)
     -- create a terinal in the new buffer using my favorite shell
-    vim.api.nvim_call_function("termopen", {"fish"})
+    vim.api.nvim_call_function('termopen', {'fish'})
     -- save a reference to that buffer
     list_of_terms[nr] = buf
   end
-  vim.api.nvim_command(":setlocal nospell")
+  vim.api.nvim_command(':setlocal nospell')
   -- change to insert mode
-  vim.api.nvim_command(":startinsert")
+  vim.api.nvim_command(':startinsert')
 end
