@@ -32,6 +32,7 @@ aug userft
   "
   " Skipped Globs:
   " *.commitlintrc - No documentation, likely unsupported.
+  " *.huskyrc - Weird
 
   " Functions {{{1
   " This is copied from nvim runtime
@@ -42,16 +43,19 @@ aug userft
   endfunc
 
   " Alsa config {{{1
-  au BufNewFile,BufRead */etc/alsa/*.conf setf alsaconf
+  au BufNewFile,BufRead */etc/alsa/*.conf               setf alsaconf
   au BufNewFile,BufRead */share/alsa/alsa.conf.d/*.conf setf alsaconf
 
   " Crontab {{{1
   au BufNewFile,BufRead anacrontab setf crontab
 
   " Desktop files {{{1
-  au BufNewFile,BufRead */flatpak/app/*/*/*/metadata setf desktop
-  au BufNewFile,BufRead */flatpak/overrides/* setf desktop
-  au BufNewFile,BufRead mimeapps.list setf desktop
+  au BufNewFile,BufRead */dbus-1/*.service       setf desktop " DBus service
+  au BufNewFile,BufRead */flatpak/app/*/metadata setf desktop " Flatpak metadata
+  au BufNewFile,BufRead */flatpak/overrides/*    setf desktop " Fkatpak override
+  au BufNewFile,BufRead index.theme              setf desktop " Icon theme index
+  au BufNewFile,BufRead mimeapps.list            setf desktop " XDG Default Applications
+  au BufNewFile,BufRead mimeinfo.cache           setf desktop " XDG Mime cache
 
   " DirColors {{{1
   au BufNewFile,BufRead */etc/DIR_COLORS.* call s:StarSetf('crontab')
@@ -64,55 +68,51 @@ aug userft
   au BufNewFile,BufRead gdbinit setf gdb
   au BufNewFile,BufRead *.gdb   setf gdb
 
-  " Go {{{1
-  au BufNewFile,BufRead go.mod setf gomod
-
   " JSON {{{1
-  au BufNewFile,BufRead *.arcconfig,*.arclint setf json
-  au BufNewFile,BufRead *.avsc setf json " Hopefully this is fune
-  au BufNewFile,BufRead *.bowerrc setf json " Docs make it look like this is fine
-  au BufNewFile,BufRead *.csslintrc setf json " Can't find docs
-  au BufNewFile,BufRead *.htmlhintrc setf json " Can't find docs
-  au BufNewFile,BufRead *.jscsrc setf json " Schemastore only has this and .json
-  au BufNewFile,BufRead *.jsinspectrc setf json " Could be wrong
-  au BufNewFile,BufRead *.jsonld setf json " This has to be fine
-  au BufNewFile,BufRead *.luacompleterc setf json
-  au BufNewFile,BufRead *.modernizrrc setf json " Could be wrong
-  au BufNewFile,BufRead *.npmpackagejsonlintrc setf json " Docs don't really mention this
+  au BufNewFile,BufRead *.arcconfig,*.arclint     setf json
+  au BufNewFile,BufRead *.avsc                    setf json " Avro Schema
+  au BufNewFile,BufRead *.bowerrc                 setf json " Bower config
+  au BufNewFile,BufRead *.csslintrc               setf json " CSS Lint config
+  au BufNewFile,BufRead *.htmlhintrc              setf json " HTML Hint config
+  au BufNewFile,BufRead *.jscsrc                  setf json " JSCS config
+  au BufNewFile,BufRead *.jsinspectrc             setf json " JSInspect config
+  au BufNewFile,BufRead *.jsonld                  setf json " JSON Linked Data
+  au BufNewFile,BufRead *.luacompleterc           setf json
+  au BufNewFile,BufRead *.modernizrrc             setf json " Webpack modernizr-loader config
+  au BufNewFile,BufRead *.npmpackagejsonlintrc    setf json " npm-package-json-lint config
   au BufNewFile,BufRead *.proselintrc,proselintrc setf json
-  au BufNewFile,BufRead *.resjson setf json
-  au BufNewFile,BufRead *.tcelldb setf json
-
+  au BufNewFile,BufRead *.resjson                 setf json " Windows App localization
+  au BufNewFile,BufRead *.tcelldb                 setf json
 
   " JSON w/ comments {{{1
-  au BufNewFile,BufRead */.vscode/*.json  let b:is_jsonc = 1
-  au BufNewFile,BufRead .eslintrc.json    let b:is_jsonc = 1
-  au BufNewFile,BufRead coc-settings.json let b:is_jsonc = 1
-  au BufNewFile,BufRead coffeelint.json   let b:is_jsonc = 1
-  au BufNewFile,BufRead jsconfig.json     let b:is_jsonc = 1
-  au BufNewFile,BufRead tsconfig.json     let b:is_jsonc = 1
+  au BufNewFile,BufRead .babelrc.json,babel.config.json let b:is_jsonc = 1 " Babel config
+
+  au BufNewFile,BufRead */.vscode/*.json  let b:is_jsonc = 1 " VSCode settings
+  au BufNewFile,BufRead .eslintrc.json    let b:is_jsonc = 1 " ESLint config
+  au BufNewFile,BufRead coc-settings.json let b:is_jsonc = 1 " Coc.nvim settings
+  au BufNewFile,BufRead coffeelint.json   let b:is_jsonc = 1 " Coffeelint config
+  au BufNewFile,BufRead jsconfig.json     let b:is_jsonc = 1 " JS project config
+  au BufNewFile,BufRead tsconfig.json     let b:is_jsonc = 1 " TS project config
 
   au BufNewFile,BufRead *.babelrc       let [&filetype, b:is_jsonc] = ['json', 1] " Alias for .babelrc.json
-  au BufNewFile,BufRead *.jsbeautifyrc  let [&filetype, b:is_jsonc] = ['json', 1] " Example I found had comments
-  au BufNewFile,BufRead *.jshintrc      let [&filetype, b:is_jsonc] = ['json', 1]
+  au BufNewFile,BufRead *.jsbeautifyrc  let [&filetype, b:is_jsonc] = ['json', 1] " js-beautify config, example had comments
+  au BufNewFile,BufRead *.jshintrc      let [&filetype, b:is_jsonc] = ['json', 1] " JSHint config
   au BufNewFile,BufRead *.jslintrc      let [&filetype, b:is_jsonc] = ['json', 1]
   au BufNewFile,BufRead *.jsonc,*.cjson let [&filetype, b:is_jsonc] = ['json', 1]
-  au BufNewFile,BufRead */waybar/config let [&filetype, b:is_jsonc] = ['json', 1]
+  au BufNewFile,BufRead */waybar/config let [&filetype, b:is_jsonc] = ['json', 1] " Waybar config
 
   " Lisp {{{1
   au BufNewFile,BufRead *.xlisp setf lisp
 
   " Lua {{{1
-  au BufNewFile,BufRead *.luacheckrc setf lua
+  au BufNewFile,BufRead *.luacheckrc setf lua " Luacheck config
 
   " ManDB Config {{{1
   au BufNewFile,BufRead man_db.conf setf manconf
+  au BufNewFile,BufRead .manpath    setf manconf " User manpath
 
   " Registry {{{1
   " au BufNewFile,BufRead *.reg setf registry " FIXME this is dumb. Don't do this.
-
-  " Shell {{{1
-  au BufNewFile,BufRead *.huskyrc call dist#ft#SetFileTypeSH('bash') " Husky is weird.
 
   " Snippets {{{1
   au BufNewFile,BufRead *.snippets setf snippets
@@ -124,13 +124,13 @@ aug userft
   au BufNewFile,BufRead virc setf vim
 
   " XML {{{1
-  au BufNewFile,BufRead *.aiml setf xml
-  au BufNewFile,BufRead *.doap setf xml
-  au BufNewFile,BufRead *.lzx setf xml
-  au BufNewFile,BufRead *.natvis setf xml
-  au BufNewFile,BufRead *.posxml setf xml
-  au BufNewFile,BufRead *.tmLanguage setf xml
-  au BufNewFile,BufRead */etc/dbus-1/*.conf setf xml
+  au BufNewFile,BufRead *.aiml          setf xml " Artificial Intelligence Markup Language
+  au BufNewFile,BufRead *.doap          setf xml " Description of a project
+  au BufNewFile,BufRead *.lzx           setf xml " OpenLaszlo
+  au BufNewFile,BufRead *.natvis        setf xml
+  au BufNewFile,BufRead *.posxml        setf xml " Posxml
+  au BufNewFile,BufRead *.tmLanguage    setf xml " Textmate language
+  au BufNewFile,BufRead */dbus-1/*.conf setf xml " DBus config
 
   " YAML {{{1
   au BufNewFile,BufRead *.bootstraprc    setf yaml " As far as I can tell this is YAML
