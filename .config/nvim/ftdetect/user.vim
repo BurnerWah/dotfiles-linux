@@ -1,4 +1,5 @@
 aug userft
+  " Notes {{{1
   " Missing Globs:
   " *.prettierrc - JSON or YAML
   " *.graphqlrc - JSON or YAML
@@ -32,6 +33,7 @@ aug userft
   " Skipped Globs:
   " *.commitlintrc - No documentation, likely unsupported.
 
+  " Functions {{{1
   " This is copied from nvim runtime
   func! s:StarSetf(ft)
     if expand("<amatch>") !~ g:ft_ignore_pat
@@ -39,33 +41,33 @@ aug userft
     endif
   endfunc
 
-  " Alsa config
+  " Alsa config {{{1
   au BufNewFile,BufRead */etc/alsa/*.conf setf alsaconf
   au BufNewFile,BufRead */share/alsa/alsa.conf.d/*.conf setf alsaconf
 
-  " Crontab
+  " Crontab {{{1
   au BufNewFile,BufRead anacrontab setf crontab
 
-  " Desktop files
+  " Desktop files {{{1
   au BufNewFile,BufRead */flatpak/app/*/*/*/metadata setf desktop
   au BufNewFile,BufRead */flatpak/overrides/* setf desktop
   au BufNewFile,BufRead mimeapps.list setf desktop
 
-  " DirColors
+  " DirColors {{{1
   au BufNewFile,BufRead */etc/DIR_COLORS.* call s:StarSetf('crontab')
 
-  " DosINI
+  " DosINI {{{1
   au BufNewFile,BufRead *.coveragerc setf dosini
   au BufNewFile,BufRead */tmp/*.repo setf dosini " YUM repos in sudoedit
 
-  " GDBInit
+  " GDBInit {{{1
   au BufNewFile,BufRead gdbinit setf gdb
-  au BufNewFile,BufRead *.gdb setf gdb
+  au BufNewFile,BufRead *.gdb   setf gdb
 
-  " Go
+  " Go {{{1
   au BufNewFile,BufRead go.mod setf gomod
 
-  " JSON
+  " JSON {{{1
   au BufNewFile,BufRead *.arcconfig,*.arclint setf json
   au BufNewFile,BufRead *.avsc setf json " Hopefully this is fune
   au BufNewFile,BufRead *.bowerrc setf json " Docs make it look like this is fine
@@ -82,7 +84,7 @@ aug userft
   au BufNewFile,BufRead *.tcelldb setf json
 
 
-  " JSON w/ comments
+  " JSON w/ comments {{{1
   au BufNewFile,BufRead */.vscode/*.json  let b:is_jsonc = 1
   au BufNewFile,BufRead .eslintrc.json    let b:is_jsonc = 1
   au BufNewFile,BufRead coc-settings.json let b:is_jsonc = 1
@@ -97,31 +99,31 @@ aug userft
   au BufNewFile,BufRead *.jsonc,*.cjson let [&filetype, b:is_jsonc] = ['json', 1]
   au BufNewFile,BufRead */waybar/config let [&filetype, b:is_jsonc] = ['json', 1]
 
-  " Lisp
+  " Lisp {{{1
   au BufNewFile,BufRead *.xlisp setf lisp
 
-  " Lua
+  " Lua {{{1
   au BufNewFile,BufRead *.luacheckrc setf lua
 
-  " ManDB Config
+  " ManDB Config {{{1
   au BufNewFile,BufRead man_db.conf setf manconf
 
-  " Registry
+  " Registry {{{1
   " au BufNewFile,BufRead *.reg setf registry " FIXME this is dumb. Don't do this.
 
-  " Shell
+  " Shell {{{1
   au BufNewFile,BufRead *.huskyrc call dist#ft#SetFileTypeSH('bash') " Husky is weird.
 
-  " Snippets
+  " Snippets {{{1
   au BufNewFile,BufRead *.snippets setf snippets
 
-  " uBlock
+  " uBlock {{{1
   au BufNewFile,BufRead *.ublock.txt setf ublock
 
-  " VimL
+  " VimL {{{1
   au BufNewFile,BufRead virc setf vim
 
-  " XML
+  " XML {{{1
   au BufNewFile,BufRead *.aiml setf xml
   au BufNewFile,BufRead *.doap setf xml
   au BufNewFile,BufRead *.lzx setf xml
@@ -130,17 +132,19 @@ aug userft
   au BufNewFile,BufRead *.tmLanguage setf xml
   au BufNewFile,BufRead */etc/dbus-1/*.conf setf xml
 
-  " YAML
-  au BufNewFile,BufRead *.bootstraprc setf yaml " As far as I can tell this is YAML
+  " YAML {{{1
+  au BufNewFile,BufRead *.bootstraprc    setf yaml " As far as I can tell this is YAML
   au BufNewFile,BufRead *.sublime-syntax setf yaml
 
-  " Zsh
+  " Zsh {{{1
   au BufNewFile,BufRead */share/zsh/*/functions/*    call s:StarSetf('zsh')
   au BufNewFile,BufRead */share/zsh/*/scripts/*      call s:StarSetf('zsh')
   au BufNewFile,BufRead */share/zsh/site-functions/* call s:StarSetf('zsh')
   au BufNewFile,BufRead */.config/zsh/functions/*    call s:StarSetf('zsh')
 
   au BufNewFile,BufRead */share/zsh/history setf zshhist
-  au BufNewFile,BufRead *.zsh_history setf zshhist
+  au BufNewFile,BufRead *.zsh_history       setf zshhist
 
+  " 1}}}
 aug END
+" vim:fdm=marker
