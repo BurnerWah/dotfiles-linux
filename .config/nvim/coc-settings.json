@@ -37,6 +37,10 @@
       "disableWorkspaceFolders": true,
       "initializationOptions": { "usePlaceholders": true }
     },
+    "jedils": {
+      "command": "jedi-language-server",
+      "filetypes": ["python"]
+    },
     "pyls": {
       "command": "pyls",
       "filetypes": ["python"],
@@ -398,8 +402,6 @@
   "highlight.colors.enable": false,
   "highlight.disableLanguages": ["markdown"],
   "highlight.colorNames.enable": false,
-  "jedi.markupKindPreferred": "markdown",
-  "jedi.startupMessage": false,
   "json.schemas": [
     {
       "fileMatch": ["*.ipynb"],
@@ -409,6 +411,7 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "python.formatting.provider": "yapf",
+  "rpc.hideStartupMessage": true,
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true,
   "session.directory": "~/.local/share/nvim/sessions",

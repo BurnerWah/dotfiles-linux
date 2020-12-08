@@ -1,3 +1,5 @@
+setl spell
+
 " This is to fix conflicts with coc
 if str2nr(vimwiki#vars#get_global('key_mappings').table_mappings)
   inor <expr><buffer> <Tab>   pumvisible() ? "\<C-n>" : vimwiki#tbl#kbd_tab()

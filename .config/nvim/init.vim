@@ -30,8 +30,10 @@ set report      =0     " Always report changed lines.
 set synmaxcol   =250   " Only highlight the first 250 columns.
 set mouse       =a     " Mouse support
 set termguicolors      " Truecolor mode
+" Spell is disabled until nvim-treesitter#698 is resolved. It should still be
+" usable on filetypes without treesitter support.
 " set spell              " Enable spell correction
-" set spelllang   =en_us " Set language for spelling
+set spelllang   =en_us " Set language for spelling
 set pumblend    =10    " Slightly transparent menus
 set sessionoptions  =blank,curdir,folds,help,localoptions,tabpages,winpos,winsize
 set updatetime  =300
@@ -324,12 +326,12 @@ if dein#load_state('~/.local/share/dein')
   " include the original theme to get some of the resources from it.
 
   " Text-editing {{{2
-  call dein#add('tpope/vim-abolish')
+  call dein#add('tpope/vim-abolish') " Language friendly searches, substitutions, and abbreviations
   call dein#add('tpope/vim-endwise')
-  call dein#add('tpope/vim-surround')
-  call dein#add('tpope/vim-commentary')
-  call dein#add('tpope/vim-repeat')
-  call dein#add('tpope/vim-speeddating')
+  call dein#add('tpope/vim-surround') " Plugin for deleting, changing, and adding 'surroundings'
+  call dein#add('tpope/vim-commentary') " Comment stuff out
+  call dein#add('tpope/vim-repeat') " Let the repeat command repeat plugin maps
+  call dein#add('tpope/vim-speeddating') " use CTRL-A/CTRL-X to increment dates, times, and more
   call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
   call dein#add('AndrewRadev/splitjoin.vim')
   call dein#add('junegunn/vim-easy-align') " Align text to certain characters.
@@ -364,7 +366,7 @@ aug END
 
 " Plugin Settings {{{1
 
-let coc_filetype_map = #{ catalog: 'xml', dtd: 'xml', vimwiki: 'markdown', smil: 'xml', svg: 'xml', xsd: 'xml' }
+let coc_filetype_map = #{ catalog: 'xml', dtd: 'xml', vimwiki: 'markdown', smil: 'xml', xsd: 'xml' }
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
 let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*', 'term://.\*']
@@ -397,6 +399,7 @@ let todoist = #{
       \   },
       \ }
 let WebDevIconsOS = 'Fedora'
+let abolish_save_file = stdpath('config').'/after/plugin/abolish.vim'
 
 lua require('user.config')
 lua require('colorbuddy').colorscheme('user_colors')
@@ -563,18 +566,32 @@ let vista_executive_for = #{
       \ }
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
 
-" Syntax Settings {{{1
+" Filetype Settings {{{1
 " JSON
 let vim_json_syntax_conceal = v:true  " Enable conceal for json
 
 " Python
 let python_highlight_all = 1
+let no_python_maps = v:true " All maps covered by nvim-treesitter
+
+" Ruby
+" TODO replace maps (there are a lot)
+" let no_ruby_maps = v:true
+
+" SQL
+let omni_sql_no_default_maps = v:true
 
 " Tex
 let tex_flavor = 'latex'
 
 " VimL
+" TODO replace maps?
+"   We'll need a tree-sitter parser or a language server to assist in
+"   replacing maps, which may take a while. A language server is available,
+"   but I don't know how to replace some of the maps; A tree-sitter parser may
+"   never be developed due to how complex VimL is.
 let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
+" let no_vim_maps = v:true
 
 " Keybindings {{{1
 
@@ -620,6 +637,10 @@ xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
 nmap <silent> <C-d> <Plug>(coc-range-select)

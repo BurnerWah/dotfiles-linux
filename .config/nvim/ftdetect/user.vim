@@ -1,4 +1,35 @@
 aug userft
+  " Missing Globs:
+  " *.prettierrc - JSON or YAML
+  " *.graphqlrc - JSON or YAML
+  " *.eslintrc - JSON or YAML; Deprecated
+  "
+  " *.asmdef - Didn't check
+  " *.ckan - Didn't check
+  " *.commitlintrc - Didn't check; Probably JSON
+  " *.creatomic - No idea
+  " *.cryproj - Didn't check
+  " *.har - Didn't check
+  " *.httpmockrc - Didn't check; Probably JSON
+  " *.huskyrc - Didn't check; Probably JSON
+  " *.lintstagedrc - Didn't check; Probably JSON
+  " *.manifest - Didn't check, possibly too generic
+  " *.map - Glob too generic
+  " *.mtaext - Didn't check
+  " *.nodehawkrc - No idea
+  " *.renovaterc - Didn't check
+  " *.rules - Probably too generic
+  " *.solidarity - Didn't check
+  " *.sprite - Didn't check
+  " *.stylelintrc - Didn't check
+  " *.tsdrc - Didn't check
+  " *.typingsrc - Didn't check
+  " *.version - Didn't check; Glob too generic
+  " *.vg - Didn't check; Possibly too generic
+  " *.vl - Didn't check; Possibly too generic
+  " *.vsconfig - Didn't check
+  " *.vsext - Didn't check
+  " */package.manifest - Didn't check
 
   " Alsa config
   au BufNewFile,BufRead */etc/alsa/*.conf setf alsaconf
@@ -11,7 +42,7 @@ aug userft
   au BufNewFile,BufRead */etc/anacrontab setf crontab
 
   " Desktop files
-  au BufNewFile,BufRead /var/lib/flatpak/app/*/*/*/metadata setf desktop
+  au BufNewFile,BufRead */flatpak/app/*/*/*/metadata setf desktop
   au BufNewFile,BufRead */flatpak/overrides/* setf desktop
   au BufNewFile,BufRead */mimeapps.list setf desktop
 
@@ -36,12 +67,25 @@ aug userft
   au BufNewFile,BufRead *.arcconfig,*.arclint setf json
   au BufNewFile,BufRead *.tcelldb setf json
   au BufNewFile,BufRead *.jshintrc setf json
+  au BufNewFile,BufRead *.babelrc setf json " Alias for .babelrc.json
+  au BufNewFile,BufRead *.avsc setf json " Hopefully this is fune
+  au BufNewFile,BufRead *.jscsrc setf json " Schemastore only has this and .json
+  au BufNewFile,BufRead *.resjson setf json
+  au BufNewFile,BufRead *.bowerrc setf json " Docs make it look like this is fine
+  au BufNewFile,BufRead *.csslintrc setf json " Can't find docs
+  au BufNewFile,BufRead *.htmlhintrc setf json " Can't find docs
+  au BufNewFile,BufRead *.jsinspectrc setf json " Could be wrong
+  au BufNewFile,BufRead *.jsonld setf json " This has to be fine
+  au BufNewFile,BufRead *.modernizrrc setf json " Could be wrong
+  au BufNewFile,BufRead *.npmpackagejsonlintrc setf json " Docs don't really mention this
 
   " JSON w/ comments
+  " This doesn't seem to work
   au BufNewFile,BufRead */coc-settings.json setf jsonc
   au BufNewFile,BufRead */tsconfig.json setf jsonc
   au BufNewFile,BufRead */.vscode/*.json setf jsonc
   au BufNewFile,BufRead */waybar/config setf jsonc
+  au BufNewFile,BufRead *.jsbeautifyrc setf jsonc " Example I found had comments
 
   " Lisp
   au BufNewFile,BufRead *.xlisp setf lisp
@@ -76,6 +120,7 @@ aug userft
 
   " YAML
   au BufNewFile,BufRead *.sublime-syntax setf yaml
+  au BufNewFile,BufRead *.bootstraprc setf yaml " As far as I can tell this is YAML
 
   " Zsh
   au BufNewFile,BufRead */share/zsh/*/functions/* setf zsh

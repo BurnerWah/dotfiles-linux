@@ -259,7 +259,32 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
 
+/.android
+/.config/copr
+/.config/gallery-dl
+/.config/ngrok2
+/.config/obs-studio
+/.config/rclone/rclone.conf
+/.config/so
+/.local/share/charm
+/.ngrok2
+
+/.config/dconf
+/.config/gnome-initial-setup-done
 /.config/nvim/spell
 /.config/zsh/.zkbd
+/.local/share/applications/mimeinfo.cache
 
-# vim: ft=zsh
+/.config/TabNine
+!/.config/TabNine/TabNine.toml
+
+/.config/gh
+!/.config/gh/config.yml
+
+/.config/onedrive
+!/.config/onedrive/config
+
+/.local/share/mime
+!/.local/share/mime/packages
+
+# vim:ft=gitignore
