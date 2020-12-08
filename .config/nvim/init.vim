@@ -187,7 +187,6 @@ if dein#load_state('~/.local/share/dein')
   " Other: {{{3
   call dein#add('rhysd/vim-llvm') " Mirror of syntax from llvm repo
   call dein#add('rust-lang/rust.vim') " Official rust syntax
-  call dein#add('ekalinin/Dockerfile.vim')
   call dein#add('elzr/vim-json')
   call dein#add('cespare/vim-toml')
   call dein#add('arrufat/vala.vim')
@@ -196,13 +195,9 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('aklt/plantuml-syntax')
   call dein#add('tikhomirov/vim-glsl')
   call dein#add('udalov/kotlin-vim')
-  " call dein#add('kchmck/vim-coffee-script')
-  " call dein#add('zah/nim.vim')
   call dein#add('jparise/vim-graphql')
   call dein#add('tomlion/vim-solidity')
   call dein#add('evanleck/vim-svelte')
-  " call dein#add('keith/swift.vim', #{ hook_post_source: 'unlet! g:tagbar_type_swift' })
-  " call dein#add('rvesse/vim-sparql')
   call dein#add('YaBoiBurner/requirements.txt.vim') " Fork of raimon49/requirements.txt.vim
   call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
 
