@@ -1,5 +1,9 @@
 setl fdm=syntax
 
+if exists('b:is_jsonc')
+  ru! ftplugin/jsonc.vim
+endif
+
 if exists('did_coc_loaded')
   setl formatexpr=CocAction('formatSelected')
 

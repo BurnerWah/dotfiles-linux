@@ -446,5 +446,4 @@
   "yaml.schemas": {
     "https://github.com/mattn/efm-langserver/raw/master/schema.json": "/efm-langserver/config.yaml"
   }
-  // vim:ft=jsonc
 }
