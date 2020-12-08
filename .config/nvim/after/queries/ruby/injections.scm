@@ -1,2 +1,2 @@
-;; This should be on by default
+; Inject regex
 (regex (string_content) @regex)
