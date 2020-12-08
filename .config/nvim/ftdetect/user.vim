@@ -41,10 +41,7 @@ aug userft
 
   " Alsa config
   au BufNewFile,BufRead */etc/alsa/*.conf setf alsaconf
-  au BufNewFile,BufRead */share/alsa/alsa.conf.d/* call s:StarSetf('alsaconf')
-
-  " Brainfuck
-  au BufNewFile,BufRead *.bf setf brainfuck
+  au BufNewFile,BufRead */share/alsa/alsa.conf.d/*.conf setf alsaconf
 
   " Crontab
   au BufNewFile,BufRead anacrontab setf crontab
@@ -117,9 +114,6 @@ aug userft
 
   " Snippets
   au BufNewFile,BufRead *.snippets setf snippets
-
-  " SSH
-  au BufNewFile,BufRead */etc/ssh/ssh_config.d/* call s:StarSetf('sshconfig')
 
   " uBlock
   au BufNewFile,BufRead *.ublock.txt setf ublock
