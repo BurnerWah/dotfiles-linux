@@ -3,6 +3,10 @@ if [[ "$XDG_CURRENT_DESKTOP" == gnome ]] xrdb -merge ~/.Xdefaults
 
 for element ( "$HOME/bin" "$HOME/.dotnet/tools" ) path[${path[(i)$element]}]=()
 
+if [[ "$options[interactive]" == off ]]; then
+  typeset +x LESSOPEN
+fi
+
 unset HISTCONTROL
 unset HISTSIZE
 # vim:ft=zsh fdm=marker

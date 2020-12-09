@@ -52,7 +52,7 @@ fpath=(
   "$ZDOTDIR/functions/Misc"     # Stuff
   "$ZDOTDIR/functions/Completion" # Custom completions
   "$XDG_DATA_HOME/zsh/site-functions" # not standard but useful with GNU Stow
-  "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/share/zsh/site-functions"
+  # "${HOMEBREW_PREFIX:-$XDG_DATA_HOME/homebrew}/share/zsh/site-functions"
 )
 
 # vim:ft=zsh fdm=marker
