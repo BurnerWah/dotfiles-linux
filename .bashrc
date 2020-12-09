@@ -29,6 +29,13 @@ if type -f exa >/dev/null 2>&1; then
   alias la='ll -a'
 fi
 
+# Variable cleanup
+if type -f fzf >/dev/null 2>&1; then
+  for i in $(printenv | grep _fzf_orig_completion_ | sed -E 's/^(_fzf_orig_completion_[^=]+)(=.*)$/\1/g'); do
+    export -n "${i?}"
+  done
+fi
+
 # toolbox-specific stuff
 if [ -f /run/.containerenv ] && [ -f /run/.toolboxenv ]; then
   # This lets us run toolbox in kitty

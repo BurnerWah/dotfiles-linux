@@ -16,5 +16,7 @@ typeset -H colour
 noglob typeset -Hm _*
 typeset -gHA _ZSH_AUTOSUGGEST_BIND_COUNTS
 
+typeset +x P9K_SSH P9K_TTY
+
 # This one has to be delayed as far as I can tell
 # sched +3 'typeset -H _ZSH_AUTOSUGGEST_BIND_COUNTS'
