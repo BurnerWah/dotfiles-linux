@@ -133,8 +133,8 @@ aug userft
   au BufNewFile,BufRead */dbus-1/*.conf setf xml " DBus config
 
   " YAML {{{1
-  au BufNewFile,BufRead *.bootstraprc    setf yaml " As far as I can tell this is YAML
-  au BufNewFile,BufRead *.sublime-syntax setf yaml
+  au BufNewFile,BufRead *.bootstraprc    setf yaml " Webpack bootstrap-loader config
+  au BufNewFile,BufRead *.sublime-syntax setf yaml " Sublime text syntax definiton
 
   " Zsh {{{1
   au BufNewFile,BufRead */share/zsh/*/functions/*    call s:StarSetf('zsh')
