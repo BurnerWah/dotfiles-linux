@@ -83,4 +83,13 @@ require'nvim-treesitter.configs'.setup {
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
     persist_queries = false, -- Whether the query persists across vim sessions
   },
+  rainbow = {
+    -- Rainbow brackets. We don't want them on a lot of filetypes.
+    enable = true,
+    disable = {
+      'bash', 'c', 'cpp', 'css', 'dart', 'go', 'html', 'java', 'javascript',
+      'kotlin', 'lua', 'nix', 'ocaml', 'python', 'rst', 'ruby', 'rust', 'teal',
+      'typescript', 'verilog', 'ql',
+    },
+  },
 }

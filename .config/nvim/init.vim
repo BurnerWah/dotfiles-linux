@@ -106,6 +106,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('nvim-treesitter/nvim-treesitter-refactor', #{ depends: 'nvim-treesitter' })
   call dein#add('nvim-treesitter/nvim-treesitter-textobjects', #{ depends: 'nvim-treesitter' })
   call dein#add('nvim-treesitter/playground', #{ depends: 'nvim-treesitter' })
+  call dein#add('p00f/nvim-ts-rainbow', #{ depends: 'nvim-treesitter' })
 
   " Language-specific stuff {{{2
   " CXX: {{{3
@@ -202,6 +203,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
 
   call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', #{ if: executable('awk'), merged: 1 })
+  call dein#add('stsewd/sphinx.nvim', #{ if: has('python3') })
+  " Improvements to RST
 
   " Integration: Work with other things {{{2
   call dein#add('romgrk/todoist.nvim', #{ if: has('node'), build: 'npm i' })
