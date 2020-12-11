@@ -565,15 +565,12 @@ let vista_executive_for = #{
 let vista_ctags_cmd = get(g:, 'vista_ctags_cmd', {}) " This isn't set by default
 
 " Filetype Settings {{{1
-" JSON
-let vim_json_syntax_conceal = v:true  " Enable conceal for json
-
 " Python
-let python_highlight_all = 1
 let no_python_maps = v:true " All maps covered by nvim-treesitter
 
 " Ruby
 " TODO replace maps (there are a lot)
+"   This is currently held up by tree-sitter textobjects not supporting ruby
 " let no_ruby_maps = v:true
 
 " SQL
@@ -583,12 +580,12 @@ let omni_sql_no_default_maps = v:true
 let tex_flavor = 'latex'
 
 " VimL
+let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 " TODO replace maps?
 "   We'll need a tree-sitter parser or a language server to assist in
 "   replacing maps, which may take a while. A language server is available,
 "   but I don't know how to replace some of the maps; A tree-sitter parser may
 "   never be developed due to how complex VimL is.
-let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 " let no_vim_maps = v:true
 
 " Keybindings {{{1
