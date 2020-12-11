@@ -281,6 +281,8 @@ zsdoc/data
 /.config/gh
 !/.config/gh/config.yml
 
+/.config/jesseduffield/lazygit/state.yml
+
 /.config/onedrive
 !/.config/onedrive/config
 
