@@ -1,95 +1,95 @@
 [core]
-  editor = nvim
-  pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
-  excludesFile = ~/.config/git/global.gitignore
-  hooksPath = ~/.config/git/hooks
+	editor = nvim
+	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+	excludesFile = ~/.config/git/global.gitignore
+	hooksPath = ~/.config/git/hooks
 [user]
-  # user info
-  name = Jaden Pleasants
-  email = jadenpleasants@fastmail.com
-  signingKey = jadenpleasants@fastmail.com
+	# user info
+	name = Jaden Pleasants
+	email = jadenpleasants@fastmail.com
+	signingKey = jadenpleasants@fastmail.com
 
 [alias]
-  # aliases
-  aliases = config --get-regexp alias
+	# aliases
+	aliases = config --get-regexp alias
 
 [blame]
-  coloring = highlightRecent
+	coloring = highlightRecent
 [commit]
-  gpgSign = true  # sign commits w/ GPG
+	gpgSign = true  # sign commits w/ GPG
 [fetch]
-  parallel = 0
-  # Run a reasonable number of fetch operations at once
+	parallel = 0
+	# Run a reasonable number of fetch operations at once
 [help]
-  format = man
+	format = man
 [index]
-  threads = true  # multi-threaded index
+	threads = true  # multi-threaded index
 [interactive]
-  diffFilter = delta --color-only
+	diffFilter = delta --color-only
 [merge]
-  # controls mergeing
-  # [diff] sometimes falls back to this
-  tool = vimdiff  # use nvim for diff & merge
-  guitool = meld  # use meld for diff & merge in a GUI
+	# controls mergeing
+	# [diff] sometimes falls back to this
+	tool = vimdiff  # use nvim for diff & merge
+	guitool = meld  # use meld for diff & merge in a GUI
 [mergetool]
-  prompt = false
+	prompt = false
 [mergetool "vimdiff"]
-  path = nvim
-  path = vim
+	path = nvim
+	path = vim
 [mergetool "vimdiff2"]
-  path = nvim
-  path = vim
+	path = nvim
+	path = vim
 [mergetool "vimdiff3"]
-  path = nvim
-  path = vim
+	path = nvim
+	path = vim
 [mergetool "meld"]
-  path = org.gnome.meld # Flatpak support?
-  path = meld # fallback to normal install
+	path = org.gnome.meld # Flatpak support?
+	path = meld # fallback to normal install
 [pack]
-  threads = 0 # multi-threaded packing
+	threads = 0 # multi-threaded packing
 [submodule]
-  fetchJobs = 0 # clone a reasonable number of submodules at once
+	fetchJobs = 0 # clone a reasonable number of submodules at once
 [web]
-  browser = xdg-open  # use default browser
+	browser = xdg-open  # use default browser
 
 [color]
-  ui = true
+	ui = true
 [color "branch"]
-  # $ git branch
-  current = yellow reverse
-  local = yellow
-  remote = green
+	# $ git branch
+	current = yellow reverse
+	local = yellow
+	remote = green
 [color "diff"]
-  # $ git diff
-  meta = 11
-  frag = magenta bold
-  old = red bold
-  new = green bold
-  commit = yellow bold
-  whitespace = red reverse
+	# $ git diff
+	meta = 11
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	commit = yellow bold
+	whitespace = red reverse
 [color "status"]
-  # $ git status
-  added = yellow
-  changed = green
-  untracked = cyan
+	# $ git status
+	added = yellow
+	changed = green
+	untracked = cyan
 
 [advice]
-  # provide help to new git users
-  pushUpdateRejected = true
-  pushUnqualifiedRefname = true
-  statusHints = true
-  statusUoption = true
-  resetQuiet = true
-  resolveConflict = true
-  implicitIdentity = true
-  detachedHead = true
-  checkoutAmbiguousRemoteBranceName = true
-  amWorkDir = true
-  rmHints = true
-  addEmbeddedRepo = true
-  ignoredHook = true
-  waitingForEditor = true
+	# provide help to new git users
+	pushUpdateRejected = true
+	pushUnqualifiedRefname = true
+	statusHints = true
+	statusUoption = true
+	resetQuiet = true
+	resolveConflict = true
+	implicitIdentity = true
+	detachedHead = true
+	checkoutAmbiguousRemoteBranceName = true
+	amWorkDir = true
+	rmHints = true
+	addEmbeddedRepo = true
+	ignoredHook = true
+	waitingForEditor = true
 
 [delta]
-  side-by-side = true
-# vim:ft=gitconfig
+	side-by-side = true
+# vim:ft=gitconfig noexpandtab tabstop=2
