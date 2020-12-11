@@ -1,7 +1,7 @@
 [core]
 	editor = nvim
 	pager = delta
-	excludesFile = ~/.config/git/global.gitignore
+	# excludesFile = ~/.config/git/global.gitignore
 	hooksPath = ~/.config/git/hooks
 [user]
 	# user info
@@ -24,6 +24,8 @@
 	format = man
 [index]
 	threads = true  # multi-threaded index
+[init]
+	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only
 [merge]
@@ -97,5 +99,3 @@
 	syntax-theme = Monokai Extended
 	line-numbers = true
 # vim:ft=gitconfig noexpandtab tabstop=2
-[init]
-	defaultBranch = main
