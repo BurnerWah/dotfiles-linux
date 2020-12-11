@@ -89,4 +89,7 @@
   addEmbeddedRepo = true
   ignoredHook = true
   waitingForEditor = true
+
+[delta]
+  side-by-side = true
 # vim:ft=gitconfig
