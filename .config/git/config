@@ -1,6 +1,6 @@
 [core]
 	editor = nvim
-	pager = delta --plus-color="#012800" --minus-color="#340001" --theme='Monokai Extended'
+	pager = delta
 	excludesFile = ~/.config/git/global.gitignore
 	hooksPath = ~/.config/git/hooks
 [user]
@@ -91,5 +91,9 @@
 	waitingForEditor = true
 
 [delta]
-	side-by-side = true
+	side-by-side = false
+	plus-color = "#012800"
+	minus-color = "#340001"
+	syntax-theme = Monokai Extended
+	line-numbers = true
 # vim:ft=gitconfig noexpandtab tabstop=2
