@@ -97,3 +97,5 @@
 	syntax-theme = Monokai Extended
 	line-numbers = true
 # vim:ft=gitconfig noexpandtab tabstop=2
+[init]
+	defaultBranch = main
