@@ -492,7 +492,7 @@ call extend(ale_linters_ignore, #{
       \ })
 
 let ale_fixers = #{
-      \ cpp: ['clang-tidy', 'remove_trailing_lines', 'trim_whitespace'],
+      \ cpp: ['clangtidy', 'remove_trailing_lines', 'trim_whitespace'],
       \ go: [
       \   'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace',
       \ ],
