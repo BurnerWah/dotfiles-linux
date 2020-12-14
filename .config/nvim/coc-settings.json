@@ -411,7 +411,6 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "python.formatting.provider": "yapf",
-  "rpc.hideStartupMessage": true,
   "rust.clippy_preference": "on",
   "rust-client.disableRustup": true,
   "session.directory": "~/.local/share/nvim/sessions",

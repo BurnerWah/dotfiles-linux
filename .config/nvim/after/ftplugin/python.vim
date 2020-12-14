@@ -29,6 +29,13 @@ if exists(':Semshi')
   nmap <buffer> <silent> <leader>ge :Semshi goto error<CR>
 endif
 
+if exists(':IPython')
+  map  <buffer> <silent> <F5>      <Plug>(IPy-Run)
+  imap <buffer> <silent> <C-F>     <Plug>(IPy-Complete)
+  map  <buffer> <silent> <F8>      <Plug>(IPy-Interrupt)
+  map  <buffer> <silent> <leader>? <Plug>(IPy-WordObjInfo)
+endif
+
 if exists('did_coc_loaded')
   nmap <buffer> <silent> gD <Plug>(coc-definition)
   nn   <buffer> <silent> K :call CocActionAsync('doHover')<CR>

@@ -134,7 +134,7 @@ if dein#load_state('~/.local/share/dein')
   " be lazily loaded.
 
   " Markdown: {{{3
-  call dein#add('npxbr/glow.nvim', #{ hook_post_update: 'GlowInstall' })
+  call dein#add('npxbr/glow.nvim') " GlowInstall hook broke dein
   call dein#add('iamcco/markdown-preview.nvim', #{
         \ if: executable('yarn'),
         \ lazy: v:true,
@@ -174,6 +174,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('bfredl/nvim-ipy', #{
         \ if: ( has('python3') && py3eval('has_module("jupyter_client")') ),
         \ merged: v:true,
+        \ hook_add: 'let g:nvim_ipy_perform_mappings = 0',
         \ hook_post_source: join([
         \   'delcommand IPython2',
         \   'delcommand IJulia',
@@ -221,15 +222,11 @@ if dein#load_state('~/.local/share/dein')
   " Set $EDITOR to current nvim instance
 
   " Utilities {{{2
+  " removed fzf-gitignore because it has an unintuitive bug
   call dein#add('haya14busa/dein-command.vim') " Commands for Dein
   call dein#add('vimwiki/vimwiki')
   call dein#add('liuchengxu/vista.vim', #{ hook_add: 'cabbrev Vi Vista' })
   call dein#add('Vigemus/iron.nvim') " General REPL plugin
-
-  call dein#add('fszymanski/fzf-gitignore', #{
-        \ if: ( has('python3') && executable('fzf') ),
-        \ merged: v:true,
-        \ })
 
   call dein#add('liuchengxu/vim-clap', #{
         \ if: ( has('python3') && executable('cargo') ),
@@ -241,6 +238,10 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('sakhnik/nvim-gdb', #{
         \ if: ( has('python3') && ( executable('gdb') || executable('lldb') ) ),
         \ merged: v:true,
+        \ hook_add: 'let g:nvimgdb_disable_start_keymaps = 1',
+        \ hook_post_source: join([
+        \   'delcommand GdbStartBashDB'
+        \ ], "\n")
         \ })
   " Debugging plugin
   " We don't bother checking for `bashdb` since it's unlikely that it's the
@@ -598,9 +599,6 @@ nnor <silent> <leader>h :call CocActionAsync('doHover')<cr>
 xmap ga <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" Trigger completion on menu key
-inor <silent><expr> <F16> coc#refresh()
-
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -613,10 +611,6 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
-
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 
 " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)

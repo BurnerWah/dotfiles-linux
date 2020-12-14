@@ -201,9 +201,19 @@ require'nvim-treesitter.configs'.setup {
     updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
     persist_queries = false, -- Whether the query persists across vim sessions
   },
+  refactor = {
+    highlight_definitions = { enable = true },
+    highlight_current_scope = { enable = true },
+    smart_rename = {
+      enable = true,
+      keymaps = { smart_rename = 'grr', }
+    },
+  },
   rainbow = {
     -- Rainbow brackets. We don't want them on a lot of filetypes.
-    enable = true,
+    -- NOTE this has pretty severe performance issues (see p00f/nvim-ts-rainbow#5),
+    -- so it can't be turned on under any circumstances right now.
+    enable = false,
     disable = {
       'bash', 'c', 'cpp', 'css', 'dart', 'go', 'html', 'java', 'javascript',
       'kotlin', 'lua', 'nix', 'ocaml', 'python', 'rst', 'ruby', 'rust', 'teal',
