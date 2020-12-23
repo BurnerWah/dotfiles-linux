@@ -102,6 +102,7 @@ if dein#load_state('~/.local/share/dein')
 
   call dein#add('nvim-treesitter/nvim-treesitter', #{
         \ if: ( has('nvim-0.5.0') && executable('cc') ),
+        \ hook_post_update: 'TSUpdate',
         \ })
   call dein#add('nvim-treesitter/nvim-treesitter-refactor', #{ depends: 'nvim-treesitter' })
   call dein#add('nvim-treesitter/nvim-treesitter-textobjects', #{ depends: 'nvim-treesitter' })
