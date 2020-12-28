@@ -225,3 +225,14 @@ require'nvim-treesitter.configs'.setup {
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.bash.used_by = "PKGBUILD"
 parser_config.html.used_by = "xhtml"
+
+require('telescope').load_extension('project')
+require('telescope').load_extension('ghcli')
+require('telescope').load_extension('fzy_native')
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<C-p>',
+  ":lua require'telescope'.extensions.project.project{}<CR>",
+  {noremap = true, silent = true}
+)

@@ -248,6 +248,16 @@ if dein#load_state('~/.local/share/dein')
   " We don't bother checking for `bashdb` since it's unlikely that it's the
   " only debugger installed.
 
+  call dein#add('nvim-lua/popup.nvim')
+  call dein#add('nvim-lua/plenary.nvim')
+  call dein#add('nvim-telescope/telescope.nvim', #{
+        \ if: has('nvim-0.5.0'),
+        \ depends: ['popup.nvim', 'plenary.nvim'],
+        \ })
+  call dein#add('nvim-telescope/telescope-project.nvim', #{ depends: 'telescope.nvim' })
+  call dein#add('nvim-telescope/telescope-github.nvim', #{ depends: 'telescope.nvim' })
+  call dein#add('nvim-telescope/telescope-fzy-native.nvim', #{ depends: 'telescope.nvim' })
+
   " User interface {{{2
   " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
   " the moment it won't install.
@@ -644,6 +654,12 @@ nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
 nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
+
+" Telescope.nvim
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " Init augroup {{{1
 aug init

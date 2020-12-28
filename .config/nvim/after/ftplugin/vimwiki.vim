@@ -1,4 +1,5 @@
 setl spell
+setl foldlevelstart=1
 
 " This is to fix conflicts with coc
 if str2nr(vimwiki#vars#get_global('key_mappings').table_mappings)
