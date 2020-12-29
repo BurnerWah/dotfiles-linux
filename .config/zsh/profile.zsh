@@ -7,6 +7,10 @@ if [[ "$options[interactive]" == off ]]; then
   typeset +x LESSOPEN
 fi
 
+if [[ "$MANPATH" = "/usr/share/lmod/lmod/share/man" ]]; then
+  typeset +x MANPATH
+fi
+
 unset HISTCONTROL
 unset HISTSIZE
 # vim:ft=zsh fdm=marker
