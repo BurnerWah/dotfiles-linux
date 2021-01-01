@@ -11,6 +11,10 @@ if [[ "$MANPATH" = "/usr/share/lmod/lmod/share/man" ]]; then
   typeset +x MANPATH
 fi
 
+if [[ "$BASH_ENV" = "/usr/share/lmod/lmod/init/bash" ]]; then
+  typeset +x BASH_ENV
+fi
+
 unset HISTCONTROL
 unset HISTSIZE
 # vim:ft=zsh fdm=marker
