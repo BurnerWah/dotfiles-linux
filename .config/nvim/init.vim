@@ -257,6 +257,11 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('nvim-telescope/telescope-project.nvim', #{ depends: 'telescope.nvim' })
   call dein#add('nvim-telescope/telescope-github.nvim', #{ depends: 'telescope.nvim' })
   call dein#add('nvim-telescope/telescope-fzy-native.nvim', #{ depends: 'telescope.nvim' })
+  call dein#add('nvim-telescope/telescope-fzf-writer.nvim', #{ depends: 'telescope.nvim' })
+
+  call dein#add('pwntester/octo.nvim', #{ depends: 'telescope.nvim' })
+
+  call dein#add('lukas-reineke/format.nvim')
 
   " User interface {{{2
   " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
@@ -327,7 +332,11 @@ if dein#load_state('~/.local/share/dein')
 
   " Signcolumn {{{3
   " call dein#add('airblade/vim-gitgutter')
-  call dein#add('mhinz/vim-signify')
+  " call dein#add('mhinz/vim-signify')
+  call dein#add('lewis6991/gitsigns.nvim', #{ depends: 'plenary.nvim' })
+  " Very nice git gutter plugin written in lua.
+  " Not really integrated with airline but that'll probably get removed at
+  " some point.
 
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', #{ if: has('nvim-0.5.0'), merged: 1 })
@@ -605,7 +614,7 @@ let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-nnor <silent> <leader>h :call CocActionAsync('doHover')<cr>
+nnor <silent> <leader>hh :call CocActionAsync('doHover')<cr>
 
 xmap ga <Plug>(LiveEasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -674,5 +683,6 @@ aug init
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au VimEnter * ++once call dein#call_hook('post_source')
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
+  au BufWritePost * FormatWrite
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker

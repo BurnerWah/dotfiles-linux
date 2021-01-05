@@ -236,3 +236,5 @@ vim.api.nvim_set_keymap(
   ":lua require'telescope'.extensions.project.project{}<CR>",
   {noremap = true, silent = true}
 )
+
+require('gitsigns').setup()
