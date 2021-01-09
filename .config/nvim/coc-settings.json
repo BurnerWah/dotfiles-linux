@@ -69,8 +69,8 @@
       "args": ["up"],
       "filetypes": ["sql"]
     },
-    "sumneko_lua": { "command": "lua-language-server", "filetypes": ["lua"] }
-    // "lua": { "command": "lua-lsp", "filetypes": ["lua"] }
+    "sumneko_lua": { "command": "lua-language-server", "filetypes": ["lua"] },
+    "lua": { "command": "lua-lsp", "filetypes": ["lua-DISABLED"] }
   },
   "coc.preferences.extensionUpdateCheck": "never",
   "coc.preferences.formatOnSaveFiletypes": [
@@ -146,7 +146,6 @@
       ]
     },
     "gitlint": {
-      // This has a weird issue where some lines just don't show up
       "sourceName": "gitlint",
       "command": "gitlint",
       "args": ["--msg-filename", "%tempfile"],
@@ -439,7 +438,7 @@
     }
   ],
   "xml.java.home": "/usr/lib/jvm/jre",
-  "xml.server.workDir": "~/.cache/lsp4xml", // By default places random shit in home folder
+  "xml.server.workDir": "~/.cache/lsp4xml",
   "yaml.format.enable": true,
   "yaml.format.singleQuote": true,
   "yaml.schemas": {

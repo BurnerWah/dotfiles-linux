@@ -258,6 +258,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('nvim-telescope/telescope-github.nvim', #{ depends: 'telescope.nvim' })
   call dein#add('nvim-telescope/telescope-fzy-native.nvim', #{ depends: 'telescope.nvim' })
   call dein#add('nvim-telescope/telescope-fzf-writer.nvim', #{ depends: 'telescope.nvim' })
+  call dein#add('nvim-telescope/telescope-symbols.nvim', #{ depends: 'telescope.nvim' })
 
   call dein#add('pwntester/octo.nvim', #{ depends: 'telescope.nvim' })
 
