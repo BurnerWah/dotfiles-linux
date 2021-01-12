@@ -31,9 +31,11 @@ iron.core.set_config {
 require('navigation')
 
 local ts_textobjects = {
-  -- This is here to mitigate nvim-treesitter-textobjects#27
-  -- Keep synced w/ https://github.com/nvim-treesitter/nvim-treesitter-textobjects#built-in-textobjects
-  -- until #27 is fixed.
+  --[[
+    This is here to mitigate nvim-treesitter-textobjects#27
+    Keep synced w/ https://github.com/nvim-treesitter/nvim-treesitter-textobjects#built-in-textobjects
+    until #27 is fixed.
+    ]]
   ['@class.inner'] = { -- 5
     c = '@class.inner',
     cpp = '@class.inner',
@@ -138,11 +140,13 @@ require'nvim-treesitter.configs'.setup {
     },
   },
   textobjects = {
-    -- NOTE We cant use [count]s (fixed by nvim-treesitter-textobjects#8)
-    -- NOTE Move mappings don't work in visual mode (nvim-treesitter-textobjects#6)
-    --      They miss mapmodes v, x, and o
-    -- NOTE thus far, maps like '[(' or '[{' don't work, even with custom objects.
-    -- FIXME objects ALWAYS get mapped (nvim-treesitter-textobjects#27)
+    --[[
+      NOTE We cant use [count]s (fixed by nvim-treesitter-textobjects#8)
+      NOTE Move mappings don't work in visual mode (nvim-treesitter-textobjects#6)
+           They miss mapmodes v, x, and o
+      NOTE thus far, maps like '[(' or '[{' don't work, even with custom objects.
+      FIXME objects ALWAYS get mapped (nvim-treesitter-textobjects#27)
+      ]]
     select = {
       enable = true,
       keymaps = {
@@ -210,9 +214,11 @@ require'nvim-treesitter.configs'.setup {
     },
   },
   rainbow = {
-    -- Rainbow brackets. We don't want them on a lot of filetypes.
-    -- NOTE this has pretty severe performance issues (see p00f/nvim-ts-rainbow#5),
-    -- so it can't be turned on under any circumstances right now.
+    --[[
+      Rainbow brackets. We don't want them on a lot of filetypes.
+      NOTE this has pretty severe performance issues (see p00f/nvim-ts-rainbow#5),
+      so it can't be turned on under any circumstances right now.
+      ]]
     enable = false,
     disable = {
       'bash', 'c', 'cpp', 'css', 'dart', 'go', 'html', 'java', 'javascript',
@@ -227,7 +233,7 @@ parser_config.bash.used_by = "PKGBUILD"
 parser_config.html.used_by = "xhtml"
 
 require('telescope').load_extension('project')
-require('telescope').load_extension('ghcli')
+-- require('telescope').load_extension('ghcli')
 require('telescope').load_extension('fzy_native')
 
 vim.api.nvim_set_keymap(
@@ -238,3 +244,5 @@ vim.api.nvim_set_keymap(
 )
 
 require('gitsigns').setup()
+
+require('nvim-autopairs').setup()

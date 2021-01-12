@@ -355,6 +355,7 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
   call dein#add('AndrewRadev/splitjoin.vim')
   call dein#add('junegunn/vim-easy-align') " Align text to certain characters.
+  call dein#add('windwp/nvim-autopairs') " Autopairs for neovim
 
   call dein#add('meain/vim-colorswitch', #{
         \ if: ( has('python3') && py3eval('has_module("colour")') ),
