@@ -60,6 +60,8 @@ let g:gitblame_enabled = 0 " Mitigation for #11
 " Load python utilities
 exe printf('py3file %s/util.py', stdpath('config'))
 
+lua require('plugins')
+
 " Dein: plugin manager {{{1
 " Settings {{{2
 let dein#install_log_filename = stdpath('data').'/logs/dein.log'
@@ -88,7 +90,6 @@ if dein#load_state('~/.local/share/dein')
 
   " Core plugins {{{2
   call dein#add('neoclide/coc.nvim', #{ if: executable('npm'), rev: 'release' })
-  call dein#add('Shougo/denite.nvim', #{ if: has('python3'), type__depth: 1 })
 
   " Snippets & Templates {{{2
   " call dein#add('honza/vim-snippets')
@@ -133,18 +134,6 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('bfredl/nvim-luadev') " Lua REPL
   " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
   " be lazily loaded.
-
-  " Markdown: {{{3
-  call dein#add('npxbr/glow.nvim') " GlowInstall hook broke dein
-  call dein#add('iamcco/markdown-preview.nvim', #{
-        \ if: executable('yarn'),
-        \ lazy: v:true,
-        \ on_ft: ['markdown', 'pandoc.markdown', 'rmd', 'vimwiki'],
-        \ build: 'sh -c "cd app && yarn install"',
-        \ type__depth: 1,
-        \ })
-  " Markdown live preview
-  " Instructions suggest lazy loading with on_ft
 
   " Meson: {{{3
   call dein#add('mesonbuild/meson', #{
@@ -229,38 +218,8 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('liuchengxu/vista.vim', #{ hook_add: 'cabbrev Vi Vista' })
   call dein#add('Vigemus/iron.nvim') " General REPL plugin
 
-  call dein#add('liuchengxu/vim-clap', #{
-        \ if: ( has('python3') && executable('cargo') ),
-        \ build: 'make python-dynamic-module',
-        \ hook_post_update: 'call clap#installer#force_download()',
-        \ })
-  call dein#add('vn-ki/coc-clap', #{ depends: ['coc.nvim', 'vim-clap'] })
-
-  call dein#add('sakhnik/nvim-gdb', #{
-        \ if: ( has('python3') && ( executable('gdb') || executable('lldb') ) ),
-        \ merged: v:true,
-        \ hook_add: 'let g:nvimgdb_disable_start_keymaps = 1',
-        \ hook_post_source: join([
-        \   'delcommand GdbStartBashDB'
-        \ ], "\n")
-        \ })
-  " Debugging plugin
-  " We don't bother checking for `bashdb` since it's unlikely that it's the
-  " only debugger installed.
-
   call dein#add('nvim-lua/popup.nvim')
   call dein#add('nvim-lua/plenary.nvim')
-  call dein#add('nvim-telescope/telescope.nvim', #{
-        \ if: has('nvim-0.5.0'),
-        \ depends: ['popup.nvim', 'plenary.nvim'],
-        \ })
-  call dein#add('nvim-telescope/telescope-project.nvim', #{ depends: 'telescope.nvim' })
-  call dein#add('nvim-telescope/telescope-github.nvim', #{ depends: 'telescope.nvim' })
-  call dein#add('nvim-telescope/telescope-fzy-native.nvim', #{ depends: 'telescope.nvim' })
-  call dein#add('nvim-telescope/telescope-fzf-writer.nvim', #{ depends: 'telescope.nvim' })
-  call dein#add('nvim-telescope/telescope-symbols.nvim', #{ depends: 'telescope.nvim' })
-
-  call dein#add('pwntester/octo.nvim', #{ depends: 'telescope.nvim' })
 
   call dein#add('lukas-reineke/format.nvim')
 
@@ -294,22 +253,11 @@ if dein#load_state('~/.local/share/dein')
   " Lazy loading is suggested in plugin readme, but performance benefit is
   " negligible.
 
-  call dein#add('wfxr/minimap.vim', #{
-        \ if: ( has('nvim-0.5.0') && executable('code-minimap') ),
-        \ merged: v:true,
-        \ })
   call dein#add('kyazdani42/nvim-tree.lua', #{
         \ if: has('nvim-0.5.0'),
         \ depends: 'nvim-web-devicons',
         \ merged: v:true,
         \ })
-
-  " Denite {{{3
-  call dein#add('neoclide/denite-git', #{ depends: 'denite.nvim' })
-  call dein#add('notomo/denite-autocmd', #{ depends: 'denite.nvim' })
-  call dein#add('zacharied/denite-nerdfont', #{ depends: 'denite.nvim' })
-  call dein#add('neoclide/coc-denite', #{ depends: ['denite.nvim', 'coc.nvim'] })
-  call dein#add('iyuuya/denite-ale', #{ depends: ['denite.nvim', 'ale'] })
 
   " Mode-line {{{3
   " I'm considering switching from airline over to something more neovim
@@ -331,14 +279,6 @@ if dein#load_state('~/.local/share/dein')
   " Shows package information in package.json, cargo.toml, etc.
   " Very simple plugin right now, no need to lazy-load.
 
-  " Signcolumn {{{3
-  " call dein#add('airblade/vim-gitgutter')
-  " call dein#add('mhinz/vim-signify')
-  call dein#add('lewis6991/gitsigns.nvim', #{ depends: 'plenary.nvim' })
-  " Very nice git gutter plugin written in lua.
-  " Not really integrated with airline but that'll probably get removed at
-  " some point.
-
   " Color schemes {{{3
   call dein#add('tjdevries/colorbuddy.nvim', #{ if: has('nvim-0.5.0'), merged: 1 })
   call dein#add('tyrannicaltoucan/vim-quantum')
@@ -355,7 +295,6 @@ if dein#load_state('~/.local/share/dein')
   call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
   call dein#add('AndrewRadev/splitjoin.vim')
   call dein#add('junegunn/vim-easy-align') " Align text to certain characters.
-  call dein#add('windwp/nvim-autopairs') " Autopairs for neovim
 
   call dein#add('meain/vim-colorswitch', #{
         \ if: ( has('python3') && py3eval('has_module("colour")') ),
@@ -665,12 +604,6 @@ nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
 nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
-
-" Telescope.nvim
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " Init augroup {{{1
 aug init
