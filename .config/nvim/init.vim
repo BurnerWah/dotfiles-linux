@@ -12,7 +12,7 @@
 " Also, since Vim allows you to use shortened versions of keywords, I'm
 " sticking to the shortest version that makes sense.
 "
-" Core settings {{{1
+" Core settings
 scriptenc 'utf-8'
 syn enable             " Enable syntax highlighting.
 
@@ -56,244 +56,18 @@ let ruby_host_prog = exepath('neovim-ruby-host')
 let &shell = (&shell =~# 'fish$') ? 'bash' : &shell
 
 " Load python utilities
-exe printf('py3file %s/util.py', stdpath('config'))
+" exe printf('py3file %s/util.py', stdpath('config'))
 
 lua require('plugins')
+lua require('navigation')
 
-" Dein: plugin manager {{{1
-" Settings {{{2
-let dein#install_log_filename = stdpath('data').'/logs/dein.log'
-let dein#enable_notification = v:true
-let dein#install_progress_type = 'tabline'
-let dein#install_max_processes = py3eval('os.cpu_count()')
-
-" Required {{{2
-" Technically dein requires nocompatible to be set, but that's always true
-" for nvim.
-
-" Required
-set runtimepath+=~/.local/share/dein/repos/github.com/Shougo/dein.vim
-
-" Required
-if dein#load_state('~/.local/share/dein')
-  call dein#begin('~/.local/share/dein')
-
-  " Let dein manage dein
-  " Required
-  call dein#add('~/.local/share/dein/repos/github.com/Shougo/dein.vim')
-
-  " Helpful tools {{{2
-  let s:gitlab = 'https://gitlab.com/'
-  let s:gh_raw = 'https://raw.githubusercontent.com/'
-
-  " Language agnostic stuff {{{2
-  " Polyglot used to be in here but it tends to break stuff so I don't use it
-  " anymore.
-
-  " call dein#add('dense-analysis/ale', #{ type__depth: 1 }) " Asynchronous linting engine
-
-  " Language-specific stuff {{{2
-  " CXX: {{{3
-  call dein#add('jackguo380/vim-lsp-cxx-highlight', #{
-        \ if: ( executable('ccls') || executable('clangd') ),
-        \ merged: v:true,
-        \ })
-  " Provides enhanced highlighting
-
-
-  " Fish: {{{3
-  " call dein#add('blankname/vim-fish')
-  " Maintained fork of dag/vim-fish
-
-  " Lua: {{{3
-  " call dein#add('euclidianAce/BetterLua.vim')
-  " call dein#add('tjdevries/manillua.nvim')
-  " call dein#add('rafcamlet/nvim-luapad')
-  " call dein#add('rafcamlet/coc-nvim-lua', #{ depends: 'coc.nvim' })
-  call dein#add('tjdevries/nlua.nvim')
-  call dein#add('bfredl/nvim-luadev') " Lua REPL
-  " Plugin only adds a command and a few <Plug> mappings so it doesn't need to
-  " be lazily loaded.
-
-  " Meson: {{{3
-  call dein#add('mesonbuild/meson', #{
-        \ rtp: 'data/syntax-highlighting/vim',
-        \ type__depth: 1,
-        \ })
-  " Official meson syntax is similar to the official llvm syntax, although we
-  " can get the reposotory size down to about 21MB (at time of writing) by
-  " cloning with a low depth.
-
-  " Moonscript: {{{3
-  call dein#add('leafo/moonscript-vim')
-  call dein#add('svermeulen/nvim-moonmaker', #{ merged: v:false })
-  " nvim-moonmaker can't be safely merged, as it'll delete merged lua files.
-
-  " Python: {{{3
-  " I used to use python-mode but it turns out that plugin causes more problems
-  " than it solves.
-  " stsewd/isort.nvim has issues
-
-  call dein#add('vim-python/python-syntax')
-  call dein#add('Vimjas/vim-python-pep8-indent')
-
-  " Other: {{{3
-  call dein#add('rhysd/vim-llvm') " Mirror of syntax from llvm repo
-  call dein#add('rust-lang/rust.vim') " Official rust syntax
-  call dein#add('elzr/vim-json')
-  call dein#add('cespare/vim-toml')
-  call dein#add('arrufat/vala.vim')
-  call dein#add('ron-rs/ron.vim')
-  call dein#add('bakpakin/fennel.vim')
-  call dein#add('aklt/plantuml-syntax')
-  call dein#add('tikhomirov/vim-glsl')
-  call dein#add('udalov/kotlin-vim')
-  call dein#add('jparise/vim-graphql')
-  call dein#add('tomlion/vim-solidity')
-  call dein#add('evanleck/vim-svelte')
-  call dein#add('YaBoiBurner/requirements.txt.vim') " Fork of raimon49/requirements.txt.vim
-  call dein#add('YaBoiBurner/vim-teal') " Fork of teal-language/vim-teal
-
-  " call dein#add(s:gitlab.'HiPhish/awk-ward.nvim', #{ if: executable('awk'), merged: 1 })
-  call dein#add('stsewd/sphinx.nvim', #{ if: has('python3') })
-  " Improvements to RST
-
-  " Integration: Work with other things {{{2
-  call dein#add('editorconfig/editorconfig-vim') " editorconfig support
-  call dein#add('tpope/vim-fugitive') " git support
-
-  call dein#add('rliang/termedit.nvim', #{ if: has('python3'), merged: v:true })
-  " Set $EDITOR to current nvim instance
-
-  " Utilities {{{2
-  " removed fzf-gitignore because it has an unintuitive bug
-  call dein#add('haya14busa/dein-command.vim') " Commands for Dein
-  call dein#add('vimwiki/vimwiki')
-  call dein#add('Vigemus/iron.nvim') " General REPL plugin
-
-  " User interface {{{2
-  " At some point I'll add https://github.com/zgpio/tree.nvim to this, but for
-  " the moment it won't install.
-
-  call dein#add('ryanoasis/vim-devicons', #{
-        \ hook_add: 'let g:webdevicons_enable_nerdtree = 0',
-        \ hook_post_source: join([
-        \   'unlet! '.join([
-        \     'g:NERDTreeGitStatusUpdateOnCursorHold',
-        \     'g:NERDTreeUpdateOnCursorHold',
-        \     'g:WebDevIconsNerdTreeBeforeGlyphPadding',
-        \     'g:WebDevIconsNerdTreeAfterGlyphPadding',
-        \     'g:WebDevIconsNerdTreeGitPluginForceVAlign',
-        \     'g:webdevicons_conceal_nerdtree_brackets',
-        \   ]),
-        \   'delfu! NERDTreeWebDevIconsRefreshListener',
-        \ ], "\n"),
-        \ type__depth: 1,
-        \ })
-  " devicons doesn't check if nerdtree is installed before configuring a lot
-  " of it, so it pollutes our setup with a bunch of unnecessary things to
-  " remove.
-  " Honestly devicons just has way too many variables.
-
-  " Mode-line {{{3
-  " I'm considering switching from airline over to something more neovim
-  " oriented, or else over to lightline.
-  call dein#add('vim-airline/vim-airline', #{ merged: v:false })
-  call dein#add('vim-airline/vim-airline-themes', #{ depends: 'vim-airline' })
-
-  " call dein#add('romgrk/barbar.nvim', {'if': has('nvim-0.5.0'), 'merged': 1})
-  " Barbar is bugged in problematic ways. At time of writing, filetype icons
-  " have broken highlighting, and opening Vista often breaks barbar. It also
-  " will get stuck not knowing what buffer you're on at times.
-  " Once fixed, it'll replace airline's tab bar.
-
-  " Color schemes {{{3
-  call dein#add('tjdevries/colorbuddy.nvim', #{ if: has('nvim-0.5.0'), merged: 1 })
-  call dein#add('tyrannicaltoucan/vim-quantum')
-  " I'm using a colorbyddy implementation of this theme, but it's useful to
-  " include the original theme to get some of the resources from it.
-
-  " Text-editing {{{2
-  call dein#add('tpope/vim-endwise')
-  call dein#add('tpope/vim-repeat') " Let the repeat command repeat plugin maps
-  call dein#add('farmergreg/vim-lastplace') " Open files where last editing them
-
-  " Required {{{2
-  call dein#end()
-  call dein#save_state()
-endif
-
-syn enable
-
-
-" Cleanup {{{1
-" This is just to get rid of weird stuff that shouldn't be created with my
-" configuration. We delay them with an autocmd group since directly calling
-" them seems to do nothing.
-" autocommands should always hare the ++once flag here as a safety measure,
-" and commands should generally be prefixed with sil! so they don't cause any
-" errors.
-aug init_cleanup
-  au!
-  au VimEnter * ++once sil! unlet
-        \ g:syntastic_extra_filetypes
-        \ g:syntastic_rust_checkers g:syntastic_vala_checkers
-aug END
-
-" Plugin Settings {{{1
-
-let coc_filetype_map = #{ catalog: 'xml', dtd: 'xml', vimwiki: 'markdown', smil: 'xml', xsd: 'xml' }
 let snips_author = 'Jaden Pleasants'
 let snips_email  = 'jadenpleasants@fastmail.com'
-let EditorConfig_exclude_patterns = ['fugitive://.\*', 'output://.\*', 'scp://.\*', 'term://.\*']
 let mkdp_filetypes = ['markdown', 'vimwiki']
-let WebDevIconsOS = 'Fedora'
 
-lua require('user.config')
-lua require('colorbuddy').colorscheme('user_colors')
-
-" Airline: Bottom bar for Vim. {{{2
-
-" Main settings
-let airline_powerline_fonts  = v:true " Airline + Powerline
-let airline_detect_spelllang = v:false " Cleans up stuff a little
-let airline_detect_crypt     = v:false " Unavailable in neovim
-" let airline_inactive_collapse = 1
-let airline_skip_empty_sections = 1
-
-let airline_symbols = get(g:, 'airline_symbols', {})
-let airline_symbols['dirty'] = ' ' " Show an icon that's at least sorta correct
-
-let airline#parts#ffenc#skip_expected_string = 'utf-8[unix]'
-let airline#extensions#vista#enabled = 0
-let airline#extensions#tabline#enabled = 1
-
-let airline_filetype_overrides = #{
-      \ LuaTree: ['LuaTree', ''],
-      \ minimap: ['Map', ''],
-      \ todoist: ['Todoist', ''],
-      \ tsplayground: ['Tree-Sitter Playground', ''],
-      \ vista: ['Vista', ''],
-      \ vista_kind: ['Vista', ''],
-      \ vista_markdown: ['Vista', ''],
-      \ }
-
-" VimWiki: Note-taking tool {{{2
-let vimwiki_list = [{
-      \ 'path': '~/Documents/VimWiki',
-      \ 'nested_syntaxes': {'c++': 'cpp', 'python': 'python',},
-      \ }]
-let vimwiki_folding = 'expr'
-let vimwiki_listsyms = '✗○◐●✓'
-
-" Filetype Settings {{{1
+" Filetype Settings
 " Python
 let no_python_maps = v:true " All maps covered by nvim-treesitter
-
-" Ruby
-" TODO replace maps (there are a lot)
-"   This is currently held up by tree-sitter textobjects not supporting ruby
-" let no_ruby_maps = v:true
 
 " SQL
 let omni_sql_no_default_maps = v:true
@@ -303,14 +77,8 @@ let tex_flavor = 'latex'
 
 " VimL
 let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
-" TODO replace maps?
-"   We'll need a tree-sitter parser or a language server to assist in
-"   replacing maps, which may take a while. A language server is available,
-"   but I don't know how to replace some of the maps; A tree-sitter parser may
-"   never be developed due to how complex VimL is.
-" let no_vim_maps = v:true
 
-" Keybindings {{{1
+" Keybindings
 
 inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -362,7 +130,7 @@ nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 
-" Init augroup {{{1
+" Init augroup
 aug init
   au!
   au FileType list setl nospell
@@ -373,7 +141,6 @@ aug init
   au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
   au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
-  au VimEnter * ++once call dein#call_hook('post_source')
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
 aug END
 " vim:ft=vim fenc=utf-8 fdm=marker

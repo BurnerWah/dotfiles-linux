@@ -8,6 +8,8 @@ return require('packer').startup(function()
   -- Packer can manage itself as an optional plugin
   use { 'wbthomason/packer.nvim', opt = true }
 
+  use 'svermeulen/nvim-moonmaker'
+
   -- Completion & Linting
   use 'neovim/nvim-lspconfig'
   use { 'nvim-treesitter/nvim-treesitter',
@@ -45,7 +47,18 @@ return require('packer').startup(function()
       }
     end
   }
-  use { 'neoclide/coc.nvim', branch = 'release' }
+  use { 'neoclide/coc.nvim',
+    branch = 'release',
+    config = function()
+      vim.g.coc_filetype_map = {
+        ['catalog'] = 'xml',
+        ['dtd'] = 'xml',
+        ['vimwiki'] = 'markdown',
+        ['smil'] = 'xml',
+        ['xsd'] = 'xml',
+      }
+    end
+  }
   use {
     'dense-analysis/ale',
     config = function()
@@ -115,15 +128,27 @@ return require('packer').startup(function()
   }
 
   -- Filetypes
+  use 'leafo/moonscript-vim'
+  use 'rhysd/vim-llvm'
+  use 'cespare/vim-toml'
+  use 'ron-rs/ron.vim'
+  use 'bakpakin/fennel.vim'
+  use 'aklt/plantuml-syntax'
+  use 'tikhomirov/vim-glsl'
+  use 'udalov/kotlin-vim'
+  use 'YaBoiBurner/requirements.txt.vim'
+  use 'YaBoiBurner/vim-teal'
+  use { 'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim' }
+
+  -- CXX
+  use { 'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'} }
 
   -- Lua
   use 'euclidianAce/BetterLua.vim'
   use 'tjdevries/manillua.nvim'
-  use {
-    'rafcamlet/nvim-luapad',
-    opt = true,
-    cmd = {'Lua', 'Luapad', 'LuaRun'}
-  }
+  use 'tjdevries/nlua.nvim'
+  use { 'bfredl/nvim-luadev', cmd = 'Luadev' }
+  use { 'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'} }
 
   -- Markdown
   use {
@@ -131,13 +156,19 @@ return require('packer').startup(function()
     ft = { 'markdown', 'pandoc.markdown', 'rmd', 'vimwiki' },
     opt = true
   }
-
   use {
     'iamcco/markdown-preview.nvim',
     run = 'cd app && yarn install',
     cmd = 'MarkdownPreview',
     opt = true
   }
+
+  -- Python
+  use 'vim-python/python-syntax'
+  use 'Vimjas/vim-python-pep8-indent'
+
+  -- RST
+  use 'stsewd/sphinx.nvim'
 
   -- Telescope
   use {
@@ -328,16 +359,103 @@ return require('packer').startup(function()
     opt = true,
     cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'}
   }
+  use {
+    'vim-airline/vim-airline',
+    requires = {
+      'vim-airline/vim-airline-themes',
+      'tyrannicaltoucan/vim-quantum',
+      'ryanoasis/vim-devicons',
+    },
+    config = function()
+      vim.g.airline_powerline_fonts = true
+      vim.g.airline_detect_spelllang = false
+      vim.g.airline_detect_crypt = false
+      vim.g.airline_skip_empty_sections = 1
+      -- vim.g.airline_symbols['dirty'] = ' '
+      vim.g['airline#parts#ffenc#skip_expected_string'] = 'utf-8[unix]'
+      vim.g['airline#extensions#vista#enabled'] = 0
+      vim.g['airline#extensions#tabline#enabled'] = 1
+      vim.g.airline_filetype_overrides = {
+        ['LuaTree'] = {'LuaTree', ''},
+        ['minimap'] = {'Map', ''},
+        ['todoist'] = {'Todoist', ''},
+        ['tsplayground'] = {'Tree-Sitter Playground', ''},
+        ['vista'] = {'Vista', ''},
+        ['vista_kind'] = {'Vista', ''},
+        ['vista_markdown'] = {'Vista', ''},
+      }
+    end
+  }
+  use {
+    'tjdevries/colorbuddy.nvim',
+    config = function()
+      require('colorbuddy').colorscheme('user_colors')
+    end
+  }
 
   -- Utilities
+  use 'tpope/vim-fugitive'
+  use 'rliang/termedit.nvim'
+  use 'farmergreg/vim-lastplace'
   use {
     'lukas-reineke/format.nvim',
     config = function()
       vim.cmd [[autocmd init BufWritePost * FormatWrite]]
     end
   }
+  use {
+    'vimwiki/vimwiki',
+    config = function()
+      vim.g.vimwiki_list = {
+        {
+          ['path'] = '~/Documents/VimWiki',
+          ['nested_syntaxes'] = {
+            ['c++'] = 'cpp',
+          }
+        }
+      }
+      vim.g.vimwiki_folding = 'expr'
+      vim.g.vimwiki_listsyms = '✗○◐●✓'
+    end
+  }
+  use {
+    'hkupty/iron.nvim',
+    config = function()
+      local iron = require('iron')
+
+      iron.core.add_repl_definitions {
+        fennel = { fennel = { command = { 'fennel', '--repl' }}},
+        fish   = { fish   = { command = { 'fish' }}},
+        gluon  = { gluon  = { command = { 'gluon', '-i' }}},
+      }
+
+      iron.core.set_config {
+        preferred = {
+          fennel = 'fennel',
+          fish = 'fish',
+          gluon = 'gluon',
+          javascript = 'node',
+          lua = 'lua',
+          python = 'ipython',
+          sh = 'bash',
+          zsh = 'zsh',
+        },
+      }
+    end
+  }
 
   -- Integration
+  use {
+    'editorconfig/editorconfig-vim',
+    config = function()
+      vim.g.EditorConfig_exclude_patterns = {
+        [[fugitive://.\*]],
+        [[output://.\*]],
+        [[scp://.\*]],
+        [[term://.\*]],
+      }
+    end
+  }
   use {
     'romgrk/todoist.nvim',
     cmd = 'Todoist',
@@ -356,6 +474,8 @@ return require('packer').startup(function()
   }
 
   -- Text editing
+  use 'tpope/vim-repeat'
+  use 'tpope/vim-endwise'
   use {
     'windwp/nvim-autopairs',
     config = function()
