@@ -83,47 +83,6 @@ let vimsyn_embed = 'lPr' " Embed lua, python, and ruby in vim syntax.
 inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" nnor <silent> <leader>hh :call CocActionAsync('doHover')<cr>
-
-" Use `[g` and `]g` to navigate diagnostics
-" nmap <silent> [g <Plug>(coc-diagnostic-prev)
-" nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
-
-" Remap for rename current word
-" nmap <leader>rn <Plug>(coc-rename)
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap for do codeAction of current line
-" nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-" nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Create mappings for function text object, requires document symbols feature of languageserver.
-" xmap if <Plug>(coc-funcobj-i)
-" xmap af <Plug>(coc-funcobj-a)
-" omap if <Plug>(coc-funcobj-i)
-" omap af <Plug>(coc-funcobj-a)
-" xmap ic <Plug>(coc-classobj-i)
-" omap ic <Plug>(coc-classobj-i)
-" xmap ac <Plug>(coc-classobj-a)
-" omap ac <Plug>(coc-classobj-a)
-
-" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-" nmap <silent> <C-d> <Plug>(coc-range-select)
-" xmap <silent> <C-d> <Plug>(coc-range-select)
-
-" use normal command like `<leader>xi(`
-" nmap <leader>x  <Plug>(coc-cursors-operator)
-
 " map the Terminal function in the lua module to some shortcuts
 nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
 nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
@@ -135,11 +94,6 @@ aug init
   au!
   au FileType list setl nospell
   au FileType gitmessengerpopup setl winblend=10
-  " Update signature help on jump placeholder
-  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  " Clean up Coc floating windows
-  au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)
-  au User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
 aug END

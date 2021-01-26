@@ -57,6 +57,33 @@ return require('packer').startup(function()
         ['smil'] = 'xml',
         ['xsd'] = 'xml',
       }
+      --Welcome to keymap hell.
+      vim.api.nvim_set_keymap('n', '<leader>hh', [[:call CocActionAsync('doHover')]], {silent = true, noremap = true})
+      vim.api.nvim_set_keymap('n', '[g', '<Plug>(coc-diagnostic-prev)', {silent = true})
+      vim.api.nvim_set_keymap('n', ']g', '<Plug>(coc-diagnostic-next)', {silent = true})
+      vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', {silent = true})
+      vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', {silent = true})
+      vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', {silent = true})
+      vim.api.nvim_set_keymap('n', 'gr', '<Plug>(coc-references)', {silent = true})
+      vim.api.nvim_set_keymap('n', '<leader>rn', '<Plug>(coc-rename)', {})
+      vim.api.nvim_set_keymap('x', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
+      vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
+      vim.api.nvim_set_keymap('n', '<leader>ac', '<Plug>(coc-codeaction)', {})
+      vim.api.nvim_set_keymap('n', '<leader>qf', '<Plug>(coc-fix-current)', {})
+      vim.api.nvim_set_keymap('x', 'if', '<Plug>(coc-funcobj-i)', {})
+      vim.api.nvim_set_keymap('o', 'if', '<Plug>(coc-funcobj-i)', {})
+      vim.api.nvim_set_keymap('x', 'af', '<Plug>(coc-funcobj-a)', {})
+      vim.api.nvim_set_keymap('o', 'af', '<Plug>(coc-funcobj-a)', {})
+      vim.api.nvim_set_keymap('x', 'ic', '<Plug>(coc-classobj-i)', {})
+      vim.api.nvim_set_keymap('o', 'ic', '<Plug>(coc-classobj-i)', {})
+      vim.api.nvim_set_keymap('x', 'ac', '<Plug>(coc-classobj-a)', {})
+      vim.api.nvim_set_keymap('o', 'ac', '<Plug>(coc-classobj-a)', {})
+      vim.api.nvim_set_keymap('n', '<C-d>', '<Plug>(coc-range-select)', {silent = true})
+      vim.api.nvim_set_keymap('x', '<C-d>', '<Plug>(coc-range-select)', {silent = true})
+      vim.api.nvim_set_keymap('n', '<leader>x', '<Plug>(coc-cursors-operator)', {})
+      vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
+      vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
+      vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
     end
   }
   use {
@@ -151,11 +178,7 @@ return require('packer').startup(function()
   use { 'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'} }
 
   -- Markdown
-  use {
-    'npxbr/glow.nvim',
-    ft = { 'markdown', 'pandoc.markdown', 'rmd', 'vimwiki' },
-    opt = true
-  }
+  use { 'npxbr/glow.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd', 'vimwiki' } }
   use {
     'iamcco/markdown-preview.nvim',
     run = 'cd app && yarn install',
@@ -173,10 +196,7 @@ return require('packer').startup(function()
   -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
-    requires = {
-      {'nvim-lua/popup.nvim'},
-      {'nvim-lua/plenary.nvim'}
-    },
+    requires = { {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'} },
     config = function()
       vim.api.nvim_set_keymap(
         'n',
@@ -249,17 +269,12 @@ return require('packer').startup(function()
   }
   use 'nvim-telescope/telescope-fzf-writer.nvim'
   use 'nvim-telescope/telescope-symbols.nvim'
-  use {
-    'pwntester/octo.nvim',
-    cmd = 'Octo',
-    opt = true,
-  }
+  use { 'pwntester/octo.nvim', cmd = 'Octo' }
 
   -- User interface
   use {
     'wfxr/minimap.vim',
     cmd = 'Minimap',
-    opt = true,
     config = function()
       vim.g['minimap_block_filetypes'] = {
         'ale-fix-suggest',
@@ -284,7 +299,6 @@ return require('packer').startup(function()
   use {
     'liuchengxu/vista.vim',
     cmd = 'Vista',
-    opt = true,
     config = function()
       vim.g['vista#renderer#enable_icon'] = 1
       vim.g['vista_echo_cursor_strategy'] = 'floating_win'
@@ -328,14 +342,12 @@ return require('packer').startup(function()
   }
   use {
     'rhysd/git-messenger.vim',
-    opt = true,
     cmd = 'GitMessenger',
     keys = {{'n', '<leader>gm'}}
   }
   use 'f-person/git-blame.nvim'
   use {
     'norcalli/nvim-colorizer.lua',
-    opt = true,
     ft = {'css', 'kitty', 'less', 'lua', 'vim'},
     config = function()
       require'colorizer'.setup {
@@ -349,14 +361,12 @@ return require('packer').startup(function()
   }
   use {
     'meain/vim-package-info',
-    opt = true,
     ft = {'json', 'requirements', 'toml'},
     run = 'npm install'
   }
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'},
-    opt = true,
     cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'}
   }
   use {
@@ -484,7 +494,6 @@ return require('packer').startup(function()
   }
   use {
     'tpope/vim-abolish',
-    opt = true,
     cmd = { 'Abolish', 'Subvert', 'S' },
     keys = {{'n', 'cr'}},
     config = function()
@@ -493,19 +502,11 @@ return require('packer').startup(function()
   }
   use {
     'tpope/vim-commentary',
-    opt = true,
     cmd = 'Commentary',
-    keys = {
-      {'x', 'gc'},
-      {'n', 'gc'},
-      {'o', 'gc'},
-      {'n', 'gcc'},
-      {'n', 'gcu'},
-    }
+    keys = { 'gc', {'n', 'gcc'}, {'n', 'gcu'} }
   }
   use {
     'tpope/vim-surround',
-    opt = true,
     keys = {
       {'n', 'ds'},
       {'n', 'cs'},
@@ -524,7 +525,6 @@ return require('packer').startup(function()
   }
   use {
     'tpope/vim-speeddating',
-    opt = true,
     keys = {
       {'n', '<C-A>'},
       {'n', '<C-X>'},
@@ -534,17 +534,9 @@ return require('packer').startup(function()
       {'n', 'd<C-X>'},
     }
   }
-  use {
-    'AndrewRadev/splitjoin.vim',
-    opt = true,
-    keys = {
-      {'n', 'gJ'},
-      {'n', 'gS'},
-    }
-  }
+  use { 'AndrewRadev/splitjoin.vim', keys = { 'gJ', 'gS' } }
   use {
     'junegunn/vim-easy-align',
-    opt = true,
     cmd = {'EasyAlign', 'LiveEasyAlign'},
     keys = {
       {'x', 'ga'},
