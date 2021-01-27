@@ -31,13 +31,17 @@ nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
 nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
 nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 
+" We just need this group initialized
+aug user_ftplugin
+aug END
 " Init augroup
 aug init
   au!
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
-  au FileType desktop,systemd setl comments=:# commentstring=#\ %s
+  au FileType desktop setl comments=:# commentstring=#\ %s
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no
+  au FileType terminfo let &l:makeprg = executable('tic') ? 'tic' : &makeprg
 aug END
 " vim:ft=vim fenc=utf-8

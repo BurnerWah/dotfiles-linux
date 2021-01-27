@@ -8,7 +8,9 @@ return require('packer').startup(function()
   -- Packer can manage itself as an optional plugin
   use { 'wbthomason/packer.nvim', opt = true }
 
+  -- Core plugins
   use 'svermeulen/nvim-moonmaker'
+  use 'tjdevries/astronauta.nvim'
 
   -- Completion & Linting
   use 'neovim/nvim-lspconfig'
@@ -46,6 +48,15 @@ return require('packer').startup(function()
           },
         },
       }
+      --[[
+        Enable folding on very simple filetypes
+        If the language would normally have an ftplugin, that's preferable to this.
+        ]]
+      vim.cmd(
+        [[autocmd init FileType ]]..
+        [[ocaml,php,teal,verilog]]..
+        [[ setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()]]
+        )
     end
   }
   use {
@@ -332,7 +343,9 @@ return require('packer').startup(function()
         yaml = 'coc',
       }
       vim.g.vista_ctags_cmd = {
-        go = 'gotags', -- Check if gotags is installed maybe?
+        -- Consider checking for commands before enabling them.
+        go = 'gotags',
+        rst = 'rst2ctags',
       }
     end
   }

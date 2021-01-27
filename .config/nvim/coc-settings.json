@@ -81,7 +81,7 @@
           },
           "diagnostics": {
             "enable": true,
-            "globals": ["vim"],
+            "globals": ["vim", "use"],
             "disable": ["lowercase-global"]
           }
         }
