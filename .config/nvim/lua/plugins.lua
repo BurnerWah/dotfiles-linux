@@ -12,7 +12,8 @@ return require('packer').startup(function()
 
   -- Completion & Linting
   use 'neovim/nvim-lspconfig'
-  use { 'nvim-treesitter/nvim-treesitter',
+  use {
+    'nvim-treesitter/nvim-treesitter',
     requires = {
       { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
       { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
@@ -47,15 +48,15 @@ return require('packer').startup(function()
       }
     end
   }
-  use { 'neoclide/coc.nvim',
+  use {
+    'neoclide/coc.nvim',
     branch = 'release',
     config = function()
       vim.g.coc_filetype_map = {
-        ['catalog'] = 'xml',
-        ['dtd'] = 'xml',
-        ['vimwiki'] = 'markdown',
-        ['smil'] = 'xml',
-        ['xsd'] = 'xml',
+        catalog = 'xml',
+        dtd = 'xml',
+        smil = 'xml',
+        xsd = 'xml',
       }
       --Welcome to keymap hell.
       vim.api.nvim_set_keymap('n', '<leader>hh', [[:call CocActionAsync('doHover')]], {silent = true, noremap = true})
@@ -92,64 +93,64 @@ return require('packer').startup(function()
       vim.g.ale_fix_on_save = true
       vim.g.ale_disable_lsp = true
       vim.g.ale_linters_ignore = {
-        ['asciidoc'] = {'alex', 'languagetool', 'writegood'},
-        ['bats'] = {'shellcheck'},
-        ['c'] = {'cc', 'clangtidy', 'cpplint'},
-        ['cmake'] = {'cmakelint'},
-        ['cpp'] = {'cc', 'clangtidy', 'cpplint'},
-        ['css'] = {'stylelint'},
-        ['dockerfile'] = {'hadolint'},
-        ['elixir'] = {'credo'},
-        ['eruby'] = {'erb'},
-        ['fish'] = {'fish'},
-        ['gitcommit'] = {'gitlint'},
-        ['graphql'] = {'eslint'},
-        ['help'] = {'alex', 'writegood'},
-        ['html'] = {'tidy', 'writegood'},
-        ['javascript'] = {'eslint', 'jshint', 'flow', 'standard', 'xo'},
-        ['json'] = {'jsonlint'},
-        ['jsonc'] = {'jsonlint'},
-        ['less'] = {'stylelint'},
-        ['lua'] = {'luacheck'},
-        ['mail'] = {'alex', 'languagetool'},
-        ['markdown'] = {'languagetool', 'markdownlint', 'writegood'},
-        ['nroff'] = {'alex', 'writegood'},
-        ['objc'] = {'clang'},
-        ['objcpp'] = {'clang'},
-        ['php'] = {'phpcs', 'phpstan'},
-        ['po'] = {'alex', 'writegood'},
-        ['pod'] = {'alex', 'writegood'},
-        ['python'] = {'flake8', 'mypy', 'pylint'},
-        ['rst'] = {'alex', 'rstcheck', 'writegood'},
-        ['rust'] = {'cargo'},
-        ['sass'] = {'stylelint'},
-        ['scss'] = {'stylelint'},
-        ['sh'] = {'shellcheck'},
-        ['stylus'] = {'stylelint'},
-        ['sugarss'] = {'stylelint'},
-        ['teal'] = {'tlcheck'},
-        ['tex'] = {'alex', 'writegood'},
-        ['texinfo'] = {'alex', 'writegood'},
-        ['typescript'] = {'eslint', 'standard', 'tslint', 'xo'},
-        ['vim'] = {'vint'},
-        ['vimwiki'] = {'alex', 'languagetool', 'markdownlint', 'writegood'},
-        ['vue'] = {'eslint'},
-        ['xhtml'] = {'alex', 'writegood'},
-        ['xsd'] = {'xmllint'},
-        ['xml'] = {'xmllint'},
-        ['xslt'] = {'xmllint'},
-        ['yaml'] = {'yamllint'},
-        ['zsh'] = {'shell'},
+        asciidoc = {'alex', 'languagetool', 'writegood'},
+        bats = {'shellcheck'},
+        c = {'cc', 'clangtidy', 'cpplint'},
+        cmake = {'cmakelint'},
+        cpp = {'cc', 'clangtidy', 'cpplint'},
+        css = {'stylelint'},
+        dockerfile = {'hadolint'},
+        elixir = {'credo'},
+        eruby = {'erb'},
+        fish = {'fish'},
+        gitcommit = {'gitlint'},
+        graphql = {'eslint'},
+        help = {'alex', 'writegood'},
+        html = {'tidy', 'writegood'},
+        javascript = {'eslint', 'jshint', 'flow', 'standard', 'xo'},
+        json = {'jsonlint'},
+        jsonc = {'jsonlint'},
+        less = {'stylelint'},
+        lua = {'luacheck'},
+        mail = {'alex', 'languagetool'},
+        markdown = {'languagetool', 'markdownlint', 'writegood'},
+        nroff = {'alex', 'writegood'},
+        objc = {'clang'},
+        objcpp = {'clang'},
+        php = {'phpcs', 'phpstan'},
+        po = {'alex', 'writegood'},
+        pod = {'alex', 'writegood'},
+        python = {'flake8', 'mypy', 'pylint'},
+        rst = {'alex', 'rstcheck', 'writegood'},
+        rust = {'cargo'},
+        sass = {'stylelint'},
+        scss = {'stylelint'},
+        sh = {'shellcheck'},
+        stylus = {'stylelint'},
+        sugarss = {'stylelint'},
+        teal = {'tlcheck'},
+        tex = {'alex', 'writegood'},
+        texinfo = {'alex', 'writegood'},
+        typescript = {'eslint', 'standard', 'tslint', 'xo'},
+        vim = {'vint'},
+        vimwiki = {'alex', 'languagetool', 'markdownlint', 'writegood'},
+        vue = {'eslint'},
+        xhtml = {'alex', 'writegood'},
+        xsd = {'xmllint'},
+        xml = {'xmllint'},
+        xslt = {'xmllint'},
+        yaml = {'yamllint'},
+        zsh = {'shell'},
       }
       vim.g.ale_fixers = {
         ['*'] = {'remove_trailing_lines', 'trim_whitespace'},
-        ['cpp'] = {'clangtidy', 'remove_trailing_lines', 'trim_whitespace'},
-        ['go'] = {'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'},
-        ['html'] = {'tidy', 'remove_trailing_lines', 'trim_whitespace'},
-        ['python'] = {'add_blank_lines_for_python_control_statements', 'reorder-python-imports', 'remove_trailing_lines', 'trim_whitespace'},
-        ['rust'] = {'rustfmt', 'remove_trailing_lines', 'trim_whitespace'},
-        ['sql'] = {'sql-format', 'remove_trailing_lines', 'trim_whitespace'},
-        ['xml'] = {'xmllint'},
+        cpp = {'clangtidy', 'remove_trailing_lines', 'trim_whitespace'},
+        go = {'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'},
+        html = {'tidy', 'remove_trailing_lines', 'trim_whitespace'},
+        python = {'add_blank_lines_for_python_control_statements', 'reorder-python-imports', 'remove_trailing_lines', 'trim_whitespace'},
+        rust = {'rustfmt', 'remove_trailing_lines', 'trim_whitespace'},
+        sql = {'sql-format', 'remove_trailing_lines', 'trim_whitespace'},
+        xml = {'xmllint'},
       }
     end
   }
@@ -179,12 +180,7 @@ return require('packer').startup(function()
 
   -- Markdown
   use { 'npxbr/glow.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd', 'vimwiki' } }
-  use {
-    'iamcco/markdown-preview.nvim',
-    run = 'cd app && yarn install',
-    cmd = 'MarkdownPreview',
-    opt = true
-  }
+  use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' }
 
   -- Python
   use 'vim-python/python-syntax'
@@ -267,6 +263,12 @@ return require('packer').startup(function()
       )
     end
   }
+  use { 'nvim-telescope/telescope-cheat.nvim',
+    requires = {'tami5/sql.nvim'},
+    config = function()
+      require'telescope'.load_extension("cheat")
+    end
+  }
   use 'nvim-telescope/telescope-fzf-writer.nvim'
   use 'nvim-telescope/telescope-symbols.nvim'
   use { 'pwntester/octo.nvim', cmd = 'Octo' }
@@ -276,7 +278,7 @@ return require('packer').startup(function()
     'wfxr/minimap.vim',
     cmd = 'Minimap',
     config = function()
-      vim.g['minimap_block_filetypes'] = {
+      vim.g.minimap_block_filetypes = {
         'ale-fix-suggest',
         'ale-preview-selection',
         'ale-preview',
@@ -301,35 +303,35 @@ return require('packer').startup(function()
     cmd = 'Vista',
     config = function()
       vim.g['vista#renderer#enable_icon'] = 1
-      vim.g['vista_echo_cursor_strategy'] = 'floating_win'
-      vim.g['vista_executive_for'] = {
-        ['apiblueprint'] = 'markdown',
-        ['c'] = 'coc',
-        ['cpp'] = 'coc',
-        ['cuda'] = 'coc',
-        ['css'] = 'coc',
-        ['go'] = 'coc',
-        ['html'] = 'coc',
-        ['javascript'] = 'coc',
-        ['json'] = 'coc',
-        ['jsonc'] = 'coc',
-        ['lua'] = 'coc',
-        ['markdown'] = 'toc',
-        ['objc'] = 'coc',
-        ['objcpp'] = 'coc',
-        ['pandoc'] = 'markdown',
-        ['python'] = 'coc',
-        ['rst'] = 'toc',
-        ['tex'] = 'coc',
-        ['typescript'] = 'coc',
-        ['vala'] = 'coc',
-        ['vim'] = 'coc',
-        ['vimwiki'] = 'markdown',
-        ['xml'] = 'coc',
-        ['yaml'] = 'coc',
+      vim.g.vista_echo_cursor_strategy = 'floating_win'
+      vim.g.vista_executive_for = {
+        apiblueprint = 'markdown',
+        c = 'coc',
+        cpp = 'coc',
+        cuda = 'coc',
+        css = 'coc',
+        go = 'coc',
+        html = 'coc',
+        javascript = 'coc',
+        json = 'coc',
+        jsonc = 'coc',
+        lua = 'coc',
+        markdown = 'toc',
+        objc = 'coc',
+        objcpp = 'coc',
+        pandoc = 'markdown',
+        python = 'coc',
+        rst = 'toc',
+        tex = 'coc',
+        typescript = 'coc',
+        vala = 'coc',
+        vim = 'coc',
+        vimwiki = 'markdown',
+        xml = 'coc',
+        yaml = 'coc',
       }
-      vim.g['vista_ctags_cmd'] = {
-        ['go'] = 'gotags',
+      vim.g.vista_ctags_cmd = {
+        go = 'gotags',
       }
     end
   }
@@ -340,11 +342,7 @@ return require('packer').startup(function()
       require('gitsigns').setup()
     end
   }
-  use {
-    'rhysd/git-messenger.vim',
-    cmd = 'GitMessenger',
-    keys = {{'n', '<leader>gm'}}
-  }
+  use { 'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<leader>gm'}} }
   use 'f-person/git-blame.nvim'
   use {
     'norcalli/nvim-colorizer.lua',
@@ -359,11 +357,7 @@ return require('packer').startup(function()
       }
     end
   }
-  use {
-    'meain/vim-package-info',
-    ft = {'json', 'requirements', 'toml'},
-    run = 'npm install'
-  }
+  use { 'meain/vim-package-info', ft = {'json', 'requirements', 'toml'}, run = 'npm i' }
   use {
     'kyazdani42/nvim-tree.lua',
     requires = {'kyazdani42/nvim-web-devicons'},
@@ -386,13 +380,13 @@ return require('packer').startup(function()
       vim.g['airline#extensions#vista#enabled'] = 0
       vim.g['airline#extensions#tabline#enabled'] = 1
       vim.g.airline_filetype_overrides = {
-        ['LuaTree'] = {'LuaTree', ''},
-        ['minimap'] = {'Map', ''},
-        ['todoist'] = {'Todoist', ''},
-        ['tsplayground'] = {'Tree-Sitter Playground', ''},
-        ['vista'] = {'Vista', ''},
-        ['vista_kind'] = {'Vista', ''},
-        ['vista_markdown'] = {'Vista', ''},
+        LuaTree = {'LuaTree', ''},
+        minimap = {'Map', ''},
+        todoist = {'Todoist', ''},
+        tsplayground = {'Tree-Sitter Playground', ''},
+        vista = {'Vista', ''},
+        vista_kind = {'Vista', ''},
+        vista_markdown = {'Vista', ''},
       }
     end
   }
@@ -418,14 +412,29 @@ return require('packer').startup(function()
     config = function()
       vim.g.vimwiki_list = {
         {
-          ['path'] = '~/Documents/VimWiki',
-          ['nested_syntaxes'] = {
+          path = '~/Documents/VimWiki',
+          nested_syntaxes = {
             ['c++'] = 'cpp',
           }
         }
       }
       vim.g.vimwiki_folding = 'expr'
       vim.g.vimwiki_listsyms = '✗○◐●✓'
+      vim.g.vimwiki_global_ext = 0
+    end
+  }
+  use {
+    'oberblastmeister/neuron.nvim',
+    -- This will probably replace vimwiki at some point
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require'neuron'.setup {
+        virtual_titles = true,
+        mappings = true,
+        run = nil,
+        neuron_dir = "~/Documents/Neuron",
+        leader = "gz",
+      }
     end
   }
   use {
@@ -470,10 +479,9 @@ return require('packer').startup(function()
     'romgrk/todoist.nvim',
     cmd = 'Todoist',
     run = 'npm i',
-    opt = true,
     config = function()
-      vim.g['todoist'] = {
-        ['icons'] = {
+      vim.g.todoist = {
+        icons = {
           ['unchecked'] = '  ',
           ['checked'] = '  ',
           ['loading'] = '  ',
@@ -497,14 +505,10 @@ return require('packer').startup(function()
     cmd = { 'Abolish', 'Subvert', 'S' },
     keys = {{'n', 'cr'}},
     config = function()
-      vim.g['abolish_save_file'] = vim.fn.stdpath('config') .. '/after/plugin/abolish.vim'
+      vim.g.abolish_save_file = vim.fn.stdpath('config') .. '/after/plugin/abolish.vim'
     end
   }
-  use {
-    'tpope/vim-commentary',
-    cmd = 'Commentary',
-    keys = { 'gc', {'n', 'gcc'}, {'n', 'gcu'} }
-  }
+  use { 'tpope/vim-commentary', cmd = 'Commentary', keys = { 'gc', {'n', 'gcc'}, {'n', 'gcu'} } }
   use {
     'tpope/vim-surround',
     keys = {
@@ -524,7 +528,8 @@ return require('packer').startup(function()
     }
   }
   use {
-    'tpope/vim-speeddating',
+    'monaqa/dial.nvim',
+    -- Replaces speeddating
     keys = {
       {'n', '<C-A>'},
       {'n', '<C-X>'},
@@ -532,16 +537,21 @@ return require('packer').startup(function()
       {'x', '<C-X>'},
       {'n', 'd<C-A>'},
       {'n', 'd<C-X>'},
-    }
+    },
+    config = function()
+      vim.api.nvim_set_keymap('n', '<C-a>', '<Plug>(dial-increment)', {})
+      vim.api.nvim_set_keymap('n', '<C-x>', '<Plug>(dial-decrement)', {})
+      vim.api.nvim_set_keymap('v', '<C-a>', '<Plug>(dial-increment)', {})
+      vim.api.nvim_set_keymap('v', '<C-x>', '<Plug>(dial-decrement)', {})
+      vim.api.nvim_set_keymap('v', 'g<C-a>', '<Plug>(dial-increment)', {})
+      vim.api.nvim_set_keymap('v', 'g<C-x>', '<Plug>(dial-decrement)', {})
+    end
   }
   use { 'AndrewRadev/splitjoin.vim', keys = { 'gJ', 'gS' } }
   use {
     'junegunn/vim-easy-align',
-    cmd = {'EasyAlign', 'LiveEasyAlign'},
-    keys = {
-      {'x', 'ga'},
-      {'n', 'ga'},
-    },
+    cmd = { 'EasyAlign', 'LiveEasyAlign' },
+    keys = { {'x', 'ga'}, {'n', 'ga'} },
     config = function()
       vim.api.nvim_set_keymap('x', 'ga', '<Plug>(LiveEasyAlign)', { noremap = false, silent = false })
       vim.api.nvim_set_keymap('n', 'ga', '<Plug>(EasyAlign)', { noremap = false, silent = false })

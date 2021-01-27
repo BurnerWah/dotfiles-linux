@@ -12,6 +12,7 @@
 [alias]
 	# aliases
 	aliases = config --get-regexp alias
+	graph = !ogl # https://github.com/onilton/ogl
 
 [blame]
 	coloring = highlightRecent
