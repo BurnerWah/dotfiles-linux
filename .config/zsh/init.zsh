@@ -19,20 +19,6 @@ zmodload -aF zsh/zpty       b:zpty
 zmodload -aF zsh/zselect    b:zselect
 zmodload -aF zsh/mapfile    p:mapfile
 
-zmodload -aF zsh/curses \
-  b:zcurses \
-  p:zcurses_{attrs,colors,keycodes,windows} p:ZCURSES_{COLORS,COLOR_PAIRS}
-zmodload -aF zsh/datetime \
-  b:strftime p:EPOCH{SECONDS,REALTIME} \
-  p:epochtime
-zmodload -aF zsh/pcre \
-  b:pcre_{compile,match,study} \
-  C:pcre-match
-zmodload -aF zsh/system \
-  b:sys{error,read,write,open,seek} b:zsystem \
-  f:systell \
-  p:errnos p:sysparams
-
 [[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
 # nearcolor fixes colors but it's not always present or needed
 
@@ -76,25 +62,15 @@ autoload -Uz zmathfunc && zmathfunc
 
 # Completion system {{{1
 autoload -Uz compinit && {
-  [[ -n $ZDOTDIR/.zcompdump(#qN.mh+24) ]] && compinit || compinit -C
+  [[ -n $ZDOTDIR/.zcompdump(#qN.mh+168) ]] && compinit || compinit -C
 }
 
 # Compdefs {{{2
 noglob compdef _cmp  -P [blx]#zcmp
 noglob compdef _diff -P [blx]#zdiff
 noglob compdef _less -P [blx]#zless
-compdef _make {color,cl}make{,-short}
 compdef _xz pxz=xz
 compdef _update-alternatives alternatives
-noglob compdef _gnu_generic -P {g,gdk,gjs,glib,gst,gtk{[34],doc}#}-*
-compdef _gnu_generic \
-  daty ml.prevete.Daty \
-  ffaudioconverter com.github.Bleuzen.FFaudioConverter \
-  file \
-  gjs gjs-console \
-  picard org.musicbrainz.Picard \
-  sysprof sysprof-cli \
-  update-desktop-database
 
 # 2}}}
 
@@ -107,15 +83,13 @@ zstyle ':completion:*' cache-path "$HOME/.cache/zsh/"
 # Place completion cache in standard folder
 zstyle ':completion:*' completer _complete _match _correct _approximate
 zstyle ':completion:*:match:*' original only
-zstyle -e ':completion:*:approximate:*' max-errors \
-  'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list \
-  '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' use-compctl false
@@ -128,9 +102,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:commands' ignored-patterns \
   'cargo-*' 'git-*'
 
-zstyle ':completion:*:functions' ignored-patterns \
-  '-*' ':chroma/*' '_zsh_(autosuggest|highlight)_*' '_#history?substring[-_]*' \
-  '_#p(|owerlevel)<->k(|_*)' '_#gitstatus_*' 'prompt_*' 'zsh_math_func_*'
+zstyle ':completion:*:functions' ignored-patterns '-*' ':chroma/*' '_*' 'prompt_*' 'zsh_math_func_*'
 
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.1' ignored-patterns \
@@ -185,26 +157,12 @@ zstyle ':completion:*:git*:*' menu selection
   zstyle ':completion:*:git:*' user-commands ${${${(M)${(k)commands}:#git-*}/git-/}:|remove}
 }
 
-zstyle ':completion:*:git*:*:commits' list-colors \
-  '=(#b)([0-9a-f]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
-# Regex: /([0-9a-f]+)  -- \[.*?\]/
-zstyle ':completion:*:git*:*:heads(|-remote|-local)' list-colors \
-  '=(#b)([[:ascii:]]##)*=0=0;35'
-# Regex: /(\S+)/
-# Yes, that really is the regex equivalent of this shit. The entire thing is
-# just 5 fucking characters. Hell, if you know how to use regex you probably
-# don't even need to look up what a single one of them does. You just know that
-# \S is the inverse of \s, and that just covers whitespace. Even if you didn't
-# know that, you might be able to figure out that the '+' means "1 or more".
-# Well guess what? In zsh you have to use the actual names of character
-# classes, and the "at least 1" quantifier is '##' which makes total sense
-# because '#' is zero or more and '###' is a nonsense statement.
+zstyle ':completion:*:git*:*:commits' list-colors '=(#b)([0-9a-f]#)  -- \[([^\]]#)\]*=0=01;33=00;34'
+zstyle ':completion:*:git*:*:heads(|-remote|-local)' list-colors '=(#b)([[:ascii:]]##)*=0=0;35'
 
 zstyle ':completion:*:git-add:*:*-files' menu interactive
 
-zstyle ':completion:*:kill:*:processes' list-colors \
-  '=(#b) #([0-9]#) #([0-9]#.[0-9]#)*=0=01;31=01;32'
-# Regex: /(\d+) *(\d*\.\d*)/
+zstyle ':completion:*:kill:*:processes' list-colors '=(#b) #([0-9]#) #([0-9]#.[0-9]#)*=0=01;31=01;32'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 zstyle ':completion:*:rm:*' file-patterns '*:all-files'
@@ -234,8 +192,6 @@ zrecompile $ZDOTDIR/.p10k.zsh; source $ZDOTDIR/.p10k.zsh
 
 
 # Settings {{{1
-zstyle ':ztodo:*'    cache-file ~/.local/share/zsh/ztodolist
-zstyle ':stick-note' notefile ~/.local/share/zsh/zsticky
 zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
 
 
@@ -254,22 +210,15 @@ zstyle ':chpwd:*'    recent-dirs-file ~/.local/share/zsh/chpwd-recent-dirs
     source $plugin_dir/**/$plugin.zsh
   done
 }
-# if (( $+commands[z.lua] )) eval "$(z.lua --init zsh enhanced once)"
 if (( $+commands[zoxide] )) eval "$(zoxide init zsh)"
-if (( $+commands[direnv] )) eval "$(direnv hook zsh)"
 if (( $+commands[broot] )) eval "$(broot --print-shell-function zsh)"
-#autoload -Uz abbrev-alias && abbrev-alias --init
 
 
 # Autoloads {{{1
-autoload -Uz zcalc
-autoload -Uz run-help run-help-{dnf,git,ip,openssl,p4,sudo,svk,svn}
+autoload -Uz zcalc run-help run-help-{dnf,git,ip,openssl,p4,sudo,svk,svn} silent
 unalias run-help
 alias help=run-help
 autoload -Uz zshTimedRehash && zshTimedRehash # Runs rehash every ten minutes
-autoload -Uz harden # convert a symbolic link to a file
-autoload -Uz silent # run program in background
-
 
 # }}}
 
@@ -279,18 +228,5 @@ source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/ZLE.zsh
 
 if [[ "$options[interactive]" == on ]] source $ZDOTDIR/var_hider.zsh
-
-# User dirs
-# this is no longer used
-# local -Hhr \
-#   cargo=~/.local/lib64/cargo \
-#   flatpak=/var/lib/flatpak \
-#   golang=~/.local/lib64/golang \
-#   lutris=~/.local/share/lutris \
-#   retroarch=~/.var/app/org.libretro.RetroArch/config/retroarch \
-#   steam=~/.local/share/Steam \
-#   zealdocs=~/.var/app/org.zealdocs.Zeal/data/Zeal/Zeal/docsets
-
-# : ~cargo ~flatpak ~golang ~lutris ~retroarch ~steam ~zealdocs
 
 # vim:ft=zsh fdm=marker

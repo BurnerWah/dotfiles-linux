@@ -1,6 +1,0 @@
-#autoload
-# vim:fileencoding=utf-8:ft=zsh:foldmethod=indent:foldlevel=1
-local FUCK="$(THEFUCK_REQUIRE_CONFIRMATION=0 thefuck $(fc -ln -1 | tail -n 1) 2> /dev/null)"
-[[ -z $FUCK ]] && echo -n -e "\a" && return
-BUFFER=$FUCK
-zle end-of-line
