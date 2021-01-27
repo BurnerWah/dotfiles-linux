@@ -42,7 +42,7 @@ return require('packer').startup(function()
           highlight_current_scope = { enable = true },
           smart_rename = {
             enable = true,
-            keymaps = { smart_rename = 'grr', }
+            keymaps = { smart_rename = 'grr' }
           },
         },
       }
@@ -59,13 +59,16 @@ return require('packer').startup(function()
         xsd = 'xml',
       }
       --Welcome to keymap hell.
-      vim.api.nvim_set_keymap('n', '<leader>hh', [[:call CocActionAsync('doHover')]], {silent = true, noremap = true})
-      vim.api.nvim_set_keymap('n', '[g', '<Plug>(coc-diagnostic-prev)', {silent = true})
-      vim.api.nvim_set_keymap('n', ']g', '<Plug>(coc-diagnostic-next)', {silent = true})
-      vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', {silent = true})
-      vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', {silent = true})
-      vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', {silent = true})
-      vim.api.nvim_set_keymap('n', 'gr', '<Plug>(coc-references)', {silent = true})
+      vim.api.nvim_set_keymap(
+        'n', '<leader>hh', [[<cmd>call CocActionAsync('doHover')]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap('n', '[g', '<Plug>(coc-diagnostic-prev)', { silent = true })
+      vim.api.nvim_set_keymap('n', ']g', '<Plug>(coc-diagnostic-next)', { silent = true })
+      vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { silent = true })
+      vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', { silent = true })
+      vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', { silent = true })
+      vim.api.nvim_set_keymap('n', 'gr', '<Plug>(coc-references)', { silent = true })
       vim.api.nvim_set_keymap('n', '<leader>rn', '<Plug>(coc-rename)', {})
       vim.api.nvim_set_keymap('x', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
       vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
@@ -79,12 +82,13 @@ return require('packer').startup(function()
       vim.api.nvim_set_keymap('o', 'ic', '<Plug>(coc-classobj-i)', {})
       vim.api.nvim_set_keymap('x', 'ac', '<Plug>(coc-classobj-a)', {})
       vim.api.nvim_set_keymap('o', 'ac', '<Plug>(coc-classobj-a)', {})
-      vim.api.nvim_set_keymap('n', '<C-d>', '<Plug>(coc-range-select)', {silent = true})
-      vim.api.nvim_set_keymap('x', '<C-d>', '<Plug>(coc-range-select)', {silent = true})
+      vim.api.nvim_set_keymap('n', '<C-d>', '<Plug>(coc-range-select)', { silent = true })
+      vim.api.nvim_set_keymap('x', '<C-d>', '<Plug>(coc-range-select)', { silent = true })
       vim.api.nvim_set_keymap('n', '<leader>x', '<Plug>(coc-cursors-operator)', {})
       vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
+      vim.cmd [[autocmd init FileType list setl nospell]]
     end
   }
   use {
@@ -93,64 +97,73 @@ return require('packer').startup(function()
       vim.g.ale_fix_on_save = true
       vim.g.ale_disable_lsp = true
       vim.g.ale_linters_ignore = {
-        asciidoc = {'alex', 'languagetool', 'writegood'},
-        bats = {'shellcheck'},
-        c = {'cc', 'clangtidy', 'cpplint'},
-        cmake = {'cmakelint'},
-        cpp = {'cc', 'clangtidy', 'cpplint'},
-        css = {'stylelint'},
-        dockerfile = {'hadolint'},
-        elixir = {'credo'},
-        eruby = {'erb'},
-        fish = {'fish'},
-        gitcommit = {'gitlint'},
-        graphql = {'eslint'},
-        help = {'alex', 'writegood'},
-        html = {'tidy', 'writegood'},
-        javascript = {'eslint', 'jshint', 'flow', 'standard', 'xo'},
-        json = {'jsonlint'},
-        jsonc = {'jsonlint'},
-        less = {'stylelint'},
-        lua = {'luacheck'},
-        mail = {'alex', 'languagetool'},
-        markdown = {'languagetool', 'markdownlint', 'writegood'},
-        nroff = {'alex', 'writegood'},
-        objc = {'clang'},
-        objcpp = {'clang'},
-        php = {'phpcs', 'phpstan'},
-        po = {'alex', 'writegood'},
-        pod = {'alex', 'writegood'},
-        python = {'flake8', 'mypy', 'pylint'},
-        rst = {'alex', 'rstcheck', 'writegood'},
-        rust = {'cargo'},
-        sass = {'stylelint'},
-        scss = {'stylelint'},
-        sh = {'shellcheck'},
-        stylus = {'stylelint'},
-        sugarss = {'stylelint'},
-        teal = {'tlcheck'},
-        tex = {'alex', 'writegood'},
-        texinfo = {'alex', 'writegood'},
-        typescript = {'eslint', 'standard', 'tslint', 'xo'},
-        vim = {'vint'},
-        vimwiki = {'alex', 'languagetool', 'markdownlint', 'writegood'},
-        vue = {'eslint'},
-        xhtml = {'alex', 'writegood'},
-        xsd = {'xmllint'},
-        xml = {'xmllint'},
-        xslt = {'xmllint'},
-        yaml = {'yamllint'},
-        zsh = {'shell'},
+        --[[
+          I'm using this to disable linters that should not be handled by ALE.
+          That includes stuff handled by another plugin, and stuff that isn't helpful.
+        ]]
+        asciidoc = { 'alex', 'languagetool', 'writegood' },
+        bats = { 'shellcheck' },
+        c = { 'cc', 'clangtidy', 'cpplint' },
+        cmake = { 'cmakelint' },
+        cpp = { 'cc', 'clangtidy', 'cpplint' },
+        css = { 'stylelint' },
+        dockerfile = { 'hadolint' },
+        elixir = { 'credo' },
+        eruby = { 'erb' },
+        fish = { 'fish' },
+        gitcommit = { 'gitlint' },
+        graphql = { 'eslint' },
+        help = { 'alex', 'writegood' },
+        html = { 'tidy', 'writegood' },
+        javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' },
+        json = { 'jsonlint' },
+        jsonc = { 'jsonlint' },
+        less = { 'stylelint' },
+        lua = { 'luacheck' },
+        mail = { 'alex', 'languagetool' },
+        markdown = { 'languagetool', 'markdownlint', 'writegood' },
+        nroff = { 'alex', 'writegood' },
+        objc = { 'clang' },
+        objcpp = { 'clang' },
+        php = { 'phpcs', 'phpstan' },
+        po = { 'alex', 'writegood' },
+        pod = { 'alex', 'writegood' },
+        python = { 'flake8', 'mypy', 'pylint' },
+        rst = { 'alex', 'rstcheck', 'writegood' },
+        rust = { 'cargo' },
+        sass = { 'stylelint' },
+        scss = { 'stylelint' },
+        sh = { 'shellcheck' },
+        stylus = { 'stylelint' },
+        sugarss = { 'stylelint' },
+        teal = { 'tlcheck' },
+        tex = { 'alex', 'writegood' },
+        texinfo = { 'alex', 'writegood' },
+        typescript = { 'eslint', 'standard', 'tslint', 'xo' },
+        vim = { 'vint' },
+        vimwiki = { 'alex', 'languagetool', 'markdownlint', 'mdl', 'remark-lint', 'writegood' },
+        vue = { 'eslint' },
+        xhtml = { 'alex', 'writegood' },
+        xsd = { 'xmllint' },
+        xml = { 'xmllint' },
+        xslt = { 'xmllint' },
+        yaml = { 'yamllint' },
+        zsh = { 'shell' },
       }
       vim.g.ale_fixers = {
-        ['*'] = {'remove_trailing_lines', 'trim_whitespace'},
-        cpp = {'clangtidy', 'remove_trailing_lines', 'trim_whitespace'},
-        go = {'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace'},
-        html = {'tidy', 'remove_trailing_lines', 'trim_whitespace'},
-        python = {'add_blank_lines_for_python_control_statements', 'reorder-python-imports', 'remove_trailing_lines', 'trim_whitespace'},
-        rust = {'rustfmt', 'remove_trailing_lines', 'trim_whitespace'},
-        sql = {'sql-format', 'remove_trailing_lines', 'trim_whitespace'},
-        xml = {'xmllint'},
+        ['*'] = { 'remove_trailing_lines', 'trim_whitespace' },
+        cpp = { 'clangtidy', 'remove_trailing_lines', 'trim_whitespace' },
+        go = { 'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace' },
+        html = { 'tidy', 'remove_trailing_lines', 'trim_whitespace' },
+        python = {
+          'add_blank_lines_for_python_control_statements',
+          'reorder-python-imports',
+          'remove_trailing_lines',
+          'trim_whitespace',
+        },
+        rust = { 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' },
+        sql = { 'sql-format', 'remove_trailing_lines', 'trim_whitespace' },
+        xml = { 'xmllint' },
       }
     end
   }
@@ -169,17 +182,17 @@ return require('packer').startup(function()
   use { 'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim' }
 
   -- CXX
-  use { 'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'} }
+  use { 'jackguo380/vim-lsp-cxx-highlight', ft = { 'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda' } }
 
   -- Lua
   use 'euclidianAce/BetterLua.vim'
   use 'tjdevries/manillua.nvim'
   use 'tjdevries/nlua.nvim'
   use { 'bfredl/nvim-luadev', cmd = 'Luadev' }
-  use { 'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'} }
+  use { 'rafcamlet/nvim-luapad', cmd = { 'Lua', 'Luapad', 'LuaRun' } }
 
   -- Markdown
-  use { 'npxbr/glow.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd', 'vimwiki' } }
+  use { 'npxbr/glow.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd' } }
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' }
 
   -- Python
@@ -191,87 +204,74 @@ return require('packer').startup(function()
 
   -- Telescope
   use {
-    'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'} },
-    config = function()
-      vim.api.nvim_set_keymap(
-        'n',
-        '<leader>ff',
-        ":lua require('telescope.builtin').find_files()<cr>",
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n',
-        '<leader>fg',
-        ":lua require('telescope.builtin').live_grep()<cr>",
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n',
-        '<leader>fb',
-        ":lua require('telescope.builtin').buffers()<cr>",
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n',
-        '<leader>fh',
-        ":lua require('telescope.builtin').help_tags()<cr>",
-        { noremap = true, silent = true }
-      )
-    end
+    {
+      'nvim-telescope/telescope.nvim',
+      requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
+      config = function()
+        vim.api.nvim_set_keymap(
+          'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]],
+          { noremap = true, silent = true }
+        )
+        vim.api.nvim_set_keymap(
+          'n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]],
+          { noremap = true, silent = true }
+        )
+      end
+    },
+    {
+      'nvim-telescope/telescope-github.nvim',
+      config = function() require'telescope'.load_extension('gh') end
+    },
+    {
+      'nvim-telescope/telescope-fzy-native.nvim',
+      config = function() require'telescope'.load_extension('fzy_native') end
+    },
+    {
+      'nvim-telescope/telescope-project.nvim',
+      config = function()
+        require'telescope'.load_extension('project')
+        vim.api.nvim_set_keymap(
+          'n',
+          '<C-p>',
+          [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
+          { noremap = true, silent = true }
+        )
+      end
+    },
+    {
+      'nvim-telescope/telescope-packer.nvim',
+      config = function() require'telescope'.load_extension('packer') end
+    },
+    {
+      'nvim-telescope/telescope-frecency.nvim',
+      requires = {'tami5/sql.nvim'},
+      config = function()
+        require'telescope'.load_extension('frecency')
+        vim.api.nvim_set_keymap(
+          'n',
+          '<leader><leader>',
+          [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
+          { noremap = true, silent = true }
+        )
+      end
+    },
+    {
+      'nvim-telescope/telescope-cheat.nvim',
+      requires = { 'tami5/sql.nvim' },
+      config = function() require'telescope'.load_extension('cheat') end
+    },
+    { 'nvim-telescope/telescope-fzf-writer.nvim' },
+    { 'nvim-telescope/telescope-symbols.nvim' },
+    { 'pwntester/octo.nvim', cmd = 'Octo' }
   }
-  use {
-    'nvim-telescope/telescope-github.nvim',
-    config = function()
-      require('telescope').load_extension('gh')
-    end
-  }
-  use {
-    'nvim-telescope/telescope-fzy-native.nvim',
-    config = function()
-      require('telescope').load_extension('fzy_native')
-    end
-  }
-  use {
-    'nvim-telescope/telescope-project.nvim',
-    config = function()
-      require('telescope').load_extension('project')
-      vim.api.nvim_set_keymap(
-        'n',
-        '<C-p>',
-        ":lua require'telescope'.extensions.project.project{}<CR>",
-        { noremap = true, silent = true }
-      )
-    end
-  }
-  use {
-    'nvim-telescope/telescope-packer.nvim',
-    config = function()
-      require('telescope').load_extension('packer')
-    end
-  }
-  use {
-    'nvim-telescope/telescope-frecency.nvim',
-    requires = {'tami5/sql.nvim'},
-    config = function()
-      require'telescope'.load_extension('frecency')
-      vim.api.nvim_set_keymap(
-        'n',
-        '<leader><leader>',
-        "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>",
-        { noremap = true, silent = true }
-      )
-    end
-  }
-  use { 'nvim-telescope/telescope-cheat.nvim',
-    requires = {'tami5/sql.nvim'},
-    config = function()
-      require'telescope'.load_extension("cheat")
-    end
-  }
-  use 'nvim-telescope/telescope-fzf-writer.nvim'
-  use 'nvim-telescope/telescope-symbols.nvim'
-  use { 'pwntester/octo.nvim', cmd = 'Octo' }
 
   -- User interface
   use {
@@ -300,6 +300,7 @@ return require('packer').startup(function()
   }
   use {
     'liuchengxu/vista.vim',
+    -- Table of contents & symbol tree
     cmd = 'Vista',
     config = function()
       vim.g['vista#renderer#enable_icon'] = 1
@@ -331,22 +332,28 @@ return require('packer').startup(function()
         yaml = 'coc',
       }
       vim.g.vista_ctags_cmd = {
-        go = 'gotags',
+        go = 'gotags', -- Check if gotags is installed maybe?
       }
     end
   }
   use {
     'lewis6991/gitsigns.nvim',
-    requires = {'nvim-lua/plenary.nvim'},
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function() require'gitsigns'.setup() end
+  }
+  use {
+    'rhysd/git-messenger.vim',
+    cmd = 'GitMessenger',
+    keys = { {'n', '<leader>gm'} },
     config = function()
-      require('gitsigns').setup()
+      vim.cmd [[autocmd init FileType gitmessengerpopup setl winblend=10]]
     end
   }
-  use { 'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<leader>gm'}} }
   use 'f-person/git-blame.nvim'
   use {
     'norcalli/nvim-colorizer.lua',
-    ft = {'css', 'kitty', 'less', 'lua', 'vim'},
+    -- Highlights color codes with the actual color
+    ft = { 'css', 'kitty', 'less', 'lua', 'vim' },
     config = function()
       require'colorizer'.setup {
         'kitty',
@@ -360,11 +367,16 @@ return require('packer').startup(function()
   use { 'meain/vim-package-info', ft = {'json', 'requirements', 'toml'}, run = 'npm i' }
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = {'kyazdani42/nvim-web-devicons'},
-    cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'}
+    requires = { 'kyazdani42/nvim-web-devicons' },
+    cmd = { 'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile' }
   }
   use {
     'vim-airline/vim-airline',
+    --[[
+      Bottom & Tabline plugin
+      This will be replaced at some point, but it'll take a while to do so.
+      Some extensions have to be disabled to mitigate how it sets up lazy loading.
+    ]]
     requires = {
       'vim-airline/vim-airline-themes',
       'tyrannicaltoucan/vim-quantum',
@@ -375,26 +387,28 @@ return require('packer').startup(function()
       vim.g.airline_detect_spelllang = false
       vim.g.airline_detect_crypt = false
       vim.g.airline_skip_empty_sections = 1
-      -- vim.g.airline_symbols['dirty'] = ' '
+      vim.g.airline_symbols = {
+        -- Stupid way to fix bad icon on my system
+        dirty = ' ',
+      }
       vim.g['airline#parts#ffenc#skip_expected_string'] = 'utf-8[unix]'
-      vim.g['airline#extensions#vista#enabled'] = 0
-      vim.g['airline#extensions#tabline#enabled'] = 1
+      vim.g['airline#extensions#vista#enabled'] = 0 -- Deals with Vista's lazy loader
+      vim.g['airline#extensions#tabline#enabled'] = 1 -- Enable tabline
       vim.g.airline_filetype_overrides = {
-        LuaTree = {'LuaTree', ''},
-        minimap = {'Map', ''},
-        todoist = {'Todoist', ''},
-        tsplayground = {'Tree-Sitter Playground', ''},
-        vista = {'Vista', ''},
-        vista_kind = {'Vista', ''},
-        vista_markdown = {'Vista', ''},
+        LuaTree = { 'LuaTree', '' },
+        minimap = { 'Map', '' },
+        todoist = { 'Todoist', '' },
+        tsplayground = { 'Tree-Sitter Playground', '' },
+        vista = { 'Vista', '' },
+        vista_kind = { 'Vista', '' },
+        vista_markdown = { 'Vista', '' },
       }
     end
   }
   use {
     'tjdevries/colorbuddy.nvim',
-    config = function()
-      require('colorbuddy').colorscheme('user_colors')
-    end
+    -- Lua color scheme engine
+    config = function() require('colorbuddy').colorscheme('user_colors') end
   }
 
   -- Utilities
@@ -403,12 +417,18 @@ return require('packer').startup(function()
   use 'farmergreg/vim-lastplace'
   use {
     'lukas-reineke/format.nvim',
+    --[[
+      Formatting utility
+      This will likely replace some of ALE's functionality at some point.
+    ]]
     config = function()
+      -- TODO configure this
       vim.cmd [[autocmd init BufWritePost * FormatWrite]]
     end
   }
   use {
     'vimwiki/vimwiki',
+    -- Note-taking engine
     config = function()
       vim.g.vimwiki_list = {
         {
@@ -425,23 +445,29 @@ return require('packer').startup(function()
   }
   use {
     'oberblastmeister/neuron.nvim',
-    -- This will probably replace vimwiki at some point
+    --[[
+      Neuron-based note-taking engine
+      This will probably replace vimwiki at some point.
+      Currently it doesn't work for me though, since the neuron binary crashes on my system.
+    ]]
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
       require'neuron'.setup {
         virtual_titles = true,
         mappings = true,
         run = nil,
-        neuron_dir = "~/Documents/Neuron",
-        leader = "gz",
+        neuron_dir = '~/Documents/Neuron',
+        leader = 'gz',
       }
     end
   }
   use {
     'hkupty/iron.nvim',
+    -- TODO implement a lazy loader
     config = function()
       local iron = require('iron')
 
+      -- Add extra REPLs
       iron.core.add_repl_definitions {
         fennel = { fennel = { command = { 'fennel', '--repl' }}},
         fish   = { fish   = { command = { 'fish' }}},
@@ -466,6 +492,7 @@ return require('packer').startup(function()
   -- Integration
   use {
     'editorconfig/editorconfig-vim',
+    -- Editorconfig support
     config = function()
       vim.g.EditorConfig_exclude_patterns = {
         [[fugitive://.\*]],
@@ -477,15 +504,16 @@ return require('packer').startup(function()
   }
   use {
     'romgrk/todoist.nvim',
+    -- This isn't all that important tbh
     cmd = 'Todoist',
     run = 'npm i',
     config = function()
       vim.g.todoist = {
         icons = {
-          ['unchecked'] = '  ',
-          ['checked'] = '  ',
-          ['loading'] = '  ',
-          ['error'] = '  ',
+          unchecked = '  ',
+          checked = '  ',
+          loading = '  ',
+          error = '  ',
         }
       }
     end
@@ -496,9 +524,7 @@ return require('packer').startup(function()
   use 'tpope/vim-endwise'
   use {
     'windwp/nvim-autopairs',
-    config = function()
-      require('nvim-autopairs').setup()
-    end
+    config = function() require'nvim-autopairs'.setup() end
   }
   use {
     'tpope/vim-abolish',
@@ -530,14 +556,7 @@ return require('packer').startup(function()
   use {
     'monaqa/dial.nvim',
     -- Replaces speeddating
-    keys = {
-      {'n', '<C-A>'},
-      {'n', '<C-X>'},
-      {'x', '<C-A>'},
-      {'x', '<C-X>'},
-      {'n', 'd<C-A>'},
-      {'n', 'd<C-X>'},
-    },
+    keys = { '<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'} },
     config = function()
       vim.api.nvim_set_keymap('n', '<C-a>', '<Plug>(dial-increment)', {})
       vim.api.nvim_set_keymap('n', '<C-x>', '<Plug>(dial-decrement)', {})
@@ -553,8 +572,8 @@ return require('packer').startup(function()
     cmd = { 'EasyAlign', 'LiveEasyAlign' },
     keys = { {'x', 'ga'}, {'n', 'ga'} },
     config = function()
-      vim.api.nvim_set_keymap('x', 'ga', '<Plug>(LiveEasyAlign)', { noremap = false, silent = false })
-      vim.api.nvim_set_keymap('n', 'ga', '<Plug>(EasyAlign)', { noremap = false, silent = false })
+      vim.api.nvim_set_keymap('x', 'ga', '<Plug>(LiveEasyAlign)', {})
+      vim.api.nvim_set_keymap('n', 'ga', '<Plug>(EasyAlign)', {})
     end
   }
 end)

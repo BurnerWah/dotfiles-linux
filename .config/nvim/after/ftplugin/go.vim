@@ -11,10 +11,6 @@ if exists('did_coc_loaded')
   nn   <buffer> <silent> K :call CocActionAsync('doHover')<CR>
 endif
 
-" if exists('vista_ctags_cmd') && executable('gotags')
-"   let vista_ctags_cmd['go'] = get(g:vista_ctags_cmd, 'go', 'gotags')
-" endif
-
 " augroup
 aug user_ftplugin
   au! * <buffer>

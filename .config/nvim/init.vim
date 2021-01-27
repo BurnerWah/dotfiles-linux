@@ -92,8 +92,8 @@ nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 " Init augroup
 aug init
   au!
-  au FileType list setl nospell
-  au FileType gitmessengerpopup setl winblend=10
+  " au FileType list setl nospell
+  " au FileType gitmessengerpopup setl winblend=10
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
 aug END
