@@ -69,7 +69,24 @@
       "args": ["up"],
       "filetypes": ["sql"]
     },
-    "sumneko_lua": { "command": "lua-language-server", "filetypes": ["lua"] },
+    "sumneko_lua": {
+      "command": "lua-language-server",
+      "filetypes": ["lua"],
+      "settings": {
+        "Lua": {
+          "workspace": {
+            "library": {
+              "/usr/share/nvim/runtime/lua": true
+            }
+          },
+          "diagnostics": {
+            "enable": true,
+            "globals": ["vim"],
+            "disable": ["lowercase-global"]
+          }
+        }
+      }
+    },
     "lua": { "command": "lua-lsp", "filetypes": ["lua-DISABLED"] }
   },
   "coc.preferences.extensionUpdateCheck": "never",

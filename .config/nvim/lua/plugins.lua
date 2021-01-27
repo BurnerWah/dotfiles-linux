@@ -88,7 +88,7 @@ return require('packer').startup(function()
       vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
-      vim.cmd [[autocmd init FileType list setl nospell]]
+      vim.cmd [[autocmd init FileType list setlocal nospell]]
     end
   }
   use {
@@ -346,7 +346,7 @@ return require('packer').startup(function()
     cmd = 'GitMessenger',
     keys = { {'n', '<leader>gm'} },
     config = function()
-      vim.cmd [[autocmd init FileType gitmessengerpopup setl winblend=10]]
+      vim.cmd [[autocmd init FileType gitmessengerpopup setlocal winblend=10]]
     end
   }
   use 'f-person/git-blame.nvim'
