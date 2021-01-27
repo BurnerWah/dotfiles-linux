@@ -16,6 +16,13 @@ return require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
   use {
     'nvim-treesitter/nvim-treesitter',
+    --[[
+      Highlighting engine for neovim
+
+      I've chosen not to include some modules until some issues they have get fixed.
+      nvim-treesitter-textobjects can be added once #8 & #27 are fixed
+      nvim-ts-rainbow can be added once #5 is fixed (which requires nvim-treesitter#879 merged)
+      ]]
     requires = {
       { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
       { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
@@ -54,7 +61,7 @@ return require('packer').startup(function()
         ]]
       vim.cmd(
         [[autocmd init FileType ]]..
-        [[ocaml,php,teal,verilog]]..
+        [[nix,ocaml,php,sparql,teal,toml,turtle,verilog]]..
         [[ setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()]]
         )
     end
@@ -71,7 +78,7 @@ return require('packer').startup(function()
       }
       --Welcome to keymap hell.
       vim.api.nvim_set_keymap(
-        'n', '<leader>hh', [[<cmd>call CocActionAsync('doHover')]],
+        'n', '<leader>hh', [[<cmd>call CocActionAsync('doHover')<cr>]],
         { silent = true, noremap = true }
       )
       vim.api.nvim_set_keymap('n', '[g', '<Plug>(coc-diagnostic-prev)', { silent = true })
@@ -166,6 +173,7 @@ return require('packer').startup(function()
         cpp = { 'clangtidy', 'remove_trailing_lines', 'trim_whitespace' },
         go = { 'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace' },
         html = { 'tidy', 'remove_trailing_lines', 'trim_whitespace' },
+        markdown = {},
         python = {
           'add_blank_lines_for_python_control_statements',
           'reorder-python-imports',
@@ -437,6 +445,11 @@ return require('packer').startup(function()
     config = function()
       -- TODO configure this
       vim.cmd [[autocmd init BufWritePost * FormatWrite]]
+      require'format'.setup {
+        markdown = {
+          { cmd = [[prettier -w]] }
+        }
+      }
     end
   }
   use {

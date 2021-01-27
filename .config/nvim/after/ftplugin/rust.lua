@@ -1,3 +1,7 @@
+-- Use tree-sitter to handle folding
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+
 vim.cmd [[autocmd! user_ftplugin * <buffer>]]
 
 if vim.g.did_coc_loaded then
