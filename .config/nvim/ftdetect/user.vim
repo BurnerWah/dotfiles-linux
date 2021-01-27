@@ -1,39 +1,4 @@
 aug userft
-  " Notes {{{1
-  " Missing Globs:
-  " *.prettierrc - JSON or YAML
-  " *.graphqlrc - JSON or YAML
-  " *.eslintrc - JSON or YAML; Deprecated
-  "
-  " *.asmdef - Didn't check
-  " *.ckan - Didn't check
-  " *.creatomic - No idea
-  " *.cryproj - Didn't check
-  " *.har - Didn't check
-  " *.httpmockrc - Didn't check; Probably JSON
-  " *.lintstagedrc - Didn't check; Probably JSON
-  " *.manifest - Didn't check, possibly too generic
-  " *.map - Glob too generic
-  " *.mtaext - Didn't check
-  " *.nodehawkrc - No idea
-  " *.renovaterc - Didn't check
-  " *.rules - Probably too generic
-  " *.solidarity - Didn't check
-  " *.sprite - Didn't check
-  " *.stylelintrc - Didn't check
-  " *.tsdrc - Didn't check
-  " *.typingsrc - Didn't check
-  " *.version - Didn't check; Glob too generic
-  " *.vg - Didn't check; Possibly too generic
-  " *.vl - Didn't check; Possibly too generic
-  " *.vsconfig - Didn't check
-  " *.vsext - Didn't check
-  " */package.manifest - Didn't check
-  "
-  " Skipped Globs:
-  " *.commitlintrc - No documentation, likely unsupported.
-  " *.huskyrc - Weird
-
   " Functions {{{1
   " This is copied from nvim runtime
   func! s:StarSetf(ft)

@@ -14,22 +14,10 @@
 
 " Core settings
 scriptenc 'utf-8'
-syn enable             " Enable syntax highlighting.
+syn enable " Enable syntax highlighting.
 
 lua require('user.options')
 lua require('plugins')
-lua require('navigation')
-
-" Keybindings
-
-inor <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inor <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" map the Terminal function in the lua module to some shortcuts
-nnoremap <silent> <leader>kh :lua Terminal(1)<cr>
-nnoremap <silent> <leader>kj :lua Terminal(2)<cr>
-nnoremap <silent> <leader>kk :lua Terminal(3)<cr>
-nnoremap <silent> <leader>kl :lua Terminal(4)<cr>
 
 " We just need this group initialized
 aug user_ftplugin
@@ -43,5 +31,7 @@ aug init
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no
   au FileType terminfo let &l:makeprg = executable('tic') ? 'tic' : &makeprg
+  au VimEnter * ++once lua require('user.keymaps')
+  " Delay forces this to load after plugins
 aug END
 " vim:ft=vim fenc=utf-8

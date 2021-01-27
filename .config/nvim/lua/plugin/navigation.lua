@@ -23,3 +23,9 @@ function Terminal(nr, ...)
   -- change to insert mode
   vim.api.nvim_command(':startinsert')
 end
+
+-- Map the Terminal function in the lua module to some shortcuts
+vim.keymap.nnoremap { '<leader>kh', [[<cmd>lua Terminal(1)<cr>]], silent = true }
+vim.keymap.nnoremap { '<leader>kj', [[<cmd>lua Terminal(2)<cr>]], silent = true }
+vim.keymap.nnoremap { '<leader>kk', [[<cmd>lua Terminal(3)<cr>]], silent = true }
+vim.keymap.nnoremap { '<leader>kl', [[<cmd>lua Terminal(4)<cr>]], silent = true }
