@@ -14,8 +14,7 @@ return require('packer').startup(function()
   -- Completion & Linting
   use {
     'nvim-treesitter/nvim-treesitter',
-    --[[
-      Highlighting engine for neovim
+    --[[ Highlighting engine for neovim
 
       I've chosen not to include some modules until some issues they have get fixed.
       nvim-treesitter-textobjects can be added once #8 & #27 are fixed
@@ -46,15 +45,15 @@ return require('packer').startup(function()
         },
         refactor = {
           highlight_definitions = { enable = true },
-          highlight_current_scope = { enable = true },
+          highlight_current_scope = { enable = false },
           smart_rename = {
             enable = true,
             keymaps = { smart_rename = 'grr' }
           },
         },
       }
-      --[[
-        Enable folding on very simple filetypes
+      --[[ Enable folding on very simple filetypes
+
         If the language would normally have an ftplugin, that's preferable to this.
         ]]
       vim.cmd(
@@ -401,8 +400,8 @@ return require('packer').startup(function()
   }
   use {
     'vim-airline/vim-airline',
-    --[[
-      Bottom & Tabline plugin
+    --[[ Bottom & Tabline plugin
+
       This will be replaced at some point, but it'll take a while to do so.
       Some extensions have to be disabled to mitigate how it sets up lazy loading.
     ]]
@@ -442,12 +441,12 @@ return require('packer').startup(function()
 
   -- Utilities
   use 'tpope/vim-fugitive'
-  use 'rliang/termedit.nvim'
+  use { 'rliang/termedit.nvim', event = 'VimEnter *' }
   use 'farmergreg/vim-lastplace'
   use {
     'lukas-reineke/format.nvim',
-    --[[
-      Formatting utility
+    --[[ Formatting utility
+
       This will likely replace some of ALE's functionality at some point.
     ]]
     config = function()
@@ -496,8 +495,8 @@ return require('packer').startup(function()
   }
   use {
     'oberblastmeister/neuron.nvim',
-    --[[
-      Neuron-based note-taking engine
+    --[[ Neuron-based note-taking engine
+
       This will probably replace vimwiki at some point.
       Currently it doesn't work for me though, since the neuron binary crashes on my system.
     ]]
@@ -612,15 +611,27 @@ return require('packer').startup(function()
     -- Replaces speeddating
     keys = { '<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'} },
     config = function()
+      local dial = require('dial')
+      dial.augends.boolean = dial.augends.common.enum_cyclic {
+        name = 'boolean',
+        desc = 'Flip a boolean between true and false',
+        strlist = {'true', 'false'},
+      }
+      table.insert(dial.searchlist.normal, dial.augends.boolean)
+
       vim.api.nvim_set_keymap('n', '<C-a>', '<Plug>(dial-increment)', {})
       vim.api.nvim_set_keymap('n', '<C-x>', '<Plug>(dial-decrement)', {})
       vim.api.nvim_set_keymap('v', '<C-a>', '<Plug>(dial-increment)', {})
       vim.api.nvim_set_keymap('v', '<C-x>', '<Plug>(dial-decrement)', {})
-      vim.api.nvim_set_keymap('v', 'g<C-a>', '<Plug>(dial-increment)', {})
-      vim.api.nvim_set_keymap('v', 'g<C-x>', '<Plug>(dial-decrement)', {})
+      vim.api.nvim_set_keymap('v', 'g<C-a>', '<Plug>(dial-increment-additional)', {})
+      vim.api.nvim_set_keymap('v', 'g<C-x>', '<Plug>(dial-decrement-additional)', {})
     end
   }
-  use { 'AndrewRadev/splitjoin.vim', keys = { 'gJ', 'gS' } }
+  use {
+    'AndrewRadev/splitjoin.vim',
+    cmd = { 'SplitjoinSplit', 'SplitjoinJoin' },
+    keys = { {'n', 'gJ'}, {'n', 'gS'} },
+  }
   use {
     'junegunn/vim-easy-align',
     cmd = { 'EasyAlign', 'LiveEasyAlign' },
