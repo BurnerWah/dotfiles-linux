@@ -3,7 +3,6 @@
 -- Only required if you have packer in your `opt` pack
 vim.cmd [[packadd packer.nvim]]
 
-
 return require('packer').startup(function()
   -- Packer can manage itself as an optional plugin
   use { 'wbthomason/packer.nvim', opt = true }
@@ -13,7 +12,6 @@ return require('packer').startup(function()
   use 'tjdevries/astronauta.nvim'
 
   -- Completion & Linting
-  use 'neovim/nvim-lspconfig'
   use {
     'nvim-treesitter/nvim-treesitter',
     --[[
@@ -212,7 +210,7 @@ return require('packer').startup(function()
 
   -- Markdown
   use { 'npxbr/glow.nvim', ft = { 'markdown', 'pandoc.markdown', 'rmd' } }
-  use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview' }
+  use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' }
 
   -- Python
   use 'vim-python/python-syntax'
@@ -225,7 +223,12 @@ return require('packer').startup(function()
   use {
     {
       'nvim-telescope/telescope.nvim',
-      requires = { 'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim' },
+      requires = {
+        'nvim-lua/popup.nvim',
+        'nvim-lua/plenary.nvim',
+        'kyazdani42/nvim-web-devicons',
+        'nvim-treesitter',
+      },
       config = function()
         vim.api.nvim_set_keymap(
           'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
@@ -247,14 +250,17 @@ return require('packer').startup(function()
     },
     {
       'nvim-telescope/telescope-github.nvim',
+      requires = 'telescope.nvim',
       config = function() require'telescope'.load_extension('gh') end
     },
     {
       'nvim-telescope/telescope-fzy-native.nvim',
+      requires = 'telescope.nvim',
       config = function() require'telescope'.load_extension('fzy_native') end
     },
     {
       'nvim-telescope/telescope-project.nvim',
+      requires = 'telescope.nvim',
       config = function()
         require'telescope'.load_extension('project')
         vim.api.nvim_set_keymap(
@@ -267,11 +273,12 @@ return require('packer').startup(function()
     },
     {
       'nvim-telescope/telescope-packer.nvim',
+      requires = 'telescope.nvim',
       config = function() require'telescope'.load_extension('packer') end
     },
     {
       'nvim-telescope/telescope-frecency.nvim',
-      requires = {'tami5/sql.nvim'},
+      requires = { 'tami5/sql.nvim', 'telescope.nvim' },
       config = function()
         require'telescope'.load_extension('frecency')
         vim.api.nvim_set_keymap(
@@ -284,12 +291,12 @@ return require('packer').startup(function()
     },
     {
       'nvim-telescope/telescope-cheat.nvim',
-      requires = { 'tami5/sql.nvim' },
+      requires = { 'tami5/sql.nvim', 'telescope.nvim' },
       config = function() require'telescope'.load_extension('cheat') end
     },
-    { 'nvim-telescope/telescope-fzf-writer.nvim' },
-    { 'nvim-telescope/telescope-symbols.nvim' },
-    { 'pwntester/octo.nvim', cmd = 'Octo' }
+    { 'nvim-telescope/telescope-fzf-writer.nvim', requires = 'telescope.nvim' },
+    { 'nvim-telescope/telescope-symbols.nvim', requires = 'telescope.nvim' },
+    { 'pwntester/octo.nvim', requires = 'telescope.nvim' , cmd = 'Octo' }
   }
 
   -- User interface
@@ -385,7 +392,7 @@ return require('packer').startup(function()
       }
     end
   }
-  use { 'meain/vim-package-info', ft = {'json', 'requirements', 'toml'}, run = 'npm i' }
+  use { 'meain/vim-package-info', ft = { 'json', 'requirements', 'toml' }, run = 'npm i' }
   use {
     'kyazdani42/nvim-tree.lua',
     requires = { 'kyazdani42/nvim-web-devicons' },
@@ -455,7 +462,24 @@ return require('packer').startup(function()
   use {
     'vimwiki/vimwiki',
     -- Note-taking engine
-    config = function()
+    event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
+    cmd = {
+      'VimwikiIndex',
+      'VimwikiTabIndex',
+      'VimwikiDiaryIndex',
+      'VimwikiMakeDiaryNote',
+      'VimwikiTabMakeDiaryNote',
+    },
+    keys = {
+      {'n', '<leader>ww'},
+      {'n', '<leader>wt'},
+      {'n', '<leader>wi'},
+      {'n', '<leader>w<leader>w'},
+      {'n', '<leader>w<leader>t'},
+      {'n', '<leader>w<leader>y'},
+      {'n', '<leader>w<leader>m'},
+    },
+    setup = function()
       vim.g.vimwiki_list = {
         {
           path = '~/Documents/VimWiki',
@@ -476,7 +500,8 @@ return require('packer').startup(function()
       This will probably replace vimwiki at some point.
       Currently it doesn't work for me though, since the neuron binary crashes on my system.
     ]]
-    requires = { 'nvim-lua/plenary.nvim' },
+    requires = { 'nvim-lua/plenary.nvim', 'telescope.nvim' },
+    keys = { {'n', 'gzi'} },
     config = function()
       require'neuron'.setup {
         virtual_titles = true,
@@ -489,15 +514,17 @@ return require('packer').startup(function()
   }
   use {
     'hkupty/iron.nvim',
-    -- TODO implement a lazy loader
+    cmd = { 'IronRepl', 'IronSend', 'IronReplHere', 'IronWatchCurrentFile' },
+    keys = { {'n', 'ctr'}, {'v', 'ctr'}, {'n', '<localleader>sl'} },
     config = function()
       local iron = require('iron')
 
       -- Add extra REPLs
       iron.core.add_repl_definitions {
         fennel = { fennel = { command = { 'fennel', '--repl' }}},
-        fish   = { fish   = { command = { 'fish' }}},
-        gluon  = { gluon  = { command = { 'gluon', '-i' }}},
+        fish = { fish = { command = { 'fish' }}},
+        gluon = { gluon = { command = { 'gluon', '-i' }}},
+        lua = { croissant = { command = { 'croissant' }}},
       }
 
       iron.core.set_config {
@@ -506,7 +533,7 @@ return require('packer').startup(function()
           fish = 'fish',
           gluon = 'gluon',
           javascript = 'node',
-          lua = 'lua',
+          lua = 'croissant',
           python = 'ipython',
           sh = 'bash',
           zsh = 'zsh',

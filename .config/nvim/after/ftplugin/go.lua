@@ -4,7 +4,7 @@ vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 
 vim.cmd [[autocmd! user_ftplugin * <buffer>]]
 
-if vim.g.did_coc_loaded then
+if (packer_plugins['coc.nvim'] and packer_plugins['coc.nvim'].loaded) then
   vim.keymap.nmap { 'gD', '<plug>(coc-definition)', buffer = true, silent = true }
   vim.keymap.nmap { '<C-]>', '<plug>(coc-definition)', buffer = true, silent = true }
   vim.keymap.nmap { '<C-LeftMouse> <LeftMouse>', '<plug>(coc-definition)', buffer = true, silent = true }

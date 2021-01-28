@@ -81,7 +81,7 @@
           },
           "diagnostics": {
             "enable": true,
-            "globals": ["vim", "use"],
+            "globals": ["vim", "use", "packer_plugins"],
             "disable": ["lowercase-global"]
           }
         }

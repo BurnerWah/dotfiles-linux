@@ -16,6 +16,8 @@
 scriptenc 'utf-8'
 syn enable " Enable syntax highlighting.
 
+let g:loaded_skim = 0
+let g:loaded_fzf = 0
 lua require('user.options')
 lua require('plugins')
 
@@ -33,5 +35,6 @@ aug init
   au FileType terminfo let &l:makeprg = executable('tic') ? 'tic' : &makeprg
   au VimEnter * ++once lua require('user.keymaps')
   " Delay forces this to load after plugins
+  au VimEnter * ++once unlet g:loaded_skim g:loaded_fzf
 aug END
 " vim:ft=vim fenc=utf-8
