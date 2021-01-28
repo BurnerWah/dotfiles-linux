@@ -182,6 +182,7 @@ return require('packer').startup(function()
         sql = { 'sql-format', 'remove_trailing_lines', 'trim_whitespace' },
         xml = { 'xmllint' },
       }
+      vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]
     end
   }
 
