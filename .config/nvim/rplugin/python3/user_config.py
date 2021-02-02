@@ -21,4 +21,3 @@ class UserConfig:
 
         push_secret_to_env('coc-git-github-token', 'GITHUB_API_TOKEN')
         push_secret_to_env('coc-git-gitlab-token', 'GITLAB_PRIVATE_TOKEN')
-        push_secret_to_env('todoist-api-token', 'TODOIST_API_KEY')

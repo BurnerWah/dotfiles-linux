@@ -8,7 +8,6 @@ return require('packer').startup(function()
   use { 'wbthomason/packer.nvim', opt = true }
 
   -- Core plugins
-  use 'svermeulen/nvim-moonmaker'
   use 'tjdevries/astronauta.nvim'
 
   -- Completion & Linting
@@ -217,87 +216,85 @@ return require('packer').startup(function()
   use 'Vimjas/vim-python-pep8-indent'
 
   -- RST
-  use 'stsewd/sphinx.nvim'
+  use { 'stsewd/sphinx.nvim', ft = 'rst' }
 
   -- Telescope
   use {
-    {
-      'nvim-telescope/telescope.nvim',
-      requires = {
-        'nvim-lua/popup.nvim',
-        'nvim-lua/plenary.nvim',
-        'kyazdani42/nvim-web-devicons',
-        'nvim-treesitter',
-      },
-      config = function()
-        vim.api.nvim_set_keymap(
-          'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
-          { noremap = true, silent = true }
-        )
-        vim.api.nvim_set_keymap(
-          'n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]],
-          { noremap = true, silent = true }
-        )
-        vim.api.nvim_set_keymap(
-          'n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]],
-          { noremap = true, silent = true }
-        )
-        vim.api.nvim_set_keymap(
-          'n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]],
-          { noremap = true, silent = true }
-        )
-      end
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'kyazdani42/nvim-web-devicons',
+      'nvim-treesitter',
     },
-    {
-      'nvim-telescope/telescope-github.nvim',
-      requires = 'telescope.nvim',
-      config = function() require'telescope'.load_extension('gh') end
-    },
-    {
-      'nvim-telescope/telescope-fzy-native.nvim',
-      requires = 'telescope.nvim',
-      config = function() require'telescope'.load_extension('fzy_native') end
-    },
-    {
-      'nvim-telescope/telescope-project.nvim',
-      requires = 'telescope.nvim',
-      config = function()
-        require'telescope'.load_extension('project')
-        vim.api.nvim_set_keymap(
-          'n',
-          '<C-p>',
-          [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
-          { noremap = true, silent = true }
-        )
-      end
-    },
-    {
-      'nvim-telescope/telescope-packer.nvim',
-      requires = 'telescope.nvim',
-      config = function() require'telescope'.load_extension('packer') end
-    },
-    {
-      'nvim-telescope/telescope-frecency.nvim',
-      requires = { 'tami5/sql.nvim', 'telescope.nvim' },
-      config = function()
-        require'telescope'.load_extension('frecency')
-        vim.api.nvim_set_keymap(
-          'n',
-          '<leader><leader>',
-          [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
-          { noremap = true, silent = true }
-        )
-      end
-    },
-    {
-      'nvim-telescope/telescope-cheat.nvim',
-      requires = { 'tami5/sql.nvim', 'telescope.nvim' },
-      config = function() require'telescope'.load_extension('cheat') end
-    },
-    { 'nvim-telescope/telescope-fzf-writer.nvim', requires = 'telescope.nvim' },
-    { 'nvim-telescope/telescope-symbols.nvim', requires = 'telescope.nvim' },
-    { 'pwntester/octo.nvim', requires = 'telescope.nvim' , cmd = 'Octo' }
+    config = function()
+      vim.api.nvim_set_keymap(
+        'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]],
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]],
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]],
+        { noremap = true, silent = true }
+      )
+    end
   }
+  use {
+    'nvim-telescope/telescope-github.nvim',
+    requires = 'telescope.nvim',
+    config = function() require'telescope'.load_extension('gh') end
+  }
+  use {
+    'nvim-telescope/telescope-fzy-native.nvim',
+    requires = 'telescope.nvim',
+    config = function() require'telescope'.load_extension('fzy_native') end
+  }
+  use {
+    'nvim-telescope/telescope-project.nvim',
+    requires = 'telescope.nvim',
+    config = function()
+      require'telescope'.load_extension('project')
+      vim.api.nvim_set_keymap(
+        'n',
+        '<C-p>',
+        [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
+        { noremap = true, silent = true }
+      )
+    end
+  }
+  use {
+    'nvim-telescope/telescope-packer.nvim',
+    requires = 'telescope.nvim',
+    config = function() require'telescope'.load_extension('packer') end
+  }
+  use {
+    'nvim-telescope/telescope-frecency.nvim',
+    requires = { 'tami5/sql.nvim', 'telescope.nvim' },
+    config = function()
+      require'telescope'.load_extension('frecency')
+      vim.api.nvim_set_keymap(
+        'n',
+        '<leader><leader>',
+        [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
+        { noremap = true, silent = true }
+      )
+    end
+  }
+  use {
+    'nvim-telescope/telescope-cheat.nvim',
+    requires = { 'tami5/sql.nvim', 'telescope.nvim' },
+    config = function() require'telescope'.load_extension('cheat') end
+  }
+  use { 'nvim-telescope/telescope-fzf-writer.nvim', requires = 'telescope.nvim' }
+  use { 'nvim-telescope/telescope-symbols.nvim', requires = 'telescope.nvim' }
+  use { 'pwntester/octo.nvim', requires = 'telescope.nvim' , cmd = 'Octo' }
 
   -- User interface
   use {
@@ -316,7 +313,6 @@ return require('packer').startup(function()
         'list',
         'LuaTree',
         'tagbar',
-        'todoist',
         'tsplayground',
         'vista',
         'vista_kind',
@@ -404,13 +400,16 @@ return require('packer').startup(function()
 
       This will be replaced at some point, but it'll take a while to do so.
       Some extensions have to be disabled to mitigate how it sets up lazy loading.
+
+      Loading on VimEnter & using a 'setup' instead of a 'config' key seems to fix issues with Packer
     ]]
     requires = {
       'vim-airline/vim-airline-themes',
       'tyrannicaltoucan/vim-quantum',
       'ryanoasis/vim-devicons',
     },
-    config = function()
+    event = 'VimEnter *',
+    setup = function()
       vim.g.airline_powerline_fonts = true
       vim.g.airline_detect_spelllang = false
       vim.g.airline_detect_crypt = false
@@ -425,7 +424,6 @@ return require('packer').startup(function()
       vim.g.airline_filetype_overrides = {
         LuaTree = { 'LuaTree', '' },
         minimap = { 'Map', '' },
-        todoist = { 'Todoist', '' },
         tsplayground = { 'Tree-Sitter Playground', '' },
         vista = { 'Vista', '' },
         vista_kind = { 'Vista', '' },
@@ -498,7 +496,6 @@ return require('packer').startup(function()
     --[[ Neuron-based note-taking engine
 
       This will probably replace vimwiki at some point.
-      Currently it doesn't work for me though, since the neuron binary crashes on my system.
     ]]
     requires = { 'nvim-lua/plenary.nvim', 'telescope.nvim' },
     keys = { {'n', 'gzi'} },
@@ -555,22 +552,6 @@ return require('packer').startup(function()
       }
     end
   }
-  use {
-    'romgrk/todoist.nvim',
-    -- This isn't all that important tbh
-    cmd = 'Todoist',
-    run = 'npm i',
-    config = function()
-      vim.g.todoist = {
-        icons = {
-          unchecked = '  ',
-          checked = '  ',
-          loading = '  ',
-          error = '  ',
-        }
-      }
-    end
-  }
 
   -- Text editing
   use 'tpope/vim-repeat'
@@ -587,7 +568,12 @@ return require('packer').startup(function()
       vim.g.abolish_save_file = vim.fn.stdpath('config') .. '/after/plugin/abolish.vim'
     end
   }
-  use { 'tpope/vim-commentary', cmd = 'Commentary', keys = { 'gc', {'n', 'gcc'}, {'n', 'gcu'} } }
+  use {
+    'tpope/vim-commentary',
+    -- This will be replaced by b3nj5m1n/kommentary when it's more complete
+    cmd = 'Commentary',
+    keys = { 'gc', {'n', 'gcc'}, {'n', 'gcu'} },
+  }
   use {
     'tpope/vim-surround',
     keys = {
@@ -609,7 +595,7 @@ return require('packer').startup(function()
   use {
     'monaqa/dial.nvim',
     -- Replaces speeddating
-    keys = { '<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'} },
+    keys = { '<C-a>', '<C-x>', {'x', 'g<C-a>'}, {'x', 'g<C-x>'} },
     config = function()
       local dial = require('dial')
       dial.augends.boolean = dial.augends.common.enum_cyclic {
@@ -621,10 +607,10 @@ return require('packer').startup(function()
 
       vim.api.nvim_set_keymap('n', '<C-a>', '<Plug>(dial-increment)', {})
       vim.api.nvim_set_keymap('n', '<C-x>', '<Plug>(dial-decrement)', {})
-      vim.api.nvim_set_keymap('v', '<C-a>', '<Plug>(dial-increment)', {})
-      vim.api.nvim_set_keymap('v', '<C-x>', '<Plug>(dial-decrement)', {})
-      vim.api.nvim_set_keymap('v', 'g<C-a>', '<Plug>(dial-increment-additional)', {})
-      vim.api.nvim_set_keymap('v', 'g<C-x>', '<Plug>(dial-decrement-additional)', {})
+      vim.api.nvim_set_keymap('x', '<C-a>', '<Plug>(dial-increment)', {})
+      vim.api.nvim_set_keymap('x', '<C-x>', '<Plug>(dial-decrement)', {})
+      vim.api.nvim_set_keymap('x', 'g<C-a>', '<Plug>(dial-increment-additional)', {})
+      vim.api.nvim_set_keymap('x', 'g<C-x>', '<Plug>(dial-decrement-additional)', {})
     end
   }
   use {
