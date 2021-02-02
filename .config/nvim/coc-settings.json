@@ -97,6 +97,7 @@
     "javascript",
     "json",
     "less",
+    "markdown",
     "scss",
     "sh",
     "typescript",
@@ -104,7 +105,6 @@
   ],
   "coc.preferences.hoverTarget": "float",
   "codeLens.enable": true,
-  "diagnostic.filetypeMap": { "markdown": "vimwiki" },
   "diagnostic-languageserver.linters": {
     "alex": {
       "sourceName": "alex",
@@ -149,6 +149,19 @@
       "offsetColumn": -1,
       "formatPattern": ["^.+?:(\\d+): (.*)$", { "line": 1, "message": [2] }],
       "securities": { "undefined": "warning" }
+    },
+    "csslint": {
+      "sourceName": "csslint",
+      "command": "csslint",
+      "args": ["--format=json", "%filepath"],
+      "parseJson": {
+        "errorsRoot": "messages",
+        "line": "line",
+        "column": "col",
+        "security": "type",
+        "message": "${message} [${rule.id}]"
+      },
+      "securities": { "warning": "warning", "error": "error" }
     },
     "fish": {
       "sourceName": "fish",
@@ -217,6 +230,16 @@
       ],
       "securities": { "W": "warning", "error": "E" }
     },
+    "luac": {
+      "sourceName": "luac",
+      "command": "luac",
+      "args": ["-p", "-"],
+      "isStdout": false,
+      "isStderr": true,
+      "offsetColumn": -1,
+      "formatPattern": ["^.*:(\\d+): (.*)$", { "line": 1, "message": 2 }],
+      "securities": { "undefined": "error" }
+    },
     "mypy": {
       "sourceName": "mypy",
       "command": "mypy",
@@ -279,6 +302,29 @@
         "message": "${message}"
       },
       "securities": { "1": "info", "2": "warning", "3": "error", "4": "error" }
+    },
+    "spectral": {
+      "sourceName": "spectral",
+      "command": "spectral",
+      "args": ["lint", "--ignore-unknown-format", "-q", "-f", "json"],
+      "parseJson": {
+        "line": "range.start.line",
+        "column": "range.start.character",
+        "endLine": "range.end.line",
+        "endColumn": "range.end.character",
+        "security": "severity",
+        "message": "${message} [${code}]"
+      },
+      "securities": { "1": "warning", "2": "error" }
+    },
+    "sqlint": {
+      "sourceName": "sqlint",
+      "command": "sqlint",
+      "formatPattern": [
+        "^stdin:(\\d+):(\\d+):([^ ]+) (.*)$",
+        { "line": 1, "column": 2, "security": 3, "message": 4 }
+      ],
+      "securities": { "WARNING": "warning", "ERROR": "error" }
     },
     "tlcheck": {
       "sourceName": "tlcheck",
@@ -367,18 +413,17 @@
     "asciidoc": ["alex_text", "languagetool", "write-good"],
     "bats": "shellcheck",
     "cmake": "cmakelint",
-    "css": "stylelint",
+    "css": ["csslint", "stylelint"],
     "dockerfile": "hadolint",
-    "Dockerfile": "hadolint",
     "elixir": "mix_credo",
     "fish": "fish",
     "gitcommit": "gitlint",
     "graphql": "eslint",
     "html": ["alex_html", "tidy", "write-good"],
     "javascript": ["eslint", "jshint", "standard", "xo"],
-    "json": ["jsonlint"],
+    "json": ["jsonlint", "spectral"],
     "less": "stylelint",
-    "lua": "luacheck",
+    "lua": ["luacheck", "luac"],
     "mail": ["alex_text", "languagetool"],
     "markdown": ["alex", "languagetool", "write-good"],
     "nroff": ["alex_text", "write-good"],
@@ -396,11 +441,12 @@
     "tex": ["alex_text", "write-good"],
     "texinfo": ["alex_text", "write-good"],
     "typescript": ["eslint", "standard", "xo"],
+    "sql": "sqlint",
     "vimwiki": ["alex_text", "languagetool", "write-good"],
     "vue": ["eslint"],
     "xhtml": ["alex_text", "write-good"],
     "xml": "xmllint",
-    "yaml": "yamllint",
+    "yaml": ["spectral", "yamllint"],
     "zsh": "zsh"
   },
   "diagnostic-languageserver.formatters": {

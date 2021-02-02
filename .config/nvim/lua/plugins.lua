@@ -120,7 +120,7 @@ return require('packer').startup(function()
         c = { 'cc', 'clangtidy', 'cpplint' },
         cmake = { 'cmakelint' },
         cpp = { 'cc', 'clangtidy', 'cpplint' },
-        css = { 'stylelint' },
+        css = { 'csslint', 'stylelint' },
         dockerfile = { 'hadolint' },
         elixir = { 'credo' },
         eruby = { 'erb' },
@@ -130,12 +130,12 @@ return require('packer').startup(function()
         help = { 'alex', 'writegood' },
         html = { 'tidy', 'writegood' },
         javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' },
-        json = { 'jsonlint' },
-        jsonc = { 'jsonlint' },
+        json = { 'jsonlint', 'spectral' },
+        jsonc = { 'jsonlint', 'spectral' },
         less = { 'stylelint' },
-        lua = { 'luacheck' },
+        lua = { 'luacheck', 'luac' },
         mail = { 'alex', 'languagetool' },
-        markdown = { 'languagetool', 'markdownlint', 'writegood' },
+        markdown = { 'alex', 'languagetool', 'markdownlint', 'writegood' },
         nroff = { 'alex', 'writegood' },
         objc = { 'clang' },
         objcpp = { 'clang' },
@@ -148,6 +148,7 @@ return require('packer').startup(function()
         sass = { 'stylelint' },
         scss = { 'stylelint' },
         sh = { 'shellcheck' },
+        sql = { 'sqlint' },
         stylus = { 'stylelint' },
         sugarss = { 'stylelint' },
         teal = { 'tlcheck' },
@@ -161,7 +162,7 @@ return require('packer').startup(function()
         xsd = { 'xmllint' },
         xml = { 'xmllint' },
         xslt = { 'xmllint' },
-        yaml = { 'yamllint' },
+        yaml = { 'spectral', 'yamllint' },
         zsh = { 'shell' },
       }
       vim.g.ale_fixers = {
@@ -177,7 +178,7 @@ return require('packer').startup(function()
           'trim_whitespace',
         },
         rust = { 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' },
-        sql = { 'sql-format', 'remove_trailing_lines', 'trim_whitespace' },
+        sql = { 'sqlformat', 'remove_trailing_lines', 'trim_whitespace' },
         xml = { 'xmllint' },
       }
       vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]
@@ -201,7 +202,7 @@ return require('packer').startup(function()
   use { 'jackguo380/vim-lsp-cxx-highlight', ft = { 'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda' } }
 
   -- Lua
-  use 'euclidianAce/BetterLua.vim'
+  use { 'euclidianAce/BetterLua.vim', ft = 'lua' }
   use 'tjdevries/manillua.nvim'
   use 'tjdevries/nlua.nvim'
   use { 'bfredl/nvim-luadev', cmd = 'Luadev' }
@@ -406,7 +407,7 @@ return require('packer').startup(function()
     requires = {
       'vim-airline/vim-airline-themes',
       'tyrannicaltoucan/vim-quantum',
-      'ryanoasis/vim-devicons',
+      { 'ryanoasis/vim-devicons', config = function() vim.g.webdevicons_enable_nerdtree = 0 end },
     },
     event = 'VimEnter *',
     setup = function()
@@ -441,22 +442,6 @@ return require('packer').startup(function()
   use 'tpope/vim-fugitive'
   use { 'rliang/termedit.nvim', event = 'VimEnter *' }
   use 'farmergreg/vim-lastplace'
-  use {
-    'lukas-reineke/format.nvim',
-    --[[ Formatting utility
-
-      This will likely replace some of ALE's functionality at some point.
-    ]]
-    config = function()
-      -- TODO configure this
-      vim.cmd [[autocmd init BufWritePost * FormatWrite]]
-      require'format'.setup {
-        markdown = {
-          { cmd = [[prettier -w]] }
-        }
-      }
-    end
-  }
   use {
     'vimwiki/vimwiki',
     -- Note-taking engine
