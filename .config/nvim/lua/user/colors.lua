@@ -3,7 +3,7 @@ local Color, c, Group, g, s = require('colorbuddy').setup()
 
 vim.o.bg = 'dark'
 vim.g.colors_name = 'quantum'
-vim.g.airline_theme = 'quantum'
+-- vim.g.airline_theme = 'quantum'
 
 -- Base colors
 Color.new('gray0',  '#212121')

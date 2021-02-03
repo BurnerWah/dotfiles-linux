@@ -12,6 +12,84 @@ return require('packer').startup(function()
 
   -- Completion & Linting
   use {
+    'neovim/nvim-lspconfig',
+    config = function() require('user.cfg.lspsettings') end
+  }
+  use {
+    'glepnir/lspsaga.nvim',
+    requires = 'nvim-lspconfig',
+    config = function()
+      require'lspsaga'.init_lsp_saga()
+      vim.api.nvim_set_keymap(
+        'n', '<leader>hh', [[<cmd>lua require('lspsaga.hover').render_hover_doc()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'gh', [[<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'gs', [[<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'ca', [[<cmd>lua require('lspsaga.codeaction').code_action()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'v', 'ca', [[<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'gr', [[<cmd>lua require('lspsaga.rename').rename()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<leader>rn', [[<cmd>lua require('lspsaga.rename').rename()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'gd', [[<cmd>lua require'lspsaga.provider'.preview_definition()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<leader>cd', [[<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '[e', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '[g', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', ']e', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', ']g', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', '<A-d>', [[<cmd>lua require('lspsaga.floaterm').open_float_terminal('fish')<CR>]],
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        't', '<A-d>', [[<C-\><C-n>:lua require('lspsaga.floaterm').close_float_terminal()<CR>]],
+        { silent = true, noremap = true }
+      )
+    end
+  }
+  use {
+    'kosayoda/nvim-lightbulb',
+    requires = 'nvim-lspconfig',
+    config = function()
+      vim.cmd [[autocmd init CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
+    end
+  }
+  use {
     'nvim-treesitter/nvim-treesitter',
     --[[ Highlighting engine for neovim
 
@@ -36,6 +114,7 @@ return require('packer').startup(function()
             node_decremental = 'grm',
           },
         },
+        indent = { enable = true }, -- Indent uses 'tabstop' so it has to be managed in ftplugins.
         playground = {
           enable = true,
           disable = {},
@@ -51,20 +130,14 @@ return require('packer').startup(function()
           },
         },
       }
-      --[[ Enable folding on very simple filetypes
-
-        If the language would normally have an ftplugin, that's preferable to this.
-        ]]
-      vim.cmd(
-        [[autocmd init FileType ]]..
-        [[nix,ocaml,php,sparql,teal,toml,turtle,verilog]]..
-        [[ setl foldmethod=expr foldexpr=nvim_treesitter#foldexpr()]]
-        )
+      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      parser_config.bash.used_by = { 'PKGBUILD' }
     end
   }
   use {
     'neoclide/coc.nvim',
     branch = 'release',
+    opt = true,
     config = function()
       vim.g.coc_filetype_map = {
         catalog = 'xml',
@@ -73,17 +146,8 @@ return require('packer').startup(function()
         xsd = 'xml',
       }
       --Welcome to keymap hell.
-      vim.api.nvim_set_keymap(
-        'n', '<leader>hh', [[<cmd>call CocActionAsync('doHover')<cr>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap('n', '[g', '<Plug>(coc-diagnostic-prev)', { silent = true })
-      vim.api.nvim_set_keymap('n', ']g', '<Plug>(coc-diagnostic-next)', { silent = true })
-      vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { silent = true })
       vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', { silent = true })
       vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', { silent = true })
-      vim.api.nvim_set_keymap('n', 'gr', '<Plug>(coc-references)', { silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>rn', '<Plug>(coc-rename)', {})
       vim.api.nvim_set_keymap('x', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
       vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
       vim.api.nvim_set_keymap('n', '<leader>ac', '<Plug>(coc-codeaction)', {})
@@ -96,9 +160,6 @@ return require('packer').startup(function()
       vim.api.nvim_set_keymap('o', 'ic', '<Plug>(coc-classobj-i)', {})
       vim.api.nvim_set_keymap('x', 'ac', '<Plug>(coc-classobj-a)', {})
       vim.api.nvim_set_keymap('o', 'ac', '<Plug>(coc-classobj-a)', {})
-      vim.api.nvim_set_keymap('n', '<C-d>', '<Plug>(coc-range-select)', { silent = true })
-      vim.api.nvim_set_keymap('x', '<C-d>', '<Plug>(coc-range-select)', { silent = true })
-      vim.api.nvim_set_keymap('n', '<leader>x', '<Plug>(coc-cursors-operator)', {})
       vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
@@ -114,55 +175,70 @@ return require('packer').startup(function()
         --[[
           I'm using this to disable linters that should not be handled by ALE.
           That includes stuff handled by another plugin, and stuff that isn't helpful.
+
+          potential things to convert:
+          - fecs [ css, html, javascript ]
+          - gawk [ awk ] (packaged)
+          - clangcheck [ cpp ] (packaged)
+          - cppcheck [ c, cpp ] (packaged)
+          - clazy [ cpp ] (packaged)
+          - flawfinder [ c, cpp ] (packaged)
+          - vale [ asciidoc, mail, markdown, rst, tex, text ]
+          - msgfmt [ po ] (packaged)
+          - redpen [ asciidoc, markdown, review, rst, tex, text ]
+          - textlint [ asciidoc, markdown, rst, tex, text ]
+          - chktex [ tex ] (packaged)
+          - lacheck [ tex ] (packaged)
         ]]
-        asciidoc = { 'alex', 'languagetool', 'writegood' },
-        bats = { 'shellcheck' },
-        c = { 'cc', 'clangtidy', 'cpplint' },
-        cmake = { 'cmakelint' },
-        cpp = { 'cc', 'clangtidy', 'cpplint' },
-        css = { 'csslint', 'stylelint' },
-        dockerfile = { 'hadolint' },
+        asciidoc = { 'alex', 'languagetool', 'proselint', 'writegood' }, -- enabled: redpen, textlint, vale
+        bats = { 'shellcheck' }, -- DISABLED
+        c = { 'cc', 'clangtidy', 'cpplint' }, -- enabled: cppcheck, flawfinder
+        cmake = { 'cmakelint' }, -- DISABLED
+        cpp = { 'cc', 'clangtidy', 'cpplint' }, -- enabled: clangcheck, clazy, cppcheck, flawfinder
+        css = { 'csslint', 'stylelint' }, -- enabled: fecs
+        dockerfile = { 'hadolint' }, -- enabled: dockerfile_lint
         elixir = { 'credo' },
         eruby = { 'erb' },
-        fish = { 'fish' },
-        gitcommit = { 'gitlint' },
-        graphql = { 'eslint' },
-        help = { 'alex', 'writegood' },
-        html = { 'tidy', 'writegood' },
-        javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' },
-        json = { 'jsonlint', 'spectral' },
-        jsonc = { 'jsonlint', 'spectral' },
-        less = { 'stylelint' },
-        lua = { 'luacheck', 'luac' },
-        mail = { 'alex', 'languagetool' },
-        markdown = { 'alex', 'languagetool', 'markdownlint', 'writegood' },
-        nroff = { 'alex', 'writegood' },
-        objc = { 'clang' },
-        objcpp = { 'clang' },
+        fish = { 'fish' }, -- DISABLED
+        fountain = { 'proselint' }, -- DISABLED
+        gitcommit = { 'gitlint' }, -- DISABLED
+        graphql = { 'eslint' }, -- enabled: gqlint
+        help = { 'alex', 'proselint', 'writegood' }, -- DISABLED
+        html = { 'alex', 'proselint', 'tidy', 'writegood' }, -- enabled: fecs, htmlhint
+        javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' }, -- enabled: fecs, jscs
+        json = { 'jsonlint', 'spectral' }, -- DISABLED
+        -- jsonc = { 'jsonlint', 'spectral' },
+        less = { 'stylelint' }, -- enabled: lessc
+        lua = { 'luacheck', 'luac' }, -- DISABLED
+        mail = { 'alex', 'languagetool', 'proselint' }, -- enabled: vale
+        markdown = { 'alex', 'languagetool', 'markdownlint', 'proselint', 'writegood' },
+        nroff = { 'alex', 'proselint', 'writegood' }, -- DISABLED
+        objc = { 'clang' }, -- DISABLED
+        objcpp = { 'clang' }, -- DISABLED
         php = { 'phpcs', 'phpstan' },
-        po = { 'alex', 'writegood' },
-        pod = { 'alex', 'writegood' },
+        po = { 'alex', 'proselint', 'writegood' }, -- enabled: msgfmt
+        pod = { 'alex', 'proselint', 'writegood' }, -- DISABLED
         python = { 'flake8', 'mypy', 'pylint' },
-        rst = { 'alex', 'rstcheck', 'writegood' },
-        rust = { 'cargo' },
-        sass = { 'stylelint' },
-        scss = { 'stylelint' },
-        sh = { 'shellcheck' },
-        sql = { 'sqlint' },
-        stylus = { 'stylelint' },
-        sugarss = { 'stylelint' },
-        teal = { 'tlcheck' },
-        tex = { 'alex', 'writegood' },
-        texinfo = { 'alex', 'writegood' },
-        typescript = { 'eslint', 'standard', 'tslint', 'xo' },
-        vim = { 'vint' },
-        vimwiki = { 'alex', 'languagetool', 'markdownlint', 'mdl', 'remark-lint', 'writegood' },
+        rst = { 'alex', 'proselint', 'rstcheck', 'writegood' }, -- enabled: redpen, textlint, vale
+        rust = { 'cargo' }, -- DISABLED
+        sass = { 'stylelint' }, -- enabled: sasslint
+        scss = { 'stylelint' }, -- enabled: sasslint, scss-lint
+        sh = { 'bashate', 'shellcheck' }, -- enabled: shell
+        sql = { 'sqlint' }, -- enabled: sqllint
+        stylus = { 'stylelint' }, -- DISABLED
+        sugarss = { 'stylelint' }, -- DISABLED
+        teal = { 'tlcheck' }, -- DISABLED
+        tex = { 'alex', 'proselint', 'writegood' }, -- enabled: chktex, lacheck, redpen, textlint, vale
+        texinfo = { 'alex', 'proselint', 'writegood' }, -- DISABLED
+        typescript = { 'eslint', 'standard', 'tslint', 'xo' }, -- enabled: typecheck
+        vim = { 'vint' }, -- enabled: ale_custom_linting_rules
+        vimwiki = { 'alex', 'languagetool', 'proselint', 'markdownlint', 'mdl', 'remark-lint', 'writegood' },
         vue = { 'eslint' },
-        xhtml = { 'alex', 'writegood' },
-        xsd = { 'xmllint' },
-        xml = { 'xmllint' },
-        xslt = { 'xmllint' },
-        yaml = { 'spectral', 'yamllint' },
+        xhtml = { 'alex', 'proselint', 'writegood' }, -- DISABLED
+        xsd = { 'xmllint' }, -- DISABLED
+        xml = { 'xmllint' }, -- DISABLED
+        xslt = { 'xmllint' }, -- DISABLED
+        yaml = { 'spectral', 'yamllint' }, -- enabled: swaglint
         zsh = { 'shell' },
       }
       vim.g.ale_fixers = {
@@ -182,6 +258,57 @@ return require('packer').startup(function()
         xml = { 'xmllint' },
       }
       vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]
+    end
+  }
+  use {
+    'nvim-lua/completion-nvim',
+    -- I'd rather use hrsh7th/nvim-compe, but it's lacking in sources
+    requires = {
+      { 'nvim-treesitter/completion-treesitter', requires = 'nvim-treesitter' },
+      { 'aca/completion-tabnine', run = './install.sh' },
+      { 'steelsojka/completion-buffers' }
+    },
+    config = function()
+      vim.cmd [[autocmd BufEnter * lua require'completion'.on_attach()]]
+      vim.cmd [[set completeopt=menuone,noinsert,noselect]]
+      vim.cmd [[set shortmess+=c]]
+      vim.g.completion_chain_complete_list = {
+        default = {
+          default = {
+            { complete_items = { 'lsp', 'snippet', 'tabnine' } },
+            { complete_items = { 'buffers' } },
+            { mode = { '<c-p>' } },
+            { mode = { '<c-n>' } },
+          },
+          comment = {},
+        },
+        lua = {
+          default = {
+            { complete_items = { 'lsp', 'snippet', 'tabnine' } },
+            { complete_items = { 'ts' } },
+            { complete_items = { 'buffers' } },
+          },
+        },
+        markdown = {
+          default = {
+            { complete_items = { 'snippet' } },
+            { complete_items = { 'buffers' } },
+          },
+        },
+        rst = {
+          default = {
+            { complete_items = { 'snippet' } },
+            { complete_items = { 'ts' } },
+            { complete_items = { 'buffers' } },
+          },
+        },
+        vimwiki = {
+          default = {
+            { complete_items = { 'snippet' } },
+            { complete_items = { 'buffers' } },
+          },
+        },
+      }
     end
   }
 
@@ -229,6 +356,17 @@ return require('packer').startup(function()
       'nvim-treesitter',
     },
     config = function()
+      require'telescope'.setup {
+        defaults = {
+          winblend = 10,
+          file_sorter = require'telescope.sorters'.get_fzy_sorter,
+        },
+        extensions = {
+          frecency = {
+            show_scores = true,
+          },
+        }
+      }
       vim.api.nvim_set_keymap(
         'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
         { noremap = true, silent = true }
@@ -243,6 +381,10 @@ return require('packer').startup(function()
       )
       vim.api.nvim_set_keymap(
         'n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]],
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'n', 'gr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]],
         { noremap = true, silent = true }
       )
     end
@@ -263,9 +405,7 @@ return require('packer').startup(function()
     config = function()
       require'telescope'.load_extension('project')
       vim.api.nvim_set_keymap(
-        'n',
-        '<C-p>',
-        [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
+        'n', '<C-p>', [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
         { noremap = true, silent = true }
       )
     end
@@ -281,9 +421,7 @@ return require('packer').startup(function()
     config = function()
       require'telescope'.load_extension('frecency')
       vim.api.nvim_set_keymap(
-        'n',
-        '<leader><leader>',
-        [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
+        'n', '<leader><leader>', [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
         { noremap = true, silent = true }
       )
     end
@@ -295,13 +433,13 @@ return require('packer').startup(function()
   }
   use { 'nvim-telescope/telescope-fzf-writer.nvim', requires = 'telescope.nvim' }
   use { 'nvim-telescope/telescope-symbols.nvim', requires = 'telescope.nvim' }
-  use { 'pwntester/octo.nvim', requires = 'telescope.nvim' , cmd = 'Octo' }
+  use { 'pwntester/octo.nvim', requires = 'telescope.nvim', opt = true, cmd = 'Octo' }
 
   -- User interface
   use {
     'wfxr/minimap.vim',
     cmd = 'Minimap',
-    config = function()
+    setup = function()
       vim.g.minimap_block_filetypes = {
         'ale-fix-suggest',
         'ale-preview-selection',
@@ -325,34 +463,32 @@ return require('packer').startup(function()
     'liuchengxu/vista.vim',
     -- Table of contents & symbol tree
     cmd = 'Vista',
-    config = function()
+    setup = function()
       vim.g['vista#renderer#enable_icon'] = 1
       vim.g.vista_echo_cursor_strategy = 'floating_win'
       vim.g.vista_executive_for = {
         apiblueprint = 'markdown',
-        c = 'coc',
-        cpp = 'coc',
-        cuda = 'coc',
-        css = 'coc',
-        go = 'coc',
-        html = 'coc',
-        javascript = 'coc',
-        json = 'coc',
-        jsonc = 'coc',
-        lua = 'coc',
+        c = 'nvim_lsp',
+        cpp = 'nvim_lsp',
+        css = 'nvim_lsp',
+        go = 'nvim_lsp',
+        html = 'nvim_lsp',
+        javascript = 'nvim_lsp',
+        json = 'nvim_lsp',
+        jsonc = 'nvim_lsp',
+        lua = 'nvim_lsp',
         markdown = 'toc',
-        objc = 'coc',
-        objcpp = 'coc',
+        objc = 'nvim_lsp',
+        objcpp = 'nvim_lsp',
         pandoc = 'markdown',
-        python = 'coc',
+        python = 'nvim_lsp',
         rst = 'toc',
-        tex = 'coc',
-        typescript = 'coc',
-        vala = 'coc',
-        vim = 'coc',
-        vimwiki = 'markdown',
-        xml = 'coc',
-        yaml = 'coc',
+        tex = 'nvim_lsp',
+        typescript = 'nvim_lsp',
+        vala = 'nvim_lsp',
+        vim = 'nvim_lsp',
+        xml = 'nvim_lsp',
+        yaml = 'nvim_lsp',
       }
       vim.g.vista_ctags_cmd = {
         -- Consider checking for commands before enabling them.
@@ -363,7 +499,7 @@ return require('packer').startup(function()
   }
   use {
     'lewis6991/gitsigns.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
+    requires = 'nvim-lua/plenary.nvim',
     config = function() require'gitsigns'.setup() end
   }
   use {
@@ -392,7 +528,8 @@ return require('packer').startup(function()
   use { 'meain/vim-package-info', ft = { 'json', 'requirements', 'toml' }, run = 'npm i' }
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = { 'kyazdani42/nvim-web-devicons' },
+    requires = 'kyazdani42/nvim-web-devicons',
+    opt = true,
     cmd = { 'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile' }
   }
   use {
@@ -406,9 +543,10 @@ return require('packer').startup(function()
     ]]
     requires = {
       'vim-airline/vim-airline-themes',
-      'tyrannicaltoucan/vim-quantum',
+      { 'tyrannicaltoucan/vim-quantum', config = function() vim.cmd [[AirlineTheme quantum]] end },
       { 'ryanoasis/vim-devicons', config = function() vim.g.webdevicons_enable_nerdtree = 0 end },
     },
+    opt = true,
     event = 'VimEnter *',
     setup = function()
       vim.g.airline_powerline_fonts = true
@@ -420,8 +558,9 @@ return require('packer').startup(function()
         dirty = ' ',
       }
       vim.g['airline#parts#ffenc#skip_expected_string'] = 'utf-8[unix]'
-      vim.g['airline#extensions#vista#enabled'] = 0 -- Deals with Vista's lazy loader
-      vim.g['airline#extensions#tabline#enabled'] = 1 -- Enable tabline
+      vim.g['airline#extensions#vista#enabled'] = false -- Deals with Vista's lazy loader
+      vim.g['airline#extensions#tabline#enabled'] = true -- Enable tabline
+      vim.g['airline#extensions#nvimlsp#enabled'] = false
       vim.g.airline_filetype_overrides = {
         LuaTree = { 'LuaTree', '' },
         minimap = { 'Map', '' },
@@ -483,6 +622,7 @@ return require('packer').startup(function()
       This will probably replace vimwiki at some point.
     ]]
     requires = { 'nvim-lua/plenary.nvim', 'telescope.nvim' },
+    opt = true,
     keys = { {'n', 'gzi'} },
     config = function()
       require'neuron'.setup {
@@ -543,7 +683,7 @@ return require('packer').startup(function()
   use 'tpope/vim-endwise'
   use {
     'windwp/nvim-autopairs',
-    config = function() require'nvim-autopairs'.setup() end
+    config = function() require'nvim-autopairs'.setup() end,
   }
   use {
     'tpope/vim-abolish',
