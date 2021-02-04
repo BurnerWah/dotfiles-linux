@@ -259,19 +259,23 @@ zsdoc/data
 
 # End of https://www.gitignore.io/api/gpg,lua,vim,ssh,zsh,tags,linux,python,database,powershell
 
+# Contains private info
 /.android
 /.config/copr
 /.config/gallery-dl
 /.config/ngrok2
 /.config/obs-studio
+/.config/ookla/speedtest-cli.json
 /.config/rclone/rclone.conf
 /.config/so
 /.local/share/charm
 /.ngrok2
 
+# Not human editable
+/.config/configstore
 /.config/dconf
+/.config/fvim/config.json
 /.config/gnome-initial-setup-done
-/.config/nvim/spell
 /.config/zsh/.zkbd
 /.local/share/applications/mimeinfo.cache
 
