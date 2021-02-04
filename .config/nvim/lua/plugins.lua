@@ -20,66 +20,24 @@ return require('packer').startup(function()
     requires = 'nvim-lspconfig',
     config = function()
       require'lspsaga'.init_lsp_saga()
-      vim.api.nvim_set_keymap(
-        'n', '<leader>hh', [[<cmd>lua require('lspsaga.hover').render_hover_doc()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'gh', [[<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'gs', [[<cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'ca', [[<cmd>lua require('lspsaga.codeaction').code_action()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'v', 'ca', [[<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'gr', [[<cmd>lua require('lspsaga.rename').rename()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<leader>rn', [[<cmd>lua require('lspsaga.rename').rename()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'gd', [[<cmd>lua require'lspsaga.provider'.preview_definition()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<leader>cd', [[<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '[e', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '[g', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', ']e', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', ']g', [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<A-d>', [[<cmd>lua require('lspsaga.floaterm').open_float_terminal('fish')<CR>]],
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        't', '<A-d>', [[<C-\><C-n>:lua require('lspsaga.floaterm').close_float_terminal()<CR>]],
-        { silent = true, noremap = true }
-      )
+      local remap = vim.api.nvim_set_keymap
+      local opts = { silent = true, noremap = true }
+
+      remap('n', '<leader>hh', [[<cmd>lua require'lspsaga.hover'.render_hover_doc()<CR>]],              opts)
+      remap('n', 'gh',         [[<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>]],                 opts)
+      remap('n', 'gs',         [[<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>]],        opts)
+      remap('n', 'ca',         [[<cmd>lua require'lspsaga.codeaction'.code_action()<CR>]],              opts)
+      remap('v', 'ca',         [[<cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>]],   opts)
+      remap('n', 'gr',         [[<cmd>lua require'lspsaga.rename'.rename()<CR>]],                       opts)
+      remap('n', '<leader>rn', [[<cmd>lua require'lspsaga.rename'.rename()<CR>]],                       opts)
+      remap('n', 'gd',         [[<cmd>lua require'lspsaga.provider'.preview_definition()<CR>]],         opts)
+      remap('n', '<leader>cd', [[<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>]],    opts)
+      remap('n', '[e',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]], opts)
+      remap('n', '[g',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]], opts)
+      remap('n', ']e',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]], opts)
+      remap('n', ']g',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]], opts)
+      remap('n', '<A-d>',      [[<cmd>lua require'lspsaga.floaterm'.open_float_terminal('fish')<CR>]],  opts)
+      remap('t', '<A-d>',      [[<C-\><C-n>:lua require'lspsaga.floaterm'.close_float_terminal()<CR>]], opts)
     end
   }
   use {
@@ -354,9 +312,23 @@ return require('packer').startup(function()
       'nvim-lua/plenary.nvim',
       'kyazdani42/nvim-web-devicons',
       'nvim-treesitter',
+
+      -- Telescope plugins
+      'nvim-telescope/telescope-fzy-native.nvim',
+      'nvim-telescope/telescope-fzf-writer.nvim',
+      'nvim-telescope/telescope-symbols.nvim',
+      'nvim-telescope/telescope-github.nvim',
+      'nvim-telescope/telescope-packer.nvim',
+      'nvim-telescope/telescope-project.nvim',
+      'nvim-telescope/telescope-node-modules.nvim',
+
+      {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
+      {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
     },
     config = function()
-      require'telescope'.setup {
+      local telescope = require 'telescope'
+      -- local homedir = os.getenv 'HOME'
+      telescope.setup {
         defaults = {
           winblend = 10,
           file_sorter = require'telescope.sorters'.get_fzy_sorter,
@@ -364,75 +336,37 @@ return require('packer').startup(function()
         extensions = {
           frecency = {
             show_scores = true,
+            ignore_patterns = {'*.git/*', '*/tmp/*', os.getenv 'XDG_CACHE_HOME'},
+            workspaces = {
+              conf = os.getenv 'XDG_CONFIG_HOME',
+              data = os.getenv 'XDG_DATA_HOME',
+              project = os.getenv('HOME') .. '/Projects',
+            },
           },
-        }
+          fzf_writer = { use_highlighter = true },
+        },
       }
-      vim.api.nvim_set_keymap(
-        'n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]],
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]],
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]],
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]],
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'n', 'gr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]],
-        { noremap = true, silent = true }
-      )
+      telescope.load_extension('fzy_native')
+      telescope.load_extension('fzf_writer')
+      telescope.load_extension('gh')
+      telescope.load_extension('packer')
+      telescope.load_extension('project')
+      telescope.load_extension('node_modules')
+      telescope.load_extension('frecency')
+      telescope.load_extension('cheat')
+
+      local remap = vim.api.nvim_set_keymap
+      local opts = { silent = true, noremap = true }
+
+      remap('n', '<leader>ff', [[<cmd>lua require'telescope.builtin'.find_files()<cr>]], opts)
+      remap('n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]], opts)
+      remap('n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]], opts)
+      remap('n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]], opts)
+      remap('n', 'gr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]], opts)
+      remap('n', '<leader><leader>', [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]], opts)
+      remap('n', '<C-p>', [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]], opts)
     end
   }
-  use {
-    'nvim-telescope/telescope-github.nvim',
-    requires = 'telescope.nvim',
-    config = function() require'telescope'.load_extension('gh') end
-  }
-  use {
-    'nvim-telescope/telescope-fzy-native.nvim',
-    requires = 'telescope.nvim',
-    config = function() require'telescope'.load_extension('fzy_native') end
-  }
-  use {
-    'nvim-telescope/telescope-project.nvim',
-    requires = 'telescope.nvim',
-    config = function()
-      require'telescope'.load_extension('project')
-      vim.api.nvim_set_keymap(
-        'n', '<C-p>', [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]],
-        { noremap = true, silent = true }
-      )
-    end
-  }
-  use {
-    'nvim-telescope/telescope-packer.nvim',
-    requires = 'telescope.nvim',
-    config = function() require'telescope'.load_extension('packer') end
-  }
-  use {
-    'nvim-telescope/telescope-frecency.nvim',
-    requires = { 'tami5/sql.nvim', 'telescope.nvim' },
-    config = function()
-      require'telescope'.load_extension('frecency')
-      vim.api.nvim_set_keymap(
-        'n', '<leader><leader>', [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]],
-        { noremap = true, silent = true }
-      )
-    end
-  }
-  use {
-    'nvim-telescope/telescope-cheat.nvim',
-    requires = { 'tami5/sql.nvim', 'telescope.nvim' },
-    config = function() require'telescope'.load_extension('cheat') end
-  }
-  use { 'nvim-telescope/telescope-fzf-writer.nvim', requires = 'telescope.nvim' }
-  use { 'nvim-telescope/telescope-symbols.nvim', requires = 'telescope.nvim' }
   use { 'pwntester/octo.nvim', requires = 'telescope.nvim', opt = true, cmd = 'Octo' }
 
   -- User interface
@@ -515,15 +449,13 @@ return require('packer').startup(function()
     'norcalli/nvim-colorizer.lua',
     -- Highlights color codes with the actual color
     ft = { 'css', 'kitty', 'less', 'lua', 'vim' },
-    config = function()
-      require'colorizer'.setup {
-        'kitty',
-        'less',
-        css = { css = true },
-        lua = { RGB = false, RRGGBB = true, names = false },
-        vim = { RGB = false, RRGGBB = true, names = false },
-      }
-    end
+    config = function() require'colorizer'.setup {
+      'kitty',
+      'less',
+      css = { css = true },
+      lua = { RGB = false, RRGGBB = true, names = false },
+      vim = { RGB = false, RRGGBB = true, names = false },
+    } end
   }
   use { 'meain/vim-package-info', ft = { 'json', 'requirements', 'toml' }, run = 'npm i' }
   use {
@@ -559,7 +491,7 @@ return require('packer').startup(function()
       }
       vim.g['airline#parts#ffenc#skip_expected_string'] = 'utf-8[unix]'
       vim.g['airline#extensions#vista#enabled'] = false -- Deals with Vista's lazy loader
-      vim.g['airline#extensions#tabline#enabled'] = true -- Enable tabline
+      -- vim.g['airline#extensions#tabline#enabled'] = true -- Enable tabline
       vim.g['airline#extensions#nvimlsp#enabled'] = false
       vim.g.airline_filetype_overrides = {
         LuaTree = { 'LuaTree', '' },
@@ -569,6 +501,15 @@ return require('packer').startup(function()
         vista_kind = { 'Vista', '' },
         vista_markdown = { 'Vista', '' },
       }
+    end
+  }
+  use {
+    'romgrk/barbar.nvim',
+    -- Tabline plugin
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      local remap = vim.api.nvim_set_keymap
+      remap('n', 'bb', [[<cmd>BufferPick<CR>]], {})
     end
   }
   use {
@@ -624,15 +565,13 @@ return require('packer').startup(function()
     requires = { 'nvim-lua/plenary.nvim', 'telescope.nvim' },
     opt = true,
     keys = { {'n', 'gzi'} },
-    config = function()
-      require'neuron'.setup {
-        virtual_titles = true,
-        mappings = true,
-        run = nil,
-        neuron_dir = '~/Documents/Neuron',
-        leader = 'gz',
-      }
-    end
+    config = function() require'neuron'.setup {
+      virtual_titles = true,
+      mappings = true,
+      run = nil,
+      neuron_dir = '~/Documents/Neuron',
+      leader = 'gz',
+    } end
   }
   use {
     'hkupty/iron.nvim',
@@ -689,7 +628,7 @@ return require('packer').startup(function()
     'tpope/vim-abolish',
     cmd = { 'Abolish', 'Subvert', 'S' },
     keys = {{'n', 'cr'}},
-    config = function()
+    setup = function()
       vim.g.abolish_save_file = vim.fn.stdpath('config') .. '/after/plugin/abolish.vim'
     end
   }
@@ -701,6 +640,7 @@ return require('packer').startup(function()
   }
   use {
     'tpope/vim-surround',
+    -- This will be replaced by blackCauldron7/surround.nvim eventually
     keys = {
       {'n', 'ds'},
       {'n', 'cs'},
@@ -720,6 +660,8 @@ return require('packer').startup(function()
   use {
     'monaqa/dial.nvim',
     -- Replaces speeddating
+    requires = 'astronauta.nvim',
+    opt = true,
     keys = { '<C-a>', '<C-x>', {'x', 'g<C-a>'}, {'x', 'g<C-x>'} },
     config = function()
       local dial = require('dial')
@@ -730,12 +672,12 @@ return require('packer').startup(function()
       }
       table.insert(dial.searchlist.normal, dial.augends.boolean)
 
-      vim.api.nvim_set_keymap('n', '<C-a>', '<Plug>(dial-increment)', {})
-      vim.api.nvim_set_keymap('n', '<C-x>', '<Plug>(dial-decrement)', {})
-      vim.api.nvim_set_keymap('x', '<C-a>', '<Plug>(dial-increment)', {})
-      vim.api.nvim_set_keymap('x', '<C-x>', '<Plug>(dial-decrement)', {})
-      vim.api.nvim_set_keymap('x', 'g<C-a>', '<Plug>(dial-increment-additional)', {})
-      vim.api.nvim_set_keymap('x', 'g<C-x>', '<Plug>(dial-decrement-additional)', {})
+      vim.keymap.nmap { '<C-a>', '<Plug>(dial-increment)' }
+      vim.keymap.nmap { '<C-x>', '<Plug>(dial-decrement)' }
+      vim.keymap.xmap { '<C-a>', '<Plug>(dial-increment)' }
+      vim.keymap.xmap { '<C-x>', '<Plug>(dial-decrement)' }
+      vim.keymap.xmap { 'g<C-a>', '<Plug>(dial-increment-additional)' }
+      vim.keymap.xmap { 'g<C-x>', '<Plug>(dial-decrement-additional)' }
     end
   }
   use {
@@ -745,11 +687,13 @@ return require('packer').startup(function()
   }
   use {
     'junegunn/vim-easy-align',
+    requires = 'astronauta.nvim',
+    opt = true,
     cmd = { 'EasyAlign', 'LiveEasyAlign' },
     keys = { {'x', 'ga'}, {'n', 'ga'} },
     config = function()
-      vim.api.nvim_set_keymap('x', 'ga', '<Plug>(LiveEasyAlign)', {})
-      vim.api.nvim_set_keymap('n', 'ga', '<Plug>(EasyAlign)', {})
+      vim.keymap.xmap { 'ga', '<Plug>(LiveEasyAlign)' }
+      vim.keymap.nmap { 'ga', '<Plug>(EasyAlign)' }
     end
   }
 end)
