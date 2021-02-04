@@ -1,4 +1,8 @@
 local lspconfig = require'lspconfig'
+--[[ TODO add on_attach function
+  This is mostly held up by neovim pull #13823 (https://github.com/neovim/neovim/pull/13823),
+  which adds a better way to manage keymaps. Once that's merged, stuff can be moved into here.
+  ]]
 
 lspconfig.bashls.setup {}
 lspconfig.ccls.setup {
@@ -12,6 +16,7 @@ lspconfig.ccls.setup {
 }
 lspconfig.cmake.setup {}
 lspconfig.cssls.setup {}
+lspconfig.dotls.setup {}
 lspconfig.dockerls.setup {}
 lspconfig.fortls.setup {}
 lspconfig.gopls.setup {
@@ -54,6 +59,7 @@ lspconfig.rls.setup {
     },
   },
 }
+lspconfig.sqls.setup {}
 lspconfig.sqlls.setup {
   cmd = {'sql-language-server', 'up', '--method', 'stdio'},
 }
@@ -72,11 +78,13 @@ lspconfig.sumneko_lua.setup {
       workspace = {
         library = {
           [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.stdpath('data')..'/site/lua_types'] = true,
         },
       },
     },
   },
 }
+lspconfig.taplo.setup {}
 lspconfig.tsserver.setup {}
 lspconfig.vimls.setup {}
 lspconfig.yamlls.setup {}

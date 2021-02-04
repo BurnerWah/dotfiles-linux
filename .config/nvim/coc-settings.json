@@ -1,10 +1,5 @@
 {
   "languageserver": {
-    "dotls": {
-      "module": "~/.local/lib/node_modules/dot-language-server/bin/server.js",
-      "args": ["--node-ipc"],
-      "filetypes": ["dot"]
-    },
     "lua": { "command": "lua-lsp", "filetypes": ["lua-DISABLED"] }
   },
   "coc.preferences.formatOnSaveFiletypes": [
@@ -29,8 +24,6 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "python.formatting.provider": "yapf",
-  "rust.clippy_preference": "on",
-  "rust-client.disableRustup": true,
   "suggest.labelMaxLength": 100,
   "xml.catalogs": [
     "/etc/xml/catalog",
