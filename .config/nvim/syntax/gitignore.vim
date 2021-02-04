@@ -10,7 +10,7 @@ syn region  gitignoreComment oneline
 syn match  gitignoreNegation /^!/
 syn match  gitignorePathSep  '/'
 syn match  gitignoreWildcard /\%(\\\)\@<![*?]/
-syn match  gitignoreEscaped  /\\[#*?\\\[\]]/
+syn match  gitignoreEscaped  /\\[#*?\\\[\] ]/
 syn match  gitignoreEscaped  /^\\!/
 syn region gitignoreRange start='\[' skip='\\\]' end='\]'
 
