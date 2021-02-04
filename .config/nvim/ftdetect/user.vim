@@ -33,6 +33,11 @@ aug userft
   au BufNewFile,BufRead gdbinit setf gdb
   au BufNewFile,BufRead *.gdb   setf gdb
 
+  " Git ignore {{{1
+  au BufNewFile,BufRead */.config/git/ignore setf gitignore
+  au BufNewFile,BufRead *.git/info/exclude   setf gitignore
+  au BufNewFile,BufRead .gitignore           setf gitignore
+
   " JSON {{{1
   au BufNewFile,BufRead *.arcconfig,*.arclint     setf json
   au BufNewFile,BufRead *.avsc                    setf json " Avro Schema
