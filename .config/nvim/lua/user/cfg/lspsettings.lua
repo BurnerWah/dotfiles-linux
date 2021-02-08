@@ -3,6 +3,8 @@ local lspconfig = require'lspconfig'
   This is mostly held up by neovim pull #13823 (https://github.com/neovim/neovim/pull/13823),
   which adds a better way to manage keymaps. Once that's merged, stuff can be moved into here.
   ]]
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.bashls.setup {}
 lspconfig.ccls.setup {
@@ -20,6 +22,7 @@ lspconfig.dotls.setup {}
 lspconfig.dockerls.setup {}
 lspconfig.fortls.setup {}
 lspconfig.gopls.setup {
+  capabilities = capabilities,
   settings = {
     gopls = {
       analyses = { unusedparams = true },
@@ -27,10 +30,11 @@ lspconfig.gopls.setup {
     },
   },
 }
-lspconfig.html.setup {}
-lspconfig.jedi_language_server.setup {}
+lspconfig.html.setup { capabilities = capabilities }
+lspconfig.jedi_language_server.setup { capabilities = capabilities }
 lspconfig.jsonls.setup {}
 lspconfig.pyls.setup {
+  capabilities = capabilities,
   settings = {
     pyls = {
       configurationSources = {'pyflakes', 'pycodestyle'},
@@ -51,7 +55,7 @@ lspconfig.pyls.setup {
     }
   }
 }
-lspconfig.pyright.setup {}
+lspconfig.pyright.setup { capabilities = capabilities }
 lspconfig.rls.setup {
   settings = {
     rust = {
@@ -65,6 +69,7 @@ lspconfig.sqlls.setup {
 }
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},
+  capabilities = capabilities,
   settings = {
     Lua = {
       runtime = {
@@ -85,8 +90,8 @@ lspconfig.sumneko_lua.setup {
   },
 }
 lspconfig.taplo.setup {}
-lspconfig.tsserver.setup {}
-lspconfig.vimls.setup {}
+lspconfig.tsserver.setup { capabilities = capabilities }
+lspconfig.vimls.setup { capabilities = capabilities }
 lspconfig.yamlls.setup {}
 
 -- The giant language servers - diagnosticls & efm
