@@ -3,7 +3,6 @@
   - JSON With comments isn't detected (this is a general issue right now)
   - Shebang detection isn't great (plenary issue)
       In more detail, it only does exact matches, so it misses anything with arguments
-  - Some extensions can't be detected (plenary issue)
 
   Other notes:
   - Zsh is present in here a lot to override base settings
@@ -62,6 +61,7 @@ return {
     ['wrap'] = 'dosini', -- From meson.vim
     ['xlisp'] = 'lisp',
     ['zsh'] = 'zsh',
+    ['ublock.txt'] = 'ublock', -- Custom filetype
   },
   file_name = {
     ['.arclint'] = 'json',

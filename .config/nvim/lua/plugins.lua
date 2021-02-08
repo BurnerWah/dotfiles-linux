@@ -622,6 +622,14 @@ return require('packer').startup(function()
   use 'tpope/vim-repeat'
   use 'tpope/vim-endwise'
   use {
+    'phaazon/hop.nvim',
+    -- EasyMotion replacement
+    -- This will eventually be lazy loaded but currently that would require too much maintainence
+    config = function()
+      vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.jump_words()<cr>]], {})
+    end
+  }
+  use {
     'windwp/nvim-autopairs',
     config = function() require'nvim-autopairs'.setup() end,
   }

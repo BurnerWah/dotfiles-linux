@@ -16,7 +16,6 @@ aug userft
   au BufNewFile,BufRead */dbus-1/*.conf setf xml " DBus config
   au BufNewFile,BufRead */share/zsh/history setf zshhist
 
-  " au BufNewFile,BufRead *.ublock.txt setf ublock
   " au BufNewFile,BufRead *.reg setf registry " FIXME this is dumb. Don't do this.
 
   " Alsa config {{{1
