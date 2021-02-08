@@ -9,6 +9,7 @@ return require('packer').startup(function()
 
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
+  use { 'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file('user') end }
 
   -- Completion & Linting
   use {
@@ -309,7 +310,7 @@ return require('packer').startup(function()
     'nvim-telescope/telescope.nvim',
     requires = {
       'nvim-lua/popup.nvim',
-      'nvim-lua/plenary.nvim',
+      'plenary.nvim',
       'kyazdani42/nvim-web-devicons',
       'nvim-treesitter',
 
@@ -433,7 +434,7 @@ return require('packer').startup(function()
   }
   use {
     'lewis6991/gitsigns.nvim',
-    requires = 'nvim-lua/plenary.nvim',
+    requires = 'plenary.nvim',
     config = function() require'gitsigns'.setup() end
   }
   use {
@@ -562,7 +563,7 @@ return require('packer').startup(function()
 
       This will probably replace vimwiki at some point.
     ]]
-    requires = { 'nvim-lua/plenary.nvim', 'telescope.nvim' },
+    requires = { 'plenary.nvim', 'telescope.nvim' },
     opt = true,
     keys = { {'n', 'gzi'} },
     config = function() require'neuron'.setup {
