@@ -28,10 +28,14 @@ for _, prefix in ipairs(shebang_prefixes) do
     shebang[prefix .. k] = v
   end
 end
+local special = {
+  asa = (vim.g.filetype_asa or 'aspvbs'),
+}
 
 return {
   extension = {
     ['aiml'] = 'xml', -- Artificial Intelligence Markup Language
+    ['asa'] = special.asa,
     ['cjson'] = 'json', -- FIXME has comments
     ['doap'] = 'xml', -- Description of a project
     ['fish'] = 'fish',
@@ -49,6 +53,7 @@ return {
     ['resjson'] = 'json', -- Windows App localization
     ['ron'] = 'ron',
     ['snippets'] = 'snippets',
+    ['spec'] = 'spec', -- RPM Spec
     ['td'] = 'tablegen',
     ['tl'] = 'teal',
     ['tmLanguage'] = 'xml', -- Textmate language
@@ -77,12 +82,16 @@ return {
     ['.npmpackagejsonlintrc'] = 'json', -- npm-package-json-lint config
     ['.proselintrc'] = 'json',
     ['.tcelldb'] = 'json',
+    ['.viminfo'] = 'viminfo',
+    ['.wgetrc'] = 'wget',
     ['.zlogin'] = 'zsh',
     ['.zlogout'] = 'zsh',
     ['.zprofile'] = 'zsh',
     ['.zsh_history'] = 'zshhist', -- Custom filetype
     ['.zshenv'] = 'zsh',
     ['.zshrc'] = 'zsh',
+    ['_exrc'] = 'vim',
+    ['_viminfo'] = 'viminfo',
     ['anacrontab'] = 'crontab',
     ['cargo.lock'] = 'toml',
     ['constraints.in'] = 'requirements',
@@ -101,7 +110,9 @@ return {
     ['requirements.txt'] = 'requirements',
     ['requires.in'] = 'requirements',
     ['requires.txt'] = 'requirements',
+    ['robots.txt'] = 'robots',
     ['virc'] = 'vim',
+    ['wgetrc'] = 'wget',
     ['zlogin'] = 'zsh',
     ['zlogout'] = 'zsh',
     ['zprofile'] = 'zsh',
