@@ -12,10 +12,7 @@ return require('packer').startup(function()
   use { 'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file('user') end }
 
   -- Completion & Linting
-  use {
-    'neovim/nvim-lspconfig',
-    config = function() require('user.cfg.lspsettings') end
-  }
+  use { 'neovim/nvim-lspconfig', config = function() require'user.cfg.lspsettings' end }
   use {
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
@@ -48,6 +45,9 @@ return require('packer').startup(function()
       vim.cmd [[autocmd init CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
     end
   }
+  use { 'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig' }
+  use { 'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = function() require'lspkind'.init {} end }
+  use { 'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall' }
   use {
     'nvim-treesitter/nvim-treesitter',
     --[[ Highlighting engine for neovim
@@ -125,98 +125,18 @@ return require('packer').startup(function()
       vim.cmd [[autocmd init FileType list setlocal nospell]]
     end
   }
+  use { 'dense-analysis/ale', config = function() require'user.cfg.ale' end }
   use {
-    'dense-analysis/ale',
+    'hrsh7th/vim-vsnip',
+    requires = { 'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ' },
     config = function()
-      vim.g.ale_fix_on_save = true
-      vim.g.ale_disable_lsp = true
-      vim.g.ale_linters_ignore = {
-        --[[
-          I'm using this to disable linters that should not be handled by ALE.
-          That includes stuff handled by another plugin, and stuff that isn't helpful.
-
-          potential things to convert:
-          - fecs [ css, html, javascript ]
-          - gawk [ awk ] (packaged)
-          - clangcheck [ cpp ] (packaged)
-          - cppcheck [ c, cpp ] (packaged)
-          - clazy [ cpp ] (packaged)
-          - flawfinder [ c, cpp ] (packaged)
-          - vale [ asciidoc, mail, markdown, rst, tex, text ]
-          - msgfmt [ po ] (packaged)
-          - redpen [ asciidoc, markdown, review, rst, tex, text ]
-          - textlint [ asciidoc, markdown, rst, tex, text ]
-          - chktex [ tex ] (packaged)
-          - lacheck [ tex ] (packaged)
-        ]]
-        asciidoc = { 'alex', 'languagetool', 'proselint', 'writegood' }, -- enabled: redpen, textlint, vale
-        bats = { 'shellcheck' }, -- DISABLED
-        c = { 'cc', 'clangtidy', 'cpplint' }, -- enabled: cppcheck, flawfinder
-        cmake = { 'cmakelint' }, -- DISABLED
-        cpp = { 'cc', 'clangtidy', 'cpplint' }, -- enabled: clangcheck, clazy, cppcheck, flawfinder
-        css = { 'csslint', 'stylelint' }, -- enabled: fecs
-        dockerfile = { 'hadolint' }, -- enabled: dockerfile_lint
-        elixir = { 'credo' },
-        eruby = { 'erb' },
-        fish = { 'fish' }, -- DISABLED
-        fountain = { 'proselint' }, -- DISABLED
-        gitcommit = { 'gitlint' }, -- DISABLED
-        graphql = { 'eslint' }, -- enabled: gqlint
-        help = { 'alex', 'proselint', 'writegood' }, -- DISABLED
-        html = { 'alex', 'proselint', 'tidy', 'writegood' }, -- enabled: fecs, htmlhint
-        javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' }, -- enabled: fecs, jscs
-        json = { 'jsonlint', 'spectral' }, -- DISABLED
-        -- jsonc = { 'jsonlint', 'spectral' },
-        less = { 'stylelint' }, -- enabled: lessc
-        lua = { 'luacheck', 'luac' }, -- DISABLED
-        mail = { 'alex', 'languagetool', 'proselint' }, -- enabled: vale
-        markdown = { 'alex', 'languagetool', 'markdownlint', 'proselint', 'writegood' },
-        nroff = { 'alex', 'proselint', 'writegood' }, -- DISABLED
-        objc = { 'clang' }, -- DISABLED
-        objcpp = { 'clang' }, -- DISABLED
-        php = { 'phpcs', 'phpstan' },
-        po = { 'alex', 'proselint', 'writegood' }, -- enabled: msgfmt
-        pod = { 'alex', 'proselint', 'writegood' }, -- DISABLED
-        python = { 'flake8', 'mypy', 'pylint' },
-        rst = { 'alex', 'proselint', 'rstcheck', 'writegood' }, -- enabled: redpen, textlint, vale
-        rust = { 'cargo' }, -- DISABLED
-        sass = { 'stylelint' }, -- enabled: sasslint
-        scss = { 'stylelint' }, -- enabled: sasslint, scss-lint
-        sh = { 'bashate', 'shellcheck' }, -- enabled: shell
-        sql = { 'sqlint' }, -- enabled: sqllint
-        stylus = { 'stylelint' }, -- DISABLED
-        sugarss = { 'stylelint' }, -- DISABLED
-        teal = { 'tlcheck' }, -- DISABLED
-        tex = { 'alex', 'proselint', 'writegood' }, -- enabled: chktex, lacheck, redpen, textlint, vale
-        texinfo = { 'alex', 'proselint', 'writegood' }, -- DISABLED
-        typescript = { 'eslint', 'standard', 'tslint', 'xo' }, -- enabled: typecheck
-        vim = { 'vint' }, -- enabled: ale_custom_linting_rules
-        vimwiki = { 'alex', 'languagetool', 'proselint', 'markdownlint', 'mdl', 'remark-lint', 'writegood' },
-        vue = { 'eslint' },
-        xhtml = { 'alex', 'proselint', 'writegood' }, -- DISABLED
-        xsd = { 'xmllint' }, -- DISABLED
-        xml = { 'xmllint' }, -- DISABLED
-        xslt = { 'xmllint' }, -- DISABLED
-        yaml = { 'spectral', 'yamllint' }, -- enabled: swaglint
-        zsh = { 'shell' },
-      }
-      vim.g.ale_fixers = {
-        ['*'] = { 'remove_trailing_lines', 'trim_whitespace' },
-        cpp = { 'clangtidy', 'remove_trailing_lines', 'trim_whitespace' },
-        go = { 'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace' },
-        html = { 'tidy', 'remove_trailing_lines', 'trim_whitespace' },
-        markdown = {},
-        python = {
-          'add_blank_lines_for_python_control_statements',
-          'reorder-python-imports',
-          'remove_trailing_lines',
-          'trim_whitespace',
-        },
-        rust = { 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' },
-        sql = { 'sqlformat', 'remove_trailing_lines', 'trim_whitespace' },
-        xml = { 'xmllint' },
-      }
-      vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]
+      local remap = vim.api.nvim_set_keymap
+      -- Expand
+      remap('i', '<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], { expr = true })
+      remap('s', '<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], { expr = true })
+      -- Expand or jump
+      remap('i', '<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']], { expr = true })
+      remap('s', '<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']], { expr = true })
     end
   }
   use {
@@ -225,12 +145,14 @@ return require('packer').startup(function()
     requires = {
       { 'nvim-treesitter/completion-treesitter', requires = 'nvim-treesitter' },
       { 'aca/completion-tabnine', run = './install.sh' },
-      { 'steelsojka/completion-buffers' }
+      { 'steelsojka/completion-buffers' },
+      'vim-vsnip',
     },
     config = function()
       vim.cmd [[autocmd BufEnter * lua require'completion'.on_attach()]]
       vim.cmd [[set completeopt=menuone,noinsert,noselect]]
       vim.cmd [[set shortmess+=c]]
+      vim.g.completion_enable_snippet = 'vim-vsnip'
       vim.g.completion_chain_complete_list = {
         default = {
           default = {
@@ -432,11 +354,7 @@ return require('packer').startup(function()
       }
     end
   }
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = 'plenary.nvim',
-    config = function() require'gitsigns'.setup() end
-  }
+  use { 'lewis6991/gitsigns.nvim', requires = 'plenary.nvim', config = function() require'gitsigns'.setup() end }
   use {
     'rhysd/git-messenger.vim',
     cmd = 'GitMessenger',
@@ -518,6 +436,7 @@ return require('packer').startup(function()
     -- Lua color scheme engine
     config = function() require('colorbuddy').colorscheme('user_colors') end
   }
+  use 'DanilaMihailov/beacon.nvim'
 
   -- Utilities
   use 'tpope/vim-fugitive'
@@ -629,10 +548,7 @@ return require('packer').startup(function()
       vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.jump_words()<cr>]], {})
     end
   }
-  use {
-    'windwp/nvim-autopairs',
-    config = function() require'nvim-autopairs'.setup() end,
-  }
+  use { 'windwp/nvim-autopairs', config = function() require'nvim-autopairs'.setup() end }
   use {
     'tpope/vim-abolish',
     cmd = { 'Abolish', 'Subvert', 'S' },

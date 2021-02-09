@@ -6,8 +6,9 @@ local lspconfig = require'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.bashls.setup {}
+lspconfig.bashls.setup { capabilities = capabilities }
 lspconfig.ccls.setup {
+  capabilities = capabilities,
   init_options = {
     compilationDatabaseDirectory = 'build',
     index = { threads = 0 },
@@ -16,11 +17,11 @@ lspconfig.ccls.setup {
     highlight = { lsRanges = true },
   },
 }
-lspconfig.cmake.setup {}
-lspconfig.cssls.setup {}
-lspconfig.dotls.setup {}
-lspconfig.dockerls.setup {}
-lspconfig.fortls.setup {}
+lspconfig.cmake.setup { capabilities = capabilities }
+lspconfig.cssls.setup { capabilities = capabilities }
+lspconfig.dotls.setup { capabilities = capabilities }
+lspconfig.dockerls.setup { capabilities = capabilities }
+lspconfig.fortls.setup { capabilities = capabilities }
 lspconfig.gopls.setup {
   capabilities = capabilities,
   settings = {
@@ -32,40 +33,49 @@ lspconfig.gopls.setup {
 }
 lspconfig.html.setup { capabilities = capabilities }
 lspconfig.jedi_language_server.setup { capabilities = capabilities }
-lspconfig.jsonls.setup {}
+lspconfig.jsonls.setup {
+  capabilities = capabilities,
+  commands = {
+    LspFormat = {
+      function() vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0}) end
+    },
+  },
+}
 lspconfig.pyls.setup {
   capabilities = capabilities,
   settings = {
     pyls = {
-      configurationSources = {'pyflakes', 'pycodestyle'},
+      configurationSources = { 'pyflakes', 'pycodestyle' },
       plugins = {
-        jedi_completion = {enabled = true},
-        jedi_hover = {enabled = true},
-        jedi_references = {enabled = true},
-        jedi_signature_help = {enabled = true},
-        jedi_symbols = {enabled = true, all_scopes = true},
-        mccabe = {enabled = true, threshold = 15},
-        preload = {enabled = true},
-        pycodestyle = {enabled = true},
-        pydocstyle = {enabled = false},
-        pyflakes = {enabled = false},
-        rope_completion = {enabled = true},
-        yapf = {enabled = true}
+        jedi_completion = { enabled = true },
+        jedi_hover = { enabled = true },
+        jedi_references = { enabled = true },
+        jedi_signature_help = { enabled = true },
+        jedi_symbols = { enabled = true, all_scopes = true },
+        mccabe = { enabled = true, threshold = 15 },
+        preload = { enabled = true },
+        pycodestyle = { enabled = true },
+        pydocstyle = { enabled = false },
+        pyflakes = { enabled = false },
+        rope_completion = { enabled = true },
+        yapf = { enabled = true }
       }
     }
   }
 }
 lspconfig.pyright.setup { capabilities = capabilities }
 lspconfig.rls.setup {
+  capabilities = capabilities,
   settings = {
     rust = {
       clippy_preference = 'on',
     },
   },
 }
-lspconfig.sqls.setup {}
+lspconfig.sqls.setup { capabilities = capabilities }
 lspconfig.sqlls.setup {
   cmd = {'sql-language-server', 'up', '--method', 'stdio'},
+  capabilities = capabilities,
 }
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},
@@ -89,10 +99,17 @@ lspconfig.sumneko_lua.setup {
     },
   },
 }
-lspconfig.taplo.setup {}
+lspconfig.taplo.setup { capabilities = capabilities }
 lspconfig.tsserver.setup { capabilities = capabilities }
 lspconfig.vimls.setup { capabilities = capabilities }
-lspconfig.yamlls.setup {}
+lspconfig.yamlls.setup {
+  capabilities = capabilities,
+  settings = {
+    yaml = {
+      schemaStore = { enable = true }, -- Yaml Schemas
+    },
+  },
+}
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
@@ -687,16 +704,16 @@ lspconfig.diagnosticls.setup {
       fish_indent = { command = 'fish_indent' },
       isort = { command = 'isort', args = {'--quiet', '-'} },
       lua_format = { command = 'lua-format', args = {'-i'} },
-      mix_format = { command = 'mix', args = {'format', '-'}},
+      mix_format = { command = 'mix', args = {'format', '-'} },
       shfmt = { command = 'shfmt', args = {'-i=2', '-ci'} },
-      yapf = { command = 'yapf', args = {'--quiet'} }
+      yapf = { command = 'yapf', args = {'--quiet'} },
     },
     formatFiletypes = {
       cmake = 'cmakeformat',
       dart = 'dartfmt',
       elixir = 'mix_format',
       lua = 'lua_format',
-      sh = 'shfmt'
+      sh = 'shfmt',
     },
   },
 }
