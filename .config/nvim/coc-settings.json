@@ -1,7 +1,4 @@
 {
-  "languageserver": {
-    "lua": { "command": "lua-lsp", "filetypes": ["lua-DISABLED"] }
-  },
   "coc.preferences.formatOnSaveFiletypes": [
     "cmake",
     "css",
@@ -24,7 +21,6 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "python.formatting.provider": "yapf",
-  "suggest.labelMaxLength": 100,
   "xml.catalogs": [
     "/etc/xml/catalog",
     "/home/jadenpleasants/.config/xml/catalog.xml"
@@ -46,10 +42,5 @@
     }
   ],
   "xml.java.home": "/usr/lib/jvm/jre",
-  "xml.server.workDir": "~/.cache/lsp4xml",
-  "yaml.format.enable": true,
-  "yaml.format.singleQuote": true,
-  "yaml.schemas": {
-    "https://github.com/mattn/efm-langserver/raw/master/schema.json": "/efm-langserver/config.yaml"
-  }
+  "xml.server.workDir": "~/.cache/lsp4xml"
 }

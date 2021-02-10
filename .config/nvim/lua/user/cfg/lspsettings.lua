@@ -74,6 +74,10 @@ for _, server in ipairs(simple_servers) do
   lspconfig[server].setup { on_attach = on_attach, capabilities = capabilities }
 end
 
+local url = {
+  gh_raw = [[https://github.com/%s/raw/%s/%s]],
+}
+
 lspconfig.ccls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -174,7 +178,10 @@ lspconfig.yamlls.setup {
   capabilities = capabilities,
   settings = {
     yaml = {
-      schemaStore = { enable = true }, -- Yaml Schemas
+      format = { singleQuote = true },
+      schemas = {
+        [url.gh_raw:format('mattn/efm-langserver', 'master', 'schema.json')] = '/efm-langserver/config.yaml',
+      },
     },
   },
 }
@@ -183,6 +190,7 @@ lspconfig.yamlls.setup {
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
 lspconfig.efm.setup {
   filetypes = { 'eruby', 'make', 'zsh' },
+  capabilities = capabilities,
   on_attach = on_attach,
 }
 lspconfig.diagnosticls.setup {
@@ -227,6 +235,7 @@ lspconfig.diagnosticls.setup {
     'yaml',
     'zsh',
   },
+  -- capabilities = capabilities,
   on_attach = on_attach,
   init_options = {
     linters = {
