@@ -29,7 +29,7 @@ aug END
 aug init
   au!
   au CompleteDone * if pumvisible() == 0 | pclose | endif
-  au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|tsplayground\)') | quit | endif
+  au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|vista_kind\|minimap\|tsplayground\)') | quit | endif
   au FileType desktop setl comments=:# commentstring=#\ %s
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no

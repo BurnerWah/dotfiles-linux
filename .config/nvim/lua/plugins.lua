@@ -9,43 +9,27 @@ return require('packer').startup(function()
 
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
-  use { 'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file('user') end }
+  use { 'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file'user' end }
 
   -- Completion & Linting
   use { 'neovim/nvim-lspconfig', config = function() require'user.cfg.lspsettings' end }
   use {
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
-    config = function()
-      require'lspsaga'.init_lsp_saga()
-      local remap = vim.api.nvim_set_keymap
-      local opts = { silent = true, noremap = true }
-
-      remap('n', '<leader>hh', [[<cmd>lua require'lspsaga.hover'.render_hover_doc()<CR>]],              opts)
-      remap('n', 'gh',         [[<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>]],                 opts)
-      remap('n', 'gs',         [[<cmd>lua require'lspsaga.signaturehelp'.signature_help()<CR>]],        opts)
-      remap('n', 'ca',         [[<cmd>lua require'lspsaga.codeaction'.code_action()<CR>]],              opts)
-      remap('v', 'ca',         [[<cmd>'<,'>lua require'lspsaga.codeaction'.range_code_action()<CR>]],   opts)
-      remap('n', 'gr',         [[<cmd>lua require'lspsaga.rename'.rename()<CR>]],                       opts)
-      remap('n', '<leader>rn', [[<cmd>lua require'lspsaga.rename'.rename()<CR>]],                       opts)
-      remap('n', 'gd',         [[<cmd>lua require'lspsaga.provider'.preview_definition()<CR>]],         opts)
-      remap('n', '<leader>cd', [[<cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>]],    opts)
-      remap('n', '[e',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]], opts)
-      remap('n', '[g',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>]], opts)
-      remap('n', ']e',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]], opts)
-      remap('n', ']g',         [[<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>]], opts)
-      remap('n', '<A-d>',      [[<cmd>lua require'lspsaga.floaterm'.open_float_terminal('fish')<CR>]],  opts)
-      remap('t', '<A-d>',      [[<C-\><C-n>:lua require'lspsaga.floaterm'.close_float_terminal()<CR>]], opts)
-    end
+    config = function() require'lspsaga'.init_lsp_saga {
+      error_sign = '',
+      warn_sign = '',
+      hint_sign = '',
+      infor_sign = '',
+      border_style = 2, -- Rounded border
+    } end
   }
   use {
-    'kosayoda/nvim-lightbulb',
-    requires = 'nvim-lspconfig',
-    config = function()
-      vim.cmd [[autocmd init CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
-    end
+    'RishabhRD/nvim-lsputils',
+    requires = { 'nvim-lspconfig', 'RishabhRD/popfix' },
   }
-  use { 'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig' }
+  use { 'kosayoda/nvim-lightbulb', requires = 'nvim-lspconfig' }
+  use { 'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes' }
   use { 'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = function() require'lspkind'.init {} end }
   use { 'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall' }
   use {
@@ -58,38 +42,35 @@ return require('packer').startup(function()
       ]]
     requires = {
       { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
-      { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
+      { 'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground' },
+      { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
+      { 'p00f/nvim-ts-rainbow', after = 'nvim-treesitter' },
     },
     config = function()
       require'nvim-treesitter.configs'.setup {
         ensure_installed = 'maintained',
         highlight = { enable = true },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = 'gnn',
-            node_incremental = 'grn',
-            scope_incremental = 'grc',
-            node_decremental = 'grm',
-          },
-        },
+        incremental_selection = { enable = true },
         indent = { enable = true }, -- Indent uses 'tabstop' so it has to be managed in ftplugins.
-        playground = {
-          enable = true,
-          disable = {},
-          updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-          persist_queries = false, -- Whether the query persists across vim sessions
-        },
+        playground = { enable = true },
         refactor = {
           highlight_definitions = { enable = true },
-          highlight_current_scope = { enable = false },
-          smart_rename = {
+          smart_rename = { enable = true },
+        },
+        textobjects = {
+          select = {
             enable = true,
-            keymaps = { smart_rename = 'grr' }
+            keymaps = {
+              ['af'] = '@function.outer',
+              ['if'] = '@function.inner',
+              ['ac'] = '@class.outer',
+              ['ic'] = '@class.inner',
+            },
           },
         },
+        rainbow = { enable = true },
       }
-      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      local parser_config = require'nvim-treesitter.parsers'.get_parser_configs()
       parser_config.bash.used_by = { 'PKGBUILD' }
     end
   }
@@ -97,6 +78,7 @@ return require('packer').startup(function()
     'neoclide/coc.nvim',
     branch = 'release',
     opt = true,
+    disable = true,
     config = function()
       vim.g.coc_filetype_map = {
         catalog = 'xml',
@@ -107,18 +89,7 @@ return require('packer').startup(function()
       --Welcome to keymap hell.
       vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', { silent = true })
       vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', { silent = true })
-      vim.api.nvim_set_keymap('x', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
-      vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(coc-codeaction-selected)', {})
-      vim.api.nvim_set_keymap('n', '<leader>ac', '<Plug>(coc-codeaction)', {})
       vim.api.nvim_set_keymap('n', '<leader>qf', '<Plug>(coc-fix-current)', {})
-      vim.api.nvim_set_keymap('x', 'if', '<Plug>(coc-funcobj-i)', {})
-      vim.api.nvim_set_keymap('o', 'if', '<Plug>(coc-funcobj-i)', {})
-      vim.api.nvim_set_keymap('x', 'af', '<Plug>(coc-funcobj-a)', {})
-      vim.api.nvim_set_keymap('o', 'af', '<Plug>(coc-funcobj-a)', {})
-      vim.api.nvim_set_keymap('x', 'ic', '<Plug>(coc-classobj-i)', {})
-      vim.api.nvim_set_keymap('o', 'ic', '<Plug>(coc-classobj-i)', {})
-      vim.api.nvim_set_keymap('x', 'ac', '<Plug>(coc-classobj-a)', {})
-      vim.api.nvim_set_keymap('o', 'ac', '<Plug>(coc-classobj-a)', {})
       vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
@@ -140,56 +111,50 @@ return require('packer').startup(function()
     end
   }
   use {
-    'nvim-lua/completion-nvim',
-    -- I'd rather use hrsh7th/nvim-compe, but it's lacking in sources
+    'hrsh7th/nvim-compe',
     requires = {
-      { 'nvim-treesitter/completion-treesitter', requires = 'nvim-treesitter' },
-      { 'aca/completion-tabnine', run = './install.sh' },
-      { 'steelsojka/completion-buffers' },
+      { 'tzachar/compe-tabnine', run = 'bash install.sh' },
       'vim-vsnip',
+      'nvim-lspconfig',
+      'nvim-treesitter',
     },
     config = function()
-      vim.cmd [[autocmd BufEnter * lua require'completion'.on_attach()]]
-      vim.cmd [[set completeopt=menuone,noinsert,noselect]]
-      vim.cmd [[set shortmess+=c]]
-      vim.g.completion_enable_snippet = 'vim-vsnip'
-      vim.g.completion_chain_complete_list = {
-        default = {
-          default = {
-            { complete_items = { 'lsp', 'snippet', 'tabnine' } },
-            { complete_items = { 'buffers' } },
-            { mode = { '<c-p>' } },
-            { mode = { '<c-n>' } },
+      vim.o.completeopt = 'menu,menuone,noselect'
+      require'compe'.setup {
+        enabled = true,
+        autocomplete = true,
+        debug = false,
+        min_length = 1,
+        preselect = 'enable',
+        throttle_time = 80,
+        source_timeout = 200,
+        incomplete_delay = 400,
+        max_abbr_width = 100,
+        max_kind_width = 100,
+        max_menu_width = 100,
+        documentation = true,
+        source = {
+          path = true,
+          buffer = true,
+          calc = true,
+          vsnip = true,
+          nvim_lsp = true,
+          nvim_lua = true,
+          spell = true,
+          tags = true,
+          tabnine = {
+            ignored_filetypes = { 'markdown', 'rst', 'vimwiki' },
+            disabled = false,
+            priority = 1000, -- Defaults to 5000 which can be problematic
+            dup = true, -- Allow duplicate entries (mostly with LSP)
           },
-          comment = {},
-        },
-        lua = {
-          default = {
-            { complete_items = { 'lsp', 'snippet', 'tabnine' } },
-            { complete_items = { 'ts' } },
-            { complete_items = { 'buffers' } },
-          },
-        },
-        markdown = {
-          default = {
-            { complete_items = { 'snippet' } },
-            { complete_items = { 'buffers' } },
-          },
-        },
-        rst = {
-          default = {
-            { complete_items = { 'snippet' } },
-            { complete_items = { 'ts' } },
-            { complete_items = { 'buffers' } },
-          },
-        },
-        vimwiki = {
-          default = {
-            { complete_items = { 'snippet' } },
-            { complete_items = { 'buffers' } },
-          },
+          treesitter = true,
         },
       }
+      local remap = vim.api.nvim_set_keymap
+      local opts = { noremap = true, silent = true, expr = true }
+      remap('i', '<C-Space>', [[compe#complete()]], opts)
+      -- remap('i', '<CR>', [[compe#confirm('<CR>')]], opts)
     end
   }
 
@@ -204,13 +169,13 @@ return require('packer').startup(function()
   use 'udalov/kotlin-vim'
   use 'YaBoiBurner/requirements.txt.vim'
   use 'YaBoiBurner/vim-teal'
-  use { 'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim' }
+  use { 'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim', opt = true }
 
   -- CXX
   use { 'jackguo380/vim-lsp-cxx-highlight', ft = { 'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda' } }
 
   -- Lua
-  use { 'euclidianAce/BetterLua.vim', ft = 'lua' }
+  use { 'euclidianAce/betterlua.vim', ft = 'lua' }
   use 'tjdevries/manillua.nvim'
   use 'tjdevries/nlua.nvim'
   use { 'bfredl/nvim-luadev', cmd = 'Luadev' }
@@ -221,8 +186,8 @@ return require('packer').startup(function()
   use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown' }
 
   -- Python
-  use 'vim-python/python-syntax'
-  use 'Vimjas/vim-python-pep8-indent'
+  -- use 'vim-python/python-syntax'
+  use { 'Vimjas/vim-python-pep8-indent', ft = { 'aap', 'bzl', 'cython', 'pyrex', 'python' } }
 
   -- RST
   use { 'stsewd/sphinx.nvim', ft = 'rst' }
@@ -250,7 +215,7 @@ return require('packer').startup(function()
     },
     config = function()
       local telescope = require 'telescope'
-      -- local homedir = os.getenv 'HOME'
+      local env = vim.env
       telescope.setup {
         defaults = {
           winblend = 10,
@@ -259,11 +224,15 @@ return require('packer').startup(function()
         extensions = {
           frecency = {
             show_scores = true,
-            ignore_patterns = {'*.git/*', '*/tmp/*', os.getenv 'XDG_CACHE_HOME'},
+            ignore_patterns = {
+              '*.git/*',
+              '*/tmp/*',
+              (env.XDG_CACHE_HOME or (env.HOME .. '/.cache')),
+            },
             workspaces = {
-              conf = os.getenv 'XDG_CONFIG_HOME',
-              data = os.getenv 'XDG_DATA_HOME',
-              project = os.getenv('HOME') .. '/Projects',
+              conf = (env.XDG_CONFIG_HOME or (env.HOME .. '/.config')),
+              data = (env.XDG_DATA_HOME or (env.HOME .. '/.local/share')),
+              project = (env.HOME .. '/Projects'),
             },
           },
           fzf_writer = { use_highlighter = true },
@@ -285,7 +254,6 @@ return require('packer').startup(function()
       remap('n', '<leader>fg', [[<cmd>lua require'telescope.builtin'.live_grep()<cr>]], opts)
       remap('n', '<leader>fb', [[<cmd>lua require'telescope.builtin'.buffers()<cr>]], opts)
       remap('n', '<leader>fh', [[<cmd>lua require'telescope.builtin'.help_tags()<cr>]], opts)
-      remap('n', 'gr', [[<cmd>lua require'telescope.builtin'.lsp_references()<cr>]], opts)
       remap('n', '<leader><leader>', [[<cmd>lua require'telescope'.extensions.frecency.frecency()<CR>]], opts)
       remap('n', '<C-p>', [[<cmd>lua require'telescope'.extensions.project.project{}<CR>]], opts)
     end
@@ -322,30 +290,34 @@ return require('packer').startup(function()
     cmd = 'Vista',
     setup = function()
       vim.g['vista#renderer#enable_icon'] = 1
+      vim.g['vista#renderer#icons'] = {
+        ['func'] = '',
+        ['function'] = '',
+        ['functions'] = '',
+        ['var'] = '',
+        ['variable'] = '',
+        ['variables'] = '',
+        ['const'] = '',
+        ['constant'] = '',
+        ['constructor'] = '',
+        ['method'] = 'ƒ',
+        ['enum'] = '了',
+        ['enummember'] = '',
+        ['enumerator'] = '了',
+        ['module'] = '',
+        ['modules'] = '',
+        ['class'] = '',
+        ['struct'] = '',
+        ['property'] = '',
+        ['interface'] = 'ﰮ',
+      }
       vim.g.vista_echo_cursor_strategy = 'floating_win'
+      -- nvim_lsp support is now handled dynamically
       vim.g.vista_executive_for = {
         apiblueprint = 'markdown',
-        c = 'nvim_lsp',
-        cpp = 'nvim_lsp',
-        css = 'nvim_lsp',
-        go = 'nvim_lsp',
-        html = 'nvim_lsp',
-        javascript = 'nvim_lsp',
-        json = 'nvim_lsp',
-        jsonc = 'nvim_lsp',
-        lua = 'nvim_lsp',
         markdown = 'toc',
-        objc = 'nvim_lsp',
-        objcpp = 'nvim_lsp',
         pandoc = 'markdown',
-        python = 'nvim_lsp',
         rst = 'toc',
-        tex = 'nvim_lsp',
-        typescript = 'nvim_lsp',
-        vala = 'nvim_lsp',
-        vim = 'nvim_lsp',
-        xml = 'nvim_lsp',
-        yaml = 'nvim_lsp',
       }
       vim.g.vista_ctags_cmd = {
         -- Consider checking for commands before enabling them.
@@ -394,12 +366,12 @@ return require('packer').startup(function()
     ]]
     requires = {
       'vim-airline/vim-airline-themes',
-      { 'tyrannicaltoucan/vim-quantum', config = function() vim.cmd [[AirlineTheme quantum]] end },
-      { 'ryanoasis/vim-devicons', config = function() vim.g.webdevicons_enable_nerdtree = 0 end },
+      { 'ryanoasis/vim-devicons', setup = function() vim.g.webdevicons_enable_nerdtree = 0 end },
     },
     opt = true,
     event = 'VimEnter *',
     setup = function()
+      vim.g.airline_theme = 'quantum' -- Modified version is now integrated into dotfiles
       vim.g.airline_powerline_fonts = true
       vim.g.airline_detect_spelllang = false
       vim.g.airline_detect_crypt = false
@@ -436,11 +408,21 @@ return require('packer').startup(function()
     -- Lua color scheme engine
     config = function() require('colorbuddy').colorscheme('user_colors') end
   }
-  use 'DanilaMihailov/beacon.nvim'
+  use {
+    'DanilaMihailov/beacon.nvim',
+    config = function()
+      vim.g.beacon_ignore_filetypes = {
+        'minimap',
+        'tsplayground',
+        'vista',
+        'vista_kind',
+        'vista_markdown',
+      }
+    end
+  }
 
   -- Utilities
   use 'tpope/vim-fugitive'
-  use { 'rliang/termedit.nvim', event = 'VimEnter *' }
   use 'farmergreg/vim-lastplace'
   use {
     'vimwiki/vimwiki',
@@ -587,7 +569,7 @@ return require('packer').startup(function()
     -- Replaces speeddating
     requires = 'astronauta.nvim',
     opt = true,
-    keys = { '<C-a>', '<C-x>', {'x', 'g<C-a>'}, {'x', 'g<C-x>'} },
+    keys = { '<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'} },
     config = function()
       local dial = require('dial')
       dial.augends.boolean = dial.augends.common.enum_cyclic {
@@ -599,10 +581,10 @@ return require('packer').startup(function()
 
       vim.keymap.nmap { '<C-a>', '<Plug>(dial-increment)' }
       vim.keymap.nmap { '<C-x>', '<Plug>(dial-decrement)' }
-      vim.keymap.xmap { '<C-a>', '<Plug>(dial-increment)' }
-      vim.keymap.xmap { '<C-x>', '<Plug>(dial-decrement)' }
-      vim.keymap.xmap { 'g<C-a>', '<Plug>(dial-increment-additional)' }
-      vim.keymap.xmap { 'g<C-x>', '<Plug>(dial-decrement-additional)' }
+      vim.keymap.vmap { '<C-a>', '<Plug>(dial-increment)' }
+      vim.keymap.vmap { '<C-x>', '<Plug>(dial-decrement)' }
+      vim.keymap.vmap { 'g<C-a>', '<Plug>(dial-increment-additional)' }
+      vim.keymap.vmap { 'g<C-x>', '<Plug>(dial-decrement-additional)' }
     end
   }
   use {

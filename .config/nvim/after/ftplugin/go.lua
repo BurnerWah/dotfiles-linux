@@ -13,7 +13,3 @@ if (packer_plugins['coc.nvim'] and packer_plugins['coc.nvim'].loaded) then
   vim.keymap.nmap { 'g<LeftMouse> <LeftMouse>', '<plug>(coc-definition)', buffer = true, silent = true }
   vim.cmd [[autocmd user_ftplugin BufWritePre <buffer> call CocAction('runCommand', 'editor.action.organizeImport')]]
 end
-
-if (packer_plugins['lspsaga.nvim'] and packer_plugins['lspsaga.nvim'].loaded) then
-  vim.keymap.nnoremap { 'K', require('lspsaga.hover').render_hover_doc, buffer = true, silent = true }
-end

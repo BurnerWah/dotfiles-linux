@@ -1,13 +1,81 @@
 local lspconfig = require'lspconfig'
---[[ TODO add on_attach function
-  This is mostly held up by neovim pull #13823 (https://github.com/neovim/neovim/pull/13823),
-  which adds a better way to manage keymaps. Once that's merged, stuff can be moved into here.
-  ]]
+
+local on_attach = function(client)
+  local nnoremap, vnoremap = vim.keymap.nnoremap, vim.keymap.vnoremap
+  local filetype = vim.bo.filetype
+
+  if client.resolved_capabilities.hover then
+    nnoremap { '<leader>hh', [[<cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true }
+    if filetype ~= 'vim' then
+      nnoremap { 'K', [[<cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true }
+    end
+  end
+
+  if client.resolved_capabilities.find_references then
+    nnoremap { 'gh', [[<cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true }
+    nnoremap { 'gr', [[<cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true }
+  end
+
+  if client.resolved_capabilities.signature_help then
+    nnoremap { 'gs', [[<cmd>Lspsaga signature_help<CR>]], silent = true, buffer = true }
+  end
+
+  if client.resolved_capabilities.code_action then
+    vim.cmd [[autocmd init CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()]]
+    nnoremap { 'ca', [[<cmd>Lspsaga code_action<CR>]], silent = true, buffer=true }
+    nnoremap { '<leader>ac', [[<cmd>Lspsaga code_action<CR>]], silent = true, buffer=true }
+    vnoremap { 'ca', [[:<C-U>Lspsaga range_code_action<CR>]], silent = true, buffer=true }
+  end
+
+  if client.resolved_capabilities.rename then
+    nnoremap { '<leader>rn', [[<cmd>Lspsaga rename<CR>]], silent = true, buffer=true }
+  end
+
+  if client.resolved_capabilities.goto_definition then
+    nnoremap { 'gd', [[<cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = true }
+  end
+
+  if client.resolved_capabilities.document_symbol then
+    -- Vista.vim support
+    if vim.g.vista_executive_for then
+      local vista_exec = 'vista_'..filetype..'_executive'
+      vim.g[vista_exec] = (vim.g[vista_exec] or vim.g.vista_executive_for[filetype] or 'nvim_lsp')
+    end
+  end
+
+  -- Diagnostics are probably always available
+  nnoremap { '<leader>cd', [[<cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = true }
+  nnoremap { '[e', [[<cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true }
+  nnoremap { '[g', [[<cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true }
+  nnoremap { ']e', [[<cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true }
+  nnoremap { ']g', [[<cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true }
+
+end
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-lspconfig.bashls.setup { capabilities = capabilities }
+local simple_servers = {
+  'bashls',
+  'cmake',
+  'cssls',
+  'dotls',
+  'dockerls',
+  'fortls',
+  'html',
+  'jedi_language_server',
+  'pyright',
+  'sqls',
+  'taplo',
+  'tsserver',
+  'vimls',
+}
+for _, server in ipairs(simple_servers) do
+  lspconfig[server].setup { on_attach = on_attach, capabilities = capabilities }
+end
+
 lspconfig.ccls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   init_options = {
     compilationDatabaseDirectory = 'build',
@@ -17,12 +85,8 @@ lspconfig.ccls.setup {
     highlight = { lsRanges = true },
   },
 }
-lspconfig.cmake.setup { capabilities = capabilities }
-lspconfig.cssls.setup { capabilities = capabilities }
-lspconfig.dotls.setup { capabilities = capabilities }
-lspconfig.dockerls.setup { capabilities = capabilities }
-lspconfig.fortls.setup { capabilities = capabilities }
 lspconfig.gopls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     gopls = {
@@ -31,9 +95,8 @@ lspconfig.gopls.setup {
     },
   },
 }
-lspconfig.html.setup { capabilities = capabilities }
-lspconfig.jedi_language_server.setup { capabilities = capabilities }
 lspconfig.jsonls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   commands = {
     LspFormat = {
@@ -42,6 +105,7 @@ lspconfig.jsonls.setup {
   },
 }
 lspconfig.pyls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     pyls = {
@@ -54,17 +118,22 @@ lspconfig.pyls.setup {
         jedi_symbols = { enabled = true, all_scopes = true },
         mccabe = { enabled = true, threshold = 15 },
         preload = { enabled = true },
-        pycodestyle = { enabled = true },
+        pycodestyle = { enabled = false },
         pydocstyle = { enabled = false },
         pyflakes = { enabled = false },
         rope_completion = { enabled = true },
         yapf = { enabled = true }
       }
     }
-  }
+  },
+  commands = {
+    LspFormat = {
+      function() vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0}) end
+    },
+  },
 }
-lspconfig.pyright.setup { capabilities = capabilities }
 lspconfig.rls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     rust = {
@@ -72,13 +141,14 @@ lspconfig.rls.setup {
     },
   },
 }
-lspconfig.sqls.setup { capabilities = capabilities }
 lspconfig.sqlls.setup {
   cmd = {'sql-language-server', 'up', '--method', 'stdio'},
+  on_attach = on_attach,
   capabilities = capabilities,
 }
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     Lua = {
@@ -99,10 +169,8 @@ lspconfig.sumneko_lua.setup {
     },
   },
 }
-lspconfig.taplo.setup { capabilities = capabilities }
-lspconfig.tsserver.setup { capabilities = capabilities }
-lspconfig.vimls.setup { capabilities = capabilities }
 lspconfig.yamlls.setup {
+  on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     yaml = {
@@ -115,6 +183,7 @@ lspconfig.yamlls.setup {
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
 lspconfig.efm.setup {
   filetypes = { 'eruby', 'make', 'zsh' },
+  on_attach = on_attach,
 }
 lspconfig.diagnosticls.setup {
   filetypes = {
@@ -158,6 +227,7 @@ lspconfig.diagnosticls.setup {
     'yaml',
     'zsh',
   },
+  on_attach = on_attach,
   init_options = {
     linters = {
       alex = {
@@ -286,6 +356,17 @@ lspconfig.diagnosticls.setup {
         isStderr = true,
         formatPattern = { [[^line (\d+), col (\d+), (.*)$]], { line = 1, column = 2, message = 3 } },
       },
+      jq = {
+        sourceName = 'jq',
+        command = 'jq',
+        args = {'.', '%file'},
+        isStdout = false,
+        isStderr = true,
+        formatPattern = {
+          [[^parse error: (.+) at line (\d+), column (\d+)$]],
+          { line = 2, column = 3, message = 1 }
+        }
+      },
       languagetool = {
         sourceName = 'languagetool',
         command = 'languagetool',
@@ -388,7 +469,14 @@ lspconfig.diagnosticls.setup {
       pylint = {
         sourceName = 'pylint',
         command = 'pylint',
-        args = { '--output-format=json', '--score=no', '%file' },
+        args = {
+          '--output-format=json',
+          '--score=no',
+          '--disable=import-error',
+          '--disable=wrong-import-order',
+          '--disable=no-name-in-module',
+          '%file',
+        },
         rootPatterns = { '.git', 'pyproject.toml', 'setup.py' },
         offsetColumn = 1,
         parseJson = {
@@ -398,6 +486,7 @@ lspconfig.diagnosticls.setup {
           message = '${message} (${message-id}:${symbol})',
         },
         securities = {
+          convention = 'hint',
           informational = 'hint',
           refactor = 'info',
           warning = 'warning',
@@ -560,14 +649,17 @@ lspconfig.diagnosticls.setup {
         command = 'yamllint',
         args = { '-f', 'parsable', '-' },
         formatPattern = {
-          -- NOTE there's a decent change that this is wrong
-          [[^.*?:(\d+):(\d+): \[(.*?)] (.*) \((.*)\)]],
-          { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4, code = 5 }
+          -- NOTE there's a decent chance that this is wrong
+          [[^.*?:(\d+):(\d+): \[(.*?)] (.*)$]],
+          { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4 }
         },
         securities = { warning = 'warning', error = 'error' },
       },
       zsh = {
-        'shellcheck',
+        sourceName = 'zsh',
+        command = 'linter_run_zsh.sh',
+        args = { '%file' },
+        formatPattern = { [[^.+?:(\d+): (.*)$]], { line = 1, message = 2 } },
       },
     },
     filetypes = {
@@ -603,6 +695,7 @@ lspconfig.diagnosticls.setup {
       },
       json = {
         'jsonlint',
+        'jq',
         'spectral',
       },
       less = {'stylelint'},

@@ -1,5 +1,9 @@
--- Global options
 -- TODO convert vim.cmd calls to pure Lua
+-- Imports & Functions {{{1
+local exepath = vim.fn.exepath
+local has = vim.fn.has
+
+-- Global options {{{1
 
 -- Vim settings
 
@@ -37,12 +41,12 @@ vim.o.updatetime = 300
 vim.cmd [[set list]]
 vim.o.listchars = (
   -- This is inelegant but it works well enough.
-  (vim.fn.has('multi_byte') and vim.o.encoding == 'utf-8') and
+  ((has('multi_byte') == 1) and vim.o.encoding == 'utf-8') and
   [[tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-]] or
   [[tab:> ,extends:>,precedes:<,nbsp:+,trail:-]]
 )
 
-if vim.fn.has('conceal') then
+if (has('conceal') == 1) then
   vim.cmd [[set conceallevel=2]]
   vim.cmd [[set concealcursor=nv]]
 end
@@ -50,14 +54,21 @@ end
 -- Fish causes problems with plugins
 vim.o.shell = ( (vim.o.shell:find('fish$')) and 'bash' or vim.o.shell )
 
--- Global variables (pseudo-options)
+-- Environment {{{1
+-- nvr support
+if (vim.fn.executable('nvr') == 1) then
+  vim.env.EDITOR = 'nvr -cc split --remote-wait'
+  vim.env.GIT_EDITOR = 'nvr -cc split --remote-wait'
+end
+
+-- Global variables (pseudo-options) {{{1
 
 vim.g.loaded_python_provider = 0 -- Block Python 2 rplugins
 vim.g.loaded_perl_provider = 0 -- Block Perl rplugins
-vim.g.node_host_prog = vim.fn.exepath('neovim-node-host')
-vim.g.ruby_host_prog = vim.fn.exepath('neovim-ruby-host')
+vim.g.node_host_prog = exepath('neovim-node-host')
+vim.g.ruby_host_prog = exepath('neovim-ruby-host')
 
--- Filetype settings
+-- Filetype settings {{{1
 
 -- Python
 vim.g.no_python_maps = true -- All maps covered by nvim-treesitter
@@ -72,6 +83,9 @@ vim.g.tex_flavor = 'latex'
 vim.g.vimsyn_embed = 'lPr' -- Embed Lua, Python, and Ruby in vim syntax.
 
 
--- Other (this should go elsewhere but there isn't a good place for it)
+-- Other {{{1
+-- (this should go elsewhere but there isn't a good place for it)
 vim.g.snips_author = 'Jaden Pleasants'
 vim.g.snips_email = 'jadenpleasants@fastmail.com'
+
+-- vim:ft=lua fdm=marker
