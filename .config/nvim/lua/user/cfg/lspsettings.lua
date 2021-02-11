@@ -199,11 +199,80 @@ lspconfig.efm.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
+
+local fmt = {
+  basic = function(file)
+    return {
+      (file and [[^.+?:(\d+): (.*)$]] or [[^(\d+): (.*)$]]),
+      { line = 1, message = 2 }
+    }
+  end,
+  unix = function(file)
+    return {
+      ([[^%s(\d+):(\d+): (.*)$]]):format((file and '.+?' or '')),
+      { line = 1, column = 2, message = 3 }
+    }
+  end,
+}
+local security_gen = {
+  docutils = { INFO = 'info', WARNING = 'warning', ERROR = 'error', SEVERE = 'error' },
+}
+local linter = {
+  generic = function(opts)
+    opts.stream = (opts.stream or 'stdout')
+    return {
+      sourceName = (opts.name or opts[1]),
+      command = (opts.cmd or opts.name or opts[1]),
+      args = (opts.args or {}),
+      isStdout = (opts.stream ~= 'stderr'),
+      isStderr = (opts.stream ~= 'stdout'),
+      formatPattern = (opts.pattern or fmt.basic()),
+      securities = (opts.securities or { undefined = (opts.security or 'error') }),
+    }
+  end,
+  alex = function(flag)
+    return {
+      sourceName = 'alex',
+      command = 'alex',
+      args = (flag and {flag, '--', '%file'} or {'--', '%file'}),
+      isStdout = false,
+      isStderr = true,
+      formatPattern = {
+        [[^ *(\d+):(\d+)-(\d+):(\d+) +warning +(.+?)  +(.+?)  +(.+)$]],
+        { line = 1, column = 2, endLine = 3, endColumn = 4, message = 5 }
+      },
+      securities = { undefined = 'warning' },
+    }
+  end,
+  cppcheck = function(lang)
+    return {
+      sourceName = 'cppcheck',
+      command = 'cppcheck',
+      args = {
+        '--quiet',
+        ('--language=%s'):format(lang),
+        '--enable=style',
+        '--template',
+        '{line}:{column}: {severity}:{inconclusive:inconclusive:} {message} [{id}]',
+        '%tempfile', -- This might be bad
+        -- NOTE ALE has a project folder but I think I'd need a wrapper for that
+      },
+      isStderr = true,
+      formatPattern = {
+        [[^(\d+):(\d+): (\w+): (.*)$]],
+        { line = 1, column = 2, security = 3, message = 4 }
+      },
+      securities = { style = 'hint', warning = 'warning', error = 'error' },
+    }
+  end,
+}
 lspconfig.diagnosticls.setup {
   filetypes = {
     'asciidoc',
     'bats',
+    'c',
     'cmake',
+    'cpp',
     'css',
     'dockerfile',
     'elixir',
@@ -245,57 +314,23 @@ lspconfig.diagnosticls.setup {
   on_attach = on_attach,
   init_options = {
     linters = {
-      alex = {
-        sourceName = 'alex',
-        command = 'alex',
-        args = { '--', '%file' },
-        isStdout = false,
-        isStderr = true,
-        formatPattern = {
-          [[^ *(\d+):(\d+)-(\d+):(\d+) +warning +(.+?)  +(.+?)  +(.+)$]],
-          { line = 1, column = 2, endLine = 3, endColumn = 4, message = 5 }
-        },
-        securities = { undefined = 'warning' },
-      },
-      alex_text = {
-        sourceName = 'alex',
-        command = 'alex',
-        args = { '--text', '--', '%file' },
-        isStdout = false,
-        isStderr = true,
-        formatPattern = {
-          [[^ *(\d+):(\d+)-(\d+):(\d+) +warning +(.+?)  +(.+?)  +(.+)$]],
-          { line = 1, column = 2, endLine = 3, endColumn = 4, message = 5 }
-        },
-        securities = { undefined = 'warning' },
-      },
-      alex_html = {
-        sourceName = 'alex',
-        command = 'alex',
-        args = { '--html', '--', '%file' },
-        isStdout = false,
-        isStderr = true,
-        formatPattern = {
-          [[^ *(\d+):(\d+)-(\d+):(\d+) +warning +(.+?)  +(.+?)  +(.+)$]],
-          { line = 1, column = 2, endLine = 3, endColumn = 4, message = 5 }
-        },
-        securities = { undefined = 'warning' },
-      },
-      bashate = {
-        sourceName = 'bashate',
-        command = 'bashate',
+      alex = linter.alex(),
+      alex_text = linter.alex('--text'),
+      alex_html = linter.alex('--html'),
+      bashate = linter.generic {
+        'bashate',
         args = {'-i', 'E003', '%tempfile'},
-        formatPattern = { [[^[^:]+:(\d+):(\d+): ((E\d+) (.*))$]], { line = 1, column = 2, message = 3 } },
-        securities = { undefined = 'hint' },
+        pattern = { [[^.+?:(\d+):(\d+): ((E\d+) (.*))$]], { line = 1, column = 2, message = 3 } },
+        security = 'hint',
       },
-      cmakelint = {
-        sourceName = 'cmakelint',
-        command = 'cmakelint',
+      cmakelint = linter.generic {
+        'cmakelint',
         args = {'%file'},
-        offsetColumn = -1,
-        formatPattern = { [[^.+?:(\d+): (.*)$]], { line = 1, message = 2 } },
-        securities = { undefined = 'warning' },
+        pattern = fmt.basic(true),
+        security = 'warning',
       },
+      cppcheck_c = linter.cppcheck('c'),
+      cppcheck_cpp = linter.cppcheck('c++'),
       csslint = {
         sourceName = 'csslint',
         command = 'csslint',
@@ -325,23 +360,26 @@ lspconfig.diagnosticls.setup {
         },
         securities = { ['1'] = 'warning', ['2'] = 'error' },
       },
-      fish = {
-        sourceName = 'fish',
-        command = 'fish',
+      fish = linter.generic {
+        'fish',
         args = {'-n', '%file'},
-        isStdout = false,
-        isStderr = true,
-        offsetColumn = -1,
-        formatPattern = { [[^.*\(line (\d+)\): (.*)$]], { line = 1, message = 2 } }
+        stream = 'stderr',
+        pattern = { [[^.*\(line (\d+)\): (.*)$]], { line = 1, message = 2 } }
       },
-      gitlint = {
-        sourceName = 'gitlint',
-        command = 'gitlint',
-        args = { '--msg-filename', '%tempfile' },
-        isStdout = false,
-        isStderr = true,
-        offsetColumn = { [[^(\d+): (.*)$]], { line = 1, message = 2 } },
-        securities = { undefined = 'warning' },
+      flawfinder = linter.generic {
+        'flawfinder',
+        args = {'-CDQS', '-'},
+        pattern = {
+          [[^.+?:(\d+):(\d+):\s+\[(\d+)\][^:]+?:(.+)$]],
+          { line = 1, column = 2, security = 3, message = 4 },
+        },
+        securities = { ['0'] = 'hint', ['1'] = 'warning' }
+      },
+      gitlint = linter.generic {
+        'gitlint',
+        args = {'--msg-filename', '%tempfile'},
+        stream = 'stderr',
+        security = 'warning',
       },
       hadolint = {
         sourceName = 'hadolint',
@@ -356,28 +394,23 @@ lspconfig.diagnosticls.setup {
         },
         securities = { style = 'hint', info = 'info', warning = 'warning', error = 'error' },
       },
-      jshint = {
-        sourceName = 'jshint',
-        command = 'jshint',
+      jshint = linter.generic {
+        'jshint',
         args = { '--reporter=unix', '--extract=auto', '--filename', '%filepath', '-' },
-        formatPattern = { [[^[^:]+:(\d+):(\d+): (.+)$]], { line = 1, column = 2, message = 3 } },
-        securities = { undefined = 'hint' },
+        pattern = fmt.unix(true),
+        security = 'hint',
       },
-      jsonlint = {
-        sourceName = 'jsonlint',
-        command = 'jsonlint',
+      jsonlint = linter.generic {
+        'jsonlint',
         args = { '--compact', '-' },
-        isStdout = false,
-        isStderr = true,
-        formatPattern = { [[^line (\d+), col (\d+), (.*)$]], { line = 1, column = 2, message = 3 } },
+        stream = 'stderr',
+        pattern = { [[^line (\d+), col (\d+), (.*)$]], { line = 1, column = 2, message = 3 } },
       },
-      jq = {
-        sourceName = 'jq',
-        command = 'jq',
+      jq = linter.generic {
+        'jq',
         args = {'.', '%file'},
-        isStdout = false,
-        isStderr = true,
-        formatPattern = {
+        stream = 'stderr',
+        pattern = {
           [[^parse error: (.+) at line (\d+), column (\d+)$]],
           { line = 2, column = 3, message = 1 }
         }
@@ -391,26 +424,22 @@ lspconfig.diagnosticls.setup {
           [[^\d+?\.\)\s+Line\s+(\d+),\s+column\s+(\d+),\s+([^\n]+)\nMessage:\s+(.*)(\r|\n)*$]],
           { line = 1, column = 2, message = { 4, 3 } }
         },
+        securities = { undefined = 'hint' },
       },
-      luacheck = {
-        sourceName = 'luacheck',
-        command = 'luacheck',
+      luacheck = linter.generic {
+        'luacheck',
         args = { '--formatter=plain', '--codes', '--ranges', '-', '-g' },
-        formatPattern = {
+        pattern = {
           [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
           { line = 1, column = 2, endColumn = 3, security = 5, message = 4 }
         },
         securities = { W = 'warning', E = 'error' },
       },
-      luac = {
-        sourceName = 'luac',
-        command = 'luac',
+      luac = linter.generic {
+        'luac',
         args = {'-p', '-'},
-        isStdout = false,
-        isStderr = true,
-        offsetColumn = -1,
-        formatPattern = { [[^.*:(\d+): (.*)$]], { line = 1, message = 2 } },
-        securities = { undefined = 'error' },
+        stream = 'stderr',
+        pattern = fmt.basic(true),
       },
       markdownlint = {
         sourceName = 'markdownlint',
@@ -479,7 +508,7 @@ lspconfig.diagnosticls.setup {
           security = 'severity',
           message = '${message} (${check})',
         },
-        securities = { warning = 'warning' },
+        securities = { warning = 'hint' },
       },
       pylint = {
         sourceName = 'pylint',
@@ -509,23 +538,19 @@ lspconfig.diagnosticls.setup {
           fatal = 'error',
         },
       },
-      rstcheck = {
-        sourceName = 'rstcheck',
-        command = 'rstcheck',
+      rstcheck = linter.generic {
+        'rstcheck',
         args = {'-'},
-        isStdout = false,
-        isStderr = true,
-        offsetColumn = -1,
-        formatPattern = { [[^[^:]+:(\d+): \(.+?/(\d)\) (.*)$]], { line = 1, security = 2, message = 3 } },
-        securities = { ['1'] = 'info', ['2'] = 'warning', ['3'] = 'error', ['4'] = 'error' },
+        stream = 'stderr',
+        pattern = { [[^.+?:(\d+): \((.+?)/\d\) (.*)$]], { line = 1, security = 2, message = 3 } },
+        securities = security_gen.docutils,
       },
       rst_lint = {
         sourceName = 'rst-lint',
         command = 'rst-lint',
         args = { '--format=json', '%file' },
-        offsetColumn = -1,
-        parseJson = { line = 'line', security = 'level', message = '${message}' },
-        securities = { ['1'] = 'info', ['2'] = 'warning', ['3'] = 'error', ['4'] = 'error' },
+        parseJson = { line = 'line', security = 'type', message = '${message}' },
+        securities = security_gen.docutils,
       },
       shellcheck = {
         sourceName = 'shellcheck',
@@ -555,11 +580,10 @@ lspconfig.diagnosticls.setup {
         },
         securities = { ['1'] = 'warning', ['2'] = 'error' },
       },
-      sqlint = {
-        sourceName = 'sqlint',
-        command = 'sqlint',
-        formatPattern = {
-          [[^stdin:(\d+):(\d+):([^ ]+) (.*)$]],
+      sqlint = linter.generic {
+        'sqlint',
+        pattern = {
+          [[^.+?:(\d+):(\d+):([^ ]+) (.*)$]],
           { line = 1, column = 2, security = 3, message = 4 }
         },
         securities = { WARNING = 'warning', ERROR = 'error' },
@@ -596,16 +620,17 @@ lspconfig.diagnosticls.setup {
         isStderr = true,
         formatPattern = {
           [[^.*?(\d+).*?(\d+)\s+-\s+([^:]+):\s+(.*)(\r|\n)*$]],
-          { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4 }
+          -- { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4 }
+          { line = 1, column = 2, security = 3, message = 4 }
         },
         securities = { Warning = 'warning', Error = 'error' },
       },
-      tlcheck = {
-        sourceName = 'tlcheck',
-        command = 'tl',
-        args = { 'check', '%file' },
-        isStderr = true,
-        formatPattern = { [[^[^:]+:(\d+):(\d+): (.*)$]], { line = 1, column = 2, message = 3 } },
+      tlcheck = linter.generic {
+        'tlcheck',
+        cmd = 'tl',
+        args = {'check', '%file'},
+        stream = 'both',
+        pattern = fmt.unix(true),
       },
       vint = {
         sourceName = 'vint',
@@ -625,19 +650,16 @@ lspconfig.diagnosticls.setup {
         offsetColumn = 1,
         args = {'%tempfile'},
         formatPattern = {
-          [[(.*)\s+on\s+line\s+(\d+)\s+at\s+column\s+(\d+)\s*$]],
+          [[(.*) on line (\d+) at column (\d+)\s*$]],
           { line = 2, column = 3, message = 1 }
         },
         securities = { undefined = 'hint' },
       },
-      xmllint = {
-        sourceName = 'xmllint',
-        command = 'xmllint',
+      xmllint = linter.generic {
+        'xmllint',
         args = { '--noout', '-' },
-        isStdout = false,
-        isStderr = true,
-        offsetColumn = -1,
-        formatPattern = {
+        stream = 'stderr',
+        pattern = {
           [[^[^:]+:(\d+):\s*(([^:]+)\s*:.*)$]],
           { line = 1, security = 3, message = 2 }
         },
@@ -659,22 +681,20 @@ lspconfig.diagnosticls.setup {
         },
         securities = { ['1'] = 'warning', ['2'] = 'error' },
       },
-      yamllint = {
-        sourceName = 'yamllint',
-        command = 'yamllint',
+      yamllint = linter.generic {
+        'yamllint',
         args = { '-f', 'parsable', '-' },
-        formatPattern = {
-          -- NOTE there's a decent chance that this is wrong
+        pattern = {
           [[^.*?:(\d+):(\d+): \[(.*?)] (.*)$]],
-          { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4 }
+          { line = 1, column = 2, security = 3, message = 4 }
         },
         securities = { warning = 'warning', error = 'error' },
       },
-      zsh = {
-        sourceName = 'zsh',
-        command = 'linter_run_zsh.sh',
-        args = { '%file' },
-        formatPattern = { [[^.+?:(\d+): (.*)$]], { line = 1, message = 2 } },
+      zsh = linter.generic {
+        'zsh',
+        cmd = 'linter_run_zsh.sh',
+        args = {'%file'},
+        pattern = fmt.basic(true),
       },
     },
     filetypes = {
@@ -685,7 +705,15 @@ lspconfig.diagnosticls.setup {
         'write_good',
       },
       bats = {'shellcheck'},
+      c = {
+        'cppcheck_c',
+        'flawfinder',
+      },
       cmake = {'cmakelint'},
+      cpp = {
+        'cppcheck_cpp',
+        'flawfinder',
+      },
       css = {
         'csslint',
         'stylelint'

@@ -9,10 +9,7 @@ vim.g.ale_linters_ignore = {
     potential things to convert:
     - fecs [ css, html, javascript ]
     - gawk [ awk ] (packaged)
-    - clangcheck [ cpp ] (packaged)
-    - cppcheck [ c, cpp ] (packaged)
     - clazy [ cpp ] (packaged)
-    - flawfinder [ c, cpp ] (packaged)
     - vale [ asciidoc, mail, markdown, rst, tex, text ]
     - msgfmt [ po ] (packaged)
     - redpen [ asciidoc, markdown, review, rst, tex, text ]
@@ -22,9 +19,9 @@ vim.g.ale_linters_ignore = {
   ]]
   asciidoc = { 'alex', 'languagetool', 'proselint', 'writegood' },
   bats = { 'shellcheck' },
-  c = { 'cc', 'clangtidy', 'cpplint' },
+  c = { 'cc', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder' },
   cmake = { 'cmakelint' },
-  cpp = { 'cc', 'clangcheck', 'clangtidy', 'cpplint' },
+  cpp = { 'cc', 'clangcheck', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder' },
   css = { 'csslint', 'stylelint' },
   dockerfile = { 'hadolint' },
   elixir = { 'credo' },
