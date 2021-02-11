@@ -220,9 +220,15 @@ local security_gen = {
 local linter = {
   generic = function(opts)
     opts.stream = (opts.stream or 'stdout')
+    -- Starting with a table can set the command and the arguments
+    if type(opts[1]) == 'table' then
+      opts.cmd = opts[1][1]
+      table.remove(opts[1], 1)
+      opts.args = opts[1]
+    end
     return {
-      sourceName = (opts.name or opts[1]),
-      command = (opts.cmd or opts.name or opts[1]),
+      sourceName = (opts.name or opts.cmd or opts[1]),
+      command = (opts.cmd or opts[1]),
       args = (opts.args or {}),
       isStdout = (opts.stream ~= 'stderr'),
       isStderr = (opts.stream ~= 'stdout'),
@@ -318,14 +324,12 @@ lspconfig.diagnosticls.setup {
       alex_text = linter.alex('--text'),
       alex_html = linter.alex('--html'),
       bashate = linter.generic {
-        'bashate',
-        args = {'-i', 'E003', '%tempfile'},
+        {'bashate', '-i', 'E003', '%tempfile'},
         pattern = { [[^.+?:(\d+):(\d+): ((E\d+) (.*))$]], { line = 1, column = 2, message = 3 } },
         security = 'hint',
       },
       cmakelint = linter.generic {
-        'cmakelint',
-        args = {'%file'},
+        {'cmakelint', '%file'},
         pattern = fmt.basic(true),
         security = 'warning',
       },
@@ -361,14 +365,12 @@ lspconfig.diagnosticls.setup {
         securities = { ['1'] = 'warning', ['2'] = 'error' },
       },
       fish = linter.generic {
-        'fish',
-        args = {'-n', '%file'},
+        {'fish', '-n', '%file'},
         stream = 'stderr',
         pattern = { [[^.*\(line (\d+)\): (.*)$]], { line = 1, message = 2 } }
       },
       flawfinder = linter.generic {
-        'flawfinder',
-        args = {'-CDQS', '-'},
+        {'flawfinder', '-CDQS', '-'},
         pattern = {
           [[^.+?:(\d+):(\d+):\s+\[(\d+)\][^:]+?:(.+)$]],
           { line = 1, column = 2, security = 3, message = 4 },
@@ -376,8 +378,7 @@ lspconfig.diagnosticls.setup {
         securities = { ['0'] = 'hint', ['1'] = 'warning' }
       },
       gitlint = linter.generic {
-        'gitlint',
-        args = {'--msg-filename', '%tempfile'},
+        {'gitlint', '--msg-filename', '%tempfile'},
         stream = 'stderr',
         security = 'warning',
       },
@@ -395,20 +396,17 @@ lspconfig.diagnosticls.setup {
         securities = { style = 'hint', info = 'info', warning = 'warning', error = 'error' },
       },
       jshint = linter.generic {
-        'jshint',
-        args = { '--reporter=unix', '--extract=auto', '--filename', '%filepath', '-' },
+        {'jshint', '--reporter=unix', '--extract=auto', '--filename', '%filepath', '-'},
         pattern = fmt.unix(true),
         security = 'hint',
       },
       jsonlint = linter.generic {
-        'jsonlint',
-        args = { '--compact', '-' },
+        {'jsonlint', '--compact', '-'},
         stream = 'stderr',
         pattern = { [[^line (\d+), col (\d+), (.*)$]], { line = 1, column = 2, message = 3 } },
       },
       jq = linter.generic {
-        'jq',
-        args = {'.', '%file'},
+        {'jq', '.', '%file'},
         stream = 'stderr',
         pattern = {
           [[^parse error: (.+) at line (\d+), column (\d+)$]],
@@ -427,8 +425,7 @@ lspconfig.diagnosticls.setup {
         securities = { undefined = 'hint' },
       },
       luacheck = linter.generic {
-        'luacheck',
-        args = { '--formatter=plain', '--codes', '--ranges', '-', '-g' },
+        {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-g'},
         pattern = {
           [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
           { line = 1, column = 2, endColumn = 3, security = 5, message = 4 }
@@ -436,8 +433,7 @@ lspconfig.diagnosticls.setup {
         securities = { W = 'warning', E = 'error' },
       },
       luac = linter.generic {
-        'luac',
-        args = {'-p', '-'},
+        {'luac', '-p', '-'},
         stream = 'stderr',
         pattern = fmt.basic(true),
       },
@@ -539,8 +535,7 @@ lspconfig.diagnosticls.setup {
         },
       },
       rstcheck = linter.generic {
-        'rstcheck',
-        args = {'-'},
+        {'rstcheck', '-'},
         stream = 'stderr',
         pattern = { [[^.+?:(\d+): \((.+?)/\d\) (.*)$]], { line = 1, security = 2, message = 3 } },
         securities = security_gen.docutils,
@@ -656,8 +651,7 @@ lspconfig.diagnosticls.setup {
         securities = { undefined = 'hint' },
       },
       xmllint = linter.generic {
-        'xmllint',
-        args = { '--noout', '-' },
+        {'xmllint', '--noout', '-'},
         stream = 'stderr',
         pattern = {
           [[^[^:]+:(\d+):\s*(([^:]+)\s*:.*)$]],
@@ -682,8 +676,7 @@ lspconfig.diagnosticls.setup {
         securities = { ['1'] = 'warning', ['2'] = 'error' },
       },
       yamllint = linter.generic {
-        'yamllint',
-        args = { '-f', 'parsable', '-' },
+        {'yamllint', '-f', 'parsable', '-'},
         pattern = {
           [[^.*?:(\d+):(\d+): \[(.*?)] (.*)$]],
           { line = 1, column = 2, security = 3, message = 4 }

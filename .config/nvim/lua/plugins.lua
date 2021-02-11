@@ -44,7 +44,6 @@ return require('packer').startup(function()
       { 'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter' },
       { 'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground' },
       { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
-      { 'p00f/nvim-ts-rainbow', after = 'nvim-treesitter' },
     },
     config = function()
       require'nvim-treesitter.configs'.setup {
@@ -68,7 +67,6 @@ return require('packer').startup(function()
             },
           },
         },
-        rainbow = { enable = true },
       }
       local parser_config = require'nvim-treesitter.parsers'.get_parser_configs()
       parser_config.bash.used_by = { 'PKGBUILD' }
