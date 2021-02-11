@@ -1,5 +1,5 @@
 -- Standalone ALE config
-vim.g.ale_fix_on_save = true
+vim.g.ale_fix_on_save = false
 vim.g.ale_disable_lsp = true
 vim.g.ale_linters_ignore = {
   --[[
@@ -24,7 +24,7 @@ vim.g.ale_linters_ignore = {
   bats = { 'shellcheck' },
   c = { 'cc', 'clangtidy', 'cpplint' },
   cmake = { 'cmakelint' },
-  cpp = { 'cc', 'clangtidy', 'cpplint' },
+  cpp = { 'cc', 'clangcheck', 'clangtidy', 'cpplint' },
   css = { 'csslint', 'stylelint' },
   dockerfile = { 'hadolint' },
   elixir = { 'credo' },
@@ -37,7 +37,6 @@ vim.g.ale_linters_ignore = {
   html = { 'alex', 'proselint', 'tidy', 'writegood' },
   javascript = { 'eslint', 'jshint', 'flow', 'standard', 'xo' },
   json = { 'jsonlint', 'jq', 'spectral' },
-  -- jsonc = { 'jsonlint', 'spectral' },
   less = { 'stylelint' },
   lua = { 'luacheck', 'luac' },
   mail = { 'alex', 'languagetool', 'proselint' },
@@ -72,19 +71,7 @@ vim.g.ale_linters_ignore = {
   zsh = { 'shell' },
 }
 vim.g.ale_fixers = {
-  ['*'] = { 'remove_trailing_lines', 'trim_whitespace' },
-  cpp = { 'clangtidy', 'remove_trailing_lines', 'trim_whitespace' },
-  go = { 'gofmt', 'goimports', 'remove_trailing_lines', 'trim_whitespace' },
-  html = { 'tidy', 'remove_trailing_lines', 'trim_whitespace' },
-  markdown = {},
-  python = {
-    'add_blank_lines_for_python_control_statements',
-    'reorder-python-imports',
-    'remove_trailing_lines',
-    'trim_whitespace',
-  },
-  rust = { 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' },
-  sql = { 'sqlformat', 'remove_trailing_lines', 'trim_whitespace' },
-  xml = { 'xmllint' },
+  c = {'clangtidy'},
+  cpp = {'clangtidy'},
 }
 vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]

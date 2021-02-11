@@ -504,6 +504,7 @@ return require('packer').startup(function()
       }
     end
   }
+  use { 'lukas-reineke/format.nvim', config = function() require'user.cfg.format-nvim' end }
 
   -- Integration
   use {

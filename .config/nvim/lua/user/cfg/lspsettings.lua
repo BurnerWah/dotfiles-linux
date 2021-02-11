@@ -59,11 +59,12 @@ local simple_servers = {
   'bashls',
   'cmake',
   'cssls',
+  'denols',
   'dotls',
   'dockerls',
   'fortls',
   'html',
-  'jedi_language_server',
+  -- 'jedi_language_server',
   'pyright',
   'sqls',
   'taplo',
@@ -87,6 +88,11 @@ lspconfig.ccls.setup {
     cache = { directory = '.ccls-cache' },
     clang = { resourceDir = '/usr/lib64/clang/11' },
     highlight = { lsRanges = true },
+  },
+  commands = {
+    LspFormat = {
+      function() vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0}) end
+    },
   },
 }
 lspconfig.gopls.setup {
@@ -116,7 +122,7 @@ lspconfig.pyls.setup {
       configurationSources = { 'pyflakes', 'pycodestyle' },
       plugins = {
         jedi_completion = { enabled = true },
-        jedi_hover = { enabled = true },
+        jedi_hover = { enabled = false },
         jedi_references = { enabled = true },
         jedi_signature_help = { enabled = true },
         jedi_symbols = { enabled = true, all_scopes = true },
@@ -126,7 +132,7 @@ lspconfig.pyls.setup {
         pydocstyle = { enabled = false },
         pyflakes = { enabled = false },
         rope_completion = { enabled = true },
-        yapf = { enabled = true }
+        yapf = { enabled = true },
       }
     }
   },
@@ -797,25 +803,6 @@ lspconfig.diagnosticls.setup {
         'yamllint',
       },
       zsh = {'zsh'},
-    },
-    formatters = {
-      autopep8 = { command = 'autopep8', args = {'-'} },
-      black = { command = 'black', args = {'--quiet', '-'} },
-      cmakeformat = { command = 'cmake-format' },
-      dartfmt = { command = 'dartfmt', args = {'--fix'} },
-      fish_indent = { command = 'fish_indent' },
-      isort = { command = 'isort', args = {'--quiet', '-'} },
-      lua_format = { command = 'lua-format', args = {'-i'} },
-      mix_format = { command = 'mix', args = {'format', '-'} },
-      shfmt = { command = 'shfmt', args = {'-i=2', '-ci'} },
-      yapf = { command = 'yapf', args = {'--quiet'} },
-    },
-    formatFiletypes = {
-      cmake = 'cmakeformat',
-      dart = 'dartfmt',
-      elixir = 'mix_format',
-      lua = 'lua_format',
-      sh = 'shfmt',
     },
   },
 }
