@@ -115,9 +115,12 @@ return require('packer').startup(function()
       'vim-vsnip',
       'nvim-lspconfig',
       'nvim-treesitter',
+      'cbarrete/omni-compe',
     },
     config = function()
       vim.o.completeopt = 'menu,menuone,noselect'
+      require'compe'.register_source('fish', require'compe_fish') -- Custom source
+      require'omni_compe'.setup {'vimwiki'}
       require'compe'.setup {
         enabled = true,
         autocomplete = true,
@@ -147,6 +150,8 @@ return require('packer').startup(function()
             dup = true, -- Allow duplicate entries (mostly with LSP)
           },
           treesitter = true,
+          omni = true,
+          fish = true,
         },
       }
       local remap = vim.api.nvim_set_keymap
