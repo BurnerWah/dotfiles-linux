@@ -118,6 +118,7 @@ return {
     ['zprofile'] = 'zsh',
     ['zshenv'] = 'zsh',
     ['zshrc'] = 'zsh',
+    ['fish_history'] = 'yaml',
   },
   shebang = shebang
 }

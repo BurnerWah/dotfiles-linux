@@ -167,6 +167,7 @@ return require('packer').startup(function()
   use 'udalov/kotlin-vim'
   use 'YaBoiBurner/requirements.txt.vim'
   use 'YaBoiBurner/vim-teal'
+  use 'blankname/vim-fish'
   use { 'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim', opt = true }
 
   -- CXX
