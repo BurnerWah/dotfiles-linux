@@ -99,6 +99,7 @@ return require('packer').startup(function(use)
     'hrsh7th/vim-vsnip',
     requires = { 'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ' },
     config = function()
+      vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local remap = vim.api.nvim_set_keymap
       -- Expand
       remap('i', '<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], { expr = true })
@@ -115,12 +116,10 @@ return require('packer').startup(function(use)
       'vim-vsnip',
       'nvim-lspconfig',
       'nvim-treesitter',
-      'cbarrete/omni-compe',
     },
     config = function()
       vim.o.completeopt = 'menu,menuone,noselect'
       require'compe'.register_source('fish', require'compe_fish') -- Custom source
-      require'omni_compe'.setup {'vimwiki'}
       require'compe'.setup {
         enabled = true,
         autocomplete = true,
@@ -150,7 +149,9 @@ return require('packer').startup(function(use)
             dup = true, -- Allow duplicate entries (mostly with LSP)
           },
           treesitter = true,
-          omni = true,
+          omni = {
+            filetypes = { 'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki' }
+          },
           fish = true,
         },
       }
@@ -512,6 +513,8 @@ return require('packer').startup(function(use)
     end
   }
   use { 'lukas-reineke/format.nvim', config = function() require'user.cfg.format-nvim' end }
+  use { 'HiPhish/awk-ward.nvim', cmd = 'AwkWard' } -- Mirror
+  use 'jbyuki/monolithic.nvim'
 
   -- Integration
   use {
@@ -523,8 +526,15 @@ return require('packer').startup(function(use)
         [[output://.\*]],
         [[scp://.\*]],
         [[term://.\*]],
+        [[octo://.\*]],
       }
     end
+  }
+  use {
+    'HiPhish/info.vim', -- mirror
+    event = 'BufReadCmd info:*',
+    cmd = 'Info',
+    ft = 'info',
   }
 
   -- Text editing
@@ -535,11 +545,17 @@ return require('packer').startup(function(use)
     -- EasyMotion replacement
     -- This will eventually be lazy loaded but currently that would require too much maintainence
     config = function()
-      vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.jump_words()<cr>]], {})
+      vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.hint_words()<cr>]], {})
     end
   }
   use { 'windwp/nvim-autopairs', opt = true, config = function() require'nvim-autopairs'.setup() end }
-  use { 'Raimondi/delimitMate', opt = false }
+  use {
+    'Raimondi/delimitMate',
+    opt = false,
+    config = function()
+      vim.g.delimitMate_tab2exit = 0
+    end
+  }
   use {
     'tpope/vim-abolish',
     cmd = { 'Abolish', 'Subvert', 'S' },

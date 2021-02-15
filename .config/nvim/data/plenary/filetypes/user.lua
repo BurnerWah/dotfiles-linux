@@ -38,6 +38,7 @@ return {
     ['cjson'] = 'json', -- FIXME has comments
     ['doap'] = 'xml', -- Description of a project
     ['fish'] = 'fish',
+    ['info'] = 'info',
     ['iuml'] = 'plantuml',
     ['jsonc'] = 'json', -- FIXME has comments
     ['jsonld'] = 'json', -- JSON Linked Data

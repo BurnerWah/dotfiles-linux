@@ -1,0 +1,17 @@
+{
+  "let": {
+    "prefix": ["let"],
+    "body": ["let ${1:variable} = ${0:value}"],
+    "description": "let ... = ..."
+  },
+  "set": {
+    "prefix": ["set"],
+    "body": ["set ${1:setting}=${0:value}"],
+    "description": "set ... = ..."
+  },
+  "setlocal": {
+    "prefix": ["setl"],
+    "body": ["setl ${1:setting}=${0:value}"],
+    "description": "setlocal ... = ..."
+  }
+}
