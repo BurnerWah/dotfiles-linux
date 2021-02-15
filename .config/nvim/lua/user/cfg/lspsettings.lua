@@ -77,6 +77,7 @@ end
 
 local url = {
   gh_raw = [[https://github.com/%s/raw/%s/%s]],
+  schema = [[https://json.schemastore.org/%s]]
 }
 
 lspconfig.ccls.setup {
@@ -102,12 +103,30 @@ lspconfig.gopls.setup {
     gopls = {
       analyses = { unusedparams = true },
       staticcheck = true,
+      usePlaceholders = true,
     },
   },
 }
+local function gen_schema(match, schema)
+  return {
+    fileMatch = ((type(match) == 'table') and match or { match }),
+    url = (schema:find('^https?://') and schema or url.schema:format(schema)),
+  }
+end
 lspconfig.jsonls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  settings = {
+    json = {
+      schemas = {
+        -- Really wish that this supported schemastore out of the box
+        gen_schema('package.json', 'package'),
+        gen_schema('tsconfig.json', 'tsconfig'),
+        gen_schema('.jshintrc', 'jshintrc'),
+        gen_schema('tslint.json', 'tslint'),
+      },
+    },
+  },
   commands = {
     LspFormat = {
       function() vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0}) end
@@ -166,10 +185,15 @@ lspconfig.sumneko_lua.setup {
         version = 'LuaJIT',
         path = vim.split(package.path, ';'),
       },
+      completion = {
+        callSnippet = 'Replace', -- Prefer completing snippets
+      },
       diagnostics = {
-        globals = {'vim', 'use', 'packer_plugins'},
+        globals = {'vim', 'packer_plugins'},
         disable = {'lowercase-global'},
       },
+      hint = { enable = true },
+      telemetry = { enable = false },
       workspace = {
         library = {
           [vim.fn.expand('$VIMRUNTIME/lua')] = true,

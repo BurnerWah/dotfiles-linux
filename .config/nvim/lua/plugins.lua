@@ -3,7 +3,7 @@
 -- Only required if you have packer in your `opt` pack
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
   -- Packer can manage itself as an optional plugin
   use { 'wbthomason/packer.nvim', opt = true }
 
@@ -157,7 +157,10 @@ return require('packer').startup(function()
       local remap = vim.api.nvim_set_keymap
       local opts = { noremap = true, silent = true, expr = true }
       remap('i', '<C-Space>', [[compe#complete()]], opts)
-      -- remap('i', '<CR>', [[compe#confirm('<CR>')]], opts)
+      remap('i', '<CR>', [[compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })]], opts)
+      remap('i', '<C-e>', [[compe#close('<C-e>')]], opts)
+      remap('i', '<C-f>', [[compe#scroll({ 'delta': +4 })]], opts)
+      remap('i', '<C-d>', [[compe#scroll({ 'delta': -4 })]], opts)
     end
   }
 
@@ -526,7 +529,7 @@ return require('packer').startup(function()
 
   -- Text editing
   use 'tpope/vim-repeat'
-  use 'tpope/vim-endwise'
+  -- use 'tpope/vim-endwise'
   use {
     'phaazon/hop.nvim',
     -- EasyMotion replacement
@@ -535,7 +538,8 @@ return require('packer').startup(function()
       vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.jump_words()<cr>]], {})
     end
   }
-  use { 'windwp/nvim-autopairs', config = function() require'nvim-autopairs'.setup() end }
+  use { 'windwp/nvim-autopairs', opt = true, config = function() require'nvim-autopairs'.setup() end }
+  use { 'Raimondi/delimitMate', opt = false }
   use {
     'tpope/vim-abolish',
     cmd = { 'Abolish', 'Subvert', 'S' },
