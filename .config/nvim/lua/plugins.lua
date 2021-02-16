@@ -88,10 +88,7 @@ return require('packer').startup(function(use)
       vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', { silent = true })
       vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', { silent = true })
       vim.api.nvim_set_keymap('n', '<leader>qf', '<Plug>(coc-fix-current)', {})
-      vim.cmd [[autocmd init User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')]]
-      vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&spell', 0)]]
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
-      vim.cmd [[autocmd init FileType list setlocal nospell]]
     end
   }
   use { 'dense-analysis/ale', config = function() require'user.cfg.ale' end }
@@ -428,6 +425,87 @@ return require('packer').startup(function(use)
       }
     end
   }
+  use {
+    'tkmpypy/chowcho.nvim',
+    cmd = 'Chowcho',
+    config = function() require'chowcho'.setup { border_style = 'rounded' } end
+  }
+  use {
+    'kevinhwang91/nvim-hlslens',
+    requires = 'astronauta.nvim',
+    opt = true,
+    keys = {
+      {'n', 'n'},
+      {'n', 'N'},
+      {'n', '*'},
+      {'n', '#'},
+      {'n', 'g*'},
+      {'n', 'g#'},
+    },
+    config = function()
+      local nnor = vim.keymap.nnoremap
+      -- This will let us delete the search end keymap when we're done with it
+      nnor {'<Plug>(UserEndHlslens)', function()
+        vim.api.nvim_feedkeys(
+          vim.api.nvim_replace_termcodes(':nohlsearch<CR>', true, false, true),
+          'n', true
+        )
+        vim.cmd [[nunmap <leader>l]]
+      end, silent = true}
+
+      local mapgen = {
+        iterate = function(key)
+          return function()
+            vim.cmd(([[normal! %s]]..key):format(vim.v.count1))
+            require('hlslens').start()
+            vim.keymap.nmap {'<leader>l', '<Plug>(UserEndHlslens)', silent = true}
+          end
+        end,
+        search = function(key)
+          return function()
+            vim.api.nvim_feedkeys(key, 'n', true)
+            require('hlslens').start()
+            vim.keymap.nmap {'<leader>l', '<Plug>(UserEndHlslens)', silent = true}
+          end
+        end,
+      }
+
+      nnor {'n', mapgen.iterate('n'), silent = true}
+      nnor {'N', mapgen.iterate('N'), silent = true}
+
+      nnor {'*',  mapgen.search('*')}
+      nnor {'#',  mapgen.search('#')}
+      nnor {'g*', mapgen.search('g*')}
+      nnor {'g#', mapgen.search('g#')}
+
+      require'hlslens'.get_config().override_line_lens = function(lnum, loc, idx, r_idx, count, hls_ns)
+        local sfw = vim.v.searchforward == 1
+        local indicator, text, chunks
+        local a_r_idx = math.abs(r_idx)
+        if a_r_idx > 1 then
+          indicator = ('%d%s'):format(a_r_idx, sfw ~= (r_idx > 1) and '▲' or '▼')
+        elseif a_r_idx == 1 then
+          indicator = sfw ~= (r_idx == 1) and '▲' or '▼'
+        else
+          indicator = ''
+        end
+
+        if loc ~= 'c' then
+          text = ('[%s %d]'):format(indicator, idx)
+          chunks = {{' ', 'Ignore'}, {text, 'HlSearchLens'}}
+        else
+          if indicator ~= '' then
+            text = ('[%s %d/%d]'):format(indicator, idx, count)
+          else
+            text = ('[%d/%d]'):format(idx, count)
+          end
+          chunks = {{' ', 'Ignore'}, {text, 'HlSearchLensCur'}}
+          vim.api.nvim_buf_clear_namespace(0, hls_ns, lnum - 1, lnum)
+        end
+        vim.api.nvim_buf_set_virtual_text(0, hls_ns, lnum - 1, chunks, {})
+      end
+    end
+  }
 
   -- Utilities
   use 'tpope/vim-fugitive'
@@ -522,11 +600,19 @@ return require('packer').startup(function(use)
     -- Editorconfig support
     config = function()
       vim.g.EditorConfig_exclude_patterns = {
+        [[davs\?://.\*]],
+        [[ftp://.\*]],
         [[fugitive://.\*]],
-        [[output://.\*]],
-        [[scp://.\*]],
-        [[term://.\*]],
+        [[https\?://.\*]],
+        [[info://.\*]],
+        [[man://.\*]],
         [[octo://.\*]],
+        [[output://.\*]],
+        [[rcp://.\*]],
+        [[rsync://.\*]],
+        [[scp://.\*]],
+        [[sftp://.\*]],
+        [[term://.\*]],
       }
     end
   }
@@ -536,6 +622,7 @@ return require('packer').startup(function(use)
     cmd = 'Info',
     ft = 'info',
   }
+  use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
 
   -- Text editing
   use 'tpope/vim-repeat'
@@ -597,17 +684,28 @@ return require('packer').startup(function(use)
     keys = { '<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'} },
     config = function()
       local dial = require('dial')
-      dial.augends.boolean = dial.augends.common.enum_cyclic {
+
+      -- Boolean flipping
+      dial.augends['custom#boolean'] = dial.common.enum_cyclic {
         name = 'boolean',
         desc = 'Flip a boolean between true and false',
         strlist = {'true', 'false'},
       }
-      table.insert(dial.searchlist.normal, dial.augends.boolean)
+      table.insert(dial.config.searchlist.normal, 'custom#boolean')
 
-      vim.keymap.nmap { '<C-a>', '<Plug>(dial-increment)' }
-      vim.keymap.nmap { '<C-x>', '<Plug>(dial-decrement)' }
-      vim.keymap.vmap { '<C-a>', '<Plug>(dial-increment)' }
-      vim.keymap.vmap { '<C-x>', '<Plug>(dial-decrement)' }
+      -- Keymaps - We add repeat support to this
+      vim.keymap.nnoremap { '<C-a>', function()
+        require"dial".cmd.increment_normal(vim.v.count1)
+        vim.cmd [[silent! call repeat#set("\<C-a>", v:count)]]
+      end}
+      vim.keymap.nnoremap { '<C-x>', function()
+        require"dial".cmd.increment_normal(-vim.v.count1)
+        vim.cmd [[silent! call repeat#set("\<C-x>", v:count)]]
+      end}
+      -- vim.keymap.nmap { '<C-a>', '<Plug>(dial-increment)' }
+      -- vim.keymap.nmap { '<C-x>', '<Plug>(dial-decrement)' }
+      vim.keymap.vmap { '<C-a>',  '<Plug>(dial-increment)' }
+      vim.keymap.vmap { '<C-x>',  '<Plug>(dial-decrement)' }
       vim.keymap.vmap { 'g<C-a>', '<Plug>(dial-increment-additional)' }
       vim.keymap.vmap { 'g<C-x>', '<Plug>(dial-decrement-additional)' }
     end
