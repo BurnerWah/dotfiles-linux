@@ -222,6 +222,37 @@ local linter = {
       securities = (opts.securities or {undefined = (opts.security or 'error')}),
     }
   end,
+  json = function(opts)
+    local R = {}
+
+    opts.stream = (opts.stream or 'stdout')
+    -- Starting with a table can set the command and the arguments
+    if type(opts[1]) == 'table' then
+      opts.cmd = opts[1][1]
+      table.remove(opts[1], 1)
+      opts.args = opts[1]
+    elseif type(opts[1]) == 'string' then
+      opts.cmd = opts[1]
+    end
+    if opts.cmd:find('^./') then opts.name = (opts.name or opts.cmd:match('[^/]+$')) end
+
+    R.sourceName = opts.name or opts.cmd
+    R.command = opts.cmd
+    R.args = opts.args or {}
+    R.isStdout = opts.stream ~= 'stderr'
+    R.isStderr = opts.stream ~= 'stdout'
+    R.parseJson = opts.parse
+    R.securities = opts.securities or {undefined = (opts.security or 'error')}
+    if opts.roots then
+      R.rootPatterns = type(opts.roots) == 'string' and {opts.roots} or opts.roots
+    end
+    if opts.offset then
+      R.offsetLine = opts.offset.line or opts.offset[1]
+      R.offsetColumn = opts.offset.column or opts.offset[2]
+    end
+
+    return R
+  end,
   alex = function(flag)
     return {
       sourceName = 'alex',
@@ -278,11 +309,9 @@ lspconfig.diagnosticls.setup {
       },
       cppcheck_c = linter.cppcheck('c'),
       cppcheck_cpp = linter.cppcheck('c++'),
-      csslint = {
-        sourceName = 'csslint',
-        command = 'csslint',
-        args = {'--format=json', '%filepath'},
-        parseJson = {
+      csslint = linter.json {
+        {'csslint', '--format=json', '%filepath'},
+        parse = {
           errorsRoot = 'messages',
           line = 'line',
           column = 'col',
@@ -291,12 +320,11 @@ lspconfig.diagnosticls.setup {
         },
         securities = {warning = 'warning', error = 'error'},
       },
-      eslint = {
-        sourceName = 'eslint',
-        command = './node_modules/.bin/eslint',
+      eslint = linter.json {
+        './node_modules/.bin/eslint',
         args = {'--stdin', '--stdin-filename', '%filepath', '--format', 'json'},
-        rootPatterns = {'.git'},
-        parseJson = {
+        roots = '.git',
+        parse = {
           errorsRoot = '[0].messages',
           line = 'line',
           column = 'column',
@@ -325,12 +353,10 @@ lspconfig.diagnosticls.setup {
         stream = 'stderr',
         security = 'warning',
       },
-      hadolint = {
-        sourceName = 'hadolint',
-        command = 'hadolint',
-        args = {'-f', 'json', '-'},
-        rootPatterns = {'.hadolint.yaml'},
-        parseJson = {
+      hadolint = linter.json {
+        {'hadolint', '-f', 'json', '-'},
+        roots = '.hadolint.yaml',
+        parse = {
           line = 'line',
           column = 'column',
           security = 'level',
@@ -375,16 +401,14 @@ lspconfig.diagnosticls.setup {
         securities = {W = 'warning', E = 'error'},
       },
       luac = linter.generic {{'luac', '-p', '-'}, stream = 'stderr', pattern = fmt.basic(true)},
-      markdownlint = {
-        sourceName = 'markdownlint',
-        command = 'markdownlint',
-        args = {'--stdin'},
-        isStderr = true,
-        formatPattern = {
-          [[^.*?:\s?(\d+)(:(\d+)?)?\s(MD\d{3}\/[A-Za-z0-9-/]+)\s(.*)$]],
-          {line = 1, column = 3, message = 4},
+      markdownlint = linter.generic {
+        {'markdownlint', '--stdin'},
+        stream = 'both',
+        pattern = {
+          [[^.*?: ?(\d+)(?::(\d+))? ((?:MD\d{3}\/[\w-/]+) .*)$]],
+          {line = 1, column = 2, message = 3},
         },
-        securities = {undefined = 'hint'},
+        security = 'hint',
       },
       mix_credo = {
         sourceName = 'mix_credo',
@@ -396,14 +420,13 @@ lspconfig.diagnosticls.setup {
         },
         securities = {F = 'warning', C = 'warning', D = 'info', R = 'info'},
       },
-      mypy = {
-        sourceName = 'mypy',
-        command = 'mypy',
+      mypy = linter.generic {
+        'mypy',
         args = {
           '--no-color-output', '--no-error-summary', '--show-column-numbers',
           '--follow-imports=silent', '--ignore-missing-imports', '%file',
         },
-        formatPattern = {
+        pattern = {
           [[^.*:(\d+?):(\d+?): ([a-z]+?): (.*)$]],
           {line = 1, column = 2, security = 3, message = 4},
         },
@@ -427,11 +450,9 @@ lspconfig.diagnosticls.setup {
         rootPatterns = {'composer.json', 'composer.lock', 'vendor', '.git'},
         formatPattern = {[[^[^:]+:(\d+):(.*)(\r|\n)*$]], {line = 1, message = 2}},
       },
-      proselint = {
-        sourceName = 'proselint',
-        command = 'proselint',
-        args = {'--json'},
-        parseJson = {
+      proselint = linter.json {
+        {'proselint', '--json'},
+        parse = {
           errorsRoot = 'data.errors',
           line = 'line',
           column = 'column',
@@ -440,16 +461,15 @@ lspconfig.diagnosticls.setup {
         },
         securities = {warning = 'hint'},
       },
-      pylint = {
-        sourceName = 'pylint',
-        command = 'pylint',
+      pylint = linter.json {
+        'pylint',
         args = {
           '--output-format=json', '--score=no', '--disable=import-error',
           '--disable=wrong-import-order', '--disable=no-name-in-module', '%file',
         },
-        rootPatterns = {'.git', 'pyproject.toml', 'setup.py'},
-        offsetColumn = 1,
-        parseJson = {
+        roots = {'.git', 'pyproject.toml', 'setup.py'},
+        offset = {0, 1},
+        parse = {
           line = 'line',
           column = 'column',
           security = 'type',
@@ -470,18 +490,14 @@ lspconfig.diagnosticls.setup {
         pattern = {[[^.+?:(\d+): \((.+?)/\d\) (.*)$]], {line = 1, security = 2, message = 3}},
         securities = security_gen.docutils,
       },
-      rst_lint = {
-        sourceName = 'rst-lint',
-        command = 'rst-lint',
-        args = {'--format=json', '%file'},
-        parseJson = {line = 'line', security = 'type', message = '${message}'},
+      rst_lint = linter.json {
+        {'rst-lint', '--format=json', '%file'},
+        parse = {line = 'line', security = 'type', message = '${message}'},
         securities = security_gen.docutils,
       },
-      shellcheck = {
-        sourceName = 'shellcheck',
-        command = 'shellcheck',
-        args = {'--format=json', '-'},
-        parseJson = {
+      shellcheck = linter.json {
+        {'shellcheck', '--format=json', '-'},
+        parse = {
           line = 'line',
           column = 'column',
           endLine = 'endLine',
@@ -491,11 +507,9 @@ lspconfig.diagnosticls.setup {
         },
         securities = {style = 'hint', info = 'info', warning = 'warning', error = 'error'},
       },
-      spectral = {
-        sourceName = 'spectral',
-        command = 'spectral',
-        args = {'lint', '--ignore-unknown-format', '-q', '-f', 'json'},
-        parseJson = {
+      spectral = linter.json {
+        {'spectral', 'lint', '--ignore-unknown-format', '-q', '-f', 'json'},
+        parse = {
           line = 'range.start.line',
           column = 'range.start.character',
           endLine = 'range.end.line',
@@ -521,12 +535,11 @@ lspconfig.diagnosticls.setup {
           [[^\s*<\w+>:(\d+):(\d+):\s+(.*)(\r|\n)*$]], {line = 1, column = 2, message = 3},
         },
       },
-      stylelint = {
-        sourceName = 'stylelint',
-        command = './node_modules/.bin/stylelint',
+      stylelint = linter.json {
+        './node_modules/.bin/stylelint',
         args = {'--formatter', 'json', '--stdin-filename', '%filepath'},
-        rootPatterns = {'.git'},
-        parseJson = {
+        roots = '.git',
+        parse = {
           errorsRoot = '[0].warnings',
           line = 'line',
           column = 'column',
@@ -555,11 +568,9 @@ lspconfig.diagnosticls.setup {
         stream = 'both',
         pattern = fmt.unix(true),
       },
-      vint = {
-        sourceName = 'vint',
-        command = 'vint',
-        args = {'--enable-neovim', '--json', '--style-problem', '-'},
-        parseJson = {
+      vint = linter.json {
+        {'vint', '--enable-neovim', '--json', '--style-problem', '-'},
+        parse = {
           line = 'line_number',
           column = 'column_number',
           security = 'severity',
@@ -583,12 +594,10 @@ lspconfig.diagnosticls.setup {
         pattern = {[[^[^:]+:(\d+):\s*(([^:]+)\s*:.*)$]], {line = 1, security = 3, message = 2}},
         securities = {warning = 'warning'},
       },
-      xo = {
-        sourceName = 'xo',
-        command = 'xo',
-        rootPatterns = {'package.json', '.git'},
-        args = {'--reporter', 'json', '--stdin', '--stdin-filename', '%filepath'},
-        parseJson = {
+      xo = linter.json {
+        {'xo', '--reporter', 'json', '--stdin', '--stdin-filename', '%filepath'},
+        roots = {'package.json', '.git'},
+        parse = {
           errorsRoot = '[0].messages',
           line = 'line',
           column = 'column',
