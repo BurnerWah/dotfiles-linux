@@ -1,4 +1,5 @@
 -- WIP port of my variant of tyrannicaltoucan/vim-quantum to colorbuddy
+-- LuaFormatter off
 local Color, c, Group, g, s = require('colorbuddy').setup()
 
 vim.o.bg = 'dark'
@@ -100,6 +101,9 @@ Group.new('Delimiter', g.Special, g.Special, g.Special)
 
 -- Core - Special syntax
 Group.new('healthSuccess', c.green:light())
+Group.new('LspReferenceText', g.Visual, g.Visual, g.Visual)
+Group.new('LspReferenceRead', g.Visual, g.Visual, g.Visual)
+Group.new('LspReferenceWrite', g.Visual, g.Visual, g.Visual)
 
 -- Plugin - nvim-treesitter
 Group.new('TSPunctDelimiter', c.indigo:dark())
@@ -243,3 +247,5 @@ Group.new('GitGutterDelete',       c.red)
 -- Group.new('SignifySignAdd',    g.GitGutterAdd,    g.GitGutterAdd)
 -- Group.new('SignifySignChange', g.GitGutterChange, g.GitGutterChange)
 -- Group.new('SignifySignDelete', g.GitGutterDelete, g.GitGutterDelete)
+
+-- LuaFormatter on

@@ -8,6 +8,9 @@ configs[server_name] = {
   default_config = {
     cmd = {bin_name, 'run'},
     filetypes = {'toml'},
-    root_dir = util.root_pattern('.git', vim.fn.getcwd()),
+    root_dir = function(fname)
+      local root_pattern = util.root_pattern('.taplo.toml', 'taplo.toml')
+      return root_pattern(fname) or util.find_git_ancestor(fname) or util.path.dirname(fname)
+    end,
   },
 }

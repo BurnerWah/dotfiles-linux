@@ -44,6 +44,19 @@ local on_attach = function(client)
     end
   end
 
+  if client_caps.document_highlight then
+    -- Tree-sitter does this better
+    if not require('nvim-treesitter.query').has_locals(filetype) then
+      vim.api.nvim_exec([[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+      ]], false)
+    end
+  end
+
   -- Diagnostics are probably always available
   nnor {'<leader>cd', [[<cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = true}
   nnor {'[e', [[<cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
@@ -57,8 +70,8 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local simple_servers = {
-  'bashls', 'cmake', 'cssls', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'sqls',
-  'taplo', 'tsserver', 'vimls',
+  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'sqls', 'taplo',
+  'tsserver', 'vimls',
 }
 for _, server in ipairs(simple_servers) do
   lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
@@ -82,6 +95,12 @@ lspconfig.ccls.setup {
   commands = {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
+}
+lspconfig.cssls.setup {
+  -- Missing sass filetype by default
+  filetypes = {'css', 'sass', 'scss', 'less'},
+  on_attach = on_attach,
+  capabilities = capabilities,
 }
 lspconfig.gopls.setup {
   on_attach = on_attach,
