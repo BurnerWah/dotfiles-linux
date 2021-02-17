@@ -1,5 +1,4 @@
 -- from https://gabrielpoca.com/2019-11-02-a-little-bit-of-lua-in-your-vim/
-
 -- to save terminals
 list_of_terms = {}
 
@@ -8,7 +7,7 @@ function Terminal(nr, ...)
   if list_of_terms[nr] then
     -- change to the terminal
     vim.api.nvim_set_current_buf(list_of_terms[nr])
-  -- if the terminal doesn't exist
+    -- if the terminal doesn't exist
   else
     -- create a buffer that's is unlisted and not a scratch buffer
     local buf = vim.api.nvim_create_buf(false, false)
@@ -25,7 +24,7 @@ function Terminal(nr, ...)
 end
 
 -- Map the Terminal function in the lua module to some shortcuts
-vim.keymap.nnoremap { '<leader>kh', [[<cmd>lua Terminal(1)<cr>]], silent = true }
-vim.keymap.nnoremap { '<leader>kj', [[<cmd>lua Terminal(2)<cr>]], silent = true }
-vim.keymap.nnoremap { '<leader>kk', [[<cmd>lua Terminal(3)<cr>]], silent = true }
-vim.keymap.nnoremap { '<leader>kl', [[<cmd>lua Terminal(4)<cr>]], silent = true }
+vim.keymap.nnoremap {'<leader>kh', [[<cmd>lua Terminal(1)<cr>]], silent = true}
+vim.keymap.nnoremap {'<leader>kj', [[<cmd>lua Terminal(2)<cr>]], silent = true}
+vim.keymap.nnoremap {'<leader>kk', [[<cmd>lua Terminal(3)<cr>]], silent = true}
+vim.keymap.nnoremap {'<leader>kl', [[<cmd>lua Terminal(4)<cr>]], silent = true}

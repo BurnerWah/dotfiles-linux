@@ -6,8 +6,9 @@
 
   Other notes:
   - Zsh is present in here a lot to override base settings
-  ]]
-local shebang_prefixes = { '/usr/bin/', '/bin/', '/usr/bin/env ', '/bin/env ' }
+--]] --
+--
+local shebang_prefixes = {'/usr/bin/', '/bin/', '/usr/bin/env ', '/bin/env '}
 local shebang_fts = {
   ['awk -f'] = 'awk', -- Needed for plenary to work
   ['fennel'] = 'fennel',
@@ -23,13 +24,9 @@ local shebang_fts = {
 }
 local shebang = {}
 for _, prefix in ipairs(shebang_prefixes) do
-  for k, v in pairs(shebang_fts) do
-    shebang[prefix .. k] = v
-  end
+  for k, v in pairs(shebang_fts) do shebang[prefix .. k] = v end
 end
-local special = {
-  asa = (vim.g.filetype_asa or 'aspvbs'),
-}
+local special = {asa = (vim.g.filetype_asa or 'aspvbs')}
 
 return {
   extension = {
@@ -121,5 +118,5 @@ return {
     ['zshrc'] = 'zsh',
     ['fish_history'] = 'yaml',
   },
-  shebang = shebang
+  shebang = shebang,
 }

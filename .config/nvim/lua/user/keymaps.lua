@@ -7,9 +7,7 @@ local vsnip = {
   jumpable = function(...) return vim.fn['vsnip#jumpable'](...) == 1 end,
 }
 
-local function replace_termcodes(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+local function replace_termcodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
 local function check_back_space()
   local col = vim.fn.col('.') - 1

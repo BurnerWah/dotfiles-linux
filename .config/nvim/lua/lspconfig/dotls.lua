@@ -8,6 +8,6 @@ configs[server_name] = {
   default_config = {
     cmd = {bin_name, '--stdio'},
     filetypes = {'dot'},
-    root_dir = util.root_pattern(".git", vim.fn.getcwd())
-  }
+    root_dir = util.root_pattern('.git', vim.fn.getcwd()),
+  },
 }

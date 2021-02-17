@@ -39,12 +39,10 @@ vim.o.updatetime = 300
 
 -- Show non-printable characters
 vim.cmd [[set list]]
-vim.o.listchars = (
-  -- This is inelegant but it works well enough.
-  ((has('multi_byte') == 1) and vim.o.encoding == 'utf-8') and
-  [[tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-]] or
-  [[tab:> ,extends:>,precedes:<,nbsp:+,trail:-]]
-)
+-- This is inelegant but it works well enough.
+vim.o.listchars = (((has('multi_byte') == 1) and vim.o.encoding == 'utf-8') and
+                      [[tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-]] or
+                      [[tab:> ,extends:>,precedes:<,nbsp:+,trail:-]])
 
 if (has('conceal') == 1) then
   vim.cmd [[set conceallevel=2]]
@@ -52,7 +50,7 @@ if (has('conceal') == 1) then
 end
 
 -- Fish causes problems with plugins
-vim.o.shell = ( (vim.o.shell:find('fish$')) and 'bash' or vim.o.shell )
+vim.o.shell = ((vim.o.shell:find('fish$')) and 'bash' or vim.o.shell)
 
 -- Environment {{{1
 -- nvr support
@@ -81,7 +79,6 @@ vim.g.tex_flavor = 'latex'
 
 -- VimL
 vim.g.vimsyn_embed = 'lPr' -- Embed Lua, Python, and Ruby in vim syntax.
-
 
 -- Other {{{1
 -- (this should go elsewhere but there isn't a good place for it)
