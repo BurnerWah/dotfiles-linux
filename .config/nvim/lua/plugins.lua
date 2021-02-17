@@ -94,7 +94,7 @@ return require('packer').startup(function(use)
   use { 'dense-analysis/ale', config = function() require'user.cfg.ale' end }
   use {
     'hrsh7th/vim-vsnip',
-    requires = { 'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ' },
+    requires = { 'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ', 'stevearc/vim-vsnip-snippets' },
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local remap = vim.api.nvim_set_keymap
@@ -623,6 +623,11 @@ return require('packer').startup(function(use)
     ft = 'info',
   }
   use { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' }
+  use {
+    'andweeb/presence.nvim',
+    opt = true,
+    event = 'VimEnter *',
+  }
 
   -- Text editing
   use 'tpope/vim-repeat'
