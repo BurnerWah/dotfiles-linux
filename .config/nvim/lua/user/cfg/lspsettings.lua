@@ -69,12 +69,16 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_config,
+                                               {capabilities = capabilities, on_attach = on_attach})
+
 local simple_servers = {
   'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'sqls', 'taplo',
   'tsserver', 'vimls',
 }
 for _, server in ipairs(simple_servers) do
-  lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
+  -- lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
+  lspconfig[server].setup {}
 end
 
 local url = {
@@ -87,8 +91,6 @@ local url = {
 }
 
 lspconfig.ccls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   init_options = {
     compilationDatabaseDirectory = 'build',
     index = {threads = 0},
@@ -100,56 +102,20 @@ lspconfig.ccls.setup {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
-lspconfig.cssls.setup {
-  -- Missing sass filetype by default
-  filetypes = {'css', 'sass', 'scss', 'less'},
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+lspconfig.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}} -- Missing sass ft by default
 lspconfig.gopls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   settings = {
     gopls = {analyses = {unusedparams = true}, staticcheck = true, usePlaceholders = true},
   },
 }
-local function gen_schema(match, schema)
-  schema = url.parse(schema)
-  return {
-    fileMatch = ((type(match) == 'table') and match or {match}),
-    url = (schema:find('^https?://') and schema or url.schema:format(schema)),
-  }
-end
 lspconfig.jsonls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   filetypes = {'json', 'jsonc'},
-  settings = {
-    json = {
-      schemas = {
-        -- Really wish that this supported schemastore out of the box
-        gen_schema('*.ipynb', 'gh:jupyter/nbformat:master:nbformat/v4/nbformat.v4.schema.json'),
-        gen_schema('.bootstraprc', 'bootstraprc'), gen_schema('.bowerrc', 'bowerrc'),
-        gen_schema('.csslintrc', 'csslintrc'), gen_schema('.jsbeautifyrc', 'jsbeautifyrc'),
-        gen_schema('.jshintrc', 'jshintrc'), gen_schema('.jsinspectrc', 'jsinspectrc'),
-        gen_schema('.modernizrrc', 'modernizrrc'), gen_schema('coffeelint.json', 'coffeelint'),
-        gen_schema('jsconfig.json', 'jsconfig'), gen_schema('package.json', 'package'),
-        gen_schema('tsconfig.json', 'tsconfig'), gen_schema('tslint.json', 'tslint'),
-        gen_schema({'.babelrc', 'babel.config.json'}, 'babelrc'),
-        gen_schema({'.bower.json', 'bower.json'}, 'bower'),
-        gen_schema({'.eslintrc', '.eslintrc.json'}, 'eslintrc'),
-        gen_schema({'.mocharc.json', '.mocharc.jsonc'}, 'mocharc'),
-        gen_schema({'.prettierrc', '.prettierrc.json'}, 'prettierrc'),
-      },
-    },
-  },
+  settings = {json = {schemas = require('user.data.gen.generated_schemas')}}, -- Schemas are generated now
   commands = {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
 lspconfig.pyls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   settings = {
     pyls = {
       configurationSources = {'pyflakes', 'pycodestyle'},
@@ -173,20 +139,10 @@ lspconfig.pyls.setup {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
-lspconfig.rls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {rust = {clippy_preference = 'on'}},
-}
-lspconfig.sqlls.setup {
-  cmd = {'sql-language-server', 'up', '--method', 'stdio'},
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
+lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},
-  on_attach = on_attach,
-  capabilities = capabilities,
   settings = {
     Lua = {
       runtime = {version = 'LuaJIT', path = vim.split(package.path, ';')},
@@ -204,13 +160,10 @@ lspconfig.sumneko_lua.setup {
   },
 }
 lspconfig.yamlls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   settings = {
     yaml = {
       format = {singleQuote = true},
       schemas = {
-        -- [url.gh_raw:format('mattn/efm-langserver', 'master', 'schema.json')] = '/efm-langserver/config.yaml',
         [url.parse 'gh:mattn/efm-langserver:master:schema.json'] = '/efm-langserver/config.yaml',
       },
     },
@@ -219,9 +172,5 @@ lspconfig.yamlls.setup {
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
-lspconfig.efm.setup {
-  filetypes = {'eruby', 'make', 'zsh'},
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-lspconfig.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup(on_attach))
+lspconfig.efm.setup {filetypes = {'eruby', 'make', 'zsh'}}
+lspconfig.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup())

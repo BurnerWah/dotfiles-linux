@@ -456,9 +456,8 @@ M.linter_filetypes = {
   zsh = {'zsh'},
 }
 
-function M.setup(self, on_attach)
+function M.setup(self)
   local R = {}
-  R.on_attach = on_attach or nil
   R.filetypes = {}
   for k, _ in pairs(self.linter_filetypes) do table.insert(R.filetypes, k) end
   R.init_options = {linters = self.linters, filetypes = self.linter_filetypes}
