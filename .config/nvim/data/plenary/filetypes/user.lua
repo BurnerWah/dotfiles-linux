@@ -36,6 +36,9 @@ return {
     ['cjson'] = 'jsonc',
     ['doap'] = 'xml', -- Description of a project
     ['fish'] = 'fish',
+    ['frag'] = 'glsl', -- From vim-glsl
+    ['geom'] = 'glsl', -- From vim-glsl
+    ['glsl'] = 'glsl', -- From vim-glsl
     ['info'] = 'info',
     ['iuml'] = 'plantuml',
     ['jsonc'] = 'jsonc',
@@ -53,11 +56,14 @@ return {
     ['snippets'] = 'snippets',
     ['spec'] = 'spec', -- RPM Spec
     ['td'] = 'tablegen',
+    ['tesc'] = 'glsl', -- From vim-glsl
+    ['tese'] = 'glsl', -- From vim-glsl
     ['tl'] = 'teal',
     ['tmLanguage'] = 'xml', -- Textmate language
     ['toml'] = 'toml',
     ['ublock.txt'] = 'ublock', -- Custom filetype
     ['uml'] = 'plantuml',
+    ['vert'] = 'glsl', -- From vim-glsl
     ['wrap'] = 'dosini', -- From meson.vim
     ['xlisp'] = 'lisp',
     ['zsh'] = 'zsh',

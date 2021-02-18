@@ -188,7 +188,7 @@ M.linters = {
     securities = {undefined = 'hint'},
   },
   luacheck = tool.generic {
-    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-g'},
+    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-g', '-u', '-r', '-a'},
     pattern = {
       [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
       {line = 1, column = 2, endColumn = 3, security = 5, message = 4},

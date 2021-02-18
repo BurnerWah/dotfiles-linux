@@ -1,8 +1,11 @@
 -- WIP port of my variant of tyrannicaltoucan/vim-quantum to colorbuddy
 -- LuaFormatter off
 local Color, c, Group, g, s = require('colorbuddy').setup()
+_G.Color, _G.c = nil, nil
+_G.Group, _G.g = nil, nil
+_G.s, _G.styles = nil, nil
 
-vim.o.bg = 'dark'
+-- vim.o.bg = 'dark'
 vim.g.colors_name = 'quantum'
 -- vim.g.airline_theme = 'quantum'
 
@@ -25,6 +28,8 @@ Color.new('orange', '#d7956e')
 Color.new('indigo', '#7681de')
 Color.new('brown',  '#a52a2a')
 
+Group.new('RefPurpleDark', c.purple:dark())
+-- print(c.purple:dark())
 -- Core - Vim
 --        group,          fg,       bg,      styles
 Group.new('Normal',       c.gray5,  c.gray0)
@@ -124,18 +129,18 @@ Group.new('cssProp', g.Identifier, g.Identifier, g.Identifier) -- std: StorageCl
 Group.new('cssSelectorOp', g.Operator, g.Operator, g.Operator) -- std: Special; old: c.cyan
 Group.new('cssSelectorOp2', g.Operator, g.Operator, g.Operator) -- std: Special; old: c.cyan
 
--- Group.new('cssFunctionName', g.Function, g.Function, g.Function) -- std: Function; old: c.blue
--- Group.new('cssIncludeKeyword', c.purple) -- problem: Not found
-
 -- Lang - Git commit
 Group.new('gitcommitHeader',        c.purple)
-Group.new('gitcommitUnmerged',      c.green)
-Group.new('gitcommitSelectedFile',  c.green)
-Group.new('gitcommitDiscardedFile', c.red)
-Group.new('gitcommitUnmergedFile',  c.yellow)
-Group.new('gitcommitSelectedType',  c.green)
 Group.new('gitcommitSummary',       c.blue)
-Group.new('gitcommitDiscardedType', c.red)
+Group.new('gitcommitSelectedFile',  c.green, nil, s.bold)
+Group.new('gitcommitSelectedType',  g.gitcommitSelectedFile)
+Group.new('gitcommitSelectedArrow', g.gitcommitSelectedFile)
+Group.new('gitcommitDiscardedFile', c.red)
+Group.new('gitcommitDiscardedType', g.gitcommitDiscardedFile)
+Group.new('gitcommitDiscardedArrow', g.gitcommitDiscardedFile)
+Group.new('gitcommitUnmerged',      c.green)
+Group.new('gitcommitUnmergedFile',  c.yellow)
+Group.new('gitcommitUnmergedArrow', g.gitcommitUnmergedFile)
 
 -- Lang - HTML
 Group.new('htmlTag',            g.Label, g.Label, g.Label) -- std: Function; old: c.blue
@@ -146,11 +151,13 @@ Group.new('htmlSpecialTagName', c.purple) -- std: Exception; old: c.purple
 
 -- Lang - JS
 -- NOTE jsArrowFunction is weird since it covers operators, delimiters, & a variable
-Group.new('javaScriptBraces', g.Delimiter, g.Delimiter, g.Delimiter) -- std: Function; old: Normal
-Group.new('javaScriptNull', g.TSConstBuiltin, g.TSConstBuiltin, g.TSConstBuiltin) -- std: Keyword; old: c.orange
+Group.new('javaScriptBraces', g.Delimiter, g.Delimiter, g.Delimiter)
+Group.new('javaScriptParens', g.Delimiter, g.Delimiter, g.Delimiter)
+Group.new('javaScriptNull', g.TSConstBuiltin, g.TSConstBuiltin, g.TSConstBuiltin)
 Group.new('javaScriptIdentifier', c.blue) -- std: Identifier; old: c.purple
-Group.new('javaScriptNumber', g.Number, g.Number, g.Number) -- std: *Undefined; old: c.orange
-Group.new('javaScriptRegexpString', g.TSStringRegex, g.TSStringRegex, g.TSStringRegex) -- std: String
+Group.new('javaScriptNumber', g.Number, g.Number, g.Number)
+Group.new('javaScriptRegexpString', g.TSStringRegex, g.TSStringRegex, g.TSStringRegex)
+
 Group.new('jsFunction', g.Keyword, g.Keyword, g.Keyword) -- std: Type; old: c.purple
 Group.new('jsArrowFunction', c.purple) -- std: Type; old: c.purple
 Group.new('jsDocParam', c.green) -- std: Label; old: c.green
@@ -169,23 +176,11 @@ Group.new('jsThis', g.TSVariableBuiltin, g.TSVariableBuiltin, g.TSVariableBuilti
 Group.new('jsSuper', g.TSVariableBuiltin, g.TSVariableBuiltin, g.TSVariableBuiltin) -- std: Constant
 Group.new('jsUndefined', c.orange) -- std: Type; old: c.orange
 
--- Group.new('javaScriptRequire',    c.cyan) -- problem: Not found
--- Group.new('javaScriptReserved',   g.Type, g.Type, g.Type) -- std: Keyword; old: c.purple
--- Group.new('jsAsyncKeyword',       c.purple) -- std: Keyword; old: c.purple
--- Group.new('jsExtendsKeyword',     c.purple) -- std: Keyword; old: c.purple
--- Group.new('jsClassKeyword',       c.purple) -- std: Keyword; old: c.purple
--- Group.new('jsForAwait',           c.purple) -- std: Keyword; old: c.purple
--- Group.new('jsFrom',               c.purple) -- std: Include; old: c.purple
--- Group.new('jsImport',             c.purple) -- std: Include; old: c.purple
--- Group.new('jsModuleAs',           c.purple) -- std: Include; old: c.purple
-
 -- Lang - JSON
 Group.new('jsonNull', g.TSConstBuiltin, g.TSConstBuiltin, g.TSConstBuiltin) -- std: Function
 
--- Group.new('jsonBraces', g.Delimiter) -- std: Delimiter; old: Normal
-
 -- Lang - Less
-Group.new('lessAmpersand',    c.red)
+Group.new('lessAmpersand',    g.cssProp, g.cssProp, g.cssProp)
 Group.new('lessClassChar',    c.yellow)
 Group.new('lessCssAttribute', c.gray5)
 Group.new('lessFunction',     g.Function, g.Function, g.Function)
@@ -203,7 +198,8 @@ Group.new('markdownItalic',            c.blue,               nil, s.italic)
 Group.new('markdownListMarker',        c.orange)
 Group.new('markdownOrderedListMarker', g.markdownListMarker)
 Group.new('markdownRule',              c.gray3)
-Group.new('markdownUrl',               c.purple)
+Group.new('markdownLinkText', g.Label, g.Label, g.Label)
+Group.new('markdownUrl',               g.TSURI, g.TSURI, g.TSURI)
 Group.new('markdownUrlTitleDelimiter', c.green)
 
 -- Lang - Ruby
@@ -219,7 +215,7 @@ Group.new('rustPanic',     c.red)
 Group.new('rustStructure', g.Structure, g.Structure, g.Structure)
 
 -- Lang - Sass
-Group.new('sassAmpersand', c.red)
+Group.new('sassAmpersand', g.cssProp, g.cssProp, g.cssProp)
 Group.new('sassClassChar', c.yellow)
 Group.new('sassMixinName', c.blue)
 Group.new('sassVariable',  c.purple)
@@ -233,19 +229,10 @@ Group.new('xmlTag',     c.blue) -- std: Function; old: c.blue
 Group.new('xmlEndTag',  g.xmlTag, g.xmlTag) -- std: Function; old: c.blue
 Group.new('xmlTagName', g.xmlTag, g.xmlTag) -- std: Identifier; old: c.blue
 
--- Plugin - Vim-Fugitive
-Group.new('diffAdded',   c.green)
-Group.new('diffRemoved', c.red)
-
 -- Plugin - Vim-Gittgutter
 Group.new('GitGutterAdd',          c.green)
 Group.new('GitGutterChange',       c.yellow)
 Group.new('GitGutterChangeDelete', c.orange)
 Group.new('GitGutterDelete',       c.red)
-
--- Plugin - Vim-Signify
--- Group.new('SignifySignAdd',    g.GitGutterAdd,    g.GitGutterAdd)
--- Group.new('SignifySignChange', g.GitGutterChange, g.GitGutterChange)
--- Group.new('SignifySignDelete', g.GitGutterDelete, g.GitGutterDelete)
 
 -- LuaFormatter on

@@ -11,7 +11,7 @@ return require('packer').startup(function(use)
   use {'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file 'user' end}
 
   -- Completion & Linting
-  use {'neovim/nvim-lspconfig', config = function() require 'user.cfg.lspsettings' end}
+  use {'neovim/nvim-lspconfig', config = [[require 'user.cfg.lspsettings']]}
   use {
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
@@ -21,18 +21,28 @@ return require('packer').startup(function(use)
         warn_sign = '',
         hint_sign = '',
         infor_sign = '',
+        finder_action_keys = {
+          open = 'o',
+          vsplit = 's',
+          split = 'i',
+          quit = {'q', '<Esc>'},
+          scroll_down = '<C-f>',
+          scroll_up = '<C-b>',
+        },
+        code_action_keys = {quit = {'q', '<Esc>'}, exec = '<CR>'},
+        rename_action_keys = {quit = {'<C-c>', '<Esc>'}, exec = '<CR>'},
         border_style = 2, -- Rounded border
       }
+      local remap = vim.api.nvim_set_keymap
+      local opts = {noremap = true, silent = true}
+      remap('n', '<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], opts)
+      remap('t', '<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], opts)
     end,
   }
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'kosayoda/nvim-lightbulb', requires = 'nvim-lspconfig'}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
-  use {
-    'onsails/lspkind-nvim',
-    requires = 'nvim-lspconfig',
-    config = function() require'lspkind'.init {} end,
-  }
+  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require'lspkind'.init {}]]}
   use {'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall'}
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -84,10 +94,13 @@ return require('packer').startup(function(use)
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
     end,
   }
-  use {'dense-analysis/ale', config = function() require 'user.cfg.ale' end}
+  use {'dense-analysis/ale', config = [[require 'user.cfg.ale']]}
   use {
     'hrsh7th/vim-vsnip',
-    requires = {'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ', 'stevearc/vim-vsnip-snippets'},
+    requires = {
+      'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
+      {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
+    },
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local remap = vim.api.nvim_set_keymap
@@ -165,7 +178,8 @@ return require('packer').startup(function(use)
   use 'YaBoiBurner/requirements.txt.vim'
   use 'YaBoiBurner/vim-teal'
   use 'blankname/vim-fish'
-  use {'mesonbuild/meson', rtp = 'data/syntax-highlighting/vim', opt = true}
+  use 'plasticboy/vim-markdown'
+  -- Meson syntax is now manually maintained
 
   -- CXX
   use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
@@ -203,6 +217,7 @@ return require('packer').startup(function(use)
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
     },
+    run = ':TSUpdate',
     config = function()
       local telescope = require 'telescope'
       local env = vim.env
@@ -235,12 +250,12 @@ return require('packer').startup(function(use)
       local remap = vim.api.nvim_set_keymap
       local opts = {silent = true, noremap = true}
 
-      remap('n', '<leader>ff', [[<cmd>Telescope find_files<cr>]], opts)
-      remap('n', '<leader>fg', [[<cmd>Telescope live_grep<cr>]], opts)
-      remap('n', '<leader>fb', [[<cmd>Telescope buffers<cr>]], opts)
-      remap('n', '<leader>fh', [[<cmd>Telescope help_tags<cr>]], opts)
-      remap('n', '<leader><leader>', [[<cmd>Telescope frequency<CR>]], opts)
-      remap('n', '<C-p>', [[<cmd>Telescope project<CR>]], opts)
+      remap('n', '<Leader>ff', [[<Cmd>Telescope find_files<CR>]], opts)
+      remap('n', '<Leader>fg', [[<Cmd>Telescope live_grep<CR>]], opts)
+      remap('n', '<Leader>fb', [[<Cmd>Telescope buffers<CR>]], opts)
+      remap('n', '<Leader>fh', [[<Cmd>Telescope help_tags<CR>]], opts)
+      remap('n', '<Leader><Leader>', [[<Cmd>Telescope frequency<CR>]], opts)
+      remap('n', '<C-p>', [[<Cmd>Telescope project<CR>]], opts)
     end,
   }
   use {'pwntester/octo.nvim', requires = 'telescope.nvim', opt = true, cmd = 'Octo'}
@@ -292,29 +307,18 @@ return require('packer').startup(function(use)
         pandoc = 'markdown',
         rst = 'toc',
       }
-      vim.g.vista_ctags_cmd = {
-        -- Consider checking for commands before enabling them.
-        go = 'gotags',
-        rst = 'rst2ctags',
-      }
+      -- Consider checking for commands before enabling them.
+      vim.g.vista_ctags_cmd = {go = 'gotags', rst = 'rst2ctags'}
     end,
   }
-  use {
-    'lewis6991/gitsigns.nvim',
-    requires = 'plenary.nvim',
-    config = function() require'gitsigns'.setup() end,
-  }
-  use {
-    'rhysd/git-messenger.vim',
-    cmd = 'GitMessenger',
-    keys = {{'n', '<leader>gm'}},
-    config = function() vim.cmd [[autocmd init FileType gitmessengerpopup setlocal winblend=10]] end,
-  }
+  use {'lewis6991/gitsigns.nvim', requires = 'plenary.nvim', config = [[require'gitsigns'.setup()]]}
+  use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
   use {
     'norcalli/nvim-colorizer.lua',
     -- Highlights color codes with the actual color
     ft = {'css', 'kitty', 'less', 'lua', 'vim'},
+    cmd = 'ColorizerToggle',
     config = function()
       require'colorizer'.setup {
         'kitty',
@@ -346,7 +350,8 @@ return require('packer').startup(function(use)
       {'ryanoasis/vim-devicons', setup = function() vim.g.webdevicons_enable_nerdtree = 0 end},
     },
     opt = true,
-    event = 'VimEnter *',
+    disable = true,
+    -- event = 'VimEnter *',
     setup = function()
       vim.g.airline_theme = 'quantum' -- Modified version is now integrated into dotfiles
       vim.g.airline_powerline_fonts = true
@@ -370,18 +375,24 @@ return require('packer').startup(function(use)
     end,
   }
   use {
+    'glepnir/galaxyline.nvim',
+    branch = 'main',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = [[require 'user.statusline']],
+  }
+  use {
     'romgrk/barbar.nvim',
     -- Tabline plugin
     requires = 'kyazdani42/nvim-web-devicons',
     config = function()
       local remap = vim.api.nvim_set_keymap
-      remap('n', 'bb', [[<cmd>BufferPick<CR>]], {})
+      remap('n', 'bb', [[<Cmd>BufferPick<CR>]], {})
     end,
   }
   use {
     'tjdevries/colorbuddy.nvim',
     -- Lua color scheme engine
-    config = function() require('colorbuddy').colorscheme('user_colors') end,
+    config = function() require'colorbuddy'.colorscheme 'quantumbuddy' end,
   }
   use {
     'DanilaMihailov/beacon.nvim',
@@ -410,7 +421,7 @@ return require('packer').startup(function(use)
         '<Plug>(UserEndHlslens)',
         function()
           feedkeys(replace_termcodes(':nohlsearch<CR>', true, false, true), 'n', true)
-          vim.cmd [[nunmap <leader>l]]
+          vim.cmd [[nunmap <Leader>l]]
         end,
         silent = true,
       }
@@ -420,14 +431,14 @@ return require('packer').startup(function(use)
           return function()
             vim.cmd(([[normal! %s]] .. key):format(vim.v.count1))
             hlslens.start()
-            nmap {'<leader>l', '<Plug>(UserEndHlslens)', silent = true}
+            nmap {'<Leader>l', '<Plug>(UserEndHlslens)', silent = true}
           end
         end,
         search = function(key)
           return function()
             feedkeys(key, 'n', true)
             hlslens.start()
-            nmap {'<leader>l', '<Plug>(UserEndHlslens)', silent = true}
+            nmap {'<Leader>l', '<Plug>(UserEndHlslens)', silent = true}
           end
         end,
       }
@@ -481,8 +492,8 @@ return require('packer').startup(function(use)
       'VimwikiTabMakeDiaryNote',
     },
     keys = {
-      {'n', '<leader>ww'}, {'n', '<leader>wt'}, {'n', '<leader>wi'}, {'n', '<leader>w<leader>w'},
-      {'n', '<leader>w<leader>t'}, {'n', '<leader>w<leader>y'}, {'n', '<leader>w<leader>m'},
+      {'n', '<Leader>ww'}, {'n', '<Leader>wt'}, {'n', '<Leader>wi'}, {'n', '<Leader>w<Leader>w'},
+      {'n', '<Leader>w<Leader>t'}, {'n', '<Leader>w<Leader>y'}, {'n', '<Leader>w<Leader>m'},
     },
     setup = function()
       vim.g.vimwiki_list = {{path = '~/Documents/VimWiki', nested_syntaxes = {['c++'] = 'cpp'}}}
@@ -513,7 +524,7 @@ return require('packer').startup(function(use)
   use {
     'hkupty/iron.nvim',
     cmd = {'IronRepl', 'IronSend', 'IronReplHere', 'IronWatchCurrentFile'},
-    keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<localleader>sl'}},
+    keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
     config = function()
       local iron = require('iron')
 
@@ -539,7 +550,7 @@ return require('packer').startup(function(use)
       }
     end,
   }
-  use {'lukas-reineke/format.nvim', config = function() require 'user.cfg.format-nvim' end}
+  use {'lukas-reineke/format.nvim', config = [[require 'user.cfg.format-nvim']]}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
   use 'jbyuki/monolithic.nvim'
 
@@ -557,17 +568,31 @@ return require('packer').startup(function(use)
   }
   use {'HiPhish/info.vim', event = 'BufReadCmd info:*', cmd = 'Info', ft = 'info'} -- mirror
   use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
-  use {'andweeb/presence.nvim', opt = true, event = 'VimEnter *'}
+  use 'andweeb/presence.nvim'
 
   -- Text editing
   use 'tpope/vim-repeat'
   -- use 'tpope/vim-endwise'
   use {
     'phaazon/hop.nvim',
-    -- EasyMotion replacement
-    -- This will eventually be lazy loaded but currently that would require too much maintainence
+    --[[ EasyMotion replacement
+      This will eventually be lazy loaded but currently that requires too much maintainence
+
+      GitHub Issues:
+      - #3: (flaw) A lot of hints require 3 keystrokes
+      - #4: (feat) Quick-scope mode
+      - #8: (feat) Unable to use other keys like h,j,k,l to cancel hints
+      - #15: (bug) Incorrect hints position for lines that has tabs in help buffer
+      - #17: (bug) Incorrect hop window position for floating window
+      - #19: (feat) Allow to set configuration with a setup function
+      ]]
     config = function()
-      vim.api.nvim_set_keymap('n', '<leader>hw', [[<cmd>lua require'hop'.hint_words()<cr>]], {})
+      local remap = vim.api.nvim_set_keymap
+      remap('n', '<Leader>hw', [[<Cmd>lua require'hop'.hint_words()<CR>]], {})
+      remap('n', '<Leader>hp', [[<Cmd>lua require'hop'.hint_patterns()<CR>]], {})
+      remap('n', '<Leader>hc', [[<Cmd>lua require'hop'.hint_char1()<CR>]], {})
+      remap('n', '<Leader>hC', [[<Cmd>lua require'hop'.hint_char2()<CR>]], {})
+      remap('n', '<Leader>hl', [[<Cmd>lua require'hop'.hint_lines()<CR>]], {})
     end,
   }
   use {'windwp/nvim-autopairs', opt = true, config = function() require'nvim-autopairs'.setup() end}
@@ -587,7 +612,7 @@ return require('packer').startup(function(use)
     -- This will be replaced by blackCauldron7/surround.nvim eventually
     keys = {
       {'n', 'ds'}, {'n', 'cs'}, {'n', 'cS'}, {'n', 'ys'}, {'n', 'yS'}, {'n', 'yss'}, {'n', 'ySs'},
-      {'n', 'ySS'}, {'x', 'S'}, {'x', 'gS'}, {'i', '<C-S>'}, {'i', '<C-G>s'}, {'i', '<C-G>S'},
+      {'n', 'ySS'}, {'x', 'S'}, {'x', 'gS'}, {'i', '<C-s>'}, {'i', '<C-g>s'}, {'i', '<C-g>S'},
     },
   }
   use {
@@ -639,10 +664,10 @@ return require('packer').startup(function(use)
     requires = 'astronauta.nvim',
     opt = true,
     cmd = {'EasyAlign', 'LiveEasyAlign'},
-    keys = {{'x', 'ga'}, {'n', 'ga'}},
+    keys = {{'n', 'ga'}, {'v', 'ga'}},
     config = function()
-      vim.keymap.xmap {'ga', '<Plug>(LiveEasyAlign)'}
-      vim.keymap.nmap {'ga', '<Plug>(EasyAlign)'}
+      vim.keymap.vmap {'ga', '<Plug>(LiveEasyAlign)', silent = true}
+      vim.keymap.nmap {'ga', '<Plug>(EasyAlign)', silent = true}
     end,
   }
 end)

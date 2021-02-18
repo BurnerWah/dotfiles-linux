@@ -6,34 +6,34 @@ local on_attach = function(client)
   local client_caps = client.resolved_capabilities
 
   if client_caps.hover then
-    nnor {'<leader>hh', [[<cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
+    nnor {'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
     if filetype ~= 'vim' then
-      nnor {'K', [[<cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
+      nnor {'K', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
     end
   end
 
   if client_caps.find_references then
-    nnor {'gh', [[<cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
-    nnor {'gr', [[<cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
+    nnor {'gh', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
+    nnor {'gr', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.signature_help then
-    nnor {'gs', [[<cmd>Lspsaga signature_help<CR>]], silent = true, buffer = true}
+    nnor {'gs', [[<Cmd>Lspsaga signature_help<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.code_action then
     vim.cmd [[autocmd init CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()]]
-    nnor {'ca', [[<cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
-    nnor {'<leader>ac', [[<cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
-    vnor {'ca', [[:<C-U>Lspsaga range_code_action<CR>]], silent = true, buffer = true}
+    nnor {'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
+    nnor {'<Leader>ac', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
+    vnor {'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.rename then
-    nnor {'<leader>rn', [[<cmd>Lspsaga rename<CR>]], silent = true, buffer = true}
+    nnor {'<Leader>rn', [[<Cmd>Lspsaga rename<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.goto_definition then
-    nnor {'gd', [[<cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = true}
+    nnor {'gd', [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.document_symbol then
@@ -58,11 +58,11 @@ local on_attach = function(client)
   end
 
   -- Diagnostics are probably always available
-  nnor {'<leader>cd', [[<cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = true}
-  nnor {'[e', [[<cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
-  nnor {'[g', [[<cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
-  nnor {']e', [[<cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
-  nnor {']g', [[<cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
+  nnor {'<Leader>cd', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = true}
+  nnor {'[e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
+  nnor {'[g', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
+  nnor {']e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
+  nnor {']g', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
 
 end
 
@@ -86,8 +86,6 @@ local url = {
     input = input:gsub([[^gh:(.*):(.*):(.+)$]], [[https://github.com/%1/raw/%2/%3]])
     return input
   end,
-  gh_raw = [[https://github.com/%s/raw/%s/%s]],
-  schema = [[https://json.schemastore.org/%s]],
 }
 
 lspconfig.ccls.setup {

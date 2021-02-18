@@ -1,4 +1,4 @@
-aug filetypedetect
+" aug filetypedetect
   " Stuff that needs to preced the plenary engine
   au BufNewFile,BufRead */.vscode/*.json setf jsonc " VSCode settings
 
@@ -45,5 +45,5 @@ aug filetypedetect
   " Cleanup {{{1
   au! BufNewFile,BufRead *.json
   " 1}}}
-aug END
+" aug END
 " vim:fdm=marker
