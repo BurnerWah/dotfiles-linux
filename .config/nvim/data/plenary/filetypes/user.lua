@@ -32,12 +32,13 @@ return {
   extension = {
     ['aiml'] = 'xml', -- Artificial Intelligence Markup Language
     ['asa'] = special.asa,
-    ['cjson'] = 'json', -- FIXME has comments
+    ['cjsn'] = 'jsonc',
+    ['cjson'] = 'jsonc',
     ['doap'] = 'xml', -- Description of a project
     ['fish'] = 'fish',
     ['info'] = 'info',
     ['iuml'] = 'plantuml',
-    ['jsonc'] = 'json', -- FIXME has comments
+    ['jsonc'] = 'jsonc',
     ['jsonld'] = 'json', -- JSON Linked Data
     ['ll'] = 'llvm',
     ['lzx'] = 'xml', -- OpenLaszlo
@@ -55,27 +56,31 @@ return {
     ['tl'] = 'teal',
     ['tmLanguage'] = 'xml', -- Textmate language
     ['toml'] = 'toml',
+    ['ublock.txt'] = 'ublock', -- Custom filetype
     ['uml'] = 'plantuml',
     ['wrap'] = 'dosini', -- From meson.vim
     ['xlisp'] = 'lisp',
     ['zsh'] = 'zsh',
-    ['ublock.txt'] = 'ublock', -- Custom filetype
   },
   file_name = {
     ['.arclint'] = 'json',
     ['.avcs'] = 'json', -- Avro Schema
-    ['.babelrc'] = 'json', -- Babel configuration file (alias to .babelrc.json; has comments)
+    ['.babelrc'] = 'jsonc', -- Babel config (alias to .babelrc.json)
+    ['.babelrc.json'] = 'jsonc', -- Babel config
     ['.bootstraprc'] = 'yaml',
     ['.bowerrc'] = 'json', -- Bower config
     ['.coveragerc'] = 'dosini',
     ['.csslintrc'] = 'json', -- CSS Lint config
-    ['.jsbeautifyrc'] = 'json', -- js-beautify config; could have comments
+    ['.eslintrc'] = 'jsonc', -- ESLint config
+    ['.jsbeautifyrc'] = 'jsonc', -- js-beautify config; could have comments
     ['.jscsrc'] = 'json', -- JSCS config
-    ['.jshintrc'] = 'json', -- JSHint config; has comments
+    ['.jshintrc'] = 'jsonc', -- JSHint config
     ['.jsinspectrc'] = 'json', -- JSInspect config
-    ['.jslintrc'] = 'json', -- has comments
+    ['.jslintrc'] = 'jsonc',
     ['.luacompleterc'] = 'json',
     ['.manpath'] = 'manconf', -- User manpath
+    ['.mocharc.json'] = 'jsonc', -- MochaJS config
+    ['.mocharc.jsonc'] = 'jsonc', -- MochaJS config
     ['.modernizrrc'] = 'json', -- Webpack modernizr-loader config
     ['.npmpackagejsonlintrc'] = 'json', -- npm-package-json-lint config
     ['.proselintrc'] = 'json',
@@ -91,12 +96,17 @@ return {
     ['_exrc'] = 'vim',
     ['_viminfo'] = 'viminfo',
     ['anacrontab'] = 'crontab',
+    ['babelrc.config.json'] = 'jsonc', -- Babel config
     ['cargo.lock'] = 'toml',
+    ['coc-settings.json'] = 'jsonc', -- Coc.nvim config
+    ['coffeelint.json'] = 'jsonc', -- Coffeelint config
     ['constraints.in'] = 'requirements',
     ['constraints.txt'] = 'requirements',
+    ['fish_history'] = 'yaml',
     ['gdbinit'] = 'gdb',
     ['gopkg.lock'] = 'toml',
     ['index.theme'] = 'desktop', -- Icon theme index
+    ['jsconfig.json'] = 'jsonc', -- JS project config
     ['man_db.conf'] = 'manconf', -- System mandb config (on Fedora)
     ['meson.build'] = 'meson',
     ['meson_options.txt'] = 'meson',
@@ -109,6 +119,7 @@ return {
     ['requires.in'] = 'requirements',
     ['requires.txt'] = 'requirements',
     ['robots.txt'] = 'robots',
+    ['tsconfig.json'] = 'jsonc', -- TS project config
     ['virc'] = 'vim',
     ['wgetrc'] = 'wget',
     ['zlogin'] = 'zsh',
@@ -116,7 +127,6 @@ return {
     ['zprofile'] = 'zsh',
     ['zshenv'] = 'zsh',
     ['zshrc'] = 'zsh',
-    ['fish_history'] = 'yaml',
   },
   shebang = shebang,
 }

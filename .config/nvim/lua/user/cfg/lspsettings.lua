@@ -78,6 +78,10 @@ for _, server in ipairs(simple_servers) do
 end
 
 local url = {
+  parse = function(input)
+    input = input:gsub([[^gh:(.*):(.*):(.+)$]], [[https://github.com/%1/raw/%2/%3]])
+    return input
+  end,
   gh_raw = [[https://github.com/%s/raw/%s/%s]],
   schema = [[https://json.schemastore.org/%s]],
 }
@@ -110,6 +114,7 @@ lspconfig.gopls.setup {
   },
 }
 local function gen_schema(match, schema)
+  schema = url.parse(schema)
   return {
     fileMatch = ((type(match) == 'table') and match or {match}),
     url = (schema:find('^https?://') and schema or url.schema:format(schema)),
@@ -118,12 +123,23 @@ end
 lspconfig.jsonls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  filetypes = {'json', 'jsonc'},
   settings = {
     json = {
       schemas = {
         -- Really wish that this supported schemastore out of the box
-        gen_schema('package.json', 'package'), gen_schema('tsconfig.json', 'tsconfig'),
-        gen_schema('.jshintrc', 'jshintrc'), gen_schema('tslint.json', 'tslint'),
+        gen_schema('*.ipynb', 'gh:jupyter/nbformat:master:nbformat/v4/nbformat.v4.schema.json'),
+        gen_schema('.bootstraprc', 'bootstraprc'), gen_schema('.bowerrc', 'bowerrc'),
+        gen_schema('.csslintrc', 'csslintrc'), gen_schema('.jsbeautifyrc', 'jsbeautifyrc'),
+        gen_schema('.jshintrc', 'jshintrc'), gen_schema('.jsinspectrc', 'jsinspectrc'),
+        gen_schema('.modernizrrc', 'modernizrrc'), gen_schema('coffeelint.json', 'coffeelint'),
+        gen_schema('jsconfig.json', 'jsconfig'), gen_schema('package.json', 'package'),
+        gen_schema('tsconfig.json', 'tsconfig'), gen_schema('tslint.json', 'tslint'),
+        gen_schema({'.babelrc', 'babel.config.json'}, 'babelrc'),
+        gen_schema({'.bower.json', 'bower.json'}, 'bower'),
+        gen_schema({'.eslintrc', '.eslintrc.json'}, 'eslintrc'),
+        gen_schema({'.mocharc.json', '.mocharc.jsonc'}, 'mocharc'),
+        gen_schema({'.prettierrc', '.prettierrc.json'}, 'prettierrc'),
       },
     },
   },
@@ -194,7 +210,8 @@ lspconfig.yamlls.setup {
     yaml = {
       format = {singleQuote = true},
       schemas = {
-        [url.gh_raw:format('mattn/efm-langserver', 'master', 'schema.json')] = '/efm-langserver/config.yaml',
+        -- [url.gh_raw:format('mattn/efm-langserver', 'master', 'schema.json')] = '/efm-langserver/config.yaml',
+        [url.parse 'gh:mattn/efm-langserver:master:schema.json'] = '/efm-langserver/config.yaml',
       },
     },
   },
@@ -306,9 +323,10 @@ local linter = {
 lspconfig.diagnosticls.setup {
   filetypes = {
     'asciidoc', 'bats', 'c', 'cmake', 'cpp', 'css', 'dockerfile', 'elixir', 'fountain', 'fish',
-    'gitcommit', 'graphql', 'html', 'javascript', 'json', 'less', 'lua', 'mail', 'markdown',
-    'nroff', 'php', 'po', 'pod', 'python', 'rst', 'sass', 'scss', 'stylus', 'sugarcss', 'sh', 'sql',
-    'teal', 'tex', 'texinfo', 'typescript', 'vimwiki', 'vue', 'xhtml', 'xml', 'yaml', 'zsh',
+    'gitcommit', 'graphql', 'html', 'javascript', 'json', 'jsonc', 'less', 'lua', 'mail',
+    'markdown', 'nroff', 'php', 'po', 'pod', 'python', 'rst', 'sass', 'scss', 'stylus', 'sugarcss',
+    'sh', 'sql', 'teal', 'tex', 'texinfo', 'typescript', 'vimwiki', 'vue', 'xhtml', 'xml', 'yaml',
+    'zsh',
   },
   on_attach = on_attach,
   init_options = {
@@ -657,6 +675,7 @@ lspconfig.diagnosticls.setup {
       html = {'alex_html', 'proselint', 'tidy', 'write_good'},
       javascript = {'eslint', 'jshint', 'standard', 'xo'},
       json = {'jsonlint', 'jq', 'spectral'},
+      jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
       less = {'stylelint'},
       lua = {'luac', 'luacheck'},
       mail = {'alex_text', 'languagetool', 'proselint'},

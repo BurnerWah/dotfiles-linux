@@ -29,6 +29,7 @@ require'format'.setup {
   html = {{cmd = {cmdgen.prettier:format 'html'}}},
   javascript = {{cmd = {cmdgen.prettier:format 'javascript'}}},
   json = {{cmd = {cmdgen.prettier:format 'json'}}},
+  jsonc = {{cmd = {cmdgen.prettier:format 'json'}}},
   less = {{cmd = {cmdgen.prettier:format 'less'}}},
   lua = {{cmd = {'lua-format -i'}}},
   markdown = {{cmd = {cmdgen.prettier:format 'markdown'}}},

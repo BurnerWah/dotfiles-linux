@@ -1,25 +1,10 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "cmake",
-    "css",
-    "html",
-    "javascript",
-    "json",
-    "less",
-    "markdown",
-    "scss",
-    "sh",
-    "typescript",
-    "yaml"
-  ],
   "json.schemas": [
     {
       "fileMatch": ["*.ipynb"],
       "url": "https://github.com/jupyter/nbformat/raw/master/nbformat/v4/nbformat.v4.schema.json"
     }
   ],
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
   "python.formatting.provider": "yapf",
   "xml.catalogs": [
     "/etc/xml/catalog",
@@ -43,4 +28,5 @@
   ],
   "xml.java.home": "/usr/lib/jvm/jre",
   "xml.server.workDir": "~/.cache/lsp4xml"
+  // test
 }
