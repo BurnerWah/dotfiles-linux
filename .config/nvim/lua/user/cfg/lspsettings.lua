@@ -1,9 +1,29 @@
 local lspconfig = require 'lspconfig'
+local lsp_status = require 'lsp-status'
+lsp_status.register_progress()
+lsp_status.config {
+  indicator_errors = '',
+  indicator_warnings = '',
+  indicator_info = '',
+  indicator_hint = '',
+  -- indicator_ok = 'Ok',
+  select_symbol = function(cursor_pos, symbol)
+    if symbol.valueRange then
+      local value_range = {
+        ["start"] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[1])},
+        ["end"] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[2])},
+      }
+      return require("lsp-status.util").in_range(cursor_pos, value_range)
+    end
+  end,
+  current_function = true,
+}
 
-local on_attach = function(client)
+local function on_attach(client)
   local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
   local filetype = vim.bo.filetype
   local client_caps = client.resolved_capabilities
+  lsp_status.on_attach(client)
 
   if client_caps.hover then
     nnor {'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
@@ -67,14 +87,15 @@ local on_attach = function(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_config,
                                                {capabilities = capabilities, on_attach = on_attach})
 
 local simple_servers = {
-  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'sqls', 'taplo',
-  'tsserver', 'vimls',
+  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'rust_analyzer',
+  'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
 }
 for _, server in ipairs(simple_servers) do
   -- lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
@@ -100,6 +121,10 @@ lspconfig.ccls.setup {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
+lspconfig.clangd.setup {
+  handlers = lsp_status.extensions.clangd.setup(),
+  init_options = {clangdFileStatus = true},
+}
 lspconfig.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}} -- Missing sass ft by default
 lspconfig.gopls.setup {
   settings = {
@@ -112,6 +137,11 @@ lspconfig.jsonls.setup {
   commands = {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
+}
+lspconfig.pyls_ms.setup {
+  cmd = {'pyls-ms'},
+  handlers = lsp_status.extensions.pyls_ms.setup(),
+  settings = {python = {workspaceSymbols = {enabled = true}}},
 }
 lspconfig.pyls.setup {
   settings = {
@@ -137,7 +167,7 @@ lspconfig.pyls.setup {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
-lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
+-- lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
 lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},

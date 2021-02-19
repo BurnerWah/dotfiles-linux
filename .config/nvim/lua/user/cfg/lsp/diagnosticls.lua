@@ -17,22 +17,43 @@ local security = {
 }
 local tool = {
   generic = function(opts)
+    local R = {}
     opts.stream = (opts.stream or 'stdout')
     -- Starting with a table can set the command and the arguments
     if type(opts[1]) == 'table' then
       opts.cmd = opts[1][1]
       table.remove(opts[1], 1)
       opts.args = opts[1]
+    elseif type(opts[1]) == 'string' then
+      opts.cmd = opts[1]
     end
-    return {
-      sourceName = (opts.name or opts.cmd or opts[1]),
-      command = (opts.cmd or opts[1]),
-      args = (opts.args or {}),
-      isStdout = (opts.stream ~= 'stderr'),
-      isStderr = (opts.stream ~= 'stdout'),
-      formatPattern = (opts.pattern or fmt.basic()),
-      securities = (opts.securities or {undefined = (opts.security or 'error')}),
-    }
+    if opts.cmd:find('^./') then opts.name = (opts.name or opts.cmd:match('[^/]+$')) end
+
+    R.sourceName = opts.name or opts.cmd
+    R.command = opts.cmd
+    R.args = opts.args or {}
+    R.isStdout = opts.stream ~= 'stderr'
+    R.isStderr = opts.stream ~= 'stdout'
+    R.formatPattern = opts.pattern or fmt.basic()
+    R.securities = opts.securities or {undefined = (opts.security or 'error')}
+    if opts.roots then
+      R.rootPatterns = type(opts.roots) == 'string' and {opts.roots} or opts.roots
+    end
+    if opts.offset then
+      R.offsetLine = opts.offset.line or opts.offset[1]
+      R.offsetColumn = opts.offset.column or opts.offset[2]
+    end
+    return R
+
+    -- return {
+    --   sourceName = (opts.name or opts.cmd or opts[1]),
+    --   command = (opts.cmd or opts[1]),
+    --   args = (opts.args or {}),
+    --   isStdout = (opts.stream ~= 'stderr'),
+    --   isStderr = (opts.stream ~= 'stdout'),
+    --   formatPattern = (opts.pattern or fmt.basic()),
+    --   securities = (opts.securities or {undefined = (opts.security or 'error')}),
+    -- }
   end,
   json = function(opts)
     local R = {}
@@ -188,7 +209,7 @@ M.linters = {
     securities = {undefined = 'hint'},
   },
   luacheck = tool.generic {
-    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-g', '-u', '-r', '-a'},
+    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-i', '[12346]', '-i', '5[24]'},
     pattern = {
       [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
       {line = 1, column = 2, endColumn = 3, security = 5, message = 4},
@@ -203,6 +224,16 @@ M.linters = {
       [[^.*?: ?(\d+)(?::(\d+))? ((?:MD\d{3}\/[\w-/]+) .*)$]], {line = 1, column = 2, message = 3},
     },
     security = 'hint',
+  },
+  mcs = tool.generic {
+    {'mcs', '-unsafe', '--parse', '%tempfile'},
+    stream = 'stderr',
+    offset = {0, 1},
+    pattern = {
+      [[^.+?\.cs\((\d+),(\d+)\): (.+?) (.+?: .+)$]],
+      {line = 1, column = 2, security = 3, message = 4},
+    },
+    securities = {warning = 'warning', error = 'error'},
   },
   mix_credo = {
     sourceName = 'mix_credo',
@@ -417,6 +448,7 @@ M.linter_filetypes = {
   c = {'cppcheck_c', 'flawfinder'},
   cmake = {'cmakelint'},
   cpp = {'cppcheck_cpp', 'flawfinder'},
+  cs = {'mcs'},
   css = {'csslint', 'stylelint'},
   dockerfile = {'hadolint'},
   elixir = {'mix_credo'},
@@ -429,7 +461,7 @@ M.linter_filetypes = {
   json = {'jsonlint', 'jq', 'spectral'},
   jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
   less = {'stylelint'},
-  lua = {'luac', 'luacheck'},
+  lua = {'luacheck'}, -- Luac is often redundant w/ lsp
   mail = {'alex_text', 'languagetool', 'proselint'},
   markdown = {'alex', 'languagetool', 'markdownlint', 'proselint', 'write_good'},
   nroff = {'alex_text', 'proselint', 'write_good'},

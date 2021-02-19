@@ -44,6 +44,7 @@
 
   " Cleanup {{{1
   au! BufNewFile,BufRead *.json
+  au! BufNewFile,BufRead *.ll
   " 1}}}
 " aug END
 " vim:fdm=marker

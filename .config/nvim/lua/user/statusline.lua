@@ -3,6 +3,7 @@ local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {'LuaTree', 'dbui', 'minimap', 'vista', 'vista_kind', 'vista_markdown'}
 local condit = require('galaxyline.condition')
+local lsp_status = require('lsp-status')
 
 local colors = {
   bg = '#292929',
@@ -191,6 +192,13 @@ gls.left[15] = {
   },
 }
 gls.right[1] = {
+  LspStatus = {
+    -- Get a full statusline component from the language server
+    provider = function() return lsp_status.status() end,
+    -- condition = function() return #vim.lsp.buf_get_clients() > 0 end,
+  },
+}
+gls.right[2] = {
   FileFormat = {
     provider = 'FileFormat',
     separator = ' ',
@@ -198,7 +206,7 @@ gls.right[1] = {
     highlight = {colors.grey, colors.bg},
   },
 }
-gls.right[2] = {
+gls.right[3] = {
   LineInfo = {
     provider = 'LineColumn',
     separator = ' | ',
@@ -206,7 +214,7 @@ gls.right[2] = {
     highlight = {colors.grey, colors.bg},
   },
 }
-gls.right[3] = {
+gls.right[4] = {
   PerCent = {
     provider = 'LinePercent',
     separator = ' |',
@@ -214,7 +222,7 @@ gls.right[3] = {
     highlight = {colors.grey, colors.bg},
   },
 }
-gls.right[4] = {ScrollBar = {provider = 'ScrollBar', highlight = {colors.yellow, colors.purple}}}
+gls.right[5] = {ScrollBar = {provider = 'ScrollBar', highlight = {colors.yellow, colors.purple}}}
 
 gls.short_line_left[1] = {
   LeftEnd = {

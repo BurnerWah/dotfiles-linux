@@ -9,6 +9,19 @@ return require('packer').startup(function(use)
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file 'user' end}
+  use {
+    'kyazdani42/nvim-web-devicons',
+    config = function()
+      require'nvim-web-devicons'.setup {
+        override = {
+          ['Gemfile'] = {icon = '', color = '#701516', name = 'Gemfile'},
+          ['Vagrantfile'] = {icon = '', color = '#1563FF', name = 'Vagrantfile'},
+          ['BSDmakefile'] = {icon = '', color = '#6d8086', name = 'BSDMakefile'},
+          ['GNUmakefile'] = {icon = '', color = '#6d8086', name = 'GNUMakefile'},
+        },
+      }
+    end,
+  }
 
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = [[require 'user.cfg.lspsettings']]}
@@ -39,6 +52,7 @@ return require('packer').startup(function(use)
       remap('t', '<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], opts)
     end,
   }
+  use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'kosayoda/nvim-lightbulb', requires = 'nvim-lspconfig'}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
@@ -206,7 +220,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
-      'nvim-lua/popup.nvim', 'plenary.nvim', 'kyazdani42/nvim-web-devicons', 'nvim-treesitter',
+      'nvim-lua/popup.nvim', 'plenary.nvim', 'nvim-web-devicons', 'nvim-treesitter',
 
       -- Telescope plugins
       'nvim-telescope/telescope-fzy-native.nvim', 'nvim-telescope/telescope-fzf-writer.nvim',
@@ -332,7 +346,7 @@ return require('packer').startup(function(use)
   use {'meain/vim-package-info', ft = {'json', 'requirements', 'toml'}, run = 'npm i'}
   use {
     'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
+    requires = 'nvim-web-devicons',
     opt = true,
     cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
   }
@@ -377,16 +391,37 @@ return require('packer').startup(function(use)
   use {
     'glepnir/galaxyline.nvim',
     branch = 'main',
-    requires = 'kyazdani42/nvim-web-devicons',
+    requires = 'nvim-web-devicons',
     config = [[require 'user.statusline']],
   }
   use {
     'romgrk/barbar.nvim',
+    opt = true,
     -- Tabline plugin
-    requires = 'kyazdani42/nvim-web-devicons',
+    requires = 'nvim-web-devicons',
     config = function()
       local remap = vim.api.nvim_set_keymap
       remap('n', 'bb', [[<Cmd>BufferPick<CR>]], {})
+    end,
+  }
+  use {
+    'akinsho/nvim-bufferline.lua',
+    --[[ Tabline plugin
+      Issues:
+      - #14: (feat) Show only buffer in current tab?
+      ]]
+    requires = 'nvim-web-devicons',
+    config = function()
+      require'bufferline'.setup {
+        options = {
+          mappings = true,
+          diagnostics = 'nvim_lsp',
+          diagnostics_indicator = function(count, _) return "(" .. count .. ")" end,
+          separator_style = 'slant',
+        },
+      }
+      local remap = vim.api.nvim_set_keymap
+      remap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
     end,
   }
   use {
@@ -552,7 +587,6 @@ return require('packer').startup(function(use)
   }
   use {'lukas-reineke/format.nvim', config = [[require 'user.cfg.format-nvim']]}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
-  use 'jbyuki/monolithic.nvim'
 
   -- Integration
   use {

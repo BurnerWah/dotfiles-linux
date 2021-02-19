@@ -37,6 +37,7 @@ text:
     - TODO
     - TODO.md
     - TODO.txt
+    - TODO.rst
 
   licenses:
     - COPYING
@@ -288,18 +289,23 @@ programming:
 
     code-style:
       cxx: [.clang-format, .uncrustify.cfg]
+      lua: [.lua-format]
       python: [.flake8]
       rust: [rustfmt.toml]
       other:
         - .editorconfig
+        - .prettierrc
 
     linting:
       cxx: [.clang-tidy]
-      python: [pylintrc]
+      javascript: [.jshintrc]
+      lua: [.luacheckrc]
+      python: [pylintrc, .mypy.ini]
       vim: [.vintrc.yaml]
       other:
         - .codecov.yml
         - .coveragerc
+        - .pre-commit-config.yaml
 
     editors:
       qt: [.pro]
@@ -310,8 +316,10 @@ programming:
       doxygen: [Doxyfile, .dox]
 
     continuous-integration:
+      - .gitlab-ci.yml
       - .travis.yml
       - appveyor.yml
+      - azure-pipelines.yml
 
 media:
   image:
@@ -503,6 +511,7 @@ unimportant:
 
   other:
     - .cache
+    - .DS_Store
     - .git # only works for '.git' files (submodules)
     - .lock
     - .log

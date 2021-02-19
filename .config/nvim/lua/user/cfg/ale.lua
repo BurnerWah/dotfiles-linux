@@ -22,6 +22,7 @@ vim.g.ale_linters_ignore = {
   c = {'cc', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder'},
   cmake = {'cmakelint'},
   cpp = {'cc', 'clangcheck', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder'},
+  cs = {'mcs'},
   css = {'csslint', 'stylelint'},
   dockerfile = {'hadolint'},
   elixir = {'credo'},
