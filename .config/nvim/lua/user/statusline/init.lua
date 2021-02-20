@@ -7,6 +7,7 @@ local lsp_status = require('lsp-status')
 
 local colors = {
   bg = '#292929',
+  gray2 = '#424242',
   yellow = '#d5b875',
   cyan = '#69c5ce',
   darkblue = '#081633', -- TODO
@@ -118,8 +119,8 @@ gls.left[5] = {
 gls.left[6] = {
   GitBranch = {
     provider = 'GitBranch',
-    separator = ' ',
-    separator_highlight = {colors.purple, colors.bg},
+    separator = '',
+    separator_highlight = {colors.deep_purple, colors.bg},
     condition = condit.check_git_workspace,
     highlight = {colors.grey, colors.deep_purple},
   },
@@ -162,14 +163,20 @@ gls.left[10] = {
     highlight = {colors.purple, colors.bg},
   },
 }
-gls.left[11] = {
+-- gls.left[11] = {
+--   LspMessages = {
+--     provider = function() if #vim.lsp.buf_get_clients(0) == 0 then return '' end end,
+--     highlight = {colors.grey, colors.bg},
+--   },
+-- }
+gls.left[12] = {
   DiagnosticError = {
     provider = 'DiagnosticError',
     icon = '  ',
     highlight = {colors.red, colors.bg},
   },
 }
-gls.left[12] = {Space = {provider = function() return '' end}}
+-- gls.left[12] = {Space = {provider = function() return '' end}}
 gls.left[13] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
@@ -195,6 +202,7 @@ gls.right[1] = {
   LspStatus = {
     -- Get a full statusline component from the language server
     provider = function() return lsp_status.status() end,
+    highlight = {colors.grey, colors.bg},
     -- condition = function() return #vim.lsp.buf_get_clients() > 0 end,
   },
 }

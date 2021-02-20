@@ -143,30 +143,30 @@ lspconfig.pyls_ms.setup {
   handlers = lsp_status.extensions.pyls_ms.setup(),
   settings = {python = {workspaceSymbols = {enabled = true}}},
 }
-lspconfig.pyls.setup {
-  settings = {
-    pyls = {
-      configurationSources = {'pyflakes', 'pycodestyle'},
-      plugins = {
-        jedi_completion = {enabled = true},
-        jedi_hover = {enabled = false},
-        jedi_references = {enabled = true},
-        jedi_signature_help = {enabled = true},
-        jedi_symbols = {enabled = true, all_scopes = true},
-        mccabe = {enabled = true, threshold = 15},
-        preload = {enabled = true},
-        pycodestyle = {enabled = false},
-        pydocstyle = {enabled = false},
-        pyflakes = {enabled = false},
-        rope_completion = {enabled = true},
-        yapf = {enabled = true},
-      },
-    },
-  },
-  commands = {
-    LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
-  },
-}
+-- lspconfig.pyls.setup {
+--   settings = {
+--     pyls = {
+--       configurationSources = {'pyflakes', 'pycodestyle'},
+--       plugins = {
+--         jedi_completion = {enabled = true},
+--         jedi_hover = {enabled = false},
+--         jedi_references = {enabled = true},
+--         jedi_signature_help = {enabled = true},
+--         jedi_symbols = {enabled = true, all_scopes = true},
+--         mccabe = {enabled = true, threshold = 15},
+--         preload = {enabled = true},
+--         pycodestyle = {enabled = false},
+--         pydocstyle = {enabled = false},
+--         pyflakes = {enabled = false},
+--         rope_completion = {enabled = true},
+--         yapf = {enabled = true},
+--       },
+--     },
+--   },
+--   commands = {
+--     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
+--   },
+-- }
 -- lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
 lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {
