@@ -3,6 +3,9 @@ local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {'LuaTree', 'dbui', 'minimap', 'vista', 'vista_kind', 'vista_markdown'}
 local condit = require('galaxyline.condition')
+local lsp_status = require('user.statusline.lsp')
+-- TODO integrate better with gitsigns.nvim
+-- TODO integrate better with tree-sitter
 
 local colors = {
   bg = '#292929',
@@ -16,6 +19,7 @@ local colors = {
   deep_orange = '#e64a19',
   purple = '#8562d2',
   deep_purple = '#512da8',
+  deep_purple_dark3 = '#160c2f',
   magenta = '#d16d9e', -- TODO
   grey = '#bdbdbd',
   gray3 = '#757575',
@@ -72,6 +76,9 @@ local mode = {
   },
 }
 
+-- Small structure to retain color (helps avoid issues with odd buffers)
+local cache = {FileIcon = {fg = nil}}
+
 gls.left[1] = {
   ViMode = {
     provider = function()
@@ -83,7 +90,7 @@ gls.left[1] = {
     separator = ' ',
     separator_highlight = {
       colors.yellow, function()
-        if not condit.buffer_not_empty() then
+        if not condit.buffer_not_empty() and vim.bo.buflisted then
           return (condit.check_git_workspace() and colors.deep_purple or colors.bg)
         end
         return colors.darkblue
@@ -96,7 +103,13 @@ gls.left[2] = {
   FileIcon = {
     provider = 'FileIcon',
     condition = condit.buffer_not_empty,
-    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.darkblue},
+    highlight = {
+      function()
+        local c = require('galaxyline.provider_fileinfo').get_file_icon_color()
+        cache.FileIcon.fg = (vim.bo.buflisted and c or cache.FileIcon.fg)
+        return cache.FileIcon.fg
+      end, colors.darkblue,
+    },
   },
   FileType = {
     provider = function() return vim.bo.filetype end,
@@ -118,13 +131,16 @@ gls.left[3] = {
     },
     highlight = {colors.grey, colors.darkblue},
   },
+  FileNameFallbackSep = {
+    provider = function() return '' end,
+    condition = function() return condit.buffer_not_empty() and not condit.check_git_workspace() end,
+    highlight = {colors.darkblue, colors.bg},
+  },
 }
 gls.left[5] = {
   GitIcon = {
     provider = function() return '  ' end,
     condition = condit.check_git_workspace,
-    -- highlight = {colors.orange, colors.bg},
-    -- highlight = {colors.orange, colors.purple},
     highlight = {colors.deep_orange, colors.deep_purple},
   },
 }
@@ -141,8 +157,6 @@ gls.left[7] = {
   DiffAdd = {
     provider = 'DiffAdd',
     condition = condit.hide_in_width,
-    -- separator = ' ',
-    -- separator_highlight = {colors.purple,colors.bg},
     icon = '  ',
     highlight = {colors.green, colors.bg},
   },
@@ -151,8 +165,6 @@ gls.left[8] = {
   DiffModified = {
     provider = 'DiffModified',
     condition = condit.hide_in_width,
-    -- separator = ' ',
-    -- separator_highlight = {colors.purple,colors.bg},
     icon = '  ',
     highlight = {colors.blue, colors.bg},
   },
@@ -161,64 +173,54 @@ gls.left[9] = {
   DiffRemove = {
     provider = 'DiffRemove',
     condition = condit.hide_in_width,
-    -- separator = ' ',
-    -- separator_highlight = {colors.purple,colors.bg},
     icon = '  ',
     highlight = {colors.red, colors.bg},
   },
 }
 gls.left[10] = {
-  LeftEnd = {
-    provider = function() return ' ' end,
-    separator = ' ',
-    separator_highlight = {colors.purple, colors.bg},
-    highlight = {colors.purple, colors.bg},
-  },
+  LspStart = {provider = lsp_status.lsp_string('█'), highlight = {colors.bg_dark, colors.bg}},
 }
 gls.left[11] = {
-  LspMessages = {
-    provider = require('user.statusline.lsp').messages,
-    -- highlight = {colors.grey, colors.bg, 'bold'},
-    highlight = {colors.grey, colors.bg_dark, 'bold'},
-  },
+  LspMessages = {provider = lsp_status.messages, highlight = {colors.grey, colors.bg_dark, 'bold'}},
 }
 gls.left[12] = {
   DiagnosticError = {
     provider = 'DiagnosticError',
     icon = '  ',
-    highlight = {colors.red, colors.bg},
+    highlight = {colors.red, colors.bg_dark},
   },
 }
 gls.left[13] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
     icon = '  ',
-    highlight = {colors.yellow, colors.bg},
+    highlight = {colors.yellow, colors.bg_dark},
   },
 }
 gls.left[14] = {
   DiagnosticHint = {
     provider = 'DiagnosticHint',
-    icon = '   ',
-    highlight = {colors.blue, colors.bg},
+    icon = '  ',
+    highlight = {colors.blue, colors.bg_dark},
   },
 }
 gls.left[15] = {
   DiagnosticInfo = {
     provider = 'DiagnosticInfo',
-    icon = '   ',
-    highlight = {colors.orange, colors.bg},
+    icon = '  ',
+    highlight = {colors.orange, colors.bg_dark},
   },
 }
+gls.left[16] = {
+  LspEnd = {provider = lsp_status.lsp_string(''), highlight = {colors.bg_dark, colors.bg}},
+}
 gls.right[1] = {
-  CurrentFunction = {
-    provider = require('user.statusline.lsp').current_function,
-    highlight = {colors.grey, colors.bg},
-  },
+  CurrentFunction = {provider = lsp_status.current_function, highlight = {colors.grey, colors.bg}},
 }
 gls.right[2] = {
   FileFormat = {
-    provider = 'FileFormat',
+    -- This version shows icons instead of text
+    provider = require('user.statusline.fileinfo').fileformat,
     separator = ' ',
     separator_highlight = {colors.bg, colors.bg},
     highlight = {colors.grey, colors.bg},
@@ -239,8 +241,8 @@ gls.right[4] = {
     separator_highlight = {colors.darkblue, colors.bg},
     highlight = {colors.grey, colors.bg},
   },
+  ScrollBar = {provider = 'ScrollBar', highlight = {colors.yellow, colors.purple}},
 }
-gls.right[5] = {ScrollBar = {provider = 'ScrollBar', highlight = {colors.yellow, colors.purple}}}
 
 gls.short_line_left[1] = {
   LeftEnd = {

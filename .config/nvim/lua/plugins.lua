@@ -101,7 +101,6 @@ return require('packer').startup(function(use)
     opt = true,
     disable = true,
     config = function()
-      vim.g.coc_filetype_map = {catalog = 'xml', dtd = 'xml', smil = 'xml', xsd = 'xml'}
       vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', {silent = true})
       vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', {silent = true})
       vim.api.nvim_set_keymap('n', '<leader>qf', '<Plug>(coc-fix-current)', {})

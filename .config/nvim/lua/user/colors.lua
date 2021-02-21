@@ -28,6 +28,8 @@ Color.new('orange', '#d7956e')
 Color.new('indigo', '#7681de')
 Color.new('brown',  '#a52a2a')
 
+Color.new('deep_purple', '#512da8')
+Group.new('userrefgrp', c.deep_purple:dark():dark():dark())
 -- Core - Vim
 --        group,          fg,       bg,      styles
 Group.new('Normal',       c.gray5,  c.gray0)

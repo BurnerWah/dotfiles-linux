@@ -62,6 +62,14 @@ local function on_attach(client)
       local vista_exec = 'vista_' .. filetype .. '_executive'
       vim.g[vista_exec] = (vim.g[vista_exec] or vim.g.vista_executive_for[filetype] or 'nvim_lsp')
     end
+    -- Assurance that lsp-status will work
+    vim.api.nvim_exec([[
+    autocmd! lsp_aucmds CursorHold
+    augroup lsp_current_function
+      autocmd! * <buffer>
+      autocmd CursorHold <buffer> lua require("lsp-status").update_current_function()
+    augroup END
+    ]], false)
   end
 
   if client_caps.document_highlight then
@@ -87,15 +95,15 @@ local function on_attach(client)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
+vim.tbl_deep_extend('keep', capabilities, lsp_status.capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_config,
                                                {capabilities = capabilities, on_attach = on_attach})
 
 local simple_servers = {
-  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'pyright', 'rust_analyzer',
-  'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
+  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'lsp4xml', 'pyright',
+  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
 }
 for _, server in ipairs(simple_servers) do
   -- lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
@@ -141,32 +149,32 @@ lspconfig.jsonls.setup {
 lspconfig.pyls_ms.setup {
   cmd = {'pyls-ms'},
   handlers = lsp_status.extensions.pyls_ms.setup(),
-  settings = {python = {workspaceSymbols = {enabled = true}}},
+  settings = {python = {workspaceSymbols = {enabled = true}, autoComplete = {addBrackets = true}}},
 }
--- lspconfig.pyls.setup {
---   settings = {
---     pyls = {
---       configurationSources = {'pyflakes', 'pycodestyle'},
---       plugins = {
---         jedi_completion = {enabled = true},
---         jedi_hover = {enabled = false},
---         jedi_references = {enabled = true},
---         jedi_signature_help = {enabled = true},
---         jedi_symbols = {enabled = true, all_scopes = true},
---         mccabe = {enabled = true, threshold = 15},
---         preload = {enabled = true},
---         pycodestyle = {enabled = false},
---         pydocstyle = {enabled = false},
---         pyflakes = {enabled = false},
---         rope_completion = {enabled = true},
---         yapf = {enabled = true},
---       },
---     },
---   },
---   commands = {
---     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
---   },
--- }
+lspconfig.pyls.setup {
+  settings = {
+    pyls = {
+      configurationSources = {'pyflakes', 'pycodestyle'},
+      plugins = {
+        jedi_completion = {enabled = true},
+        jedi_hover = {enabled = false},
+        jedi_references = {enabled = true},
+        jedi_signature_help = {enabled = true},
+        jedi_symbols = {enabled = true, all_scopes = true},
+        mccabe = {enabled = true, threshold = 15},
+        preload = {enabled = true},
+        pycodestyle = {enabled = false},
+        pydocstyle = {enabled = false},
+        pyflakes = {enabled = false},
+        rope_completion = {enabled = true},
+        yapf = {enabled = true},
+      },
+    },
+  },
+  commands = {
+    LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
+  },
+}
 -- lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
 lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {

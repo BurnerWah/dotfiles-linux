@@ -1,32 +1,5 @@
 {
-  "json.schemas": [
-    {
-      "fileMatch": ["*.ipynb"],
-      "url": "https://github.com/jupyter/nbformat/raw/master/nbformat/v4/nbformat.v4.schema.json"
-    }
-  ],
   "python.formatting.provider": "yapf",
-  "xml.catalogs": [
-    "/etc/xml/catalog",
-    "/home/jadenpleasants/.config/xml/catalog.xml"
-  ],
-  "xml.codeLens.enabled": true,
-  "xml.fileAssociations": [
-    {
-      "pattern": "**/*.aiml",
-      "systemId": "https://github.com/dotcypress/aiml/raw/master/AIML.xsd"
-    },
-    { "pattern": "**/*.doap", "systemId": "http://usefulinc.com/ns/doap" },
-    {
-      "pattern": "**/*.smil",
-      "systemId": "https://www.w3.org/2008/SMIL30/SMIL30Language.dtd"
-    },
-    {
-      "pattern": "**/*.svg",
-      "systemId": "https://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
-    }
-  ],
-  "xml.java.home": "/usr/lib/jvm/jre",
-  "xml.server.workDir": "~/.cache/lsp4xml"
+  "xml.codeLens.enabled": true
   // test
 }
