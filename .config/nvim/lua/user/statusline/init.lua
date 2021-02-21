@@ -3,21 +3,23 @@ local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {'LuaTree', 'dbui', 'minimap', 'vista', 'vista_kind', 'vista_markdown'}
 local condit = require('galaxyline.condition')
-local lsp_status = require('lsp-status')
 
 local colors = {
   bg = '#292929',
-  gray2 = '#424242',
+  bg_dark = '#0f0f0f',
   yellow = '#d5b875',
   cyan = '#69c5ce',
-  darkblue = '#081633', -- TODO
+  darkblue = '#05111d', -- derived -> #4593de #247acb #1d609f #154574 #0d2b49 #05111d
+  indigo_dark5 = '#101644', -- derived
   green = '#87bb7c',
   orange = '#d7956e',
   deep_orange = '#e64a19',
   purple = '#8562d2',
   deep_purple = '#512da8',
   magenta = '#d16d9e', -- TODO
-  grey = '#c0c0c0', -- TODO
+  grey = '#bdbdbd',
+  gray3 = '#757575',
+  gray_dark = '#a4a4a4',
   blue = '#70ace5',
   red = '#dd7186', -- NOTE consider changing this
 }
@@ -81,30 +83,40 @@ gls.left[1] = {
     separator = ' ',
     separator_highlight = {
       colors.yellow, function()
-        if not condit.buffer_not_empty() then return colors.bg end
-        return colors.bg
+        if not condit.buffer_not_empty() then
+          return (condit.check_git_workspace() and colors.deep_purple or colors.bg)
+        end
+        return colors.darkblue
       end,
     },
     highlight = {colors.bg, nil, 'bold'},
   },
 }
-gls.left[3] = {
+gls.left[2] = {
   FileIcon = {
     provider = 'FileIcon',
     condition = condit.buffer_not_empty,
-    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.bg},
+    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color, colors.darkblue},
+  },
+  FileType = {
+    provider = function() return vim.bo.filetype end,
+    condition = condit.buffer_not_empty,
+    separator = ' ',
+    separator_highlight = {colors.darkblue, colors.darkblue},
+    highlight = {colors.gray3, colors.darkblue},
   },
 }
-gls.left[4] = {
+gls.left[3] = {
   FileName = {
     provider = {'FileName', 'FileSize'},
     condition = condit.buffer_not_empty,
     separator = '',
     separator_highlight = {
-      function() return (condit.check_git_workspace() and colors.deep_purple or colors.bg) end,
-      colors.bg,
+      function()
+        return (condit.check_git_workspace() and colors.deep_purple or colors.darkblue)
+      end, colors.darkblue,
     },
-    highlight = {colors.grey, colors.bg},
+    highlight = {colors.grey, colors.darkblue},
   },
 }
 gls.left[5] = {
@@ -163,12 +175,13 @@ gls.left[10] = {
     highlight = {colors.purple, colors.bg},
   },
 }
--- gls.left[11] = {
---   LspMessages = {
---     provider = function() if #vim.lsp.buf_get_clients(0) == 0 then return '' end end,
---     highlight = {colors.grey, colors.bg},
---   },
--- }
+gls.left[11] = {
+  LspMessages = {
+    provider = require('user.statusline.lsp').messages,
+    -- highlight = {colors.grey, colors.bg, 'bold'},
+    highlight = {colors.grey, colors.bg_dark, 'bold'},
+  },
+}
 gls.left[12] = {
   DiagnosticError = {
     provider = 'DiagnosticError',
@@ -176,7 +189,6 @@ gls.left[12] = {
     highlight = {colors.red, colors.bg},
   },
 }
--- gls.left[12] = {Space = {provider = function() return '' end}}
 gls.left[13] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
@@ -199,11 +211,9 @@ gls.left[15] = {
   },
 }
 gls.right[1] = {
-  LspStatus = {
-    -- Get a full statusline component from the language server
-    provider = function() return lsp_status.status() end,
+  CurrentFunction = {
+    provider = require('user.statusline.lsp').current_function,
     highlight = {colors.grey, colors.bg},
-    -- condition = function() return #vim.lsp.buf_get_clients() > 0 end,
   },
 }
 gls.right[2] = {
