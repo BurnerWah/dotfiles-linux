@@ -2,7 +2,6 @@
 " Author: Jaden Pleasants
 " Description: Extensions to vim syntax
 " Last Modified: October 10, 2019
-" vim:ft=vim fdm=marker
 
 scriptenc 'utf-8'
 
@@ -295,3 +294,5 @@ hi def link vimDictPrimitive vimConstant
 
 hi def link vimHashDictKey Label
 hi def link vimHashDictKeyError Error
+
+" vim:ft=vim fdm=marker

@@ -2,3 +2,5 @@
 /spell
 /lua/user/data/gen/*
 !/lua/user/data/gen/.gitkeep
+
+# vim:ft=gitignore

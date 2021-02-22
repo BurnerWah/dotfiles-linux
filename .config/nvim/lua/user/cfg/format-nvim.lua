@@ -33,7 +33,7 @@ require'format'.setup {
   less = {{cmd = {cmdgen.prettier:format 'less'}}},
   lua = {{cmd = {'lua-format -i'}}},
   markdown = {{cmd = {cmdgen.prettier:format 'markdown'}}},
-  python = {{cmd = {'isort'}}},
+  python = {{cmd = {'isort', 'yapf -i'}}},
   rust = {{cmd = {'rustfmt'}}}, -- NOTE This can format multiple files
   scss = {{cmd = {cmdgen.prettier:format 'scss'}}},
   sh = {{cmd = {'shfmt -i=2 -ci -w'}}},

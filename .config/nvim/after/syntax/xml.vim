@@ -13,4 +13,3 @@ syn match xmlEntHide transparent contained containedin=xmlEntity '&lt;' cchar=<
 syn match xmlEntHide transparent contained containedin=xmlEntity '&gt;' cchar=>
 
 syn conceal off
-
