@@ -71,6 +71,7 @@ return require('packer').startup(function(use)
       {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
       {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
     },
+    run = ':TSUpdate',
     config = function()
       require'nvim-treesitter.configs'.setup {
         ensure_installed = 'maintained',
@@ -162,7 +163,7 @@ return require('packer').startup(function(use)
             ignored_filetypes = {'markdown', 'rst', 'vimwiki'},
             disabled = false,
             priority = 1000, -- Defaults to 5000 which can be problematic
-            dup = true, -- Allow duplicate entries (mostly with LSP)
+            dup = 0, -- Allow duplicate entries (mostly with LSP)
           },
           treesitter = true,
           omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},
@@ -230,7 +231,6 @@ return require('packer').startup(function(use)
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
     },
-    run = ':TSUpdate',
     config = function()
       local telescope = require 'telescope'
       local env = vim.env
