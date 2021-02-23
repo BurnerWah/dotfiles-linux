@@ -1,4 +1,28 @@
+--map-syntax *.csproj:XML
+--map-syntax *.jenkins:Groovy
+--map-syntax *.nuspec:XML
+--map-syntax *.resx:XML
+--map-syntax *.rockspec:Lua
+--map-syntax *.vssettings:XML
+--map-syntax .busted:Lua
+--map-syntax .clang-format:YAML
+--map-syntax .clang-tidy:YAML
+--map-syntax .coveragerc:INI
+--map-syntax .dockerignore:Git\ Ignore
+--map-syntax .eslintignore:Git\ Ignore
+--map-syntax .eslintrc:JSON
+--map-syntax .flake8:INI
+--map-syntax .lua-format:YAML
+--map-syntax .luacheckrc:Lua
+--map-syntax .luacov:Lua
+--map-syntax .npmignore:Git\ Ignore
+--map-syntax .nycrc:JSON
+--map-syntax .oclint:YAML
+--map-syntax .prettierignore:INI
+--map-syntax .pylintrc:INI
 --map-syntax .tcelldb:JSON
+--map-syntax .vscodeignore:Git\ Ignore
+--map-syntax BSDmakefile:Makefile
 --map-syntax anacrontab:Crontab
 --map-syntax conf:INI
 --map-syntax katemetainfos:INI

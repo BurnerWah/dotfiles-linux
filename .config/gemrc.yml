@@ -1,3 +1,4 @@
+---
 gem: --no-user-install --bindir ~/.local/bin
 # --no-user-install: prevents ~/.gem from being created
 # --bindir ~/.local/bin: uses standard bin dir

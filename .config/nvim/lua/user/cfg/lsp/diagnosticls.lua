@@ -209,8 +209,7 @@ M.linters = {
     securities = {undefined = 'hint'},
   },
   luacheck = tool.generic {
-    -- {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '-i', '[12346]', '-i', '5[24]'},
-    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-'},
+    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '--filename', '%filepath'},
     pattern = {
       [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
       {line = 1, column = 2, endColumn = 3, security = 5, message = 4},

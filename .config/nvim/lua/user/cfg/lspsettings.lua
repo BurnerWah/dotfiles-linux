@@ -183,15 +183,21 @@ lspconfig.sumneko_lua.setup {
     Lua = {
       runtime = {version = 'LuaJIT', path = vim.split(package.path, ';')},
       completion = {callSnippet = 'Replace'}, -- Prefer completing snippets
-      diagnostics = {globals = {'vim', 'packer_plugins'}, disable = {'lowercase-global'}},
-      hint = {enable = true},
+      diagnostics = {
+        globals = {'vim', 'packer_plugins'},
+        disable = {'lowercase-global', 'undefined-global'},
+      },
+      hint = {enable = true, setType = true},
       telemetry = {enable = false},
       workspace = {
         library = {
           [vim.fn.expand('$VIMRUNTIME/lua')] = true,
           [vim.fn.stdpath('data') .. '/site/lua_types'] = true,
+          [vim.fn.stdpath('data') .. '/site/vim_types'] = true,
+          ['/usr/share/lua/5.4'] = true,
         },
       },
+      intelliSense = {searchDepth = 4},
     },
   },
 }

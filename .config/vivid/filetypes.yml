@@ -280,6 +280,7 @@ programming:
         - meson.build
 
     packaging:
+      javascript: [.npmignore]
       lua: [.rockspec]
       pacman: [PKGBUILD]
       python: [MANIFEST.in, setup.py]
@@ -294,23 +295,26 @@ programming:
       rust: [rustfmt.toml]
       other:
         - .editorconfig
+        - .prettierignore
         - .prettierrc
 
     linting:
       cxx: [.clang-tidy]
-      javascript: [.jshintrc]
-      lua: [.luacheckrc]
+      javascript: [.jshintrc, .eslintrc, .eslintignore]
+      lua: [.busted, .luacheckrc, .luacov]
       python: [pylintrc, .mypy.ini]
       vim: [.vintrc.yaml]
       other:
         - .codecov.yml
         - .coveragerc
+        - .oclint
         - .pre-commit-config.yaml
 
     editors:
       qt: [.pro]
       kdevelop: [.kdevelop]
       emacs: [.dir-locals.el]
+      vscode: [.vscodeignore]
 
     documentation:
       doxygen: [Doxyfile, .dox]
