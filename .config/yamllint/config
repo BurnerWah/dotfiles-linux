@@ -1,7 +1,12 @@
 ---
-extends: default
+# yamllint is rather... agressive with it's linting.
+extends: relaxed
 rules:
+  document-start:
+    level: warning
   line-length:
     max: 80
+    level: warning
+  trailing-spaces:
     level: warning
 # vim:ft=yaml

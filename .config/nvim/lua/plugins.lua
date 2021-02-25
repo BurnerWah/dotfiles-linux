@@ -113,7 +113,7 @@ return require('packer').startup(function(use)
     'hrsh7th/vim-vsnip',
     requires = {
       'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
-      {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
+      -- {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
     },
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
@@ -136,7 +136,7 @@ return require('packer').startup(function(use)
     },
     config = function()
       vim.o.completeopt = 'menu,menuone,noselect'
-      require'compe'.register_source('fish', require 'compe_fish') -- Custom source
+      require'compe'.register_source('fish', require 'compe_fish') -- custom source
       require'compe'.setup {
         enabled = true,
         autocomplete = true,
@@ -160,10 +160,15 @@ return require('packer').startup(function(use)
           spell = true,
           tags = true,
           tabnine = {
-            ignored_filetypes = {'markdown', 'rst', 'vimwiki'},
-            disabled = false,
-            priority = 1000, -- Defaults to 5000 which can be problematic
-            dup = 0, -- Allow duplicate entries (mostly with LSP)
+            ignored_filetypes = {
+              'alsaconf', 'crontab', 'dircolors', 'dnsmasq', 'dosini', 'fstab', 'group', 'grub',
+              'hostconf', 'hostsaccess', 'inittab', 'limits', 'logindefs', 'mailcap', 'markdown',
+              'modconf', 'pamconf', 'passwd', 'pinfo', 'protocols', 'ptcap', 'resolv', 'rst',
+              'services', 'sshconfig', 'sshdconfig', 'sudoers', 'sysctl', 'udevconf', 'udevperm',
+              'updatedb', 'vimwiki', 'wget',
+            },
+            priority = 1000, -- defaults to 5000 which can be problematic
+            dup = 0, -- allow duplicate entries (mostly with lsp)
           },
           treesitter = true,
           omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},

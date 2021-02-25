@@ -118,6 +118,7 @@ return {
     ['meson_options.txt'] = 'meson',
     ['mimeapps.list'] = 'desktop', -- XDG Default Applications
     ['mimeinfo.cache'] = 'desktop', -- XDG Mime cache
+    ['nfs.conf'] = 'dosini',
     ['pipfile'] = 'toml',
     ['proselintrc'] = 'json',
     ['requirements.in'] = 'requirements',
@@ -125,8 +126,12 @@ return {
     ['requires.in'] = 'requirements',
     ['requires.txt'] = 'requirements',
     ['robots.txt'] = 'robots',
+    ['rpkg.conf'] = 'dosini',
+    ['sestatus.conf'] = 'dosini',
+    ['trolltech.conf'] = 'dosini',
     ['tsconfig.json'] = 'jsonc', -- TS project config
     ['virc'] = 'vim',
+    ['vkBasalt.conf'] = 'dosini',
     ['wgetrc'] = 'wget',
     ['zlogin'] = 'zsh',
     ['zlogout'] = 'zsh',

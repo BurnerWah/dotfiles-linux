@@ -380,7 +380,6 @@ M.linters = {
     isStderr = true,
     formatPattern = {
       [[^.*?(\d+).*?(\d+)\s+-\s+([^:]+):\s+(.*)(\r|\n)*$]],
-      -- { line = 1, column = 2, endLine = 1, endColumn = 2, security = 3, message = 4 }
       {line = 1, column = 2, security = 3, message = 4},
     },
     securities = {Warning = 'warning', Error = 'error'},
@@ -437,7 +436,10 @@ M.linters = {
     pattern = {
       [[^.*?:(\d+):(\d+): \[(.*?)] (.*)$]], {line = 1, column = 2, security = 3, message = 4},
     },
-    securities = {warning = 'warning', error = 'error'},
+    securities = {warning = 'hint', error = 'error'},
+    -- yamllint can only output warnings and errors, but it's mostly a style linter.
+    -- so i push wanings as far down as they can go.
+    -- (i feel like i have to fix linter errors & warnings, it's hard to look at files otherwise.)
   },
   zsh = tool.generic {'zsh', cmd = 'linter_run_zsh.sh', args = {'%file'}, pattern = fmt.basic(true)},
 }
