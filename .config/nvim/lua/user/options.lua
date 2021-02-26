@@ -65,6 +65,7 @@ vim.g.loaded_python_provider = 0 -- Block Python 2 rplugins
 vim.g.loaded_perl_provider = 0 -- Block Perl rplugins
 vim.g.node_host_prog = exepath('neovim-node-host')
 vim.g.ruby_host_prog = exepath('neovim-ruby-host')
+vim.g.netrw_nogx = true
 
 -- Filetype settings {{{1
 

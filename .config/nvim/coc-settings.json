@@ -1,5 +1,0 @@
-{
-  "python.formatting.provider": "yapf",
-  "xml.codeLens.enabled": true
-  // test
-}
