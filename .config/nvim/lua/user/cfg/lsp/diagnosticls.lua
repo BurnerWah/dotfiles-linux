@@ -209,7 +209,8 @@ M.linters = {
     securities = {undefined = 'hint'},
   },
   luacheck = tool.generic {
-    {'luacheck', '--formatter=plain', '--codes', '--ranges', '-', '--filename', '%filepath'},
+    {'luacheck', '--formatter=plain', '--codes', '--ranges', '%file'},
+    -- Luacheck is a very loud linter, and has a tendency to get really annoying
     pattern = {
       [[^.+?:(\d+):(\d+)-(\d+): (\(([WE])\d+\) .*)$]],
       {line = 1, column = 2, endColumn = 3, security = 5, message = 4},

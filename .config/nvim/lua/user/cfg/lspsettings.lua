@@ -102,13 +102,10 @@ lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_c
                                                {capabilities = capabilities, on_attach = on_attach})
 
 local simple_servers = {
-  'bashls', 'cmake', 'denols', 'dotls', 'dockerls', 'fortls', 'html', 'lsp4xml', 'pyright',
-  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
+  'bashls', 'cmake', 'denols', 'dockerls', 'dotls', 'fortls', 'html', 'jedi_language_server',
+  'lsp4xml', 'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
 }
-for _, server in ipairs(simple_servers) do
-  -- lspconfig[server].setup {on_attach = on_attach, capabilities = capabilities}
-  lspconfig[server].setup {}
-end
+for _, server in ipairs(simple_servers) do lspconfig[server].setup {} end
 
 local url = {
   parse = function(input)
@@ -147,35 +144,11 @@ lspconfig.jsonls.setup {
   },
 }
 lspconfig.pyls_ms.setup {
-  cmd = {'pyls-ms'},
+  -- I'd like to disable hover for this since it's not very useful
+  cmd = {vim.fn.expand('~/.local/libexec/pyls-ms/Microsoft.Python.LanguageServer')},
   handlers = lsp_status.extensions.pyls_ms.setup(),
   settings = {python = {workspaceSymbols = {enabled = true}, autoComplete = {addBrackets = true}}},
 }
-lspconfig.pyls.setup {
-  settings = {
-    pyls = {
-      configurationSources = {'pyflakes', 'pycodestyle'},
-      plugins = {
-        jedi_completion = {enabled = true},
-        jedi_hover = {enabled = false},
-        jedi_references = {enabled = true},
-        jedi_signature_help = {enabled = true},
-        jedi_symbols = {enabled = true, all_scopes = true},
-        mccabe = {enabled = true, threshold = 15},
-        preload = {enabled = true},
-        pycodestyle = {enabled = false},
-        pydocstyle = {enabled = false},
-        pyflakes = {enabled = false},
-        rope_completion = {enabled = true},
-        yapf = {enabled = true},
-      },
-    },
-  },
-  commands = {
-    LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
-  },
-}
--- lspconfig.rls.setup {settings = {rust = {clippy_preference = 'on'}}}
 lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},

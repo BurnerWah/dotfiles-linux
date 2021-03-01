@@ -135,7 +135,8 @@ return require('packer').startup(function(use)
       'nvim-treesitter',
     },
     config = function()
-      vim.o.completeopt = 'menu,menuone,noselect'
+      -- vim.o.completeopt = 'menu,menuone,noselect'
+      vim.o.completeopt = 'menuone,noselect'
       require'compe'.register_source('fish', require 'compe_fish') -- custom source
       require'compe'.setup {
         enabled = true,
@@ -155,7 +156,7 @@ return require('packer').startup(function(use)
           buffer = true,
           calc = true,
           vsnip = true,
-          nvim_lsp = true,
+          nvim_lsp = true, -- Priority: 1000
           nvim_lua = true,
           spell = true,
           tags = true,
@@ -167,7 +168,7 @@ return require('packer').startup(function(use)
               'services', 'sshconfig', 'sshdconfig', 'sudoers', 'sysctl', 'udevconf', 'udevperm',
               'updatedb', 'vimwiki', 'wget',
             },
-            priority = 1000, -- defaults to 5000 which can be problematic
+            priority = 900, -- defaults to 5000 which can be problematic
             dup = 0, -- allow duplicate entries (mostly with lsp)
           },
           treesitter = true,
@@ -607,7 +608,10 @@ return require('packer').startup(function(use)
   use {'HiPhish/info.vim', event = 'BufReadCmd info:*', cmd = 'Info', ft = 'info'} -- mirror
   use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
   use {'segeljakt/vim-silicon', cmd = 'Silicon'}
-  use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
+  -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
+  -- Spell support for tree-sitter is nice but it causes files to noticably refresh constantly.
+  -- It also might be contributing to PID bloat by running hunspell too often.
+  -- It's a WIP so some problems can be expected.
 
   -- Text editing
   use 'tpope/vim-repeat'

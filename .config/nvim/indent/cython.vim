@@ -1,1 +1,0 @@
-ru! indent/python.vim
