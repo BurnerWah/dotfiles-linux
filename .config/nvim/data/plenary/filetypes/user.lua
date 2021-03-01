@@ -133,6 +133,7 @@ return {
     ['virc'] = 'vim',
     ['vkBasalt.conf'] = 'dosini',
     ['wgetrc'] = 'wget',
+    ['youtube-dl.conf'] = 'argfile', -- Custom filetype
     ['zlogin'] = 'zsh',
     ['zlogout'] = 'zsh',
     ['zprofile'] = 'zsh',

@@ -1,0 +1,16 @@
+%YAML 1.2
+---
+# Custom syntax for /etc/subuid & /etc/subgid
+name: subid
+file_extensions:
+  - subgid
+  - subuid
+scope: source.subid
+
+contexts:
+  main:
+    - match: '^([^:]+):(\d+):(\d+)$'
+      captures:
+        1: keyword
+        2: constant.numeric
+        3: constant.numeric

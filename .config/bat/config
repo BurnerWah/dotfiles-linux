@@ -24,13 +24,21 @@
 --map-syntax .tcelldb:JSON
 --map-syntax .vscodeignore:'Git Ignore'
 --map-syntax /etc/group-:group
+--map-syntax /etc/os-release:'Bourne Again Shell (bash)'
 --map-syntax /etc/passwd-:passwd
+--map-syntax /etc/resolv.conf.*:resolv
+--map-syntax /etc/vconsole.conf:'Bourne Again Shell (bash)'
 --map-syntax /etc/vimrc:VimL
 --map-syntax /etc/virc:VimL
 --map-syntax BSDmakefile:Makefile
+--map-syntax ReText.conf:INI
 --map-syntax Trolltech.conf:INI
 --map-syntax anacrontab:Crontab
+--map-syntax bashrc:'Bourne Again Shell (bash)'
 --map-syntax conf:INI
+--map-syntax dleyna-server-service.conf:INI
+--map-syntax fprintd.conf:INI
+--map-syntax idmapd.conf:INI
 --map-syntax katemetainfos:INI
 --map-syntax katerc:INI
 --map-syntax kateschemarc:INI
@@ -41,12 +49,19 @@
 --map-syntax knfsshare:INI
 --map-syntax konsolerc:INI
 --map-syntax kritadisplayrc:INI
+--map-syntax libuser.conf:INI
+--map-syntax mimeapps.list:INI
 --map-syntax mkd:Markdown
+--map-syntax nfs.conf:INI
 --map-syntax proselintrc:JSON
+--map-syntax rpkg.conf:INI
+--map-syntax rsyncd.conf:INI
+--map-syntax rygel.conf:INI
 --map-syntax service:INI
 --map-syntax socket:INI
 --map-syntax thumbnailer:INI
 --map-syntax timer:INI
+--map-syntax touchegg.conf:XML
 --map-syntax vlcrc:INI
 --map-syntax zlogin:'Bourne Again Shell (bash)'
 --map-syntax zlogout:'Bourne Again Shell (bash)'

@@ -18,6 +18,8 @@ au BufNewFile,BufRead */tmp/*.repo setf dosini " YUM repos in sudoedit
 au BufNewFile,BufRead */dbus-1/*.conf setf xml " DBus config
 au BufNewFile,BufRead */share/zsh/history setf zshhist
 au BufNewFile,BufRead */waybar/config setf jsonc " Waybar config
+au BufNewFile,BufRead */bat/config setf argfile
+au BufNewFile,BufRead */silicon/config setf argfile
 
 " au BufNewFile,BufRead *.reg setf registry " FIXME this is dumb. Don't do this.
 
