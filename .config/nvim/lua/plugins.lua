@@ -195,7 +195,7 @@ return require('packer').startup(function(use)
   use 'tikhomirov/vim-glsl'
   use 'udalov/kotlin-vim'
   use 'YaBoiBurner/requirements.txt.vim'
-  use 'YaBoiBurner/vim-teal'
+  use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
   use 'blankname/vim-fish'
   use 'plasticboy/vim-markdown'
   -- Meson syntax is now manually maintained
@@ -606,7 +606,8 @@ return require('packer').startup(function(use)
   }
   use {'HiPhish/info.vim', event = 'BufReadCmd info:*', cmd = 'Info', ft = 'info'} -- mirror
   use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
-  use 'andweeb/presence.nvim'
+  use {'segeljakt/vim-silicon', cmd = 'Silicon'}
+  use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
 
   -- Text editing
   use 'tpope/vim-repeat'

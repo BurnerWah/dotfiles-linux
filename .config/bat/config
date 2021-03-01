@@ -1,3 +1,4 @@
+--map-syntax **/share/flatpak/overrides/*:INI
 --map-syntax *.csproj:XML
 --map-syntax *.jenkins:Groovy
 --map-syntax *.nuspec:XML
@@ -8,21 +9,26 @@
 --map-syntax .clang-format:YAML
 --map-syntax .clang-tidy:YAML
 --map-syntax .coveragerc:INI
---map-syntax .dockerignore:Git\ Ignore
---map-syntax .eslintignore:Git\ Ignore
+--map-syntax .dockerignore:'Git Ignore'
+--map-syntax .eslintignore:'Git Ignore'
 --map-syntax .eslintrc:JSON
 --map-syntax .flake8:INI
 --map-syntax .lua-format:YAML
 --map-syntax .luacheckrc:Lua
 --map-syntax .luacov:Lua
---map-syntax .npmignore:Git\ Ignore
+--map-syntax .npmignore:'Git Ignore'
 --map-syntax .nycrc:JSON
 --map-syntax .oclint:YAML
 --map-syntax .prettierignore:INI
 --map-syntax .pylintrc:INI
 --map-syntax .tcelldb:JSON
---map-syntax .vscodeignore:Git\ Ignore
+--map-syntax .vscodeignore:'Git Ignore'
+--map-syntax /etc/group-:group
+--map-syntax /etc/passwd-:passwd
+--map-syntax /etc/vimrc:VimL
+--map-syntax /etc/virc:VimL
 --map-syntax BSDmakefile:Makefile
+--map-syntax Trolltech.conf:INI
 --map-syntax anacrontab:Crontab
 --map-syntax conf:INI
 --map-syntax katemetainfos:INI
@@ -36,8 +42,15 @@
 --map-syntax konsolerc:INI
 --map-syntax kritadisplayrc:INI
 --map-syntax mkd:Markdown
+--map-syntax proselintrc:JSON
 --map-syntax service:INI
 --map-syntax socket:INI
 --map-syntax thumbnailer:INI
 --map-syntax timer:INI
 --map-syntax vlcrc:INI
+--map-syntax zlogin:'Bourne Again Shell (bash)'
+--map-syntax zlogout:'Bourne Again Shell (bash)'
+--map-syntax zprofile:'Bourne Again Shell (bash)'
+--map-syntax zshenv:'Bourne Again Shell (bash)'
+--map-syntax zshrc:'Bourne Again Shell (bash)'
+--theme 'Monokai Extended'

@@ -1,1 +1,1 @@
-(comment) @fold
+(comment)+ @fold
