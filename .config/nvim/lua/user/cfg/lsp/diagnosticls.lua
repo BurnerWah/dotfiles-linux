@@ -86,20 +86,6 @@ local tool = {
 
     return R
   end,
-  alex = function(flag)
-    return {
-      sourceName = 'alex',
-      command = 'alex',
-      args = (flag and {flag, '--', '%file'} or {'--', '%file'}),
-      isStdout = false,
-      isStderr = true,
-      formatPattern = {
-        [[^ *(\d+):(\d+)-(\d+):(\d+) +warning +(.+?)  +(.+?)  +(.+)$]],
-        {line = 1, column = 2, endLine = 3, endColumn = 4, message = 5},
-      },
-      securities = {undefined = 'warning'},
-    }
-  end,
   cppcheck = function(lang)
     return {
       sourceName = 'cppcheck',
@@ -119,9 +105,6 @@ local tool = {
 }
 
 M.linters = {
-  alex = tool.alex(),
-  alex_text = tool.alex '--text',
-  alex_html = tool.alex '--html',
   bashate = tool.generic {
     {'bashate', '-i', 'E003', '%tempfile'},
     pattern = {[[^.+?:(\d+):(\d+): ((E\d+) (.*))$]], {line = 1, column = 2, message = 3}},
@@ -180,11 +163,6 @@ M.linters = {
     parse = {line = 'line', column = 'column', security = 'level', message = '${message} (${code})'},
     securities = {style = 'hint', info = 'info', warning = 'warning', error = 'error'},
   },
-  jshint = tool.generic {
-    {'jshint', '--reporter=unix', '--extract=auto', '--filename', '%filepath', '-'},
-    pattern = fmt.unix(true),
-    security = 'hint',
-  },
   jsonlint = tool.generic {
     {'jsonlint', '--compact', '-'},
     stream = 'stderr',
@@ -196,17 +174,6 @@ M.linters = {
     pattern = {
       [[^parse error: (.+) at line (\d+), column (\d+)$]], {line = 2, column = 3, message = 1},
     },
-  },
-  languagetool = {
-    sourceName = 'languagetool',
-    command = 'languagetool',
-    args = {'-'},
-    formatLines = 2,
-    formatPattern = {
-      [[^\d+?\.\)\s+Line\s+(\d+),\s+column\s+(\d+),\s+([^\n]+)\nMessage:\s+(.*)(\r|\n)*$]],
-      {line = 1, column = 2, message = {4, 3}},
-    },
-    securities = {undefined = 'hint'},
   },
   luacheck = tool.generic {
     {'luacheck', '--formatter=plain', '--codes', '--ranges', '%file'},
@@ -236,27 +203,6 @@ M.linters = {
     },
     securities = {warning = 'warning', error = 'error'},
   },
-  mix_credo = {
-    sourceName = 'mix_credo',
-    command = 'mix',
-    args = {'credo', 'suggest', '--format', 'flycheck', '--read-from-stdin'},
-    formatPattern = {
-      [[^[^ ]+?:(\d+)(:(\d+))?:\s+([^ ]+):\s+(.*)(\r|\n)*$]],
-      {line = 1, column = 3, security = 4, message = 5},
-    },
-    securities = {F = 'warning', C = 'warning', D = 'info', R = 'info'},
-  },
-  mypy = tool.generic {
-    'mypy',
-    args = {
-      '--no-color-output', '--no-error-summary', '--show-column-numbers', '--follow-imports=silent',
-      '--ignore-missing-imports', '%file',
-    },
-    pattern = {
-      [[^.*:(\d+?):(\d+?): ([a-z]+?): (.*)$]], {line = 1, column = 2, security = 3, message = 4},
-    },
-    securities = {note = 'hint', error = 'error'},
-  },
   phpcs = {
     sourceName = 'phpcs',
     command = './vendor/bin/phpcs',
@@ -274,17 +220,6 @@ M.linters = {
     args = {'analyze', '--error-format', 'raw', '--no-progress', '%file'},
     rootPatterns = {'composer.json', 'composer.lock', 'vendor', '.git'},
     formatPattern = {[[^[^:]+:(\d+):(.*)(\r|\n)*$]], {line = 1, message = 2}},
-  },
-  proselint = tool.json {
-    {'proselint', '--json'},
-    parse = {
-      errorsRoot = 'data.errors',
-      line = 'line',
-      column = 'column',
-      security = 'severity',
-      message = '${message} (${check})',
-    },
-    securities = {warning = 'hint'},
   },
   pylint = tool.json {
     'pylint',
@@ -446,7 +381,7 @@ M.linters = {
 }
 
 M.linter_filetypes = {
-  asciidoc = {'alex_text', 'languagetool', 'proselint', 'write_good'},
+  asciidoc = {'write_good'},
   bats = {'shellcheck'},
   c = {'cppcheck_c', 'flawfinder'},
   cmake = {'cmakelint'},
@@ -454,25 +389,22 @@ M.linter_filetypes = {
   cs = {'mcs'},
   css = {'csslint', 'stylelint'},
   dockerfile = {'hadolint'},
-  elixir = {'mix_credo'},
   fish = {'fish'},
-  fountain = {'proselint'},
   gitcommit = {'gitlint'},
   graphql = {'eslint'},
-  html = {'alex_html', 'proselint', 'tidy', 'write_good'},
+  html = {'tidy', 'write_good'},
   javascript = {'eslint', 'jshint', 'standard', 'xo'},
   json = {'jsonlint', 'jq', 'spectral'},
   jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
   less = {'stylelint'},
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
-  mail = {'alex_text', 'languagetool', 'proselint'},
-  markdown = {'alex', 'languagetool', 'markdownlint', 'proselint', 'write_good'},
-  nroff = {'alex_text', 'proselint', 'write_good'},
+  markdown = {'markdownlint', 'write_good'},
+  nroff = {'write_good'},
   php = {'phpcs', 'phpstan'},
-  po = {'alex', 'proselint', 'write_good'},
-  pod = {'alex', 'proselint', 'write_good'},
-  python = {'mypy', 'pylint'},
-  rst = {'alex_text', 'proselint', 'rstcheck', 'rst_lint', 'write_good'},
+  po = {'write_good'},
+  pod = {'write_good'},
+  python = {'pylint'},
+  rst = {'rstcheck', 'rst_lint', 'write_good'},
   sass = {'stylelint'},
   scss = {'stylelint'},
   stylus = {'stylelint'},
@@ -480,12 +412,12 @@ M.linter_filetypes = {
   sh = {'bashate', 'shellcheck'},
   sql = {'sqlint'},
   teal = {'tlcheck'},
-  tex = {'alex_text', 'proselint', 'write_good'},
-  texinfo = {'alex_text', 'proselint', 'write_good'},
+  tex = {'write_good'},
+  texinfo = {'write_good'},
   typescript = {'eslint', 'standard', 'xo'},
-  vimwiki = {'alex_text', 'languagetool', 'proselint', 'write_good'},
+  vimwiki = {'write_good'},
   vue = {'eslint'},
-  xhtml = {'alex_text', 'proselint', 'write_good'},
+  xhtml = {'write_good'},
   xml = {'xmllint'},
   yaml = {'spectral', 'yamllint'},
   zsh = {'zsh'},

@@ -46,6 +46,7 @@ return {
     ['ll'] = 'llvm',
     ['lzx'] = 'xml', -- OpenLaszlo
     ['moon'] = 'moon',
+    ['org'] = 'org', -- vim-orgmode
     ['pip'] = 'requirements',
     ['plantuml'] = 'plantuml',
     ['posxml'] = 'xml', -- Posxml

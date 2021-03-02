@@ -103,7 +103,8 @@ lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_c
 
 local simple_servers = {
   'bashls', 'cmake', 'denols', 'dockerls', 'dotls', 'fortls', 'html', 'jedi_language_server',
-  'lsp4xml', 'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
+  'lsp4xml', 'mypyls', 'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
+  'vsc_alex',
 }
 for _, server in ipairs(simple_servers) do lspconfig[server].setup {} end
 
@@ -167,7 +168,7 @@ lspconfig.sumneko_lua.setup {
           [vim.fn.expand('$VIMRUNTIME/lua')] = true,
           [vim.fn.stdpath('data') .. '/site/lua_types'] = true,
           [vim.fn.stdpath('data') .. '/site/vim_types'] = true,
-          ['/usr/share/lua/5.4'] = true,
+          -- ['/usr/share/lua/5.4'] = true,
         },
       },
       intelliSense = {searchDepth = 4},
