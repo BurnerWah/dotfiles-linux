@@ -68,5 +68,4 @@ vim.g.ale_linters_ignore = {
   yaml = {'spectral', 'yamllint'},
   zsh = {'shell'},
 }
-vim.g.ale_fixers = {c = {'clangtidy'}, cpp = {'clangtidy'}}
 vim.cmd [[autocmd init VimEnter * lua require('user.cleanup.ale')]]

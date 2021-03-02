@@ -11,6 +11,11 @@
 local cmdgen = {
   prettier = [[prettier -w --parser %s --config-precedence prefer-file --no-semi --single-quote]],
 }
+local function clang_tidy(file)
+  local build_dir = vim.fn.findfile('compile_commands.json', vim.fn.expand(file .. ':h'))
+  return ([[clang-tidy --fix --fix-errors ]] .. (build_dir ~= '' and '-p ' .. build_dir or '') ..
+             file)
+end
 
 require'format'.setup {
   ['*'] = {
@@ -21,9 +26,9 @@ require'format'.setup {
       },
     },
   },
-  c = {{cmd = {'clang-format -i'}}},
+  c = {{cmd = {clang_tidy}, tempfile_dir = '/tmp'}, {cmd = {'clang-format -i'}}},
   cmake = {{cmd = {'cmake-format -i'}}},
-  cpp = {{cmd = {'clang-format -i'}}},
+  cpp = {{cmd = {clang_tidy}, tempfile_dir = '/tmp'}, {cmd = {'clang-format -i'}}},
   css = {{cmd = {cmdgen.prettier:format 'css'}}},
   go = {{cmd = {'gofmt -w', 'goimports -w'}, tempfile_postfix = '.tmp'}},
   html = {{cmd = {cmdgen.prettier:format 'html'}}},
