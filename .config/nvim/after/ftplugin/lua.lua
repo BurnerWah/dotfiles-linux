@@ -5,6 +5,9 @@ vim.wo.foldlevel = 0
 
 vim.bo.tabstop = 2
 
-if (packer_plugins['coc.nvim'] and packer_plugins['coc.nvim'].loaded) then
-  vim.keymap.nmap {'gD', '<plug>(coc-definition)', buffer = true, silent = true}
+if vim.g.loaded_endwise then
+  vim.b.endwise_addition = 'end'
+  vim.b.endwise_words = 'function,do,then'
+  vim.b.endwise_pattern = [[\zs\%(\<function\>\)\%(.*\<end\>\)\@!\|\<\%(then\|do\)\ze\s*$]]
+  vim.b.endwise_syngroups = 'luaFunction,luaDoEnd,luaIfStatement'
 end

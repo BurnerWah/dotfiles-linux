@@ -295,19 +295,6 @@ M.linters = {
       [[^\s*<\w+>:(\d+):(\d+):\s+(.*)(\r|\n)*$]], {line = 1, column = 2, message = 3},
     },
   },
-  stylelint = tool.json {
-    './node_modules/.bin/stylelint',
-    args = {'--formatter', 'json', '--stdin-filename', '%filepath'},
-    roots = '.git',
-    parse = {
-      errorsRoot = '[0].warnings',
-      line = 'line',
-      column = 'column',
-      security = 'severity',
-      message = '${text}',
-    },
-    securities = {warning = 'warning', error = 'error'},
-  },
   tidy = {
     sourceName = 'tidy',
     command = 'tidy',
@@ -387,7 +374,7 @@ M.linter_filetypes = {
   cmake = {'cmakelint'},
   cpp = {'cppcheck_cpp', 'flawfinder'},
   cs = {'mcs'},
-  css = {'csslint', 'stylelint'},
+  css = {'csslint'},
   dockerfile = {'hadolint'},
   fish = {'fish'},
   gitcommit = {'gitlint'},
@@ -396,7 +383,6 @@ M.linter_filetypes = {
   javascript = {'eslint', 'jshint', 'standard', 'xo'},
   json = {'jsonlint', 'jq', 'spectral'},
   jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
-  less = {'stylelint'},
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
   markdown = {'markdownlint', 'write_good'},
   nroff = {'write_good'},
@@ -405,10 +391,6 @@ M.linter_filetypes = {
   pod = {'write_good'},
   python = {'pylint'},
   rst = {'rstcheck', 'rst_lint', 'write_good'},
-  sass = {'stylelint'},
-  scss = {'stylelint'},
-  stylus = {'stylelint'},
-  sugarcss = {'stylelint'},
   sh = {'bashate', 'shellcheck'},
   sql = {'sqlint'},
   teal = {'tlcheck'},

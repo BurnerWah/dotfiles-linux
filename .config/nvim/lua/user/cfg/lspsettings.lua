@@ -18,6 +18,9 @@ lsp_status.config {
   end,
   current_function = true,
 }
+-- lsp-utils
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
 
 local function on_attach(client)
   local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
@@ -54,6 +57,14 @@ local function on_attach(client)
 
   if client_caps.goto_definition then
     nnor {'gd', [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = true}
+  end
+
+  if client_caps.type_definition then
+    nnor {'gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], silent = true, buffer = true}
+  end
+
+  if client_caps.implementation then
+    nnor {'gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], silent = true, buffer = true}
   end
 
   if client_caps.document_symbol then
@@ -104,7 +115,7 @@ lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_c
 local simple_servers = {
   'bashls', 'cmake', 'denols', 'dockerls', 'dotls', 'fortls', 'html', 'jedi_language_server',
   'lsp4xml', 'mypyls', 'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
-  'vsc_alex',
+  'vsc_alex', 'vsc_stylelint', 'vsc_teal',
 }
 for _, server in ipairs(simple_servers) do lspconfig[server].setup {} end
 

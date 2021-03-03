@@ -114,7 +114,7 @@ return require('packer').startup(function(use)
       vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
     end,
   }
-  use {'dense-analysis/ale', config = [[require 'user.cfg.ale']]}
+  use {'dense-analysis/ale', cmd = 'ALEEnable', config = [[require 'user.cfg.ale']]}
   use {
     'hrsh7th/vim-vsnip',
     requires = {
@@ -212,7 +212,6 @@ return require('packer').startup(function(use)
   use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
 
   -- Lua
-  use {'euclidianAce/betterlua.vim', ft = 'lua'}
   use 'tjdevries/manillua.nvim'
   use 'tjdevries/nlua.nvim'
   use {'bfredl/nvim-luadev', cmd = 'Luadev'}
