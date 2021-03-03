@@ -1,12 +1,11 @@
---[[ format-nvim config
-  TODO:
-  - Integrate language servers
-  - Integrate clang-tidy (c, cpp)
-  - Limit rustfmt to one file
-
-  Issues:
-  - lua-format struggles with block comments (issues #32, #136)
---]] --
+-- format-nvim config
+-- TODO:
+-- - Integrate language servers
+-- - Integrate clang-tidy (c, cpp)
+-- - Limit rustfmt to one file
+--
+-- Issues:
+-- - lua-format struggles with block comments (issues #32, #136)
 --
 local cmdgen = {
   prettier = [[prettier -w --parser %s --config-precedence prefer-file --no-semi --single-quote]],

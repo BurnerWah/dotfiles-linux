@@ -22,14 +22,12 @@ vim.cmd [[set synmaxcol=250]] -- Only highlight the first 250 collumns
 vim.o.mouse = 'a' -- Mouse support
 vim.o.termguicolors = true -- Truecolor mode
 
---[[
-  Enable spell checking
-
-  This has to be disabled due to a conflict with nvim-treesitter (issue #698).
-  Instead, enable it on filetypes which tree-sitter doesn't support.
-
-  TODO rewrite settings in Lua
-  ]]
+-- Enable spell checking
+--
+-- This has to be disabled due to a conflict with nvim-treesitter (issue #698).
+-- Instead, enable it on filetypes which tree-sitter doesn't support.
+--
+-- TODO rewrite settings in Lua
 vim.cmd [[set nospell]]
 vim.cmd [[set spelllang=en_us]]
 
@@ -40,7 +38,7 @@ vim.o.updatetime = 300
 -- Show non-printable characters
 vim.cmd [[set list]]
 -- This is inelegant but it works well enough.
-vim.o.listchars = (((has('multi_byte') == 1) and vim.o.encoding == 'utf-8') and
+vim.o.listchars = ((has('multi_byte') == 1) and
                       [[tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-]] or
                       [[tab:> ,extends:>,precedes:<,nbsp:+,trail:-]])
 
@@ -50,7 +48,7 @@ if (has('conceal') == 1) then
 end
 
 -- Fish causes problems with plugins
-vim.o.shell = ((vim.o.shell:find('fish$')) and 'bash' or vim.o.shell)
+vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell
 
 -- Environment {{{1
 -- nvr support
