@@ -1,6 +1,6 @@
-######################
+======================
  Neovim Configuration
-######################
+======================
 
 Neovim_ is my preferred text editor. While Vim is acceptable, neovim
 gives it that little push it needs to become a proper IDE.
@@ -8,8 +8,7 @@ gives it that little push it needs to become a proper IDE.
 I'm using the nvim 0.5 nighly release. It provides a built-in language client,
 and has a much more powerful Lua API.
 
-Most of my configuration is written in Lua, with a reliance on Vim script being
-avoided wherever possible.
+Most of my configuration is in Lua, with Vim script avoided when possible.
 
 This is partially made possible via packer.nvim_, a plugin manager written in Lua.
 
@@ -17,7 +16,7 @@ This is partially made possible via packer.nvim_, a plugin manager written in Lu
 .. _packer.nvim: https://github.com/wbthomason/packer.nvim
 
 Notable plugins
-###############
+---------------
 
 - astronauta.nvim_: Support for Lua ``plugins``, ``ftplugins``, and Lua API extensions
 - plenary.nvim_: Library of nvim Lua functions.

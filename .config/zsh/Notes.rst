@@ -1,6 +1,6 @@
-###########
+===========
  Zsh notes
-###########
+===========
 
 Zsh is fucking garbage don't use it.
 

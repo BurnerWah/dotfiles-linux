@@ -1,11 +1,11 @@
-###################
+===================
  Zsh configuration
-###################
+===================
 
 This is just the Zsh configuration I've developed over time. Some things worth
 specifying in advance are:
 
-* I don't use a plugin manager. They add **insane** amounts of complexity to
+* I don't use a plugin manager. They add **absurd** amounts of complexity to
   the shell startup process for what is basically a glorified ``source``
   wrapper.
 * I only really use aliases to apply default arguments & wrapping commands to
