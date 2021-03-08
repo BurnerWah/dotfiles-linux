@@ -598,6 +598,7 @@ return require('packer').startup(function(use)
   }
   use {'lukas-reineke/format.nvim', config = [[require 'user.cfg.format-nvim']]}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
+  use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
 
   -- Integration
   use {
@@ -605,9 +606,8 @@ return require('packer').startup(function(use)
     -- Editorconfig support
     config = function()
       vim.g.EditorConfig_exclude_patterns = {
-        [[davs\?://.\*]], [[ftp://.\*]], [[fugitive://.\*]], [[https\?://.\*]], [[info://.\*]],
-        [[man://.\*]], [[octo://.\*]], [[output://.\*]], [[rcp://.\*]], [[rsync://.\*]],
-        [[scp://.\*]], [[sftp://.\*]], [[term://.\*]],
+        'davs\\?://.*', 'ftp://.*', 'fugitive://.*', 'https\\?://.*', 'info://.*', 'man://.*',
+        'octo://.*', 'output://.*', 'rcp://.*', 'rsync://.*', 'scp://.*', 'sftp://.*', 'term://.*',
       }
     end,
   }

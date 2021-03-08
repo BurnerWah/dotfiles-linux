@@ -11,28 +11,14 @@ vim.g.ale_linters_ignore = {
     - clazy [ cpp ] (packaged)
     - msgfmt [ po ] (packaged)
     - redpen [ asciidoc, markdown, review, rst, tex, text ]
-    - textlint [ asciidoc, markdown, rst, tex, text ]
     - chktex [ tex ] (packaged)
     - lacheck [ tex ] (packaged)
 
     require conversion before use:
-    - eslint (with eslint_d or vscode extension)
-    - textlint (via vscode extension)
     - redpen (via vscode extension)
     - standard (via vscode extension)
     - htmlhint (via vscode extension)
-    - spectral (via vscode extension)
-    - tslint (maybe via vscode extension)
     - languagetool (need to figure out how to load the lsp)
-
-    server needs more work:
-    - xo (connects via IPC)
-    - jshint (connects via IPC)
-
-    handled by servers:
-    - mypy
-    - alex (vscode extension)
-    - stylelint (vscode extension)
 
     intentionally unhandled:
     - vale (dumb)
@@ -73,7 +59,7 @@ vim.g.ale_linters_ignore = {
   php = {'phpcs', 'phpstan'},
   po = {'alex', 'proselint', 'writegood'},
   pod = {'alex', 'proselint', 'writegood'},
-  python = {'flake8', 'mypy', 'pylint'},
+  python = {'flake8', 'mypy', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint'},
   rst = {'alex', 'proselint', 'redpen', 'rstcheck', 'textlint', 'vale', 'writegood'},
   rust = {'cargo'},
   sass = {'sasslint', 'stylelint'},

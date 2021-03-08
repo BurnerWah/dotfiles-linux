@@ -11,3 +11,5 @@ sign-git-tag=true
 update-notifier=false
 store-dir=${HOME}/.local/lib/pnpm/store
 global-dir=${HOME}/.local/lib/pnpm/global
+init-author-email=jadenpleasants@fastmail.com
+init-author-name=Jaden Pleasants

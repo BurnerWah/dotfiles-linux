@@ -72,11 +72,13 @@ I've connected linters up to nvim via efm-langserver, diagnostic-languageserver,
 and extracted VSCode Extensions. ALE is a fallback.
 
 * alex_ - Text Languages
+  Adapted via the `VSCode extension <https://marketplace.visualstudio.com/items?itemName=TLahmann.alex-linter>`__.
 * bashate_ - Bash
 * cmake-lint_ - CMake
 * cppcheck_ - C/C++
 * csslint_ - CSS
 * eslint_ - JS, TS, GraphQL, Vue
+  Adapted via the `VSCode extension <https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint>`__.
 * fish-shell_ - Fish
   Addapted via diagnostic-ls. Detects syntax errors.
 * flawfinder_ - C/C++
@@ -84,6 +86,9 @@ and extracted VSCode Extensions. ALE is a fallback.
 * hadolint_ - Dockerfiles
 * html-tidy_ - HTML
 * jq_ - JSON
+* jshint_ - JS, HTML?
+  Adapted via a `fork <https://github.com/YaBoiBurner/vscode-jshint>`__ of the
+  `VSCode JSHint <https://marketplace.visualstudio.com/items?itemName=dbaeumer.jshint>`__ extension.
 * jsonlint_ - JSON
 * luacheck_ - Lua
 * markdownlint_ - Markdown
@@ -93,43 +98,49 @@ and extracted VSCode Extensions. ALE is a fallback.
 * rstcheck_ - reStructuredText
 * shellcheck_ - Bash, ksh, ash
 * spectral_ - JSON, YAML
+  Adapted via the `VSCode extension <https://marketplace.visualstudio.com/items?itemName=stoplight.spectral>`__.
 * sqlint_ - SQL
 * standard-js_ - JS, TS
 * stylelint_ - CSS-like, HTML
+  Adapted via the `VSCode extension <https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint>`__.
+* textlint_ - Text languages
+  Adapted via the `VSCode extension <https://marketplace.visualstudio.com/items?itemName=taichi.vscode-textlint>`__.
 * write-good_ - Text Languages
 * xmllint_ - XML
 * xo-js_ - JS, TS
 * zsh-shell_ - Zsh
   Addapted via diagnostic-ls. Detects syntax errors.
 
-.. _stylelint: https://stylelint.io
 .. _alex: https://alexjs.com
-.. _mypy: https://mypy.readthedocs.io/en/stable
-.. _write-good: https://github.com/btford/write-good
-.. _shellcheck: https://www.shellcheck.net
-.. _cppcheck: http://cppcheck.sourceforge.net
-.. _flawfinder: https://dwheeler.com/flawfinder
+.. _bashate: https://github.com/openstack/bashate
 .. _cmake-lint: https://github.com/richq/cmake-lint
+.. _cppcheck: http://cppcheck.sourceforge.net
 .. _csslint: https://github.com/CSSLint/csslint
-.. _hadolint: https://github.com/hadolint/hadolint
-.. _gitlint: https://jorisroovers.com/gitlint
 .. _eslint: https://eslint.org
+.. _fish-shell: https://fishshell.com
+.. _flawfinder: https://dwheeler.com/flawfinder
+.. _gitlint: https://jorisroovers.com/gitlint
+.. _hadolint: https://github.com/hadolint/hadolint
 .. _html-tidy: https://www.html-tidy.org
-.. _standard-js: https://standardjs.com
-.. _xo-js: https://github.com/xojs/xo
+.. _jq: https://stedolan.github.io/jq
+.. _jshint: https://jshint.com
 .. _jsonlint: https://zaa.ch/jsonlint
-.. _spectral: https://stoplight.io/open-source/spectral
 .. _luacheck: https://github.com/mpeterv/luacheck
 .. _markdownlint: https://github.com/DavidAnson/markdownlint
+.. _mypy: https://mypy.readthedocs.io/en/stable
 .. _pylint: https://pylint.org
-.. _rstcheck: https://github.com/myint/rstcheck
-.. _bashate: https://github.com/openstack/bashate
-.. _sqlint: https://github.com/purcell/sqlint
-.. _xmllint: http://xmlsoft.org/xmllint.html
-.. _fish-shell: https://fishshell.com
-.. _jq: https://stedolan.github.io/jq
-.. _zsh-shell: http://zsh.sourceforge.net
 .. _rst-lint: https://github.com/twolfson/restructuredtext-lint
+.. _rstcheck: https://github.com/myint/rstcheck
+.. _shellcheck: https://www.shellcheck.net
+.. _spectral: https://stoplight.io/open-source/spectral
+.. _sqlint: https://github.com/purcell/sqlint
+.. _standard-js: https://standardjs.com
+.. _stylelint: https://stylelint.io
+.. _textlint: https://textlint.github.io
+.. _write-good: https://github.com/btford/write-good
+.. _xmllint: http://xmlsoft.org/xmllint.html
+.. _xo-js: https://github.com/xojs/xo
+.. _zsh-shell: http://zsh.sourceforge.net
 
 Formatters
 ==========

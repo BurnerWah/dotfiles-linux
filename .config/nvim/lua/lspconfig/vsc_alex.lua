@@ -3,10 +3,14 @@ local util = require 'lspconfig/util'
 
 local server_name = 'vsc_alex'
 local root_pattern = util.root_pattern('.alexrc', '.alexrc.yml', '.alexrc.yaml', '.alexrc.js',
-                                       'package.json')
+                                       'package.json', '.alexignore')
 
 -- Oh my god this actually works
 -- although I'd recommend reducing message security on your end
+--
+-- By default lints on save but that doesn't really work.
+--
+-- We include .alexignore files as a root as a fallback.
 configs[server_name] = {
   default_config = {
     cmd = {
@@ -21,5 +25,6 @@ configs[server_name] = {
     root_dir = function(fname)
       return util.find_git_ancestor(fname) or root_pattern(fname) or util.path.dirname(fname)
     end,
+    settings = {['alex-linter'] = {strategy = 'onType', noBinary = true}},
   },
 }

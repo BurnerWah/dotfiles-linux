@@ -113,9 +113,10 @@ lspconfig.util.default_config = vim.tbl_extend('force', lspconfig.util.default_c
                                                {capabilities = capabilities, on_attach = on_attach})
 
 local simple_servers = {
-  'bashls', 'cmake', 'denols', 'dockerls', 'dotls', 'fortls', 'html', 'jedi_language_server',
-  'lsp4xml', 'mypyls', 'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls',
-  'vsc_alex', 'vsc_stylelint', 'vsc_teal',
+  'bashls', 'cmake', --[['denols',]] 'dockerls', 'dotls', 'fortls', 'html', 'lsp4xml', 'mypyls',
+  'pyright', 'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls', 'vsc_alex',
+  'vsc_stylelint', 'vsc_teal', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
+  -- jedi-language-server has a really annoying code action that i'd like to avoid
 }
 for _, server in ipairs(simple_servers) do lspconfig[server].setup {} end
 
@@ -155,12 +156,12 @@ lspconfig.jsonls.setup {
     LspFormat = {function() vim.lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
   },
 }
-lspconfig.pyls_ms.setup {
-  -- I'd like to disable hover for this since it's not very useful
-  cmd = {vim.fn.expand('~/.local/libexec/pyls-ms/Microsoft.Python.LanguageServer')},
-  handlers = lsp_status.extensions.pyls_ms.setup(),
-  settings = {python = {workspaceSymbols = {enabled = true}, autoComplete = {addBrackets = true}}},
-}
+-- lspconfig.pyls_ms.setup {
+--   -- I'd like to disable hover for this since it's not very useful
+--   cmd = {vim.fn.expand('~/.local/libexec/pyls-ms/Microsoft.Python.LanguageServer')},
+--   handlers = lsp_status.extensions.pyls_ms.setup(),
+--   settings = {python = {workspaceSymbols = {enabled = true}, autoComplete = {addBrackets = true}}},
+-- }
 lspconfig.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 lspconfig.sumneko_lua.setup {
   cmd = {'lua-language-server'},

@@ -124,21 +124,6 @@ M.linters = {
     },
     securities = {warning = 'warning', error = 'error'},
   },
-  eslint = tool.json {
-    './node_modules/.bin/eslint',
-    args = {'--stdin', '--stdin-filename', '%filepath', '--format', 'json'},
-    roots = '.git',
-    parse = {
-      errorsRoot = '[0].messages',
-      line = 'line',
-      column = 'column',
-      endLine = 'endLine',
-      endColumn = 'endColumn',
-      security = 'severity',
-      message = '${message} (${ruleId})',
-    },
-    securities = {['1'] = 'warning', ['2'] = 'error'},
-  },
   fish = tool.generic {
     {'fish', '-n', '%file'},
     stream = 'stderr',
@@ -224,7 +209,7 @@ M.linters = {
   pylint = tool.json {
     'pylint',
     args = {
-      '--output-format=json', '--score=no', '--disable=import-error',
+      '--jobs=0', '--output-format=json', '--score=no', '--disable=import-error',
       '--disable=wrong-import-order', '--disable=no-name-in-module', '%file',
     },
     roots = {'.git', 'pyproject.toml', 'setup.py'},
@@ -266,18 +251,6 @@ M.linters = {
       message = '${message} (${code})',
     },
     securities = {style = 'hint', info = 'info', warning = 'warning', error = 'error'},
-  },
-  spectral = tool.json {
-    {'spectral', 'lint', '--ignore-unknown-format', '-q', '-f', 'json'},
-    parse = {
-      line = 'range.start.line',
-      column = 'range.start.character',
-      endLine = 'range.end.line',
-      endColumn = 'range.end.character',
-      security = 'severity',
-      message = '${message} (${code})',
-    },
-    securities = {['1'] = 'warning', ['2'] = 'error'},
   },
   sqlint = tool.generic {
     'sqlint',
@@ -378,10 +351,9 @@ M.linter_filetypes = {
   dockerfile = {'hadolint'},
   fish = {'fish'},
   gitcommit = {'gitlint'},
-  graphql = {'eslint'},
   html = {'tidy', 'write_good'},
-  javascript = {'eslint', 'jshint', 'standard', 'xo'},
-  json = {'jsonlint', 'jq', 'spectral'},
+  javascript = {'standard', 'xo'},
+  json = {'jsonlint', 'jq'},
   jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
   markdown = {'markdownlint', 'write_good'},
@@ -396,12 +368,11 @@ M.linter_filetypes = {
   teal = {'tlcheck'},
   tex = {'write_good'},
   texinfo = {'write_good'},
-  typescript = {'eslint', 'standard', 'xo'},
+  typescript = {'standard', 'xo'},
   vimwiki = {'write_good'},
-  vue = {'eslint'},
   xhtml = {'write_good'},
   xml = {'xmllint'},
-  yaml = {'spectral', 'yamllint'},
+  yaml = {'yamllint'},
   zsh = {'zsh'},
 }
 
