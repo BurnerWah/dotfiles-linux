@@ -259,15 +259,15 @@ M.linters = {
     },
     securities = {WARNING = 'warning', ERROR = 'error'},
   },
-  standard = {
-    sourceName = 'standard',
-    command = './node_modules/.bin/standard',
-    args = {'--stdin', '--verbose'},
-    rootPatterns = {'.git'},
-    formatPattern = {
-      [[^\s*<\w+>:(\d+):(\d+):\s+(.*)(\r|\n)*$]], {line = 1, column = 2, message = 3},
-    },
-  },
+  -- standard = {
+  --   sourceName = 'standard',
+  --   command = './node_modules/.bin/standard',
+  --   args = {'--stdin', '--verbose'},
+  --   rootPatterns = {'.git'},
+  --   formatPattern = {
+  --     [[^\s*<\w+>:(\d+):(\d+):\s+(.*)(\r|\n)*$]], {line = 1, column = 2, message = 3},
+  --   },
+  -- },
   tidy = {
     sourceName = 'tidy',
     command = 'tidy',
@@ -313,20 +313,20 @@ M.linters = {
     pattern = {[[^[^:]+:(\d+):\s*(([^:]+)\s*:.*)$]], {line = 1, security = 3, message = 2}},
     securities = {warning = 'warning'},
   },
-  xo = tool.json {
-    {'xo', '--reporter', 'json', '--stdin', '--stdin-filename', '%filepath'},
-    roots = {'package.json', '.git'},
-    parse = {
-      errorsRoot = '[0].messages',
-      line = 'line',
-      column = 'column',
-      endLine = 'endLine',
-      endColumn = 'endColumn',
-      security = 'severity',
-      message = '${message} (${ruleId})',
-    },
-    securities = {['1'] = 'warning', ['2'] = 'error'},
-  },
+  -- xo = tool.json {
+  --   {'xo', '--reporter', 'json', '--stdin', '--stdin-filename', '%filepath'},
+  --   roots = {'package.json', '.git'},
+  --   parse = {
+  --     errorsRoot = '[0].messages',
+  --     line = 'line',
+  --     column = 'column',
+  --     endLine = 'endLine',
+  --     endColumn = 'endColumn',
+  --     security = 'severity',
+  --     message = '${message} (${ruleId})',
+  --   },
+  --   securities = {['1'] = 'warning', ['2'] = 'error'},
+  -- },
   yamllint = tool.generic {
     {'yamllint', '-f', 'parsable', '-'},
     pattern = {
@@ -352,7 +352,7 @@ M.linter_filetypes = {
   fish = {'fish'},
   gitcommit = {'gitlint'},
   html = {'tidy', 'write_good'},
-  javascript = {'standard', 'xo'},
+  -- javascript = {'standard', 'xo'},
   json = {'jsonlint', 'jq'},
   jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
@@ -368,7 +368,7 @@ M.linter_filetypes = {
   teal = {'tlcheck'},
   tex = {'write_good'},
   texinfo = {'write_good'},
-  typescript = {'standard', 'xo'},
+  -- typescript = {'standard', 'xo'},
   vimwiki = {'write_good'},
   xhtml = {'write_good'},
   xml = {'xmllint'},

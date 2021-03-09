@@ -93,10 +93,30 @@
 	ignoredHook = true
 	waitingForEditor = true
 
+# Protocols: never use git://
+# git:// is insecure. When possible, we try to rewrite it to https://.
+# http:// is also insecure, so we want to avoid that too. But I haven't blocked it outright.
+# https:// is secure.
+# ssh:// is secure, possibly to an unnecessary degree.
+#
+# There are other remotes, and I'm a little concerned about gcrypt:// & ftp://, I'm not too
+# concerned about them.
+[protocol "git"]
+	allow = never
+
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+	insteadOf = http://github.com/
+
+[url "https://gitlab.com/"]
+	insteadOf = git://gitlab.com/
+	insteadOf = http://gitlab.com/
+
 [delta]
 	side-by-side = false
 	plus-color = "#012800"
 	minus-color = "#340001"
 	syntax-theme = Monokai Extended
 	line-numbers = true
+
 # vim:ft=gitconfig noexpandtab tabstop=2

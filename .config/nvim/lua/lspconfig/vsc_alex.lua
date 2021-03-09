@@ -10,14 +10,11 @@ local root_pattern = util.root_pattern('.alexrc', '.alexrc.yml', '.alexrc.yaml',
 --
 -- By default lints on save but that doesn't really work.
 --
--- We include .alexignore files as a root as a fallback.
+-- Root patterns don't really matter because the VSCode extension doesn't check
+-- config files or ignore files. Might be worth just making my own server for this.
 configs[server_name] = {
   default_config = {
-    cmd = {
-      'node',
-      vim.fn.expand('~/.local/libexec/vscode-ext/tlahmann.alex-linter/server/out/server.js'),
-      '--stdio',
-    },
+    cmd = {'node', vim.fn.expand('~/.local/libexec/vscode-ext/standalone/alex-server'), '--stdio'},
     filetypes = {
       'asciidoc', 'html', 'mail', 'markdown', 'nroff', 'po', 'pod', 'rst', 'tex', 'texinfo',
       'vimwiki', 'xhtml',

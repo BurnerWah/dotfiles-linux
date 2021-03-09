@@ -119,7 +119,7 @@ return require('packer').startup(function(use)
     'hrsh7th/vim-vsnip',
     requires = {
       'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
-      -- {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
+      {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
     },
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'

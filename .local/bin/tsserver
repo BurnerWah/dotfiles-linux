@@ -4,4 +4,4 @@
  * the tsserver entry point execute permissions, and doesn't link it into
  * /usr/bin. This script is just an alternate entry point until that's fixed.
  */
-require('/usr/lib/node_modules/typescript/lib/tsserver.js')
+require('/usr/lib/node_modules/typescript/lib/tsserver')

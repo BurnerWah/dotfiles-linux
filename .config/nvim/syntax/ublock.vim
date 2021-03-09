@@ -43,6 +43,10 @@ syn keyword ublockStaticOpt contained
 " TODO: The following options take arguments
 syn keyword ublockStaticOpt contained redirect redirect-rule
 
+" Cosmetic filters {{{2
+syn match ublockCosmeticURLs /^[^#@|]\+\ze#/ contains=ublockCosmeticURLSep
+syn match ublockCosmeticURLSep /,/ contained
+
 " Highlight settings {{{1
 hi def link ublockComment Comment
 hi def link ublockTodo Todo
@@ -53,6 +57,9 @@ hi def link ublockInclude Include
 hi def link ublockStaticBlock Identifier
 hi def link ublockStaticOpts Operator
 hi def link ublockStaticOpt Keyword
+
+hi def link ublockCosmeticURLs Identifier
+hi def link ublockCosmeticURLSep Delimiter
 
 " Cleanup {{{1
 let b:current_syntax = 'ublock'
