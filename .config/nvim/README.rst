@@ -25,6 +25,7 @@ Notable plugins
   It's a bit complicated to configure servers, but you get used to it.
 - lspsaga.nvim_: User interface for the built-in language server.
   It's not perfect, but it's a capable UI.
+  This also replaces nvim-lightbulb.
 - nvim-compe_: An easy to configure and capable completion engine.
   I've written up a custom completion source for this.
 - telescope.nvim_: Fuzzy finder.
@@ -39,7 +40,6 @@ Notable plugins
 - galaxyline.nvim_: Statusline plugin.
   I use a custom statusline which works around some issues with galaxyline.
 - colorbuddy.nvim_: Color scheme engine. I use a custom theme loosely based on vim-quantum.
-- nvim-lightbulb_: Shows a lightbulb next to lines with an LSP Code Action.
 - gitsigns.nvim_: Git diff info in ``signcolumn``.
 - lspkind-nvim_: Show icons for types from LSP completions.
 - format.nvim_: Formatting plugin.
@@ -61,7 +61,6 @@ Notable plugins
 .. _nvim-bufferline.lua: https://github.com/akinsho/nvim-bufferline.lua
 .. _galaxyline.nvim: https://github.com/glepnir/galaxyline.nvim
 .. _colorbuddy.nvim: https://github.com/tjdevries/colorbuddy.nvim
-.. _nvim-lightbulb: https://github.com/kosayoda/nvim-lightbulb
 .. _gitsigns.nvim: https://github.com/lewis6991/gitsigns.nvim
 .. _lspkind-nvim: https://github.com/onsails/lspkind-nvim
 .. _format.nvim: https://github.com/lukas-reineke/format.nvim

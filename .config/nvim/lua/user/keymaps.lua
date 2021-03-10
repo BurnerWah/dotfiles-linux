@@ -6,6 +6,7 @@ local vsnip = {
   available = function(...) return vim.fn['vsnip#available'](...) == 1 end,
   jumpable = function(...) return vim.fn['vsnip#jumpable'](...) == 1 end,
 }
+local npairs = require('nvim-autopairs')
 
 local function replace_termcodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
@@ -40,9 +41,24 @@ function M.s_tab_complete()
   end
 end
 
+function M.on_enter()
+  if (pumvisible() ~= 0) then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      vim.fn["compe#confirm"]()
+      return npairs.esc('<C-y>')
+    else
+      vim.defer_fn(function() vim.fn["compe#confirm"]("<cr>") end, 20)
+      return npairs.esc("<c-n>")
+    end
+  else
+    return npairs.check_break_line_char()
+  end
+end
+
 _G.UserMaps = M
 
 imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
 smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
+imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}

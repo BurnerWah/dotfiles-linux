@@ -36,6 +36,6 @@ aug init
   au VimEnter * ++once lua require('user.keymaps')
   " Delay forces this to load after plugins
   au VimEnter * ++once unlet g:loaded_skim g:loaded_fzf
-  au BufWritePost plugins.lua PackerCompile
+  " au BufWritePost plugins.lua PackerCompile
 aug END
 " vim:ft=vim fenc=utf-8

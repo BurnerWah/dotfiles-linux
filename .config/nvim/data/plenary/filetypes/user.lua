@@ -39,6 +39,9 @@ return {
     ['frag'] = 'glsl', -- From vim-glsl
     ['geom'] = 'glsl', -- From vim-glsl
     ['glsl'] = 'glsl', -- From vim-glsl
+    ['gql'] = 'graphql',
+    ['graphql'] = 'graphql',
+    ['graphqls'] = 'graphql',
     ['info'] = 'info',
     ['iuml'] = 'plantuml',
     ['jsonc'] = 'jsonc',

@@ -2,13 +2,14 @@
 -- Only required if you have packer in your `opt` pack
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
+return require('packer').startup(function(use, use_rocks)
   -- Packer can manage itself as an optional plugin
   use {'wbthomason/packer.nvim', opt = true}
 
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
-  use {'nvim-lua/plenary.nvim', config = function() require'plenary.filetype'.add_file 'user' end}
+  use {'nvim-lua/plenary.nvim', config = [[require('plenary.filetype').add_file('user')]]}
+  use_rocks {'penlight', 'stdlib'}
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -30,7 +31,7 @@ return require('packer').startup(function(use)
   }
 
   -- Completion & Linting
-  use {'neovim/nvim-lspconfig', config = [[require 'user.cfg.lspsettings']]}
+  use {'neovim/nvim-lspconfig', config = [[require('user.cfg.lspsettings')]]}
   use {
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
@@ -60,9 +61,8 @@ return require('packer').startup(function(use)
   }
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
-  use {'kosayoda/nvim-lightbulb', requires = 'nvim-lspconfig'}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
-  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require'lspkind'.init {}]]}
+  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require('lspkind').init{}]]}
   use {'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall'}
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -79,7 +79,7 @@ return require('packer').startup(function(use)
     },
     run = ':TSUpdate',
     config = function()
-      require'nvim-treesitter.configs'.setup {
+      require('nvim-treesitter.configs').setup {
         ensure_installed = 'maintained',
         highlight = {enable = true},
         incremental_selection = {enable = true},
@@ -98,23 +98,11 @@ return require('packer').startup(function(use)
           },
         },
       }
-      local parser_config = require'nvim-treesitter.parsers'.get_parser_configs()
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
       parser_config.bash.used_by = {'PKGBUILD'}
     end,
   }
-  use {
-    'neoclide/coc.nvim',
-    branch = 'release',
-    opt = true,
-    disable = true,
-    config = function()
-      vim.api.nvim_set_keymap('n', 'gy', '<Plug>(coc-type-definition)', {silent = true})
-      vim.api.nvim_set_keymap('n', 'gi', '<Plug>(coc-implementation)', {silent = true})
-      vim.api.nvim_set_keymap('n', '<leader>qf', '<Plug>(coc-fix-current)', {})
-      vim.cmd [[autocmd init User CocOpenFloat call setwinvar(g:coc_last_float_win, '&winblend', 10)]]
-    end,
-  }
-  use {'dense-analysis/ale', cmd = 'ALEEnable', config = [[require 'user.cfg.ale']]}
+  use {'dense-analysis/ale', cmd = 'ALEEnable', config = [[require('user.cfg.ale')]]}
   use {
     'hrsh7th/vim-vsnip',
     requires = {
@@ -185,7 +173,6 @@ return require('packer').startup(function(use)
       local remap = vim.api.nvim_set_keymap
       local opts = {noremap = true, silent = true, expr = true}
       remap('i', '<C-Space>', [[compe#complete()]], opts)
-      remap('i', '<CR>', [[compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })]], opts)
       remap('i', '<C-e>', [[compe#close('<C-e>')]], opts)
       remap('i', '<C-f>', [[compe#scroll({ 'delta': +4 })]], opts)
       remap('i', '<C-d>', [[compe#scroll({ 'delta': -4 })]], opts)
@@ -212,7 +199,7 @@ return require('packer').startup(function(use)
   use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
 
   -- Lua
-  use 'tjdevries/manillua.nvim'
+  -- use 'tjdevries/manillua.nvim'
   use 'tjdevries/nlua.nvim'
   use {'bfredl/nvim-luadev', cmd = 'Luadev'}
   use {'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'}}
@@ -220,6 +207,7 @@ return require('packer').startup(function(use)
   -- Markdown
   use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
+  -- use 'davidgranstrom/nvim-markdown-preview'
 
   -- Python
   -- use 'vim-python/python-syntax'
@@ -237,27 +225,24 @@ return require('packer').startup(function(use)
       -- Telescope plugins
       'nvim-telescope/telescope-fzy-native.nvim', 'nvim-telescope/telescope-fzf-writer.nvim',
       'nvim-telescope/telescope-symbols.nvim', 'nvim-telescope/telescope-github.nvim',
-      'nvim-telescope/telescope-packer.nvim', 'nvim-telescope/telescope-project.nvim',
-      'nvim-telescope/telescope-node-modules.nvim',
+      'nvim-telescope/telescope-project.nvim', 'nvim-telescope/telescope-node-modules.nvim',
 
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
     },
     config = function()
-      local telescope = require 'telescope'
-      local env = vim.env
+      local telescope = require('telescope')
+      local E = vim.env
       telescope.setup {
-        defaults = {winblend = 10, file_sorter = require'telescope.sorters'.get_fzy_sorter},
+        defaults = {winblend = 10, file_sorter = require('telescope.sorters').get_fzy_sorter},
         extensions = {
           frecency = {
             show_scores = true,
-            ignore_patterns = {
-              '*.git/*', '*/tmp/*', (env.XDG_CACHE_HOME or (env.HOME .. '/.cache')),
-            },
+            ignore_patterns = {'*.git/*', '*/tmp/*', E.XDG_CACHE_HOME or (E.HOME .. '/.cache')},
             workspaces = {
-              conf = (env.XDG_CONFIG_HOME or (env.HOME .. '/.config')),
-              data = (env.XDG_DATA_HOME or (env.HOME .. '/.local/share')),
-              project = (env.HOME .. '/Projects'),
+              conf = E.XDG_CONFIG_HOME or (E.HOME .. '/.config'),
+              data = E.XDG_DATA_HOME or (E.HOME .. '/.local/share'),
+              project = E.HOME .. '/Projects',
             },
           },
           fzf_writer = {use_highlighter = true},
@@ -266,7 +251,6 @@ return require('packer').startup(function(use)
       telescope.load_extension('fzy_native')
       telescope.load_extension('fzf_writer')
       telescope.load_extension('gh')
-      telescope.load_extension('packer')
       telescope.load_extension('project')
       telescope.load_extension('node_modules')
       telescope.load_extension('frecency')
@@ -336,7 +320,7 @@ return require('packer').startup(function(use)
       vim.g.vista_ctags_cmd = {go = 'gotags', rst = 'rst2ctags'}
     end,
   }
-  use {'lewis6991/gitsigns.nvim', requires = 'plenary.nvim', config = [[require'gitsigns'.setup()]]}
+  use {'lewis6991/gitsigns.nvim', requires = 'plenary.nvim', config = "require('gitsigns').setup()"}
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
   use {
@@ -362,48 +346,10 @@ return require('packer').startup(function(use)
     cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
   }
   use {
-    'vim-airline/vim-airline',
-    --[[ Bottom & Tabline plugin
-
-      This will be replaced at some point, but it'll take a while to do so.
-      Some extensions have to be disabled to mitigate how it sets up lazy loading.
-
-      Loading on VimEnter & using a 'setup' instead of a 'config' key seems to fix issues with Packer
-    ]]
-    requires = {
-      'vim-airline/vim-airline-themes',
-      {'ryanoasis/vim-devicons', setup = function() vim.g.webdevicons_enable_nerdtree = 0 end},
-    },
-    opt = true,
-    disable = true,
-    -- event = 'VimEnter *',
-    setup = function()
-      vim.g.airline_theme = 'quantum' -- Modified version is now integrated into dotfiles
-      vim.g.airline_powerline_fonts = true
-      vim.g.airline_detect_spelllang = false
-      vim.g.airline_detect_crypt = false
-      vim.g.airline_skip_empty_sections = 1
-      -- Stupid way to fix bad icon on my system
-      vim.g.airline_symbols = {dirty = ' '}
-      vim.g['airline#parts#ffenc#skip_expected_string'] = 'utf-8[unix]'
-      vim.g['airline#extensions#vista#enabled'] = false -- Deals with Vista's lazy loader
-      -- vim.g['airline#extensions#tabline#enabled'] = true -- Enable tabline
-      vim.g['airline#extensions#nvimlsp#enabled'] = false
-      vim.g.airline_filetype_overrides = {
-        LuaTree = {'LuaTree', ''},
-        minimap = {'Map', ''},
-        tsplayground = {'Tree-Sitter Playground', ''},
-        vista = {'Vista', ''},
-        vista_kind = {'Vista', ''},
-        vista_markdown = {'Vista', ''},
-      }
-    end,
-  }
-  use {
     'glepnir/galaxyline.nvim',
     branch = 'main',
     requires = 'nvim-web-devicons',
-    config = [[require 'user.statusline']],
+    config = [[require('user.statusline')]],
   }
   use {
     'romgrk/barbar.nvim',
@@ -438,7 +384,7 @@ return require('packer').startup(function(use)
   use {
     'tjdevries/colorbuddy.nvim',
     -- Lua color scheme engine
-    config = function() require'colorbuddy'.colorscheme 'quantumbuddy' end,
+    config = [[require('colorbuddy').colorscheme('quantumbuddy')]],
   }
   use {
     'DanilaMihailov/beacon.nvim',
@@ -596,9 +542,16 @@ return require('packer').startup(function(use)
       }
     end,
   }
-  use {'lukas-reineke/format.nvim', config = [[require 'user.cfg.format-nvim']]}
+  use {'lukas-reineke/format.nvim', config = [[require('user.cfg.format-nvim')]]}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
   use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
+  use {'gennaro-tedesco/nvim-peekup', keys = {'n', [[""]]}}
+  use {
+    'rcarriga/vim-ultest',
+    requires = 'vim-test/vim-test',
+    opt = true,
+    cmd = {'Ultest', 'UltestNearest'},
+  }
 
   -- Integration
   use {
@@ -644,8 +597,7 @@ return require('packer').startup(function(use)
       remap('n', '<Leader>hl', [[<Cmd>lua require'hop'.hint_lines()<CR>]], {})
     end,
   }
-  use {'windwp/nvim-autopairs', opt = true, config = function() require'nvim-autopairs'.setup() end}
-  use {'Raimondi/delimitMate', opt = false, config = function() vim.g.delimitMate_tab2exit = 0 end}
+  use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end}
   use {
     'tpope/vim-abolish',
     cmd = {'Abolish', 'Subvert', 'S'},

@@ -45,7 +45,6 @@ local function on_attach(client)
   end
 
   if client_caps.code_action then
-    vim.cmd [[autocmd init CursorHold,CursorHoldI <buffer> lua require'nvim-lightbulb'.update_lightbulb()]]
     nnor {'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
     nnor {'<Leader>ac', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
     vnor {'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = true}
@@ -177,9 +176,11 @@ lspconfig.sumneko_lua.setup {
       telemetry = {enable = false},
       workspace = {
         library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.stdpath('data') .. '/site/lua_types'] = true,
-          [vim.fn.stdpath('data') .. '/site/vim_types'] = true,
+          vim.fn.expand('$VIMRUNTIME/lua'), vim.fn.stdpath('data') .. '/site/lua_types',
+          vim.fn.stdpath('data') .. '/site/@types',
+          -- [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          -- [vim.fn.stdpath('data') .. '/site/lua_types'] = true,
+          -- [vim.fn.stdpath('data') .. '/site/vim_types'] = true,
           -- ['/usr/share/lua/5.4'] = true,
         },
       },

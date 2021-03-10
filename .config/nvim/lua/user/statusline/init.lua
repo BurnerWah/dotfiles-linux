@@ -29,8 +29,9 @@ local colors = {
 }
 
 local mode = {
-  get = function() return vim.api.nvim_get_mode().mode end,
+  get = function() return vim.in_fast_event() and 'fallback' or vim.api.nvim_get_mode().mode end,
   color = {
+    fallback = colors.purple,
     n = colors.purple,
     no = colors.magenta,
     i = colors.green,
@@ -53,6 +54,7 @@ local mode = {
     t = colors.red,
   },
   name = {
+    fallback = 'NVCode',
     n = 'NORMAL',
     no = 'OP PENDING',
     v = 'VISUAL',
@@ -77,15 +79,25 @@ local mode = {
 }
 
 -- Small structure to retain color (helps avoid issues with odd buffers)
-local cache = {FileIcon = {fg = nil}}
+local cache = {
+  FileIcon = {fg = nil},
+  ViMode = {fg = nil, name = nil},
+}
 
 gls.left[1] = {
   ViMode = {
     provider = function()
       -- auto change color & name according the vim mode
-      vim.api.nvim_command('hi GalaxyViMode guibg=' .. mode.color[mode.get()])
-      vim.api.nvim_command('hi ViModeSeparator guifg=' .. mode.color[mode.get()])
-      return ('  %s '):format(mode.name[mode.get()] or 'NVCode')
+      if not vim.in_fast_event() then
+        cache.ViMode.fg = mode.color[mode.get() or 'fallback'] or mode.color['fallback']
+        cache.ViMode.name = mode.name[mode.get() or 'fallback'] or mode.name['fallback']
+      end
+      vim.cmd('hi GalaxyViMode guibg=' .. cache.ViMode.fg)
+      vim.cmd('hi ViModeSeparator guifg=' .. cache.ViMode.fg)
+      return ('  %s '):format(cache.ViMode.name)
+      -- vim.api.nvim_command('hi GalaxyViMode guibg=' .. mode.color[mode.get() or 'n'])
+      -- vim.api.nvim_command('hi ViModeSeparator guifg=' .. mode.color[mode.get() or 'n'])
+      -- return ('  %s '):format(mode.name[mode.get() or 'fallback'] or 'NVCode')
     end,
     separator = ' ',
     separator_highlight = {
