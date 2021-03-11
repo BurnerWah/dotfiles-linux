@@ -175,14 +175,7 @@ lspconfig.sumneko_lua.setup {
       hint = {enable = true, setType = true},
       telemetry = {enable = false},
       workspace = {
-        library = {
-          vim.fn.expand('$VIMRUNTIME/lua'), vim.fn.stdpath('data') .. '/site/lua_types',
-          vim.fn.stdpath('data') .. '/site/@types',
-          -- [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          -- [vim.fn.stdpath('data') .. '/site/lua_types'] = true,
-          -- [vim.fn.stdpath('data') .. '/site/vim_types'] = true,
-          -- ['/usr/share/lua/5.4'] = true,
-        },
+        library = {vim.fn.expand('$VIMRUNTIME/lua'), vim.fn.stdpath('data') .. '/site/@types'},
       },
       intelliSense = {searchDepth = 4},
     },

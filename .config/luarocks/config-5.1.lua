@@ -1,4 +1,5 @@
 -- LuaRocks configuration
+lua_interpreter = 'luajit'
 home_tree = home .. '/.local'
 homeconfdir = home .. '/.config/luarocks'
 lib_modules_path = '/lib64/lua/' .. lua_version

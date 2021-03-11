@@ -9,7 +9,7 @@ return require('packer').startup(function(use, use_rocks)
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = [[require('plenary.filetype').add_file('user')]]}
-  use_rocks {'penlight', 'stdlib'}
+  use_rocks {'stdlib'} -- Penlight is installed elsewhere
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -76,6 +76,7 @@ return require('packer').startup(function(use, use_rocks)
       {'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter'},
       {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
       {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
+      {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
     },
     run = ':TSUpdate',
     config = function()
@@ -97,6 +98,7 @@ return require('packer').startup(function(use, use_rocks)
             },
           },
         },
+        autotag = {enable = true},
       }
       local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
       parser_config.bash.used_by = {'PKGBUILD'}
