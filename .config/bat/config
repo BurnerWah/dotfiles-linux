@@ -30,6 +30,11 @@
 --map-syntax /etc/vconsole.conf:'Bourne Again Shell (bash)'
 --map-syntax /etc/vimrc:VimL
 --map-syntax /etc/virc:VimL
+--map-syntax /usr/lib/rpm/fileattrs/*.attr:'RPM Spec'
+--map-syntax /usr/lib/rpm/macros.d/*:'RPM Spec'
+--map-syntax /usr/lib/rpm/macros:'RPM Spec'
+--map-syntax /usr/lib/rpm/platform/*/macros:'RPM Spec'
+--map-syntax /usr/lib/rpm/redhat/macros:'RPM Spec'
 --map-syntax BSDmakefile:Makefile
 --map-syntax ReText.conf:INI
 --map-syntax Trolltech.conf:INI
