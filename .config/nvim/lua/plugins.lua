@@ -95,6 +95,9 @@ return require('packer').startup(function(use, use_rocks)
               ['if'] = '@function.inner',
               ['ac'] = '@class.outer',
               ['ic'] = '@class.inner',
+              ["a'"] = {lua = '@string.outer'},
+              ['a`'] = {lua = '@string.outer'},
+              ['a"'] = {lua = '@string.outer'},
             },
           },
         },
@@ -184,7 +187,6 @@ return require('packer').startup(function(use, use_rocks)
   -- Filetypes
   use 'leafo/moonscript-vim'
   use 'rhysd/vim-llvm'
-  use 'cespare/vim-toml'
   use 'ron-rs/ron.vim'
   use 'bakpakin/fennel.vim'
   use 'aklt/plantuml-syntax'
@@ -196,6 +198,7 @@ return require('packer').startup(function(use, use_rocks)
   use 'plasticboy/vim-markdown'
   -- Meson syntax is now manually maintained
   -- vim-orgmode is really weird
+  -- toml is handled internally + with nvim-treesitter
 
   -- CXX
   use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
@@ -250,13 +253,9 @@ return require('packer').startup(function(use, use_rocks)
           fzf_writer = {use_highlighter = true},
         },
       }
-      telescope.load_extension('fzy_native')
-      telescope.load_extension('fzf_writer')
-      telescope.load_extension('gh')
-      telescope.load_extension('project')
-      telescope.load_extension('node_modules')
-      telescope.load_extension('frecency')
-      telescope.load_extension('cheat')
+      tablex.foreachi({
+        'fzy_native', 'fzf_writer', 'gh', 'project', 'node_modules', 'frecency', 'cheat',
+      }, telescope.load_extension)
 
       local remap = vim.api.nvim_set_keymap
       local opts = {silent = true, noremap = true}
@@ -277,9 +276,8 @@ return require('packer').startup(function(use, use_rocks)
     cmd = 'Minimap',
     setup = function()
       vim.g.minimap_block_filetypes = {
-        'ale-fix-suggest', 'ale-preview-selection', 'ale-preview', 'coc-explorer', 'denite',
-        'denite-filter', 'fugitive', 'nerdtree', 'list', 'LuaTree', 'tagbar', 'tsplayground',
-        'vista', 'vista_kind', 'vista_markdown',
+        'ale-fix-suggest', 'ale-preview-selection', 'ale-preview', 'fugitive', 'LuaTree',
+        'tsplayground', 'vista', 'vista_kind', 'vista_markdown',
       }
     end,
   }
