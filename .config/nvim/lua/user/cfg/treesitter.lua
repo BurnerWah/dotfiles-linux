@@ -50,9 +50,12 @@ local text_objects = {
   string = {
     double = {
       inner = make_support_table('@string.double.inner', {'json', 'jsonc'}),
-      outer = make_support_table('@string.double.outer', {'bash', 'json', 'jsonc', 'lua', 'toml'}),
+      outer = make_support_table('@string.double.outer',
+                                 {'bash', 'javascript', 'json', 'jsonc', 'lua', 'rust', 'toml'}),
     },
-    single = {outer = make_support_table('@string.single.outer', {'bash', 'lua', 'toml'})},
+    single = {
+      outer = make_support_table('@string.single.outer', {'bash', 'javascript', 'lua', 'toml'}),
+    },
   },
   ambig = {
     braces = {
@@ -97,8 +100,9 @@ require('nvim-treesitter.configs').setup {
         ['i{'] = text_objects.ambig.brackets.inner,
         ['i}'] = text_objects.ambig.brackets.inner,
         ['a`'] = {
-          lua = '@string.any.outer',
           bash = '@ambig.tilde.outer',
+          javascript = '@string.template.outer',
+          lua = '@string.any.outer',
           toml = '@string.any.outer', -- mostly for multi-line strings
         },
         ['i`'] = {bash = '@ambig.tilde.inner'},
