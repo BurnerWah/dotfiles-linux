@@ -46,7 +46,6 @@ local function on_attach(client)
 
   if client_caps.code_action then
     nnor {'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
-    nnor {'<Leader>ac', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
     vnor {'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = true}
   end
 

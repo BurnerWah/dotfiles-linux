@@ -12,3 +12,6 @@
 (pair "=" @operator)
 
 (dotted_key "." @punctuation.delimiter)
+
+(quoted_key) @type.builtin
+(pair (quoted_key) @property)

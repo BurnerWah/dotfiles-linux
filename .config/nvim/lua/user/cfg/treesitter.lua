@@ -1,3 +1,71 @@
+-- Helper to define table for a capture's support
+local function make_support_table(capture, langs)
+  assert(type(capture) == 'string')
+  assert(type(langs) == 'table')
+  -- vim.validate {capture = {capture, 'string'}, langs = {langs, 'table'}}
+  local R = {}
+  tablex.foreach(langs, function(lang) R[lang] = capture end)
+  return R
+end
+
+-- Support table for various text objects (that i'm using)
+-- remove once nvim-treesitter-textobjects#27 is fixed
+local text_objects = {
+  class = {
+    inner = make_support_table('@class.inner', {
+      'c', 'cpp', 'dart', 'go', 'html', 'java', 'javascript', 'php', 'python', 'rst', 'rust', 'tsx',
+      'typescript',
+    }),
+    outer = make_support_table('@class.outer', {
+      'c', 'cpp', 'dart', 'go', 'html', 'java', 'javascript', 'php', 'python', 'ql', 'rst', 'rust',
+      'tsx', 'typescript', 'verilog',
+    }),
+  },
+  comment = {
+    outer = make_support_table('@comment.outer', {
+      'bash', 'c', 'cpp', 'css', 'dart', 'fennel', 'go', 'html', 'java', 'javascript', 'jsonc',
+      'lua', 'python', 'query', 'rst', 'ruby', 'rust', 'toml', 'verilog',
+      -- custom: css, fennel, html, java, javascript, jsonc, query, ruby, rust, toml
+    }),
+  },
+  fn = {
+    inner = make_support_table('@function.inner', {
+      'bash', 'c', 'c_sharp', 'cpp', 'dart', 'fennel', 'go', 'html', 'java', 'javascript', 'php',
+      'python', 'ql', 'rst', 'rust', 'tsx', 'typescript',
+      -- custom: fennel
+    }),
+    outer = make_support_table('@function.outer', {
+      'bash', 'c', 'c_sharp', 'cpp', 'dart', 'fennel', 'go', 'html', 'java', 'javascript', 'lua',
+      'php', 'python', 'ql', 'rst', 'rust', 'tsx', 'typescript', 'verilog',
+      -- custom: fennel
+    }),
+  },
+  parameter = {
+    inner = make_support_table('@parameter.inner', {
+      'c', 'cpp', 'dart', 'go', 'java', 'javascript', 'lua', 'php', 'python', 'rust', 'tsx',
+      'typescript',
+    }),
+  },
+  -- beyond this are custom captures
+  string = {
+    double = {
+      inner = make_support_table('@string.double.inner', {'json', 'jsonc'}),
+      outer = make_support_table('@string.double.outer', {'bash', 'json', 'jsonc', 'lua', 'toml'}),
+    },
+    single = {outer = make_support_table('@string.single.outer', {'bash', 'lua', 'toml'})},
+  },
+  ambig = {
+    braces = {
+      inner = make_support_table('@ambig.braces.inner', {'json', 'jsonc'}),
+      outer = make_support_table('@ambig.braces.outer', {'lua', 'json', 'jsonc'}),
+    },
+    brackets = {
+      inner = make_support_table('@ambig.brackets.inner', {'json', 'jsonc'}),
+      outer = make_support_table('@ambig.brackets.outer', {'json', 'jsonc'}),
+    },
+  },
+}
+
 require('nvim-treesitter.configs').setup {
   ensure_installed = 'maintained',
   highlight = {enable = true},
@@ -9,14 +77,54 @@ require('nvim-treesitter.configs').setup {
     select = {
       enable = true,
       keymaps = {
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
-        ["a'"] = {lua = '@string.outer'},
-        ['a`'] = {lua = '@string.outer'},
-        ['a"'] = {lua = '@string.outer'},
+        ['af'] = text_objects.fn.outer,
+        ['if'] = text_objects.fn.inner,
+        ['ac'] = text_objects.class.outer,
+        ['ic'] = text_objects.class.inner,
+        -- Vim-like
+        ["a'"] = text_objects.string.single.outer,
+        ['a"'] = text_objects.string.double.outer,
+        ['i"'] = text_objects.string.double.inner,
+        ['a/'] = text_objects.comment.outer,
+        ['a*'] = text_objects.comment.outer,
+        -- Ambiguous selections
+        ['a['] = text_objects.ambig.braces.outer,
+        ['a]'] = text_objects.ambig.braces.outer,
+        ['i['] = text_objects.ambig.braces.inner,
+        ['i]'] = text_objects.ambig.braces.inner,
+        ['a{'] = text_objects.ambig.brackets.outer,
+        ['a}'] = text_objects.ambig.brackets.outer,
+        ['i{'] = text_objects.ambig.brackets.inner,
+        ['i}'] = text_objects.ambig.brackets.inner,
+        ['a`'] = {
+          lua = '@string.any.outer',
+          bash = '@ambig.tilde.outer',
+          toml = '@string.any.outer', -- mostly for multi-line strings
+        },
+        ['i`'] = {bash = '@ambig.tilde.inner'},
       },
+    },
+    move = {
+      enable = true,
+      goto_next_start = {[']m'] = text_objects.fn.outer, [']]'] = text_objects.class.outer},
+      goto_next_end = {
+        [']M'] = text_objects.fn.outer,
+        [']['] = text_objects.class.outer,
+        [']*'] = text_objects.comment.outer,
+        [']/'] = text_objects.comment.outer,
+      },
+      goto_previous_start = {
+        ['[m'] = text_objects.fn.outer,
+        ['[['] = text_objects.class.outer,
+        ['[*'] = text_objects.comment.outer,
+        ['[/'] = text_objects.comment.outer,
+      },
+      goto_previous_end = {['[M'] = text_objects.fn.outer, ['[]'] = text_objects.class.outer},
+    },
+    swap = {
+      enable = true,
+      swap_next = {['<Leader>a'] = text_objects.parameter.inner},
+      swap_previous = {['<Leader>A'] = text_objects.parameter.inner},
     },
   },
   autotag = {enable = true},
