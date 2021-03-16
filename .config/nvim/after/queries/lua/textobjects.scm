@@ -8,8 +8,9 @@
  (#match? @string.single.outer "^'"))
 
 ; Ambiguous
-(field
- "["
- (_)+ @ambig.braces.inner
- "]"
-) @ambig.braces.outer
+([(variable_declarator "[" @_start (_)+ @ambig.braces.inner "]" @_end)
+  (field               "[" @_start (_)+ @ambig.braces.inner "]" @_end)]
+  (#make-range! "ambig.braces.outer" @_start @_end))
+
+(("(" @_start (_)+ ")" @_end)
+ (#make-range! "ambig.parens.outer" @_start @_end))

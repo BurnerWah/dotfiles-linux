@@ -50,8 +50,9 @@ local text_objects = {
   string = {
     double = {
       inner = make_support_table('@string.double.inner', {'json', 'jsonc'}),
-      outer = make_support_table('@string.double.outer',
-                                 {'bash', 'javascript', 'json', 'jsonc', 'lua', 'rust', 'toml'}),
+      outer = make_support_table('@string.double.outer', {
+        'bash', 'javascript', 'json', 'jsonc', 'lua', 'query', 'rust', 'toml',
+      }),
     },
     single = {
       outer = make_support_table('@string.single.outer', {'bash', 'javascript', 'lua', 'toml'}),
@@ -60,11 +61,15 @@ local text_objects = {
   ambig = {
     braces = {
       inner = make_support_table('@ambig.braces.inner', {'json', 'jsonc'}),
-      outer = make_support_table('@ambig.braces.outer', {'lua', 'json', 'jsonc'}),
+      outer = make_support_table('@ambig.braces.outer', {'json', 'jsonc', 'lua', 'query', 'toml'}),
     },
     brackets = {
       inner = make_support_table('@ambig.brackets.inner', {'json', 'jsonc'}),
-      outer = make_support_table('@ambig.brackets.outer', {'json', 'jsonc'}),
+      outer = make_support_table('@ambig.brackets.outer', {'css', 'json', 'jsonc', 'toml'}),
+    },
+    parens = {
+      inner = make_support_table('@ambig.parens.inner', {'bash'}),
+      outer = make_support_table('@ambig.parens.outer', {'bash', 'css', 'lua', 'query'}),
     },
   },
 }
@@ -99,6 +104,10 @@ require('nvim-treesitter.configs').setup {
         ['a}'] = text_objects.ambig.brackets.outer,
         ['i{'] = text_objects.ambig.brackets.inner,
         ['i}'] = text_objects.ambig.brackets.inner,
+        ['a('] = text_objects.ambig.parens.outer,
+        ['a)'] = text_objects.ambig.parens.outer,
+        ['i('] = text_objects.ambig.parens.inner,
+        ['i)'] = text_objects.ambig.parens.inner,
         ['a`'] = {
           bash = '@ambig.tilde.outer',
           javascript = '@string.template.outer',

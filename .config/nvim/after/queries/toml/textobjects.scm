@@ -2,18 +2,18 @@
 (comment) @comment.outer
 
 ; Strings
-(string) @string.any.outer
+[(string) (quoted_key)] @string.any.outer
 
-((string) @_s
- (#match? @_s "^\"[^\"]{2}")) @string.double.outer
-((string) @_s
- (#eq? @_s "\"\"")) @string.double.outer
-((quoted_key) @_s
- (#match? @_s "^\"")) @string.double.outer
+([(string     "\"" @_start ((_)+)? "\"" @_end)
+  (quoted_key "\"" @_start ((_)+)? "\"" @_end)]
+  (#make-range! "string.double.outer" @_start @_end))
+([(string     "'" @_start "'" @_end)
+  (quoted_key "'" @_start "'" @_end)]
+  (#make-range! "string.single.outer" @_start @_end))
 
-((string) @_s
- (#match? @_s "^'[^']{2}")) @string.single.outer
-((string) @_s
- (#eq? @_s "''")) @string.single.outer
-((quoted_key) @_s
- (#match? @_s "^'")) @string.single.outer
+; Ambiguous
+(array) @ambig.braces.outer
+([(table "[" @_start (_)+ "]" @_end)
+  (table_array_element "[[" @_start (_)+ "]]" @_end)]
+  (#make-range! "ambig.braces.outer" @_start @_end))
+(inline_table) @ambig.brackets.outer
