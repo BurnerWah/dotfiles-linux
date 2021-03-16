@@ -1,15 +1,17 @@
 -- TODO convert vim.cmd calls to pure Lua
 -- Imports & Functions {{{1
 local exepath = vim.fn.exepath
-local has = vim.fn.has
+local function has(...) return vim.fn.has(...) == 1 end
 
 -- Global options {{{1
 
 -- Vim settings
 
-vim.cmd [[set expandtab]] -- Use spaces instead of tabs.
-vim.cmd [[set softtabstop=2]] -- Tab key indents by 2 spaces
-vim.cmd [[set shiftwidth=2]] -- >> indents by 2 spaces
+vim.cmd [[
+  set expandtab     " Use spaces instead of tabs.
+  set softtabstop=2 " Tab key indents by 2 spaces
+  set shiftwidth=2  " >> indents by 2 spaces
+]]
 vim.o.shiftround = true -- >> indents to next multiple of 'shiftwidth'.
 vim.cmd [[set smartindent]]
 vim.o.hidden = true --  Switch between buffers without having to save first.
@@ -28,8 +30,10 @@ vim.o.termguicolors = true -- Truecolor mode
 -- Instead, enable it on filetypes which tree-sitter doesn't support.
 --
 -- TODO rewrite settings in Lua
-vim.cmd [[set nospell]]
-vim.cmd [[set spelllang=en_us]]
+vim.cmd [[
+  set nospell
+  set spelllang=en_us
+]]
 
 vim.o.pumblend = 10 -- Slightly transparent menus
 vim.o.sessionoptions = 'blank,curdir,folds,help,localoptions,tabpages,winpos,winsize'
@@ -37,14 +41,17 @@ vim.o.updatetime = 300
 
 -- Show non-printable characters
 vim.cmd [[set list]]
--- This is inelegant but it works well enough.
-vim.o.listchars = ((has('multi_byte') == 1) and
-                      [[tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-]] or
-                      [[tab:> ,extends:>,precedes:<,nbsp:+,trail:-]])
+if has('multi_byte') then
+  vim.o.listchars = 'tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-'
+else
+  vim.o.listchars = 'tab:> ,extends:>,precedes:<,nbsp:+,trail:-'
+end
 
-if (has('conceal') == 1) then
-  vim.cmd [[set conceallevel=2]]
-  vim.cmd [[set concealcursor=nv]]
+if has('conceal') then
+  vim.cmd [[
+    set conceallevel=2
+    set concealcursor=nv
+  ]]
 end
 
 -- Fish causes problems with plugins
