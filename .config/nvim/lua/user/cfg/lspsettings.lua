@@ -117,8 +117,8 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 
 for _, S in ipairs({
   'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'html', 'lsp4xml', 'mypyls', 'pyright',
-  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'tsserver', 'vimls', 'vsc_alex', 'vsc_stylelint',
-  'vsc_teal', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
+  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'vimls', 'vsc_alex', 'vsc_stylelint', 'vsc_teal',
+  'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
   -- jedi-language-server has a really annoying code action that i'd like to avoid
 }) do configs[S].setup({}) end
 
@@ -148,6 +148,8 @@ configs.clangd.setup {
 }
 
 configs.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}} -- Missing sass ft by default
+
+configs.denols.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('deno')}
 
 configs.gopls.setup {
   settings = {
@@ -181,6 +183,8 @@ configs.sumneko_lua.setup {
     },
   },
 }
+
+configs.tsserver.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('node')}
 
 configs.yamlls.setup {
   settings = {
