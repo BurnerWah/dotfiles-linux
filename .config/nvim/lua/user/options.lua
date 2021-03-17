@@ -7,11 +7,11 @@ local function has(...) return vim.fn.has(...) == 1 end
 
 -- Vim settings
 
-vim.cmd [[
+vim.api.nvim_exec([[
   set expandtab     " Use spaces instead of tabs.
   set softtabstop=2 " Tab key indents by 2 spaces
   set shiftwidth=2  " >> indents by 2 spaces
-]]
+]], false)
 vim.o.shiftround = true -- >> indents to next multiple of 'shiftwidth'.
 vim.cmd [[set smartindent]]
 vim.o.hidden = true --  Switch between buffers without having to save first.
@@ -30,10 +30,10 @@ vim.o.termguicolors = true -- Truecolor mode
 -- Instead, enable it on filetypes which tree-sitter doesn't support.
 --
 -- TODO rewrite settings in Lua
-vim.cmd [[
+vim.api.nvim_exec([[
   set nospell
   set spelllang=en_us
-]]
+]], false)
 
 vim.o.pumblend = 10 -- Slightly transparent menus
 vim.o.sessionoptions = 'blank,curdir,folds,help,localoptions,tabpages,winpos,winsize'
@@ -48,10 +48,10 @@ else
 end
 
 if has('conceal') then
-  vim.cmd [[
+  vim.api.nvim_exec([[
     set conceallevel=2
     set concealcursor=nv
-  ]]
+  ]], false)
 end
 
 -- Fish causes problems with plugins

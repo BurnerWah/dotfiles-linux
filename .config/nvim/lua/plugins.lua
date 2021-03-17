@@ -445,6 +445,7 @@ return require('packer').startup(function(use, use_rocks)
       end
     end,
   }
+  use {'yamatsum/nvim-cursorline', config = [[require('user.cfg.nvim-cursorline').config()]]}
 
   -- Utilities
   use 'tpope/vim-fugitive'
@@ -612,13 +613,13 @@ return require('packer').startup(function(use, use_rocks)
       nnor {
         '<C-a>', function()
           dial.cmd.increment_normal(vim.v.count1)
-          vim.cmd [[silent! call repeat#set("\<C-a>", v:count)]]
+          pcall(vim.cmd, [[silent! call repeat#set("\<C-a>", v:count)]])
         end,
       }
       nnor {
         '<C-x>', function()
           dial.cmd.increment_normal(-vim.v.count1)
-          vim.cmd [[silent! call repeat#set("\<C-x>", v:count)]]
+          pcall(vim.cmd, [[silent! call repeat#set("\<C-x>", v:count)]])
         end,
       }
       -- vim.keymap.nmap {'<C-a>', '<Plug>(dial-increment)'}

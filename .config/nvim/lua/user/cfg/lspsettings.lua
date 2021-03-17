@@ -31,6 +31,7 @@ local function on_attach(client)
   local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
   local ft = vim.bo.filetype
   local caps = client.resolved_capabilities
+  local ts_has_locals = require('nvim-treesitter.query').has_locals(ft)
   status.on_attach(client)
 
   if caps.hover then
@@ -84,17 +85,18 @@ local function on_attach(client)
     ]], false)
   end
 
-  if caps.document_highlight then
+  if caps.document_highlight and not ts_has_locals then
     -- Tree-sitter does this better
-    if not require('nvim-treesitter.query').has_locals(ft) then
-      vim.api.nvim_exec([[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-      ]], false)
-    end
+    vim.api.nvim_exec([[
+    augroup lsp_document_highlight
+      autocmd! * <buffer>
+      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    augroup END
+    ]], false)
+  elseif not ts_has_locals then
+    -- If tree-sitter & lsp can't handle stuff, defer document highlighting to nvim-cursorline.
+    require('user.cfg.nvim-cursorline').on_attach()
   end
 
   -- Diagnostics are probably always available
