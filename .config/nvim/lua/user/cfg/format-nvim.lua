@@ -10,6 +10,20 @@ assert(true)
 
 ---Collection of shared tools & tool generators to ensure consistent configurations
 local tool = {
+  ---Simple generator for a tool
+  ---@param cmd string|function
+  ---@param region? table
+  ---@param opts? table
+  ---@return table
+  generate = function(cmd, region, opts)
+    local R = {cmd = {cmd}}
+    if region then
+      R.start_pattern, R.end_pattern = unpack(region[1])
+      if region[2] then R.target = region[2] end
+    end
+    if opts then vim.tbl_extend('force', R, opts) end
+    return R
+  end,
 
   ---clang-format
   clang_format = {cmd = {'clang-format -i'}},
@@ -75,7 +89,9 @@ require('format').setup {
 
   lua = {{cmd = {'lua-format -i'}}},
 
-  markdown = {tool.prettier('markdown')},
+  markdown = {
+    tool.prettier('markdown'), tool.generate('lua-format -i', {{'^```lua$', '^```$'}, 'current'}),
+  },
 
   python = {{cmd = {'isort', 'yapf -i'}}},
 
@@ -90,6 +106,12 @@ require('format').setup {
   toml = {{cmd = {'taplo format'}}},
 
   typescript = {tool.prettier('typescript')},
+
+  vim = {{cmd = 'lua-format -i', start_pattern = '^lua << EOF$', end_pattern = '^EOF$'}},
+
+  vimwiki = {
+    {cmd = 'lua-format -i', start_pattern = '^{{{lua$', end_pattern = '^}}}$', target = 'current'},
+  },
 
   xml = {tool.xmllint},
 
