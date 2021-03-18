@@ -1,4 +1,4 @@
-local Job = require 'plenary.job'
+local Job = require('plenary.job')
 local file = io.open(vim.fn.stdpath('config') .. '/lua/user/data/gen/generated_schemas.lua', 'w+')
 io.output(file)
 -- Output header

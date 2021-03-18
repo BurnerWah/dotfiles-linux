@@ -8,12 +8,12 @@ local ts_root_finders = {
     return lsp_util.root_pattern('tsconfig.json')(fname) or
                lsp_util.root_pattern('package.json', 'jsconfig.json', '.git')(fname)
   end,
-  deno = lsp_util.root_pattern("package.json", "tsconfig.json", ".git"),
+  deno = lsp_util.root_pattern('package.json', 'tsconfig.json', '.git'),
 }
 
 ---Determine whether to use TSServer or Deno LSP, and provide a root dir
 ---to nvim-lspconfig.
----@param ts "node"|"deno"? TS Server to find a root for. Defaults to node.
+---@param ts? "node"|"deno" TS Server to find a root for. Defaults to node.
 ---@return function a function to use as a root_dir for nvim-lspconfig.
 function M.tsdetect(ts)
   ts = ts or 'node'

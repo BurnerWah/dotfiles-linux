@@ -1,5 +1,5 @@
-local configs = require 'lspconfig/configs'
-local util = require 'lspconfig/util'
+local configs = require('lspconfig/configs')
+local util = require('lspconfig/util')
 
 local server_name = 'vsc_alex'
 local root_pattern = util.root_pattern('.alexrc', '.alexrc.yml', '.alexrc.yaml', '.alexrc.js',

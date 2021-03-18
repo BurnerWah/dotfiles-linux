@@ -1,5 +1,5 @@
-local configs = require 'lspconfig/configs'
-local util = require 'lspconfig/util'
+local configs = require('lspconfig/configs')
+local util = require('lspconfig/util')
 
 local server_name = 'dotls'
 local bin_name = 'dot-language-server'

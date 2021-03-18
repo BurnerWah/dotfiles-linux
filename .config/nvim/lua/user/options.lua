@@ -90,6 +90,5 @@ vim.g.vimsyn_embed = 'lPr' -- Embed Lua, Python, and Ruby in vim syntax.
 -- (this should go elsewhere but there isn't a good place for it)
 vim.g.snips_author = 'Jaden Pleasants'
 vim.g.snips_email = 'jadenpleasants@fastmail.com'
-vim.g.auto_session_root_dir = vim.fn.stdpath('data') .. '/sessions'
 
 -- vim:ft=lua fdm=marker

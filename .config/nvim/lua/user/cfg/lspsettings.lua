@@ -20,7 +20,7 @@ status.config {
         ['start'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[1])},
         ['end'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[2])},
       }
-      return require("lsp-status.util").in_range(cursor_pos, value_range)
+      return require('lsp-status.util').in_range(cursor_pos, value_range)
     end
   end,
   current_function = true,
@@ -138,7 +138,7 @@ configs.ccls.setup {
     highlight = {lsRanges = true},
   },
   commands = {
-    LspFormat = {function() lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line("$"), 0}) end},
+    LspFormat = {function() lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line('$'), 0}) end},
   },
 }
 
@@ -191,7 +191,7 @@ configs.yamlls.setup {
     yaml = {
       format = {singleQuote = true},
       schemas = {
-        [url.parse 'gh:mattn/efm-langserver:master:schema.json'] = '/efm-langserver/config.yaml',
+        [url.parse('gh:mattn/efm-langserver:master:schema.json')] = '/efm-langserver/config.yaml',
       },
     },
   },

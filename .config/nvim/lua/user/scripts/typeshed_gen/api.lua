@@ -13,14 +13,13 @@ local info = Map {
   version = Map(_api_info.version),
 }
 local typeshed = vim.fn.stdpath('data') .. '/site/@types/vim'
--- print(vim.inspect(info))
 
 local map_select = function(key) return function(tbl) return tbl[key] end end
 local name_matches = function(str) return function(tbl) return tbl.name:find(str) end end
 
 local type_conversions = {
   fallback = 'any',
-  Array = 'List|Table',
+  Array = 'List|table',
   ['ArrayOf(Integer)'] = 'List|table',
   ['ArrayOf(Integer, 2)'] = 'List|table', -- Need a pair type for this
   ['ArrayOf(String)'] = 'List|table',

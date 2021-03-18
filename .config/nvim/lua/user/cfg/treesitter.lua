@@ -90,7 +90,7 @@ require('nvim-treesitter.configs').setup {
         ['ac'] = text_objects.class.outer,
         ['ic'] = text_objects.class.inner,
         -- Vim-like
-        ["a'"] = text_objects.string.single.outer,
+        ['a\''] = text_objects.string.single.outer,
         ['a"'] = text_objects.string.double.outer,
         ['i"'] = text_objects.string.double.inner,
         ['a/'] = text_objects.comment.outer,

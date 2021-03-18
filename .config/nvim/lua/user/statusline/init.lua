@@ -79,10 +79,7 @@ local mode = {
 }
 
 -- Small structure to retain color (helps avoid issues with odd buffers)
-local cache = {
-  FileIcon = {fg = nil},
-  ViMode = {fg = nil, name = nil},
-}
+local cache = {FileIcon = {fg = nil}, ViMode = {fg = nil, name = nil}}
 
 gls.left[1] = {
   ViMode = {

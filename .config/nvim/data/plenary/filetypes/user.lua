@@ -1,13 +1,10 @@
---[[ Filetype notes
-  Known issues:
-  - JSON With comments isn't detected (this is a general issue right now)
-  - Shebang detection isn't great (plenary issue)
-      In more detail, it only does exact matches, so it misses anything with arguments
-
-  Other notes:
-  - Zsh is present in here a lot to override base settings
---]] --
---
+-- Filetype notes
+-- Known issues:
+-- - JSON With comments isn't detected (this is a general issue right now)
+-- - Shebang detection isn't great (plenary issue)
+--     In more detail, it only does exact matches, so it misses anything with arguments
+-- Other notes:
+-- - Zsh is present in here a lot to override base settings
 local shebang_prefixes = {'/usr/bin/', '/bin/', '/usr/bin/env ', '/bin/env '}
 local shebang_fts = {
   ['awk -f'] = 'awk', -- Needed for plenary to work

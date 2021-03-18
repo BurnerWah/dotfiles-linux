@@ -44,16 +44,6 @@ local tool = {
       R.offsetColumn = opts.offset.column or opts.offset[2]
     end
     return R
-
-    -- return {
-    --   sourceName = (opts.name or opts.cmd or opts[1]),
-    --   command = (opts.cmd or opts[1]),
-    --   args = (opts.args or {}),
-    --   isStdout = (opts.stream ~= 'stderr'),
-    --   isStderr = (opts.stream ~= 'stdout'),
-    --   formatPattern = (opts.pattern or fmt.basic()),
-    --   securities = (opts.securities or {undefined = (opts.security or 'error')}),
-    -- }
   end,
   json = function(opts)
     local R = {}

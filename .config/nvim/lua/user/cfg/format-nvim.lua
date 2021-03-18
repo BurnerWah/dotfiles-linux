@@ -16,7 +16,7 @@ local function clang_tidy(file)
              file)
 end
 
-require'format'.setup {
+require('format').setup {
   ['*'] = {
     {
       cmd = {
@@ -28,24 +28,24 @@ require'format'.setup {
   c = {{cmd = {clang_tidy}, tempfile_dir = '/tmp'}, {cmd = {'clang-format -i'}}},
   cmake = {{cmd = {'cmake-format -i'}}},
   cpp = {{cmd = {clang_tidy}, tempfile_dir = '/tmp'}, {cmd = {'clang-format -i'}}},
-  css = {{cmd = {cmdgen.prettier:format 'css'}}},
+  css = {{cmd = {cmdgen.prettier:format('css')}}},
   go = {{cmd = {'gofmt -w', 'goimports -w'}, tempfile_postfix = '.tmp'}},
-  html = {{cmd = {cmdgen.prettier:format 'html'}}},
-  javascript = {{cmd = {cmdgen.prettier:format 'javascript'}}},
-  json = {{cmd = {cmdgen.prettier:format 'json'}}},
-  jsonc = {{cmd = {cmdgen.prettier:format 'json'}}},
-  less = {{cmd = {cmdgen.prettier:format 'less'}}},
+  html = {{cmd = {cmdgen.prettier:format('html')}}},
+  javascript = {{cmd = {cmdgen.prettier:format('javascript')}}},
+  json = {{cmd = {cmdgen.prettier:format('json')}}},
+  jsonc = {{cmd = {cmdgen.prettier:format('json')}}},
+  less = {{cmd = {cmdgen.prettier:format('less')}}},
   lua = {{cmd = {'lua-format -i'}}},
-  markdown = {{cmd = {cmdgen.prettier:format 'markdown'}}},
+  markdown = {{cmd = {cmdgen.prettier:format('markdown')}}},
   python = {{cmd = {'isort', 'yapf -i'}}},
   rust = {{cmd = {'rustfmt'}}}, -- NOTE This can format multiple files
-  scss = {{cmd = {cmdgen.prettier:format 'scss'}}},
+  scss = {{cmd = {cmdgen.prettier:format('scss')}}},
   sh = {{cmd = {'shfmt -i=2 -ci -w'}}},
   sql = {{cmd = {function(file) return ([[sqlformat -r %s -o %s]]):format(file, file) end}}},
   toml = {{cmd = {'taplo format'}}},
-  typescript = {{cmd = {cmdgen.prettier:format 'typescript'}}},
+  typescript = {{cmd = {cmdgen.prettier:format('typescript')}}},
   xml = {{cmd = {function(file) return ([[xmllint --format %s -o %s]]):format(file, file) end}}},
-  yaml = {{cmd = {cmdgen.prettier:format 'yaml'}}},
+  yaml = {{cmd = {cmdgen.prettier:format('yaml')}}},
 }
 
 vim.cmd [[autocmd init BufWritePost * FormatWrite]]

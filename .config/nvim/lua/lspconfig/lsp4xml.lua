@@ -1,5 +1,5 @@
-local configs = require 'lspconfig/configs'
-local util = require 'lspconfig/util'
+local configs = require('lspconfig/configs')
+local util = require('lspconfig/util')
 local expand = vim.fn.expand
 
 -- Helper function to simplify file associations

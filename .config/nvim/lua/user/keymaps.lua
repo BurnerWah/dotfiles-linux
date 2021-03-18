@@ -21,11 +21,11 @@ end
 
 function M.tab_complete()
   if (pumvisible() == 1) then
-    return replace_termcodes '<C-n>'
+    return replace_termcodes('<C-n>')
   elseif vsnip.available(1) then
-    return replace_termcodes '<Plug>(vsnip-expand-or-jump)'
+    return replace_termcodes('<Plug>(vsnip-expand-or-jump)')
   elseif check_back_space() then
-    return replace_termcodes '<Tab>'
+    return replace_termcodes('<Tab>')
   else
     return compe_complete()
   end
@@ -33,22 +33,22 @@ end
 
 function M.s_tab_complete()
   if (pumvisible() == 1) then
-    return replace_termcodes '<C-p>'
+    return replace_termcodes('<C-p>')
   elseif vsnip.jumpable(-1) then
-    return replace_termcodes '<Plug>(vsnip-jump-prev)'
+    return replace_termcodes('<Plug>(vsnip-jump-prev)')
   else
-    return replace_termcodes '<S-Tab>'
+    return replace_termcodes('<S-Tab>')
   end
 end
 
 function M.on_enter()
   if (pumvisible() ~= 0) then
-    if vim.fn.complete_info()["selected"] ~= -1 then
-      vim.fn["compe#confirm"]()
+    if vim.fn.complete_info().selected ~= -1 then
+      vim.fn['compe#confirm']()
       return npairs.esc('<C-y>')
     else
-      vim.defer_fn(function() vim.fn["compe#confirm"]("<cr>") end, 20)
-      return npairs.esc("<c-n>")
+      vim.defer_fn(function() vim.fn['compe#confirm']('<cr>') end, 20)
+      return npairs.esc('<c-n>')
     end
   else
     return npairs.check_break_line_char()

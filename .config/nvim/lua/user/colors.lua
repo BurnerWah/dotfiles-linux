@@ -11,13 +11,8 @@
 -- local g = colorbuddy.groups
 -- local s = colorbuddy.styles
 local Color, c, Group, g, s = unpack(Map(require('colorbuddy')):getvalues({'Color', 'colors', 'Group', 'groups', 'styles'}))
--- _G.Color, _G.c = nil, nil
--- _G.Group, _G.g = nil, nil
--- _G.s, _G.styles = nil, nil
 
--- vim.o.bg = 'dark'
 vim.g.colors_name = 'quantum'
--- vim.g.airline_theme = 'quantum'
 
 -- Base colors
 Color.new('gray0',  '#212121')
@@ -38,8 +33,6 @@ Color.new('orange', '#d7956e')
 Color.new('indigo', '#7681de')
 Color.new('brown',  '#a52a2a')
 
-Color.new('deep_purple', '#512da8')
-Group.new('userrefgrp', c.deep_purple:dark():dark():dark())
 -- Core - Vim
 --        group,          fg,       bg,      styles
 Group.new('Normal',       c.gray5,  c.gray0)

@@ -36,7 +36,7 @@ return require('packer').startup(function(use, use_rocks)
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
     config = function()
-      require'lspsaga'.init_lsp_saga {
+      require('lspsaga').init_lsp_saga {
         error_sign = '',
         warn_sign = '',
         hint_sign = '',
@@ -62,16 +62,15 @@ return require('packer').startup(function(use, use_rocks)
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
-  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require('lspkind').init{}]]}
+  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require('lspkind').init()]]}
   use {'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall'}
   use {
     'nvim-treesitter/nvim-treesitter',
-    --[[ Highlighting engine for neovim
-
-      I've chosen not to include some modules until some issues they have get fixed.
-      nvim-treesitter-textobjects can be added once #8 & #27 are fixed
-      nvim-ts-rainbow can be added once #5 is fixed (which requires nvim-treesitter#879 merged)
-      ]]
+    -- Highlighting engine for neovim
+    --
+    -- I've chosen not to include some modules until some issues they have get fixed.
+    -- nvim-treesitter-textobjects can be added once #8 & #27 are fixed
+    -- nvim-ts-rainbow can be added once #5 is fixed (which requires nvim-treesitter#879 merged)
     requires = {
       {'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter'},
       {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
@@ -108,10 +107,9 @@ return require('packer').startup(function(use, use_rocks)
       'nvim-treesitter',
     },
     config = function()
-      -- vim.o.completeopt = 'menu,menuone,noselect'
       vim.o.completeopt = 'menuone,noselect'
-      require'compe'.register_source('fish', require 'compe_fish') -- custom source
-      require'compe'.setup {
+      require('compe').register_source('fish', require('compe_fish')) -- custom source
+      require('compe').setup {
         enabled = true,
         autocomplete = true,
         debug = false,
@@ -309,7 +307,7 @@ return require('packer').startup(function(use, use_rocks)
     ft = {'css', 'kitty', 'less', 'lua', 'vim'},
     cmd = 'ColorizerToggle',
     config = function()
-      require'colorizer'.setup {
+      require('colorizer').setup {
         'kitty',
         'less',
         css = {css = true},
@@ -332,33 +330,21 @@ return require('packer').startup(function(use, use_rocks)
     config = [[require('user.statusline')]],
   }
   use {
-    'romgrk/barbar.nvim',
-    opt = true,
-    -- Tabline plugin
-    requires = 'nvim-web-devicons',
-    config = function()
-      local remap = vim.api.nvim_set_keymap
-      remap('n', 'bb', [[<Cmd>BufferPick<CR>]], {})
-    end,
-  }
-  use {
     'akinsho/nvim-bufferline.lua',
-    --[[ Tabline plugin
-      Issues:
-      - #14: (feat) Show only buffer in current tab?
-      ]]
+    -- Tabline plugin
+    -- Issues:
+    -- - #14: (feat) Show only buffer in current tab?
     requires = 'nvim-web-devicons',
     config = function()
-      require'bufferline'.setup {
+      require('bufferline').setup {
         options = {
           mappings = true,
           diagnostics = 'nvim_lsp',
-          diagnostics_indicator = function(count, _) return "(" .. count .. ")" end,
+          diagnostics_indicator = function(count, _) return '(' .. count .. ')' end,
           separator_style = 'slant',
         },
       }
-      local remap = vim.api.nvim_set_keymap
-      remap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
+      vim.api.nvim_set_keymap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
     end,
   }
   use {'tjdevries/colorbuddy.nvim', config = [[require('colorbuddy').colorscheme('quantumbuddy')]]}
@@ -373,7 +359,7 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'tkmpypy/chowcho.nvim',
     cmd = 'Chowcho',
-    config = function() require'chowcho'.setup {border_style = 'rounded'} end,
+    config = function() require('chowcho').setup {border_style = 'rounded'} end,
   }
   use {
     'kevinhwang91/nvim-hlslens',
@@ -397,7 +383,7 @@ return require('packer').startup(function(use, use_rocks)
       local mapgen = {
         iterate = function(key)
           return function()
-            vim.cmd(([[normal! %s]] .. key):format(vim.v.count1))
+            vim.cmd('normal! %s' .. vim.v.count1 .. key)
             hlslens.start()
             nmap {'<Leader>l', '<Plug>(UserEndHlslens)', silent = true}
           end
@@ -424,7 +410,7 @@ return require('packer').startup(function(use, use_rocks)
         local indicator, text, chunks
         local a_r_idx = math.abs(r_idx)
         if a_r_idx > 1 then
-          indicator = ('%d%s'):format(a_r_idx, sfw ~= (r_idx > 1) and '▲' or '▼')
+          indicator = string.format('%d%s', a_r_idx, sfw ~= (r_idx > 1) and '▲' or '▼')
         elseif a_r_idx == 1 then
           indicator = sfw ~= (r_idx == 1) and '▲' or '▼'
         else
@@ -432,13 +418,13 @@ return require('packer').startup(function(use, use_rocks)
         end
 
         if loc ~= 'c' then
-          text = ('[%s %d]'):format(indicator, idx)
+          text = string.format('[%s %d]', indicator, idx)
           chunks = {{' ', 'Ignore'}, {text, 'HlSearchLens'}}
         else
           if indicator ~= '' then
-            text = ('[%s %d/%d]'):format(indicator, idx, count)
+            text = string.format('[%s %d/%d]', indicator, idx, count)
           else
-            text = ('[%d/%d]'):format(idx, count)
+            text = string.format('[%d/%d]', idx, count)
           end
           chunks = {{' ', 'Ignore'}, {text, 'HlSearchLensCur'}}
           vim.api.nvim_buf_clear_namespace(0, hls_ns, lnum - 1, lnum)
@@ -494,15 +480,14 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'oberblastmeister/neuron.nvim',
-    --[[ Neuron-based note-taking engine
-
-      This will probably replace vimwiki at some point.
-    ]]
+    -- Neuron-based note-taking engine
+    --
+    -- This will probably replace vimwiki at some point.
     requires = {'plenary.nvim', 'telescope.nvim'},
     opt = true,
     keys = {{'n', 'gzi'}},
     config = function()
-      require'neuron'.setup {
+      require('neuron').setup {
         virtual_titles = true,
         mappings = true,
         run = nil,
@@ -572,20 +557,18 @@ return require('packer').startup(function(use, use_rocks)
 
   -- Text editing
   use 'tpope/vim-repeat'
-  -- use 'tpope/vim-endwise'
   use {
     'phaazon/hop.nvim',
-    --[[ EasyMotion replacement
-      This will eventually be lazy loaded but currently that requires too much maintainence
-
-      GitHub Issues:
-      - #3: (flaw) A lot of hints require 3 keystrokes
-      - #4: (feat) Quick-scope mode
-      - #8: (feat) Unable to use other keys like h,j,k,l to cancel hints
-      - #15: (bug) Incorrect hints position for lines that has tabs in help buffer
-      - #17: (bug) Incorrect hop window position for floating window
-      - #19: (feat) Allow to set configuration with a setup function
-      ]]
+    -- EasyMotion replacement
+    -- This will eventually be lazy loaded but currently that requires too much maintainence
+    --
+    -- GitHub Issues:
+    -- - #3: (flaw) A lot of hints require 3 keystrokes
+    -- - #4: (feat) Quick-scope mode
+    -- - #8: (feat) Unable to use other keys like h,j,k,l to cancel hints
+    -- - #15: (bug) Incorrect hints position for lines that has tabs in help buffer
+    -- - #17: (bug) Incorrect hop window position for floating window
+    -- - #19: (feat) Allow to set configuration with a setup function
     config = function()
       local remap = vim.api.nvim_set_keymap
       remap('n', '<Leader>hw', [[<Cmd>lua require'hop'.hint_words()<CR>]], {})

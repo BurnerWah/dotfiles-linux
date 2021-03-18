@@ -1,4 +1,4 @@
-local wezterm = require 'wezterm'
+local wezterm = require('wezterm')
 return {
   font = wezterm.font('JetBrains Mono'),
   color_scheme = 'ChallengerDeep',

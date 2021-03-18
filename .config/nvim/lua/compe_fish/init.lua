@@ -1,6 +1,6 @@
 -- This is heavily based off of the compe-zsh source
-local compe = require 'compe'
-local Job = require 'plenary.job'
+local compe = require('compe')
+local Job = require('plenary.job')
 
 local Source = {}
 
@@ -32,7 +32,7 @@ function Source.collect(_, input, callback)
   local results = {}
   local job = Job:new{
     command = 'fish',
-    args = {'-c', ([[complete --do-complete='%s']]):format(input)},
+    args = {'-c', string.format([[complete --do-complete='%s']], input)},
     cwd = vim.fn.getcwd(),
     on_stdout = function(_, data)
       local pieces = vim.split(data, '	', true)
