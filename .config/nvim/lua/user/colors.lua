@@ -1,9 +1,13 @@
 -- WIP port of my variant of tyrannicaltoucan/vim-quantum to colorbuddy
 -- LuaFormatter off
-local Color, c, Group, g, s = require('colorbuddy').setup()
-_G.Color, _G.c = nil, nil
-_G.Group, _G.g = nil, nil
-_G.s, _G.styles = nil, nil
+-- local Color, c, Group, g, s = require('colorbuddy').setup()
+-- this avoids the globals that colorbuddy would naturally create.
+-- however, it fails in a few random directories.
+-- i don't care why.
+local Color, c, Group, g, s = unpack(Map(require('colorbuddy')):getvalues({'Color', 'colors', 'Group', 'groups', 'styles'}))
+-- _G.Color, _G.c = nil, nil
+-- _G.Group, _G.g = nil, nil
+-- _G.s, _G.styles = nil, nil
 
 -- vim.o.bg = 'dark'
 vim.g.colors_name = 'quantum'
