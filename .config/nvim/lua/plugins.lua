@@ -83,10 +83,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'dense-analysis/ale', cmd = 'ALEEnable', config = [[require('user.cfg.ale')]]}
   use {
     'hrsh7th/vim-vsnip',
-    requires = {
-      'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
-      {'stevearc/vim-vsnip-snippets', after = 'vim-vsnip'},
-    },
+    requires = {'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ'},
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local remap = vim.api.nvim_set_keymap

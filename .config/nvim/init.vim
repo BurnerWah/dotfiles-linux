@@ -19,6 +19,7 @@ syn enable " Enable syntax highlighting.
 let g:loaded_skim = 0
 let g:loaded_fzf = 0
 lua require('pl')
+lua require('uutils')
 lua require('user.options')
 lua require('plugins')
 
