@@ -294,7 +294,13 @@ return require('packer').startup(function(use, use_rocks)
       vim.g.vista_ctags_cmd = {go = 'gotags', rst = 'rst2ctags'}
     end,
   }
-  use {'lewis6991/gitsigns.nvim', requires = 'plenary.nvim', config = "require('gitsigns').setup()"}
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = 'plenary.nvim',
+    -- if this loads before my colorscheme it will look terrible.
+    after = 'colorbuddy.nvim',
+    config = [[require('gitsigns').setup()]],
+  }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
   use {
@@ -355,11 +361,7 @@ return require('packer').startup(function(use, use_rocks)
       remap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
     end,
   }
-  use {
-    'tjdevries/colorbuddy.nvim',
-    -- Lua color scheme engine
-    config = [[require('colorbuddy').colorscheme('quantumbuddy')]],
-  }
+  use {'tjdevries/colorbuddy.nvim', config = [[require('colorbuddy').colorscheme('quantumbuddy')]]}
   use {
     'DanilaMihailov/beacon.nvim',
     config = function()
@@ -446,6 +448,23 @@ return require('packer').startup(function(use, use_rocks)
     end,
   }
   use {'yamatsum/nvim-cursorline', config = [[require('user.cfg.nvim-cursorline').config()]]}
+  use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
+  use {
+    'dm1try/golden_size',
+    config = function()
+      local function ignore_by_buftype(types)
+        local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+        for _, type in pairs(types) do if type == buftype then return 1 end end
+      end
+      local golden_size = require('golden_size')
+      -- set the callbacks, preserve the defaults
+      golden_size.set_ignore_callbacks({
+        {ignore_by_buftype, {'nerdtree', 'quickfix', 'terminal'}},
+        {golden_size.ignore_float_windows}, -- default one, ignore float windows
+        {golden_size.ignore_by_window_flag}, -- default one, ignore windows with w:ignore_gold_size=1
+      })
+    end,
+  }
 
   -- Utilities
   use 'tpope/vim-fugitive'
@@ -645,5 +664,10 @@ return require('packer').startup(function(use, use_rocks)
       vim.keymap.vmap {'ga', '<Plug>(LiveEasyAlign)', silent = true}
       vim.keymap.nmap {'ga', '<Plug>(EasyAlign)', silent = true}
     end,
+  }
+  use {
+    'dkarter/bullets.vim',
+    ft = {'markdown', 'gitcommit'},
+    setup = function() vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'} end,
   }
 end)

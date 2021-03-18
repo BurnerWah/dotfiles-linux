@@ -4,6 +4,12 @@
 -- this avoids the globals that colorbuddy would naturally create.
 -- however, it fails in a few random directories.
 -- i don't care why.
+-- local colorbuddy = require('colorbuddy')
+-- local Color = colorbuddy.Color
+-- local c = colorbuddy.colors
+-- local Group = colorbuddy.Group
+-- local g = colorbuddy.groups
+-- local s = colorbuddy.styles
 local Color, c, Group, g, s = unpack(Map(require('colorbuddy')):getvalues({'Color', 'colors', 'Group', 'groups', 'styles'}))
 -- _G.Color, _G.c = nil, nil
 -- _G.Group, _G.g = nil, nil
