@@ -450,6 +450,10 @@ return require('packer').startup(function(use, use_rocks)
   use {'yamatsum/nvim-cursorline', config = [[require('user.cfg.nvim-cursorline').config()]]}
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
   use {
+    'dstein64/nvim-scrollview',
+    config = function() vim.g.scrollview_nvim_14040_workaround = true end,
+  }
+  use {
     'dm1try/golden_size',
     config = function()
       local function ignore_by_buftype(types)
