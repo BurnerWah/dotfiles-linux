@@ -1,5 +1,5 @@
 local M = {}
-local imap, smap = vim.keymap.imap, vim.keymap.smap
+local imap, inor, smap = vim.keymap.imap, vim.keymap.inoremap, vim.keymap.smap
 local pumvisible, getline = vim.fn.pumvisible, vim.fn.getline
 local compe_complete = vim.fn['compe#complete']
 local vsnip = {
@@ -44,14 +44,17 @@ end
 function M.on_enter()
   if (pumvisible() ~= 0) then
     if vim.fn.complete_info().selected ~= -1 then
-      vim.fn['compe#confirm']()
-      return npairs.esc('<C-y>')
+      vim.fn['compe#confirm']('<CR>')
+      -- return npairs.esc('<C-y>')
+      return ''
     else
       vim.defer_fn(function() vim.fn['compe#confirm']('<cr>') end, 20)
-      return npairs.esc('<c-n>')
+      return ''
+      -- return npairs.esc('<c-n>')
     end
   else
-    return npairs.check_break_line_char()
+    return ''
+    -- return npairs.check_break_line_char()
   end
 end
 
@@ -61,4 +64,7 @@ imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
 smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
-imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
+vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
+-- imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
+-- inor {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
+-- inor {'<CR>', [[compe#confirm('<CR>')]], expr = true, silent = true}
