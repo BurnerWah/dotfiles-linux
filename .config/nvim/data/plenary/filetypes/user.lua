@@ -31,6 +31,7 @@ return {
     ['asa'] = special.asa,
     ['cjsn'] = 'jsonc',
     ['cjson'] = 'jsonc',
+    ['comp'] = 'glsl', -- From vim-glsl
     ['doap'] = 'xml', -- Description of a project
     ['fish'] = 'fish',
     ['frag'] = 'glsl', -- From vim-glsl
@@ -45,6 +46,7 @@ return {
     ['jsonld'] = 'json', -- JSON Linked Data
     ['ll'] = 'llvm',
     ['lzx'] = 'xml', -- OpenLaszlo
+    ['mlir'] = 'mlir', -- from LLVM
     ['moon'] = 'moon',
     ['org'] = 'org', -- vim-orgmode
     ['pip'] = 'requirements',

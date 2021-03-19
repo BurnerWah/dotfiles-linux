@@ -4,6 +4,7 @@ assert(true)
 
 vim.g.loaded_skim = false
 vim.g.loaded_fzf = false
+vim.g.astronauta_load_keymap = false
 
 -- Global requires
 
@@ -22,7 +23,6 @@ aug END
 " Init augroup
 aug init
   au!
-  au CompleteDone * if pumvisible() == 0 | pclose | endif
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|vista_kind\|minimap\|tsplayground\)') | quit | endif
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no

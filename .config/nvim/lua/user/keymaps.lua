@@ -1,5 +1,5 @@
-local M = {}
-local imap, inor, smap = vim.keymap.imap, vim.keymap.inoremap, vim.keymap.smap
+UserMaps = {}
+local imap, smap = vim.keymap.imap, vim.keymap.smap
 local pumvisible, getline = vim.fn.pumvisible, vim.fn.getline
 local compe_complete = vim.fn['compe#complete']
 local vsnip = {
@@ -19,52 +19,35 @@ local function check_back_space()
   end
 end
 
-function M.tab_complete()
-  if (pumvisible() == 1) then
-    return replace_termcodes('<C-n>')
-  elseif vsnip.available(1) then
-    return replace_termcodes('<Plug>(vsnip-expand-or-jump)')
-  elseif check_back_space() then
-    return replace_termcodes('<Tab>')
-  else
-    return compe_complete()
-  end
+function UserMaps.tab_complete()
+  if (pumvisible() == 1) then return replace_termcodes('<C-n>') end
+  if vsnip.available(1) then return replace_termcodes('<Plug>(vsnip-expand-or-jump)') end
+  if check_back_space() then return replace_termcodes('<Tab>') end
+  return compe_complete()
 end
 
-function M.s_tab_complete()
-  if (pumvisible() == 1) then
-    return replace_termcodes('<C-p>')
-  elseif vsnip.jumpable(-1) then
-    return replace_termcodes('<Plug>(vsnip-jump-prev)')
-  else
-    return replace_termcodes('<S-Tab>')
-  end
+function UserMaps.s_tab_complete()
+  if (pumvisible() == 1) then return replace_termcodes('<C-p>') end
+  if vsnip.jumpable(-1) then return replace_termcodes('<Plug>(vsnip-jump-prev)') end
+  return replace_termcodes('<S-Tab>')
 end
 
-function M.on_enter()
+function UserMaps.on_enter()
   if (pumvisible() ~= 0) then
     if vim.fn.complete_info().selected ~= -1 then
       vim.fn['compe#confirm']('<CR>')
-      -- return npairs.esc('<C-y>')
-      return ''
+      return npairs.esc('<C-y>')
     else
-      vim.defer_fn(function() vim.fn['compe#confirm']('<cr>') end, 20)
-      return ''
-      -- return npairs.esc('<c-n>')
+      vim.defer_fn(function() vim.fn['compe#confirm']('<CR>') end, 20)
+      return npairs.esc('<c-n>')
     end
   else
-    return ''
-    -- return npairs.check_break_line_char()
+    return npairs.check_break_line_char()
   end
 end
-
-_G.UserMaps = M
 
 imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
 smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
-vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
--- imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
--- inor {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
--- inor {'<CR>', [[compe#confirm('<CR>')]], expr = true, silent = true}
+imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}

@@ -8,7 +8,7 @@ return require('packer').startup(function(use, use_rocks)
 
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
-  use {'nvim-lua/plenary.nvim', config = [[require('plenary.filetype').add_file('user')]]}
+  use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   use_rocks {'stdlib'} -- Penlight is installed elsewhere
   use {
     'kyazdani42/nvim-web-devicons',
@@ -31,7 +31,7 @@ return require('packer').startup(function(use, use_rocks)
   }
 
   -- Completion & Linting
-  use {'neovim/nvim-lspconfig', config = [[require('user.cfg.lspsettings')]]}
+  use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
   use {
     'glepnir/lspsaga.nvim',
     requires = 'nvim-lspconfig',
@@ -41,6 +41,7 @@ return require('packer').startup(function(use, use_rocks)
         warn_sign = '',
         hint_sign = '',
         infor_sign = '',
+        code_action_prompt = {virtual_text = false},
         finder_action_keys = {
           open = 'o',
           vsplit = 's',
@@ -62,7 +63,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
-  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = [[require('lspkind').init()]]}
+  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
   use {'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall'}
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -78,12 +79,13 @@ return require('packer').startup(function(use, use_rocks)
       {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
     },
     run = ':TSUpdate',
-    config = [[require('user.cfg.treesitter')]],
+    config = 'require("user.cfg.treesitter")',
   }
-  use {'dense-analysis/ale', cmd = 'ALEEnable', config = [[require('user.cfg.ale')]]}
+  use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("user.cfg.ale")'}
   use {
     'hrsh7th/vim-vsnip',
-    requires = 'nvim-lspconfig',
+    opt = false,
+    requires = {'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ'},
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local remap = vim.api.nvim_set_keymap
@@ -99,6 +101,7 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'hrsh7th/nvim-compe',
+    opt = false,
     requires = {
       {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
       'nvim-treesitter',
@@ -124,6 +127,7 @@ return require('packer').startup(function(use, use_rocks)
           buffer = true,
           calc = true,
           vsnip = true,
+          snippets_nvim = false,
           nvim_lsp = true, -- Priority: 1000
           nvim_lua = true,
           spell = true,
@@ -154,17 +158,16 @@ return require('packer').startup(function(use, use_rocks)
   }
 
   -- Filetypes
-  use 'leafo/moonscript-vim'
-  use 'rhysd/vim-llvm'
-  use 'ron-rs/ron.vim'
-  use 'bakpakin/fennel.vim'
+  use {'leafo/moonscript-vim', ft = 'moon'}
+  use {'rhysd/vim-llvm', ft = {'llvm', 'mlir'}}
+  use {'ron-rs/ron.vim', ft = 'ron'}
+  use {'bakpakin/fennel.vim', ft = 'fennel'}
   use 'aklt/plantuml-syntax'
-  use 'tikhomirov/vim-glsl'
-  use 'udalov/kotlin-vim'
-  use 'YaBoiBurner/requirements.txt.vim'
-  use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
-  use 'blankname/vim-fish'
-  use 'plasticboy/vim-markdown'
+  use {'tikhomirov/vim-glsl', ft = {'glsl', 'elm'}}
+  use {'udalov/kotlin-vim', ft = 'kotlin'}
+  use {'YaBoiBurner/requirements.txt.vim', ft = 'requirements'}
+  use {'teal-language/vim-teal', ft = 'teal'} -- Locally patched ti fix some issues.
+  use {'blankname/vim-fish', ft = 'fish'}
   -- Meson syntax is now manually maintained
   -- vim-orgmode is really weird
   -- toml is handled internally + with nvim-treesitter
@@ -174,11 +177,12 @@ return require('packer').startup(function(use, use_rocks)
 
   -- Lua
   -- use 'tjdevries/manillua.nvim'
-  use 'tjdevries/nlua.nvim'
+  use {'tjdevries/nlua.nvim', ft = 'lua'}
   use {'bfredl/nvim-luadev', cmd = 'Luadev'}
   use {'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'}}
 
   -- Markdown
+  use {'plasticboy/vim-markdown', ft = 'markdown'}
   use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
   -- use 'davidgranstrom/nvim-markdown-preview'
@@ -200,6 +204,7 @@ return require('packer').startup(function(use, use_rocks)
       'nvim-telescope/telescope-fzy-native.nvim', 'nvim-telescope/telescope-fzf-writer.nvim',
       'nvim-telescope/telescope-symbols.nvim', 'nvim-telescope/telescope-github.nvim',
       'nvim-telescope/telescope-project.nvim', 'nvim-telescope/telescope-node-modules.nvim',
+      'nvim-telescope/telescope-media-files.nvim',
 
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
@@ -224,6 +229,7 @@ return require('packer').startup(function(use, use_rocks)
       }
       tablex.foreachi({
         'fzy_native', 'fzf_writer', 'gh', 'project', 'node_modules', 'frecency', 'cheat',
+        'media_files',
       }, telescope.load_extension)
 
       local remap = vim.api.nvim_set_keymap
@@ -294,7 +300,7 @@ return require('packer').startup(function(use, use_rocks)
     requires = 'plenary.nvim',
     -- if this loads before my colorscheme it will look terrible.
     after = 'colorbuddy.nvim',
-    config = [[require('gitsigns').setup()]],
+    config = 'require("gitsigns").setup()',
   }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
@@ -322,9 +328,8 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'glepnir/galaxyline.nvim',
-    branch = 'main',
     requires = 'nvim-web-devicons',
-    config = [[require('user.statusline')]],
+    config = 'require("user.statusline")',
   }
   use {
     'akinsho/nvim-bufferline.lua',
@@ -344,7 +349,7 @@ return require('packer').startup(function(use, use_rocks)
       vim.api.nvim_set_keymap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
     end,
   }
-  use {'tjdevries/colorbuddy.nvim', config = [[require('colorbuddy').colorscheme('quantumbuddy')]]}
+  use {'tjdevries/colorbuddy.nvim', config = 'require("colorbuddy").colorscheme("quantumbuddy")'}
   use {
     'DanilaMihailov/beacon.nvim',
     config = function()
@@ -358,10 +363,12 @@ return require('packer').startup(function(use, use_rocks)
     cmd = 'Chowcho',
     config = function() require('chowcho').setup {border_style = 'rounded'} end,
   }
-  use {'yamatsum/nvim-cursorline', config = [[require('user.cfg.nvim-cursorline').config()]]}
+  use {'yamatsum/nvim-cursorline', config = 'require("user.cfg.nvim-cursorline").config()'}
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
   use {
     'dstein64/nvim-scrollview',
+    opt = true,
+    -- disabled until it stops breaking inserts
     config = function() vim.g.scrollview_nvim_14040_workaround = true end,
   }
   use {
@@ -450,10 +457,10 @@ return require('packer').startup(function(use, use_rocks)
       }
     end,
   }
-  use {'lukas-reineke/format.nvim', config = [[require('user.cfg.format-nvim')]]}
+  use {'lukas-reineke/format.nvim', config = 'require("user.cfg.format-nvim")'}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
   use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
-  use {'gennaro-tedesco/nvim-peekup', keys = {'n', [[""]]}}
+  use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
   use {
     'rcarriga/vim-ultest',
     requires = 'vim-test/vim-test',
@@ -524,8 +531,6 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'monaqa/dial.nvim',
     -- Replaces speeddating
-    requires = 'astronauta.nvim',
-    opt = true,
     keys = {'<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'}},
     config = function()
       local dial = require('dial')
@@ -567,8 +572,6 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'junegunn/vim-easy-align',
-    requires = 'astronauta.nvim',
-    opt = true,
     cmd = {'EasyAlign', 'LiveEasyAlign'},
     keys = {{'n', 'ga'}, {'v', 'ga'}},
     config = function()
