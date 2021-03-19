@@ -7,5 +7,41 @@
       "end"
     ],
     "description": "ipair for foop"
+  },
+  "vim.cmd": {
+    "prefix": ["vim.cmd"],
+    "body": ["vim.cmd [[$0]]"],
+    "description": "nvim command"
+  },
+  "vim.api.nvim_exec": {
+    "prefix": ["vim.api.nvim_exec"],
+    "body": ["vim.api.nvim_exec([[", "$0", "]], ${1:false})"]
+  },
+  "Packer use": {
+    "prefix": ["use"],
+    "body": ["use {$0}"],
+    "description": "Packer use dsl"
+  },
+  "List": {
+    "prefix": ["List"],
+    "body": ["List {$0}"],
+    "description": "Penlight List"
+  },
+  "Set": {
+    "prefix": ["Set"],
+    "body": ["Set {$0}"],
+    "description": "Penlight Set"
+  },
+  "Map": {
+    "prefix": ["Map"],
+    "body": ["Map {$0}"],
+    "description": "Penlight Map"
+  },
+  "UUtils Import": {
+    "prefix": ["uutils.import"],
+    "body": [
+      "local ${1:key1, key2} = uutils.import {${2:${1/(\\w+)/'$1'/g}}}:from('${3:module}')"
+    ],
+    "description": "UUtils import"
   }
 }

@@ -47,7 +47,7 @@ local tool = {
     return {
       cmd = {
         List {
-          'prettier', '-w', '--parser', parser, '--config-precedence', '--prefer-file', '--no-semi',
+          'prettier', '-w', '--parser', parser, '--config-precedence', 'prefer-file', '--no-semi',
           '--single-quote',
         }:concat(' '),
       },
