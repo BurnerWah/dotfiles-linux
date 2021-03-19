@@ -71,6 +71,7 @@ vim.g.loaded_perl_provider = 0 -- Block Perl rplugins
 vim.g.node_host_prog = exepath('neovim-node-host')
 vim.g.ruby_host_prog = exepath('neovim-ruby-host')
 vim.g.netrw_nogx = true
+vim.g.astronauta_load_keymap = false -- We do this early
 
 -- Filetype settings {{{1
 
