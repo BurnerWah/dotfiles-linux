@@ -26,6 +26,14 @@ status.config {
   current_function = true,
 }
 
+-- Client filter - used to automatically turn off on_attach stuff for certain servers
+local server_filter = {
+  cursorline = Set {
+    'diagnosticls', 'vsc_alex', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
+    'vsc_stylelint',
+  },
+}
+
 -- Setup function
 local function on_attach(client)
   local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
@@ -94,7 +102,7 @@ local function on_attach(client)
       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
     augroup END
     ]], false)
-  elseif not ts_has_locals then
+  elseif not ts_has_locals and not server_filter.cursorline[client.config.name] then
     -- If tree-sitter & lsp can't handle stuff, defer document highlighting to nvim-cursorline.
     require('user.cfg.nvim-cursorline').on_attach()
   end
@@ -117,7 +125,7 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 
 for _, S in ipairs({
   'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'html', 'lsp4xml', 'mypyls', 'pyright',
-  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'vimls', 'vsc_alex', 'vsc_stylelint', 'vsc_teal',
+  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'vimls', 'vsc_alex', 'vsc_stylelint', 'tealls',
   'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
   -- jedi-language-server has a really annoying code action that i'd like to avoid
 }) do configs[S].setup({}) end
@@ -171,8 +179,17 @@ configs.sumneko_lua.setup {
       runtime = {version = 'LuaJIT', path = vim.split(package.path, ';')},
       completion = {callSnippet = 'Replace'}, -- Prefer completing snippets
       diagnostics = {
-        globals = {'vim', 'packer_plugins'},
-        disable = {'lowercase-global', 'undefined-global'},
+        globals = {
+          'vim', --
+          -- plugins
+          'packer_plugins', --
+          -- penlight
+          'utils', 'path', 'dir', 'tablex', 'stringio', 'sip', 'input', 'seq', 'lexer', 'stringx',
+          'config', 'pretty', 'data', 'func', 'text', 'operator', 'lapp', 'array2d',
+          'comprehension', 'xml', 'types', 'test', 'app', 'file', 'class', 'luabalanced', 'permute',
+          'template', 'url', 'compat', 'List', 'Map', 'Set', 'OrderedMap', 'MultiMap', 'Date',
+        },
+        disable = {'lowercase-global'},
       },
       hint = {enable = true, setType = true},
       telemetry = {enable = false},

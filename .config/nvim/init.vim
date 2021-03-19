@@ -18,10 +18,12 @@ syn enable " Enable syntax highlighting.
 
 let g:loaded_skim = 0
 let g:loaded_fzf = 0
-lua require('pl')
-lua require('uutils')
-lua require('user.options')
-lua require('plugins')
+lua << EOF
+require('pl')
+require('uutils')
+require('user.options')
+require('plugins')
+EOF
 
 " We just need this group initialized
 aug user_ftplugin

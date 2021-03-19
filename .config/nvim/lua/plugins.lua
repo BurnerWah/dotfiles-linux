@@ -13,7 +13,7 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
-      require'nvim-web-devicons'.setup {
+      require('nvim-web-devicons').setup {
         override = {
           ['Gemfile'] = {icon = '', color = '#701516', name = 'Gemfile'},
           ['Vagrantfile'] = {icon = '', color = '#1563ff', name = 'Vagrantfile'},
@@ -445,11 +445,11 @@ return require('packer').startup(function(use, use_rocks)
       end
       local golden_size = require('golden_size')
       -- set the callbacks, preserve the defaults
-      golden_size.set_ignore_callbacks({
+      golden_size.set_ignore_callbacks {
         {ignore_by_buftype, {'nerdtree', 'quickfix', 'terminal'}},
         {golden_size.ignore_float_windows}, -- default one, ignore float windows
         {golden_size.ignore_by_window_flag}, -- default one, ignore windows with w:ignore_gold_size=1
-      })
+      }
     end,
   }
 
@@ -585,7 +585,6 @@ return require('packer').startup(function(use, use_rocks)
     end,
   }
   use {'tpope/vim-commentary', cmd = 'Commentary', keys = {'gc', {'n', 'gcc'}, {'n', 'gcu'}}}
-  -- This will be replaced by b3nj5m1n/kommentary when it's more complete
   use {
     'tpope/vim-surround',
     -- This will be replaced by blackCauldron7/surround.nvim eventually

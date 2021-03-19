@@ -12,9 +12,6 @@ configs[server_name] = {
       '--stdio',
     },
     filetypes = {'javascript', 'javascriptreact', 'html'},
-    root_dir = function(fname)
-      return util.find_git_ancestor(fname) or root_pattern(fname) or util.path.dirname(fname)
-    end,
-    -- settings = {textlint = {run = 'onType'}},
+    root_dir = root_pattern,
   },
 }

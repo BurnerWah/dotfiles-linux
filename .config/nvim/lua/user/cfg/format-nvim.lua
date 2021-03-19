@@ -107,7 +107,7 @@ require('format').setup {
 
   typescript = {tool.prettier('typescript')},
 
-  vim = {{cmd = 'lua-format -i', start_pattern = '^lua << EOF$', end_pattern = '^EOF$'}},
+  vim = {{cmd = {'lua-format -i'}, start_pattern = '^lua << EOF$', end_pattern = '^EOF$'}},
 
   vimwiki = {
     {cmd = 'lua-format -i', start_pattern = '^{{{lua$', end_pattern = '^}}}$', target = 'current'},
