@@ -1,5 +1,6 @@
 -- This warranted having a standalone file
 local M = {}
+local util = require('lspconfig/util')
 
 local fmt = {
   basic = function(file)
@@ -101,8 +102,8 @@ M.linters = {
     security = 'hint',
   },
   cmakelint = tool.generic {{'cmakelint', '%file'}, pattern = fmt.basic(true), security = 'warning'},
-  cppcheck_c = tool.cppcheck 'c',
-  cppcheck_cpp = tool.cppcheck 'c++',
+  cppcheck_c = tool.cppcheck('c'),
+  cppcheck_cpp = tool.cppcheck('c++'),
   csslint = tool.json {
     {'csslint', '--format=json', '%filepath'},
     parse = {
@@ -112,6 +113,7 @@ M.linters = {
       security = 'type',
       message = '${message} (${rule.id})',
     },
+    roots = '.csslintrc',
     securities = {warning = 'warning', error = 'error'},
   },
   fish = tool.generic {
@@ -138,18 +140,6 @@ M.linters = {
     parse = {line = 'line', column = 'column', security = 'level', message = '${message} (${code})'},
     securities = {style = 'hint', info = 'info', warning = 'warning', error = 'error'},
   },
-  jsonlint = tool.generic {
-    {'jsonlint', '--compact', '-'},
-    stream = 'stderr',
-    pattern = {[[^line (\d+), col (\d+), (.*)$]], {line = 1, column = 2, message = 3}},
-  },
-  jq = tool.generic {
-    {'jq', '.', '%file'},
-    stream = 'stderr',
-    pattern = {
-      [[^parse error: (.+) at line (\d+), column (\d+)$]], {line = 2, column = 3, message = 1},
-    },
-  },
   luacheck = tool.generic {
     {'luacheck', '--formatter=plain', '--codes', '--ranges', '%file'},
     -- Luacheck is a very loud linter, and has a tendency to get really annoying
@@ -158,8 +148,8 @@ M.linters = {
       {line = 1, column = 2, endColumn = 3, security = 5, message = 4},
     },
     securities = {W = 'warning', E = 'error'},
+    roots = '.luacheckrc',
   },
-  luac = tool.generic {{'luac', '-p', '-'}, stream = 'stderr', pattern = fmt.basic(true)},
   markdownlint = tool.generic {
     {'markdownlint', '--stdin'},
     stream = 'both',
@@ -249,15 +239,6 @@ M.linters = {
     },
     securities = {WARNING = 'warning', ERROR = 'error'},
   },
-  -- standard = {
-  --   sourceName = 'standard',
-  --   command = './node_modules/.bin/standard',
-  --   args = {'--stdin', '--verbose'},
-  --   rootPatterns = {'.git'},
-  --   formatPattern = {
-  --     [[^\s*<\w+>:(\d+):(\d+):\s+(.*)(\r|\n)*$]], {line = 1, column = 2, message = 3},
-  --   },
-  -- },
   tidy = {
     sourceName = 'tidy',
     command = 'tidy',
@@ -303,22 +284,9 @@ M.linters = {
     pattern = {[[^[^:]+:(\d+):\s*(([^:]+)\s*:.*)$]], {line = 1, security = 3, message = 2}},
     securities = {warning = 'warning'},
   },
-  -- xo = tool.json {
-  --   {'xo', '--reporter', 'json', '--stdin', '--stdin-filename', '%filepath'},
-  --   roots = {'package.json', '.git'},
-  --   parse = {
-  --     errorsRoot = '[0].messages',
-  --     line = 'line',
-  --     column = 'column',
-  --     endLine = 'endLine',
-  --     endColumn = 'endColumn',
-  --     security = 'severity',
-  --     message = '${message} (${ruleId})',
-  --   },
-  --   securities = {['1'] = 'warning', ['2'] = 'error'},
-  -- },
   yamllint = tool.generic {
     {'yamllint', '-f', 'parsable', '-'},
+    roots = {'.yamllint', '.yamllint.yaml', '.yamllint.yml'},
     pattern = {
       [[^.*?:(\d+):(\d+): \[(.*?)] (.*)$]], {line = 1, column = 2, security = 3, message = 4},
     },
@@ -342,9 +310,6 @@ M.linter_filetypes = {
   fish = {'fish'},
   gitcommit = {'gitlint'},
   html = {'tidy', 'write_good'},
-  -- javascript = {'standard', 'xo'},
-  json = {'jsonlint', 'jq'},
-  jsonc = {'spectral'}, -- NOTE could add more to this with strip-json-comments
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
   markdown = {'markdownlint', 'write_good'},
   nroff = {'write_good'},
@@ -358,7 +323,6 @@ M.linter_filetypes = {
   teal = {'tlcheck'},
   tex = {'write_good'},
   texinfo = {'write_good'},
-  -- typescript = {'standard', 'xo'},
   vimwiki = {'write_good'},
   xhtml = {'write_good'},
   xml = {'xmllint'},
@@ -366,11 +330,30 @@ M.linter_filetypes = {
   zsh = {'zsh'},
 }
 
+local roots = Map {
+  lua = {'.luacheckrc'},
+  dockerfile = {'.hadolint.yaml'},
+  yaml = {'.yamllint', '.yamllint.yaml', '.yamllint.yaml'},
+  css = {'.csslintrc'},
+}
+roots:setdefault(util.path.dirname)
+
+function M.root_finder(fname)
+  local ft = vim.bo.filetype
+  local root = roots[ft]
+  if type(root) == 'table' then
+    roots[ft] = util.root_pattern(unpack(root))
+    root = roots[ft]
+  end
+  if type(root) == 'function' then return root(fname) end
+end
+
 function M.setup(self)
   local R = {}
   R.filetypes = {}
   for k, _ in pairs(self.linter_filetypes) do table.insert(R.filetypes, k) end
   R.init_options = {linters = self.linters, filetypes = self.linter_filetypes}
+  R.root_dir = self.root_finder
   return R
 end
 

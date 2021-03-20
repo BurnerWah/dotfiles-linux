@@ -101,7 +101,6 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'hrsh7th/nvim-compe',
-    opt = false,
     requires = {
       {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
       'nvim-treesitter',
@@ -367,8 +366,6 @@ return require('packer').startup(function(use, use_rocks)
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
   use {
     'dstein64/nvim-scrollview',
-    opt = true,
-    -- disabled until it stops breaking inserts
     config = function() vim.g.scrollview_nvim_14040_workaround = true end,
   }
   use {

@@ -2,8 +2,6 @@
 vim.wo.foldmethod = 'expr'
 vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 
-vim.bo.tabstop = 2
-
 -- matchit
 if vim.g.loaded_matchit then
   vim.b.match_ignorecase = 0
