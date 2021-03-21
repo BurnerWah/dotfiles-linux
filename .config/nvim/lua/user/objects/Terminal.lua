@@ -16,8 +16,4 @@ end
 
 function Terminal:mapper(nr) return function() self:switch(nr) end end
 
-local t = Terminal()
-vim.keymap.nnoremap {'<Leader>kh', t:mapper(1), silent = true}
-vim.keymap.nnoremap {'<Leader>kj', t:mapper(2), silent = true}
-vim.keymap.nnoremap {'<Leader>kk', t:mapper(3), silent = true}
-vim.keymap.nnoremap {'<Leader>kl', t:mapper(4), silent = true}
+return Terminal
