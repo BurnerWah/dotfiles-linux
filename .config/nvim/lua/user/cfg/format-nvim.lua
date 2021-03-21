@@ -93,7 +93,7 @@ require('format').setup {
     tool.prettier('markdown'), tool.generate('lua-format -i', {{'^```lua$', '^```$'}, 'current'}),
   },
 
-  python = {{cmd = {'isort', 'yapf -i'}}},
+  python = {{cmd = {'isort', 'black'}}},
 
   rust = {{cmd = {'rustfmt'}}}, -- NOTE This can format multiple files
 

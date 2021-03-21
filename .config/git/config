@@ -2,7 +2,6 @@
 	editor = nvim
 	pager = delta
 	# excludesFile = ~/.config/git/global.gitignore
-	hooksPath = ~/.config/git/hooks
 [user]
 	# user info
 	name = Jaden Pleasants

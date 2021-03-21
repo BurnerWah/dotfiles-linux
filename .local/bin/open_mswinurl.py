@@ -12,9 +12,11 @@ Giving this command an easy to use name is mostly irrelevant since it should be
 accesed using `xdg-open`.
 """
 
-import configparser, subprocess, sys
+import configparser
+import subprocess
+import sys
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
 
-subprocess.call(['xdg-open', config['InternetShortcut']['URL']])
+subprocess.call(["xdg-open", config["InternetShortcut"]["URL"]])

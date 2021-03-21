@@ -64,7 +64,11 @@ return require('packer').startup(function(use, use_rocks)
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
   use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
-  use {'anott03/nvim-lspinstall', requires = 'nvim-lspconfig', cmd = 'LspInstall'}
+  use {
+    'kabouzeid/nvim-lspinstall',
+    requires = 'nvim-lspconfig',
+    cmd = {'LspInstall', 'LspUninstall'},
+  }
   use {
     'nvim-treesitter/nvim-treesitter',
     -- Highlighting engine for neovim
@@ -383,6 +387,11 @@ return require('packer').startup(function(use, use_rocks)
         {golden_size.ignore_by_window_flag}, -- default one, ignore windows with w:ignore_gold_size=1
       }
     end,
+  }
+  use {
+    'kevinhwang91/nvim-hlslens',
+    keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
+    config = 'require("user.cfg.nvim-hlslens")',
   }
 
   -- Utilities

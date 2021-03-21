@@ -80,19 +80,20 @@ class fd_search(Command):
     # The execute method is called when you run this command in ranger.
     def execute(self):
         import subprocess
+
         from ranger.ext.get_executables import get_executables
 
-        if 'fd' not in get_executables():
+        if "fd" not in get_executables():
             self.fm.notify("Couldn't find fd on the PATH.", bad=True)
 
             return
 
         if self.arg(1):
-            if self.arg(1)[:2] == '-d':
+            if self.arg(1)[:2] == "-d":
                 depth = self.arg(1)
                 target = self.rest(2)
             else:
-                depth = '-d1'
+                depth = "-d1"
                 target = self.rest(1)
         else:
             self.fm.notify(":fd_search needs a query.", bad=True)
@@ -103,18 +104,26 @@ class fd_search(Command):
         # fd's behavior from splitting results by \0, which allows for newlines
         # in your filenames to splitting results by \n, which allows for \0 in
         # filenames.
-        null_sep = {'arg': '-0', 'split': '\0'}
-        nl_sep = {'arg': '', 'split': '\n'}
+        null_sep = {"arg": "-0", "split": "\0"}
+        nl_sep = {"arg": "", "split": "\n"}
         result_sep = null_sep
 
-        process = subprocess.Popen(['fd', result_sep['arg'], depth, target],
-                                   universal_newlines=True,
-                                   stdout=subprocess.PIPE)
+        process = subprocess.Popen(
+            ["fd", result_sep["arg"], depth, target],
+            universal_newlines=True,
+            stdout=subprocess.PIPE,
+        )
         (search_results, _err) = process.communicate()
         global fd_deq
-        fd_deq = deque((self.fm.thisdir.path + os.sep + rel for rel in sorted(
-            search_results.split(result_sep['split']), key=str.lower)
-                        if rel != ''))
+        fd_deq = deque(
+            (
+                self.fm.thisdir.path + os.sep + rel
+                for rel in sorted(
+                    search_results.split(result_sep["split"]), key=str.lower
+                )
+                if rel != ""
+            )
+        )
 
         if len(fd_deq) > 0:
             self.fm.select_file(fd_deq[0])
@@ -175,13 +184,13 @@ class fzf_select(Command):
             command = "find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
             -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m"
 
-        fzf = self.fm.execute_command(command,
-                                      universal_newlines=True,
-                                      stdout=subprocess.PIPE)
+        fzf = self.fm.execute_command(
+            command, universal_newlines=True, stdout=subprocess.PIPE
+        )
         stdout, stderr = fzf.communicate()
 
         if fzf.returncode == 0:
-            fzf_file = os.path.abspath(stdout.rstrip('\n'))
+            fzf_file = os.path.abspath(stdout.rstrip("\n"))
 
             if os.path.isdir(fzf_file):
                 self.fm.cd(fzf_file)

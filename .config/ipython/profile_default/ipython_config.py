@@ -25,7 +25,7 @@ c = get_config()
 #   - :meth:`init_code`
 
 # Execute the given command string.
-c.InteractiveShellApp.code_to_run = ''
+c.InteractiveShellApp.code_to_run = ""
 
 # Run the file referenced by the PYTHONSTARTUP environment variable at IPython
 # startup.
@@ -41,10 +41,10 @@ c.InteractiveShellApp.exec_lines = []
 c.InteractiveShellApp.extensions = []
 
 # dotted module name of an IPython extension to load.
-c.InteractiveShellApp.extra_extension = ''
+c.InteractiveShellApp.extra_extension = ""
 
 # A file to be run
-c.InteractiveShellApp.file_to_run = ''
+c.InteractiveShellApp.file_to_run = ""
 
 # Enable GUI event loop integration with any of ('glut', 'gtk', 'gtk2', 'gtk3',
 # 'osx', 'pyglet', 'qt', 'qt4', 'qt5', 'tk', 'wx', 'gtk2', 'qt4').
@@ -58,7 +58,7 @@ c.InteractiveShellApp.hide_initial_ns = True
 c.InteractiveShellApp.matplotlib = None
 
 # Run the module as a script.
-c.InteractiveShellApp.module_to_run = ''
+c.InteractiveShellApp.module_to_run = ""
 
 # Pre-load matplotlib and numpy for interactive use, selecting a particular
 # matplotlib backend and loop integration.
@@ -80,10 +80,10 @@ c.InteractiveShellApp.reraise_ipython_extension_failures = False
 # This is an application.
 
 # The date format used by logging formatters for %(asctime)s
-c.Application.log_datefmt = '%Y-%m-%d %H:%M:%S'
+c.Application.log_datefmt = "%Y-%m-%d %H:%M:%S"
 
 # The Logging format template
-c.Application.log_format = '[%(name)s]%(highlevel)s %(message)s'
+c.Application.log_format = "[%(name)s]%(highlevel)s %(message)s"
 
 # Set the log level by value or name.
 c.Application.log_level = 30
@@ -106,7 +106,7 @@ c.BaseIPythonApplication.copy_config_files = False
 # Path to an extra config file to load.
 #
 # If specified, load this config file in addition to any other IPython config.
-c.BaseIPythonApplication.extra_config_file = ''
+c.BaseIPythonApplication.extra_config_file = ""
 
 # The name of the IPython directory. This directory is used for logging
 # configuration (through profiles), history storage, etc. The default is
@@ -118,7 +118,7 @@ c.BaseIPythonApplication.extra_config_file = ''
 c.BaseIPythonApplication.overwrite = False
 
 # The IPython profile to use.
-c.BaseIPythonApplication.profile = 'default'
+c.BaseIPythonApplication.profile = "default"
 
 # Create a massive crash report when IPython encounters what may be an internal
 # error.  The default is to append a short message to the usual traceback
@@ -137,7 +137,9 @@ c.TerminalIPythonApp.force_interact = False
 
 # Class to use to instantiate the TerminalInteractiveShell object. Useful for
 # custom Frontends
-c.TerminalIPythonApp.interactive_shell_class = 'IPython.terminal.interactiveshell.TerminalInteractiveShell'
+c.TerminalIPythonApp.interactive_shell_class = (
+    "IPython.terminal.interactiveshell.TerminalInteractiveShell"
+)
 
 # Start IPython quickly by skipping the loading of config files.
 c.TerminalIPythonApp.quick = False
@@ -150,7 +152,7 @@ c.TerminalIPythonApp.quick = False
 
 # 'all', 'last', 'last_expr' or 'none', 'last_expr_or_assign' specifying which
 # nodes should be run interactively (displaying output from expressions).
-c.InteractiveShell.ast_node_interactivity = 'last_expr'
+c.InteractiveShell.ast_node_interactivity = "last_expr"
 
 # A list of ast.NodeTransformer subclass instances, which will be applied to
 # user input before code is run.
@@ -177,7 +179,7 @@ c.InteractiveShell.automagic = True
 # c.InteractiveShell.banner1 = "Python 3.7.5 (default, Oct 17 2019, 12:16:48) \nType 'copyright', 'credits' or 'license' for more information\nIPython 7.8.0 -- An enhanced Interactive Python. Type '?' for help.\n"
 
 # The part of the banner to be printed after the profile
-c.InteractiveShell.banner2 = ''
+c.InteractiveShell.banner2 = ""
 
 # Set the size of the output cache. The default is 1000, you can change it
 # permanently in your config file. Setting it to 0 completely disables the
@@ -193,7 +195,7 @@ c.InteractiveShell.cache_size = 1000
 c.InteractiveShell.color_info = True
 
 # Set the color scheme (NoColor, Neutral, Linux, or LightBG).
-c.InteractiveShell.colors = 'Linux'
+c.InteractiveShell.colors = "Linux"
 
 #
 c.InteractiveShell.debug = False
@@ -231,7 +233,7 @@ c.InteractiveShell.history_load_length = 1000
 
 # Select the loop runner that will be used to execute top-level asynchronous
 # code
-c.InteractiveShell.loop_runner = 'IPython.core.interactiveshell._asyncio_runner'
+c.InteractiveShell.loop_runner = "IPython.core.interactiveshell._asyncio_runner"
 
 #
 c.InteractiveShell.object_info_string_level = 0
@@ -243,13 +245,13 @@ c.InteractiveShell.pdb = False
 c.InteractiveShell.quiet = False
 
 #
-c.InteractiveShell.separate_in = '\n'
+c.InteractiveShell.separate_in = "\n"
 
 #
-c.InteractiveShell.separate_out = ''
+c.InteractiveShell.separate_out = ""
 
 #
-c.InteractiveShell.separate_out2 = ''
+c.InteractiveShell.separate_out2 = ""
 
 # Show rewritten input, e.g. for autocall.
 c.InteractiveShell.show_rewritten_input = True
@@ -262,7 +264,7 @@ c.InteractiveShell.sphinxify_docstring = True
 c.InteractiveShell.wildcards_case_sensitive = True
 
 # Switch modes for the IPython exception handlers.
-c.InteractiveShell.xmode = 'Context'
+c.InteractiveShell.xmode = "Context"
 
 # -----------------------------------------------------------------------------
 # TerminalInteractiveShell(InteractiveShell) configuration
@@ -276,13 +278,13 @@ c.TerminalInteractiveShell.confirm_exit = True
 # Options for displaying tab completions, 'column', 'multicolumn', and
 # 'readlinelike'. These options are for `prompt_toolkit`, see `prompt_toolkit`
 # documentation for more information.
-c.TerminalInteractiveShell.display_completions = 'multicolumn'
+c.TerminalInteractiveShell.display_completions = "multicolumn"
 
 # Shortcut style to use at the prompt. 'vi' or 'emacs'.
-c.TerminalInteractiveShell.editing_mode = 'vi'
+c.TerminalInteractiveShell.editing_mode = "vi"
 
 # Set the editor used by IPython (default to $EDITOR/vi/notepad).
-c.TerminalInteractiveShell.editor = 'nvim'
+c.TerminalInteractiveShell.editor = "nvim"
 
 # Allows to enable/disable the prompt toolkit history search
 c.TerminalInteractiveShell.enable_history_search = True
@@ -301,7 +303,7 @@ c.TerminalInteractiveShell.highlight_matching_brackets = True
 
 # The name or class of a Pygments style to use for syntax highlighting. To see
 # available styles, run `pygmentize -L styles`.
-c.TerminalInteractiveShell.highlighting_style = 'monokai'
+c.TerminalInteractiveShell.highlighting_style = "monokai"
 
 # Override highlighting format for specific tokens
 # c.TerminalInteractiveShell.highlighting_style_overrides = {}
@@ -314,7 +316,7 @@ c.TerminalInteractiveShell.mouse_support = True
 c.TerminalInteractiveShell.prompt_includes_vi_mode = True
 
 # Class used to generate Prompt token for prompt_toolkit
-c.TerminalInteractiveShell.prompts_class = 'IPython.terminal.prompts.Prompts'
+c.TerminalInteractiveShell.prompts_class = "IPython.terminal.prompts.Prompts"
 
 # Use `raw_input` for the REPL, without completion and prompt colors.
 #
@@ -334,7 +336,7 @@ c.TerminalInteractiveShell.term_title = True
 
 # Customize the terminal title format.  This is a python format string.
 # Available substitutions are: {cwd}.
-c.TerminalInteractiveShell.term_title_format = 'IPython: {cwd}'
+c.TerminalInteractiveShell.term_title_format = "IPython: {cwd}"
 
 # Use 24bit colors instead of 256 colors in prompt highlighting. If your
 # terminal supports true color, the following command should print 'TRUECOLOR'
@@ -485,7 +487,7 @@ c.PlainTextFormatter.max_seq_length = 1000
 c.PlainTextFormatter.max_width = 79
 
 #
-c.PlainTextFormatter.newline = '\n'
+c.PlainTextFormatter.newline = "\n"
 
 #
 c.PlainTextFormatter.pprint = True

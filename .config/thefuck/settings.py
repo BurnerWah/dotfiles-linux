@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # mypy: ignore-errors
 # pylint: disable=C0103
 """The Fuck settings file
@@ -12,7 +11,7 @@ See https://github.com/nvbn/thefuck#settings for more information.
 """
 
 # rules = [<const: All rules enabled>]
-exclude_rules = ['yum_invalid_operation']
+exclude_rules = ["yum_invalid_operation"]
 require_confirmation = True
 wait_command = 3
 no_colors = False
@@ -21,5 +20,5 @@ priority = {}
 history_limit = None
 alter_history = True
 wait_slow_command = 15
-slow_commands = ['lein', 'react-native', 'gradle', './gradlew', 'vagrant']
-env = {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}
+slow_commands = ["lein", "react-native", "gradle", "./gradlew", "vagrant"]
+env = {"LC_ALL": "C", "LANG": "C", "GIT_TRACE": "1"}
