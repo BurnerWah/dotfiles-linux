@@ -83,9 +83,9 @@ return require('packer').startup(function(use, use_rocks)
       {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
     },
     run = ':TSUpdate',
-    config = 'require("user.cfg.treesitter")',
+    config = 'require("plugins.treesitter")',
   }
-  use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("user.cfg.ale")'}
+  use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("plugins.ale")'}
   use {
     'hrsh7th/vim-vsnip',
     opt = false,
@@ -366,7 +366,7 @@ return require('packer').startup(function(use, use_rocks)
     cmd = 'Chowcho',
     config = function() require('chowcho').setup {border_style = 'rounded'} end,
   }
-  use {'yamatsum/nvim-cursorline', config = 'require("user.cfg.nvim-cursorline").config()'}
+  use {'yamatsum/nvim-cursorline', config = 'require("plugins.nvim-cursorline").config()'}
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
   use {
     'dstein64/nvim-scrollview',
@@ -391,7 +391,7 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'kevinhwang91/nvim-hlslens',
     keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
-    config = 'require("user.cfg.nvim-hlslens")',
+    config = 'require("plugins.nvim-hlslens")',
   }
 
   -- Utilities
@@ -463,7 +463,7 @@ return require('packer').startup(function(use, use_rocks)
       }
     end,
   }
-  use {'lukas-reineke/format.nvim', config = 'require("user.cfg.format-nvim")'}
+  use {'lukas-reineke/format.nvim', config = 'require("plugins.format-nvim")'}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
   use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
   use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
