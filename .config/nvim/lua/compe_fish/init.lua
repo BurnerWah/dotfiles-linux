@@ -6,7 +6,7 @@ local Source = {}
 
 function Source.new()
   local self = setmetatable({}, {__index = Source})
-  self.executable_fish = (vim.fn.executable('fish') == 1)
+  self.executable_fish = vim.fn.executable('fish') == 1
   return self
 end
 
