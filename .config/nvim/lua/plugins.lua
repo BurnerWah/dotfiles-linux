@@ -161,15 +161,15 @@ return require('packer').startup(function(use, use_rocks)
   }
 
   -- Filetypes
-  use {'leafo/moonscript-vim', ft = 'moon'}
+  use 'leafo/moonscript-vim'
   use {'rhysd/vim-llvm', ft = {'llvm', 'mlir'}}
-  use {'ron-rs/ron.vim', ft = 'ron'}
+  use 'ron-rs/ron.vim'
   use {'bakpakin/fennel.vim', ft = 'fennel'}
   use 'aklt/plantuml-syntax'
   use {'tikhomirov/vim-glsl', ft = {'glsl', 'elm'}}
   use {'udalov/kotlin-vim', ft = 'kotlin'}
   use {'YaBoiBurner/requirements.txt.vim', ft = 'requirements'}
-  use {'teal-language/vim-teal', ft = 'teal'} -- Locally patched ti fix some issues.
+  use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
   use {'blankname/vim-fish', ft = 'fish'}
   -- Meson syntax is now manually maintained
   -- vim-orgmode is really weird
