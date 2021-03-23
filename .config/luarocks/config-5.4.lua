@@ -7,4 +7,4 @@ rocks_trees = {
   {name = 'local', root = home .. '/.local'}, {name = 'syslocal', root = '/usr/local'},
   {name = 'system', root = '/usr'},
 }
-variables = {GUNZIP = 'pigz'}
+variables = {AR = 'llvm-ar', CC = 'clang', CXX = 'clang++', GUNZIP = 'unpigz', LD = 'clang'}
