@@ -13,11 +13,13 @@ local shebang_fts = {
   ['gawk -f'] = 'awk', -- Needed for plenary to work
   ['gjs'] = 'javascript', -- GJS Scripts
   ['gjs-console'] = 'javascript', -- GJS Scripts
+  ['gluon'] = 'gluon',
   ['lua'] = 'lua',
   ['moon'] = 'moon',
   ['node'] = 'javascript',
   ['ruby'] = 'ruby',
   ['tl'] = 'teal',
+  ['ts-node'] = 'typescript',
 }
 local shebang = {}
 for _, prefix in ipairs(shebang_prefixes) do
@@ -37,6 +39,7 @@ return {
     ['frag'] = 'glsl', -- From vim-glsl
     ['geom'] = 'glsl', -- From vim-glsl
     ['glsl'] = 'glsl', -- From vim-glsl
+    ['glu'] = 'gluon',
     ['gql'] = 'graphql',
     ['graphql'] = 'graphql',
     ['graphqls'] = 'graphql',

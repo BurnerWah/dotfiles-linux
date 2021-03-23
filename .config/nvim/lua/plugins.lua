@@ -9,7 +9,8 @@ return require('packer').startup(function(use, use_rocks)
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
-  use_rocks {'stdlib'} -- Penlight is installed elsewhere
+  -- hererocks are broken right now
+  -- use_rocks {'stdlib'}
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -170,6 +171,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'udalov/kotlin-vim', ft = 'kotlin'}
   use {'YaBoiBurner/requirements.txt.vim', ft = 'requirements'}
   use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
+  use 'gluon-lang/vim-gluon'
   use {'blankname/vim-fish', ft = 'fish'}
   -- Meson syntax is now manually maintained
   -- vim-orgmode is really weird
@@ -443,7 +445,6 @@ return require('packer').startup(function(use, use_rocks)
 
       -- Add extra REPLs
       iron.core.add_repl_definitions {
-        fennel = {fennel = {command = {'fennel', '--repl'}}},
         fish = {fish = {command = {'fish'}}},
         gluon = {gluon = {command = {'gluon', '-i'}}},
         lua = {croissant = {command = {'croissant'}}},
