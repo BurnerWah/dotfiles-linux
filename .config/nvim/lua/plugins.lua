@@ -10,7 +10,7 @@ return require('packer').startup(function(use, use_rocks)
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   -- hererocks are broken right now
-  -- use_rocks {'stdlib'}
+  use_rocks {'stdlib'}
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -93,15 +93,13 @@ return require('packer').startup(function(use, use_rocks)
     requires = {'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ'},
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
-      local remap = vim.api.nvim_set_keymap
+      local imap, smap = vim.keymap.imap, vim.keymap.smap
       -- Expand
-      remap('i', '<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], {expr = true})
-      remap('s', '<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], {expr = true})
+      imap {'<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], expr = true}
+      smap {'<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], expr = true}
       -- Expand or jump
-      remap('i', '<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']],
-            {expr = true})
-      remap('s', '<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']],
-            {expr = true})
+      imap {'<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']], expr = true}
+      smap {'<C-l>', [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']], expr = true}
     end,
   }
   use {
@@ -110,69 +108,21 @@ return require('packer').startup(function(use, use_rocks)
       {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
       'nvim-treesitter',
     },
-    config = function()
-      vim.o.completeopt = 'menuone,noselect'
-      require('compe').register_source('fish', require('compe_fish')) -- custom source
-      require('compe').setup {
-        enabled = true,
-        autocomplete = true,
-        debug = false,
-        min_length = 1,
-        preselect = 'enable',
-        throttle_time = 80,
-        source_timeout = 200,
-        incomplete_delay = 400,
-        max_abbr_width = 100,
-        max_kind_width = 100,
-        max_menu_width = 100,
-        documentation = true,
-        source = {
-          path = true,
-          buffer = true,
-          calc = true,
-          vsnip = true,
-          snippets_nvim = false,
-          nvim_lsp = true, -- Priority: 1000
-          nvim_lua = true,
-          spell = true,
-          tags = true,
-          tabnine = {
-            ignored_filetypes = {
-              'alsaconf', 'crontab', 'dircolors', 'dnsmasq', 'dosini', 'fstab', 'group', 'grub',
-              'hostconf', 'hostsaccess', 'inittab', 'limits', 'logindefs', 'mailcap', 'markdown',
-              'modconf', 'pamconf', 'passwd', 'pinfo', 'protocols', 'ptcap', 'resolv', 'rst',
-              'services', 'sshconfig', 'sshdconfig', 'sudoers', 'sysctl', 'udevconf', 'udevperm',
-              'updatedb', 'vimwiki', 'wget',
-            },
-            priority = 900, -- defaults to 5000 which can be problematic
-            dup = 0, -- allow duplicate entries (mostly with lsp)
-          },
-          treesitter = true,
-          omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},
-          fish = true,
-        },
-      }
-      local remap = vim.api.nvim_set_keymap
-      local opts = {noremap = true, silent = true, expr = true}
-      remap('i', '<C-Space>', [[compe#complete()]], opts)
-      remap('i', '<C-e>', [[compe#close('<C-e>')]], opts)
-      remap('i', '<C-f>', [[compe#scroll({ 'delta': +4 })]], opts)
-      remap('i', '<C-d>', [[compe#scroll({ 'delta': -4 })]], opts)
-    end,
+    config = 'require("plugins.nvim-compe")',
   }
 
   -- Filetypes
   use 'leafo/moonscript-vim'
-  use {'rhysd/vim-llvm', ft = {'llvm', 'mlir'}}
+  use 'rhysd/vim-llvm'
   use 'ron-rs/ron.vim'
-  use {'bakpakin/fennel.vim', ft = 'fennel'}
+  use 'bakpakin/fennel.vim'
   use 'aklt/plantuml-syntax'
-  use {'tikhomirov/vim-glsl', ft = {'glsl', 'elm'}}
-  use {'udalov/kotlin-vim', ft = 'kotlin'}
-  use {'YaBoiBurner/requirements.txt.vim', ft = 'requirements'}
+  use 'tikhomirov/vim-glsl'
+  use 'udalov/kotlin-vim'
+  use 'YaBoiBurner/requirements.txt.vim'
   use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
   use 'gluon-lang/vim-gluon'
-  use {'blankname/vim-fish', ft = 'fish'}
+  use 'blankname/vim-fish'
   -- Meson syntax is now manually maintained
   -- vim-orgmode is really weird
   -- toml is handled internally + with nvim-treesitter
@@ -197,7 +147,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'Vimjas/vim-python-pep8-indent', ft = {'aap', 'bzl', 'cython', 'pyrex', 'python'}}
 
   -- RST
-  use {'stsewd/sphinx.nvim', ft = 'rst'}
+  use {'stsewd/sphinx.nvim', ft = 'rst', run = ':UpdateRemotePlugins'}
 
   -- Telescope
   use {
@@ -214,39 +164,7 @@ return require('packer').startup(function(use, use_rocks)
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
     },
-    config = function()
-      local telescope = require('telescope')
-      local E = vim.env
-      telescope.setup {
-        defaults = {winblend = 10, file_sorter = require('telescope.sorters').get_fzy_sorter},
-        extensions = {
-          frecency = {
-            show_scores = true,
-            ignore_patterns = {'*.git/*', '*/tmp/*', E.XDG_CACHE_HOME or (E.HOME .. '/.cache')},
-            workspaces = {
-              conf = E.XDG_CONFIG_HOME or (E.HOME .. '/.config'),
-              data = E.XDG_DATA_HOME or (E.HOME .. '/.local/share'),
-              project = E.HOME .. '/Projects',
-            },
-          },
-          fzf_writer = {use_highlighter = true},
-        },
-      }
-      tablex.foreachi({
-        'fzy_native', 'fzf_writer', 'gh', 'project', 'node_modules', 'frecency', 'cheat',
-        'media_files',
-      }, telescope.load_extension)
-
-      local remap = vim.api.nvim_set_keymap
-      local opts = {silent = true, noremap = true}
-
-      remap('n', '<Leader>ff', [[<Cmd>Telescope find_files<CR>]], opts)
-      remap('n', '<Leader>fg', [[<Cmd>Telescope live_grep<CR>]], opts)
-      remap('n', '<Leader>fb', [[<Cmd>Telescope buffers<CR>]], opts)
-      remap('n', '<Leader>fh', [[<Cmd>Telescope help_tags<CR>]], opts)
-      remap('n', '<Leader><Leader>', [[<Cmd>Telescope frequency<CR>]], opts)
-      remap('n', '<C-p>', [[<Cmd>Telescope project<CR>]], opts)
-    end,
+    config = 'require("plugins.telescope")',
   }
   use {'pwntester/octo.nvim', requires = 'telescope.nvim', opt = true, cmd = 'Octo'}
 
@@ -440,29 +358,7 @@ return require('packer').startup(function(use, use_rocks)
     'hkupty/iron.nvim',
     cmd = {'IronRepl', 'IronSend', 'IronReplHere', 'IronWatchCurrentFile'},
     keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
-    config = function()
-      local iron = require('iron')
-
-      -- Add extra REPLs
-      iron.core.add_repl_definitions {
-        fish = {fish = {command = {'fish'}}},
-        gluon = {gluon = {command = {'gluon', '-i'}}},
-        lua = {croissant = {command = {'croissant'}}},
-      }
-
-      iron.core.set_config {
-        preferred = {
-          fennel = 'fennel',
-          fish = 'fish',
-          gluon = 'gluon',
-          javascript = 'node',
-          lua = 'croissant',
-          python = 'ipython',
-          sh = 'bash',
-          zsh = 'zsh',
-        },
-      }
-    end,
+    config = 'require("plugins.iron")',
   }
   use {'lukas-reineke/format.nvim', config = 'require("plugins.format-nvim")'}
   use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
@@ -473,6 +369,7 @@ return require('packer').startup(function(use, use_rocks)
     requires = 'vim-test/vim-test',
     opt = true,
     cmd = {'Ultest', 'UltestNearest'},
+    run = ':UpdateRemotePlugins',
   }
 
   -- Integration
@@ -499,25 +396,24 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'phaazon/hop.nvim',
     -- EasyMotion replacement
-    -- This will eventually be lazy loaded but currently that requires too much maintainence
     --
     -- GitHub Issues:
-    -- - #3: (flaw) A lot of hints require 3 keystrokes
     -- - #4: (feat) Quick-scope mode
-    -- - #8: (feat) Unable to use other keys like h,j,k,l to cancel hints
-    -- - #15: (bug) Incorrect hints position for lines that has tabs in help buffer
-    -- - #17: (bug) Incorrect hop window position for floating window
-    -- - #19: (feat) Allow to set configuration with a setup function
+    keys = {
+      {'n', '<Leader>hw'}, {'n', '<Leader>hp'}, {'n', '<Leader>hc'}, {'n', '<Leader>hC'},
+      {'n', '<Leader>hl'},
+    },
+    cmd = {'HopWord', 'HopPattern', 'HopChar1', 'HopChar2', 'HopLine'},
     config = function()
-      local remap = vim.api.nvim_set_keymap
-      remap('n', '<Leader>hw', [[<Cmd>lua require'hop'.hint_words()<CR>]], {})
-      remap('n', '<Leader>hp', [[<Cmd>lua require'hop'.hint_patterns()<CR>]], {})
-      remap('n', '<Leader>hc', [[<Cmd>lua require'hop'.hint_char1()<CR>]], {})
-      remap('n', '<Leader>hC', [[<Cmd>lua require'hop'.hint_char2()<CR>]], {})
-      remap('n', '<Leader>hl', [[<Cmd>lua require'hop'.hint_lines()<CR>]], {})
+      local nmap = vim.keymap.nmap
+      nmap {'<Leader>hw', [[<Cmd>lua require('hop').hint_words()<CR>]]}
+      nmap {'<Leader>hp', [[<Cmd>lua require('hop').hint_patterns()<CR>]]}
+      nmap {'<Leader>hc', [[<Cmd>lua require('hop').hint_char1()<CR>]]}
+      nmap {'<Leader>hC', [[<Cmd>lua require('hop').hint_char2()<CR>]]}
+      nmap {'<Leader>hl', [[<Cmd>lua require('hop').hint_lines()<CR>]]}
     end,
   }
-  use {'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end}
+  use {'windwp/nvim-autopairs', config = 'require("nvim-autopairs").setup()'}
   use {
     'tpope/vim-abolish',
     cmd = {'Abolish', 'Subvert', 'S'},
@@ -539,38 +435,7 @@ return require('packer').startup(function(use, use_rocks)
     'monaqa/dial.nvim',
     -- Replaces speeddating
     keys = {'<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'}},
-    config = function()
-      local dial = require('dial')
-      local nnor, vmap = vim.keymap.nnoremap, vim.keymap.vmap
-
-      -- Boolean flipping
-      dial.augends['custom#boolean'] = dial.common.enum_cyclic {
-        name = 'boolean',
-        desc = 'Flip a boolean between true and false',
-        strlist = {'true', 'false'},
-      }
-      table.insert(dial.config.searchlist.normal, 'custom#boolean')
-
-      -- Keymaps - We add repeat support to this
-      nnor {
-        '<C-a>', function()
-          dial.cmd.increment_normal(vim.v.count1)
-          pcall(vim.cmd, [[silent! call repeat#set("\<C-a>", v:count)]])
-        end,
-      }
-      nnor {
-        '<C-x>', function()
-          dial.cmd.increment_normal(-vim.v.count1)
-          pcall(vim.cmd, [[silent! call repeat#set("\<C-x>", v:count)]])
-        end,
-      }
-      -- vim.keymap.nmap {'<C-a>', '<Plug>(dial-increment)'}
-      -- vim.keymap.nmap {'<C-x>', '<Plug>(dial-decrement)'}
-      vmap {'<C-a>', '<Plug>(dial-increment)'}
-      vmap {'<C-x>', '<Plug>(dial-decrement)'}
-      vmap {'g<C-a>', '<Plug>(dial-increment-additional)'}
-      vmap {'g<C-x>', '<Plug>(dial-decrement-additional)'}
-    end,
+    config = 'require("plugins.dial")',
   }
   use {
     'AndrewRadev/splitjoin.vim',
@@ -589,6 +454,6 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'dkarter/bullets.vim',
     ft = {'markdown', 'gitcommit'},
-    setup = function() vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'} end,
+    setup = [[vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'}]],
   }
 end)

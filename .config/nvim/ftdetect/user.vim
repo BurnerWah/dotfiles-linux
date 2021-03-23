@@ -20,7 +20,10 @@ au BufNewFile,BufRead */share/zsh/history setf zshhist
 au BufNewFile,BufRead */waybar/config setf jsonc " Waybar config
 au BufNewFile,BufRead */bat/config setf argfile
 au BufNewFile,BufRead */silicon/config setf argfile
-au BufRead,BufNewFile lit.*cfg setf python
+au BufNewFile,BufRead lit.*cfg setf python
+au BufNewFile,BufRead *-requirements.{txt,in} setf requirements
+au BufNewFile,BufRead requirements-*.{txt,in} setf requirements
+au BufNewFile,BufRead */requirements/*.{txt,in} setf requirements
 
 " au BufNewFile,BufRead *.reg setf registry " FIXME this is dumb. Don't do this.
 
