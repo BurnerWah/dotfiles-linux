@@ -30,7 +30,6 @@ typeset ZSH_AUTOSUGGEST_USE_ASYNC=''
 
 # Set tied variables {{{1
 typeset -T XDG_DATA_DIRS xdg_data_dirs
-typeset -T INFOPATH infopath
 
 local -TU _VIRTUALENVWRAPPER_API _virtualenvwrapper_api ' '
 # This is a hack to prevent the duplicate entries in $_VIRTUALENVWRAPPER_API

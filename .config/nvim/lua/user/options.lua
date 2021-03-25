@@ -2,6 +2,7 @@
 -- Imports & Functions {{{1
 local exepath = vim.fn.exepath
 local function has(...) return vim.fn.has(...) == 1 end
+local function executable(...) return vim.fn.executable(...) == 1 end
 
 -- Global options {{{1
 
@@ -23,6 +24,16 @@ vim.o.report = 0 -- Always report changed lines.
 vim.cmd [[set synmaxcol=250]] -- Only highlight the first 250 collumns
 vim.o.mouse = 'a' -- Mouse support
 vim.o.termguicolors = true -- Truecolor mode
+
+vim.o.titlestring = 'nvim %t'
+vim.o.titleold = '%{fnamemodify(getcwd(), ":t")}'
+vim.o.title = true
+
+if executable('rg') then
+  vim.o.grepprg = [[rg -SL --hidden -g !.git --no-heading --vimgrep $*]]
+  vim.o.grepformat = '%f:%l:%c:%m,' .. vim.o.grepformat
+  -- vim.o.grepprg = table.concat({'rg', '--hidden', '-g', '!.git', '--no-heading', }, ' ')
+end
 
 -- Enable spell checking
 --

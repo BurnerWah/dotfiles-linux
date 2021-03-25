@@ -2,41 +2,20 @@
 vim.g.ale_fix_on_save = false
 vim.g.ale_disable_lsp = true
 vim.g.ale_linters_ignore = {
-  -- I'm using this to disable linters that should not be handled by ALE.
-  -- That includes stuff handled by another plugin, and stuff that isn't helpful.
-  --
-  -- potential things to convert:
-  -- - gawk [ awk ] (packaged)
-  -- - clazy [ cpp ] (packaged)
-  -- - msgfmt [ po ] (packaged)
-  -- - redpen [ asciidoc, markdown, review, rst, tex, text ]
-  -- - chktex [ tex ] (packaged)
-  -- - lacheck [ tex ] (packaged)
-  --
-  -- require conversion before use:
-  -- - redpen (via vscode extension)
-  -- - standard (via vscode extension)
-  -- - htmlhint (via vscode extension)
-  -- - languagetool (need to figure out how to load the lsp)
-  --
-  -- intentionally unhandled:
-  -- - vale (dumb)
-  -- - proselint (very dumb)
-  -- - typecheck (not maintained)
-  -- - fecs (not in english so probably unussable for me)
-  -- - jscs (merged with eslint)
-  -- - sasslint (not maintained)
+  ada = {'gcc'},
   asciidoc = {'alex', 'languagetool', 'proselint', 'redpen', 'textlint', 'vale', 'writegood'},
+  asm = {'gcc'},
   bats = {'shellcheck'},
-  c = {'cc', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder'},
+  c = {'cc', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder', 'gcc'},
   cmake = {'cmakelint'},
-  cpp = {'cc', 'clangcheck', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder'},
+  cpp = {'cc', 'clangcheck', 'clangtidy', 'cppcheck', 'cpplint', 'flawfinder', 'gcc'},
   cs = {'mcs'},
   css = {'csslint', 'fecs', 'stylelint'},
   dockerfile = {'hadolint'},
   elixir = {'credo'},
   eruby = {'erb'},
   fish = {'fish'},
+  fortran = {'gcc'},
   fountain = {'proselint'},
   gitcommit = {'gitlint'},
   graphql = {'eslint'},

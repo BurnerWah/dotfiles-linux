@@ -8,7 +8,6 @@ if (( ! $+commands[autopep8] && $+commands[autopep8-3] )) alias autopep8=autopep
 if (( $+commands[pxz] )) alias xz=pxz unxz="pxz -d"
 if (( $+commands[pigz] )) alias gzip=pigz gunzip="pigz -d" zcat="pigz -dc"
 if (( $+commands[pbzip2] )) alias bzip2=pbzip2 bunzip2="pbzip2 -d" bzcat="pbzip -dc"
-if (( $+commands[pinfo] )) alias info=pinfo
 
 alias blkid="grc ${aliases[blkid]:-blkid}"
 alias bmon="${aliases[bmon]:-bmon} -U"
@@ -16,7 +15,7 @@ alias df="grc ${aliases[df]:-df} -hH"
 alias diff="${aliases[diff]:-diff} --color=auto"
 alias dig="grc ${aliases[dig]:-dig}"
 alias dmesg="${aliases[dmesg]:-dmesg} -H"
-alias du="grc ${alias[du]:-du} -h"
+alias du="grc ${aliases[du]:-du} -h"
 alias exa="${aliases[exa]:-exa} -F" ll='exa -lh' la='ll -a'
 alias fdisk="grc ${aliases[fdisk]:-fdisk}"
 alias findmnt="grc ${aliases[findmnt]:-findmnt}"
@@ -41,7 +40,7 @@ alias traceroute="grc ${aliases[traceroute]:-traceroute}"
 alias traceroute6="grc ${aliases[traceroute6]:-traceroute6}"
 alias wineconsole="${aliases[wineconsole]:-wineconsole} --backend=curses"
 
-alias cmd=command fns=functions fn=function unfn=unfunction fun=function unfun=unfunction func=function unfunc=unfunction ng=noglob wg=wget xopen=xdg-open
+alias cmd=command fns=functions fn=function unfn=unfunction fun=function unfun=unfunction func=function unfunc=unfunction ng=noglob xopen=xdg-open
 
 if [[ $TERM = 'xterm-kitty' ]] alias icat='kitty +kitten icat'
 

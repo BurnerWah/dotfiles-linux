@@ -169,22 +169,6 @@
       <match type="string" value="/bin/env fish" offset="2:16"/>
     </magic>
   </mime-type>
-  <!-- application/x-gnu-texinfo: GNU Info document -->
-  <mime-type type="application/x-gnu-texinfo">
-    <!-- this is the compiled version of a .texi document -->
-    <comment>GNU Info document</comment>
-    <sub-class-of type="text/plain"/>
-    <generic-icon name="text-x-generic"/>
-  </mime-type>
-  <!-- application/x-gnu-texinfo-compressed: GNU Info document (gzip compressed) -->
-  <mime-type type="application/x-gnu-texinfo-compressed">
-    <comment>GNU Info document (gzip compressed)</comment>
-    <sub-class-of type="application/gzip"/>
-    <generic-icon name="text-x-generic"/>
-    <!-- Single info files -->
-    <glob weight="60" pattern="*.info.gz"/>
-    <!-- Globs for split info files don't seem to work -->
-  </mime-type>
   <!-- application/x-php: PHP Script {{{2 -->
   <mime-type type="application/x-php">
     <!-- PHP stands for "PHP: Hypertext Preprocessor", and I'm not putting that

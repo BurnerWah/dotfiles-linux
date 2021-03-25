@@ -10,7 +10,7 @@ return require('packer').startup(function(use, use_rocks)
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   -- hererocks are broken right now
-  use_rocks {'stdlib'}
+  use_rocks {'stdlib', 'fun', 'tl'}
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -383,7 +383,6 @@ return require('packer').startup(function(use, use_rocks)
       }
     end,
   }
-  use {'HiPhish/info.vim', event = 'BufReadCmd info:*', cmd = 'Info', ft = 'info'} -- mirror
   use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
   use {'segeljakt/vim-silicon', cmd = 'Silicon'}
   -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}

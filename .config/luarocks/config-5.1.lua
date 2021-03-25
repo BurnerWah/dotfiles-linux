@@ -8,4 +8,11 @@ rocks_trees = {
   {name = 'local', root = home .. '/.local'}, {name = 'syslocal', root = '/usr/local'},
   {name = 'system', root = '/usr'},
 }
-variables = {AR = 'llvm-ar', CC = 'clang', CXX = 'clang++', GUNZIP = 'unpigz', LD = 'clang'}
+variables = {
+  AR = 'llvm-ar',
+  CC = 'clang',
+  CXX = 'clang++',
+  GUNZIP = 'unpigz',
+  LD = 'clang',
+  RANLIB = 'llvm-ranlib',
+}
