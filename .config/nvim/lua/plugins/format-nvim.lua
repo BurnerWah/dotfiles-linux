@@ -75,6 +75,8 @@ require('format').setup {
 
   css = {tool.prettier('css')},
 
+  fish = {{cmd = {'fish_indent -w'}}},
+
   go = {{cmd = {'gofmt -w', 'goimports -w'}, tempfile_postfix = '.tmp'}},
 
   html = {tool.prettier('html')},
