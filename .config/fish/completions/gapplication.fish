@@ -18,25 +18,25 @@
 set -l prog gapplication
 set -l subcmd "__fish_use_subcommand || __fish_seen_subcommand_from help"
 set -l words "(count (commandline -poc))"
-set -l seen "__fish_seen_subcommand_from"
+set -l seen __fish_seen_subcommand_from
 
 function __gapplication_actions -d "Print gapplication actions"
-  set -l cmd (commandline -poc)
-  command gapplication list-actions $cmd[3]
+    set -l cmd (commandline -poc)
+    command gapplication list-actions $cmd[3]
 end
 
-complete -c $prog -n "$subcmd" -x -a help         -d "Print help"
-complete -c $prog -n "$subcmd" -x -a version      -d "Print version"
-complete -c $prog -n "$subcmd" -x -a list-apps    -d "List applications"
-complete -c $prog -n "$subcmd" -x -a launch       -d "Launch an application"
+complete -c $prog -n "$subcmd" -x -a help -d "Print help"
+complete -c $prog -n "$subcmd" -x -a version -d "Print version"
+complete -c $prog -n "$subcmd" -x -a list-apps -d "List applications"
+complete -c $prog -n "$subcmd" -x -a launch -d "Launch an application"
 complete -c $prog -n "$subcmd" -x -a list-actions -d "List available actions"
-complete -c $prog -n "$subcmd" -x -a action       -d "Activate an action"
+complete -c $prog -n "$subcmd" -x -a action -d "Activate an action"
 
 # block completion when not needed
 complete -c $prog -x -n "$seen version list-apps"
 
 complete -c $prog -x -n "$seen launch action list-actions && [ $words = 2 ]" \
-         -a "(gapplication list-apps)\tApp"
+    -a "(gapplication list-apps)\tApp"
 
 complete -c $prog -x -n "$seen action && [ $words = 3 ]" \
-         -a "(__gapplication_actions)\tAction"
+    -a "(__gapplication_actions)\tAction"

@@ -19,5 +19,5 @@ function __fish_git_custom_commands
 end
 
 for custom_command in (__fish_git_custom_commands)
-  complete -c git -n "__fish_git_using_command $custom_command" -w "git-$custom_command"
+    complete -c git -n "__fish_git_using_command $custom_command" -w "git-$custom_command"
 end

@@ -2,16 +2,16 @@ set -l prog desktop-file-install
 set -l has __fish_contains_opt
 
 function __desktop-file-install_mime
-  set -l data_home $XDG_DATA_HOME
-  [ -z "$data_home" ] && set data_home $HOME/.local/share/
-  set -l data_dirs $XDG_DATA_DIRS
-  [ -z "$data_dirs" ] && set data_dirs /usr/local/share/:/usr/share/
-  set data_dirs $data_home:$data_dirs
-  set -l mime_dirs
-  for path in (string split : $data_dirs)/mime
-    [ -d "$path" ] && set -a mime_dirs $path
-  end
-  cat $mime_dirs/types
+    set -l data_home $XDG_DATA_HOME
+    [ -z "$data_home" ] && set data_home $HOME/.local/share/
+    set -l data_dirs $XDG_DATA_DIRS
+    [ -z "$data_dirs" ] && set data_dirs /usr/local/share/:/usr/share/
+    set data_dirs $data_home:$data_dirs
+    set -l mime_dirs
+    for path in (string split : $data_dirs)/mime
+        [ -d "$path" ] && set -a mime_dirs $path
+    end
+    cat $mime_dirs/types
 end
 
 complete -c $prog -xa "(__fish_complete_suffix .desktop)"

@@ -1,9 +1,9 @@
 set -l units \
-  "none\t'no auto-scaling is done'" \
-  "auto\t'1K = 1000, 1Ki = 1024, …'" \
-  "si\t'1K = 1000, 1M = 1000000, …'" \
-  "iec\t'1K = 1024, 1M = 1048576, …'" \
-  "iec-i\t'1Ki = 1024, 1Mi = 1048576, …'"
+    "none\t'no auto-scaling is done'" \
+    "auto\t'1K = 1000, 1Ki = 1024, …'" \
+    "si\t'1K = 1000, 1M = 1000000, …'" \
+    "iec\t'1K = 1024, 1M = 1048576, …'" \
+    "iec-i\t'1Ki = 1024, 1Mi = 1048576, …'"
 
 complete -c numfmt -f
 
