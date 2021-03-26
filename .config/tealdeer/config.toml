@@ -2,8 +2,8 @@
 use_pager = false
 
 [style]
-description      = { underline = false, bold = false                       }
-command_name     = { underline = false, bold = false, foreground = "cyan"  }
-example_text     = { underline = false, bold = false, foreground = "green" }
-example_code     = { underline = false, bold = false, foreground = "cyan"  }
-example_variable = { underline = true,  bold = false, foreground = "cyan"  }
+description = { underline = false, bold = false }
+command_name = { underline = false, bold = false, foreground = "cyan" }
+example_text = { underline = false, bold = false, foreground = "green" }
+example_code = { underline = false, bold = false, foreground = "cyan" }
+example_variable = { underline = true, bold = false, foreground = "cyan" }

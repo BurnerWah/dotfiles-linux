@@ -2,20 +2,20 @@
 add_newline = false
 
 prompt_order = [
-    "username",
-    "hostname",
-    "directory",
-    "git_branch",
-    "git_state",
-    "git_status",
-    "rust",
-    "python",
-    "golang",
-    "cmd_duration",
-    "jobs",
-    "battery",
-    "time",
-    "character",
+  "username",
+  "hostname",
+  "directory",
+  "git_branch",
+  "git_state",
+  "git_status",
+  "rust",
+  "python",
+  "golang",
+  "cmd_duration",
+  "jobs",
+  "battery",
+  "time",
+  "character",
 ]
 
 [git_branch]
