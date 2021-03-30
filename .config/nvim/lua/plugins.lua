@@ -82,6 +82,7 @@ return require('packer').startup(function(use, use_rocks)
       {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
       {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
       {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
+      {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
     },
     run = ':TSUpdate',
     config = 'require("plugins.treesitter")',
@@ -90,7 +91,10 @@ return require('packer').startup(function(use, use_rocks)
   use {
     'hrsh7th/vim-vsnip',
     opt = false,
-    requires = {'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ'},
+    requires = {
+      'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
+      {'rafamadriz/friendly-snippets', after = 'vim-vsnip'},
+    },
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local imap, smap = vim.keymap.imap, vim.keymap.smap
@@ -313,9 +317,31 @@ return require('packer').startup(function(use, use_rocks)
     keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
     config = 'require("plugins.nvim-hlslens")',
   }
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    branch = 'lua',
+    config = function()
+      vim.g.indent_blankline_buftype_exclude = {'terminal'}
+      vim.g.indent_blankline_filetype_exclude = {'help', 'packer'}
+      vim.g.indent_blankline_char = '▏'
+      vim.g.indent_blankline_use_treesitter = true
+      vim.g.indent_blankline_show_current_context = true
+      vim.g.indent_blankline_context_patterns = {
+        'class', 'return', 'function', 'method', '^if', '^while', 'jsx_element', '^for', '^object',
+        '^table', 'block', 'arguments', 'if_statement', 'else_clause', 'jsx_element',
+        'jsx_self_closing_element', 'try_statement', 'catch_clause', 'import_statement',
+      }
+    end,
+  }
+  use 'psliwka/vim-smoothie' -- Smooth scrolling
 
   -- Utilities
   use 'tpope/vim-fugitive'
+  use {
+    'TimUntersberger/neogit',
+    cmd = 'Neogit',
+    config = function() require('neogit').setup {disable_signs = true} end,
+  }
   use 'farmergreg/vim-lastplace'
   use {
     'vimwiki/vimwiki',
