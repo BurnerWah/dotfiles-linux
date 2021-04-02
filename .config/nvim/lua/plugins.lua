@@ -33,6 +33,7 @@ return require('packer').startup(function(use, use_rocks)
 
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
+  use {'tamago324/nlsp-settings.nvim', requires = 'nvim-lspconfig'}
   use {'glepnir/lspsaga.nvim', requires = 'nvim-lspconfig', config = 'require("plugins.lspsaga")'}
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}

@@ -1,0 +1,7 @@
+{
+  "ui.diagnostic.analyses": {
+    "unusedparams": true
+  },
+  "ui.diagnostic.staticcheck": true,
+  "ui.completion.usePlaceholders": true
+}
