@@ -17,6 +17,7 @@ telescope.setup {
 }
 tablex.foreachi({
   'fzy_native', 'fzf_writer', 'gh', 'project', 'node_modules', 'frecency', 'cheat', 'media_files',
+  'sonictemplate',
 }, telescope.load_extension)
 
 local remap = vim.api.nvim_set_keymap

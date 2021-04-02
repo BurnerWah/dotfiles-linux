@@ -136,7 +136,7 @@ return require('packer').startup(function(use, use_rocks)
       'nvim-telescope/telescope-fzy-native.nvim', 'nvim-telescope/telescope-fzf-writer.nvim',
       'nvim-telescope/telescope-symbols.nvim', 'nvim-telescope/telescope-github.nvim',
       'nvim-telescope/telescope-project.nvim', 'nvim-telescope/telescope-node-modules.nvim',
-      'nvim-telescope/telescope-media-files.nvim',
+      'nvim-telescope/telescope-media-files.nvim', 'tamago324/telescope-sonictemplate.nvim',
 
       {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
       {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
@@ -369,6 +369,17 @@ return require('packer').startup(function(use, use_rocks)
     opt = true,
     cmd = {'Ultest', 'UltestNearest'},
     run = ':UpdateRemotePlugins',
+  }
+  use {
+    'mattn/vim-sonictemplate',
+    -- Template engine
+    cmd = 'Template',
+    -- fn load condition allows for telescope integration to load this
+    fn = 'sonictemplate#complete',
+    keys = {
+      {'n', '<C-y>t'}, {'i', '<C-y>t'}, {'n', '<C-y>T'}, {'i', '<C-y>T'}, {'n', '<C-y><C-t>'},
+      {'i', '<C-y><C-t>'}, {'i', '<C-y><C-b>'},
+    },
   }
 
   -- Integration
