@@ -33,34 +33,7 @@ return require('packer').startup(function(use, use_rocks)
 
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
-  use {
-    'glepnir/lspsaga.nvim',
-    requires = 'nvim-lspconfig',
-    config = function()
-      require('lspsaga').init_lsp_saga {
-        error_sign = '',
-        warn_sign = '',
-        hint_sign = '',
-        infor_sign = '',
-        code_action_prompt = {virtual_text = false},
-        finder_action_keys = {
-          open = 'o',
-          vsplit = 's',
-          split = 'i',
-          quit = {'q', '<Esc>'},
-          scroll_down = '<C-f>',
-          scroll_up = '<C-b>',
-        },
-        code_action_keys = {quit = {'q', '<Esc>'}, exec = '<CR>'},
-        rename_action_keys = {quit = {'<C-c>', '<Esc>'}, exec = '<CR>'},
-        border_style = 2, -- Rounded border
-      }
-      local remap = vim.api.nvim_set_keymap
-      local opts = {noremap = true, silent = true}
-      remap('n', '<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], opts)
-      remap('t', '<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], opts)
-    end,
-  }
+  use {'glepnir/lspsaga.nvim', requires = 'nvim-lspconfig', config = 'require("plugins.lspsaga")'}
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
   use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
@@ -90,7 +63,6 @@ return require('packer').startup(function(use, use_rocks)
   use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("plugins.ale")'}
   use {
     'hrsh7th/vim-vsnip',
-    opt = false,
     requires = {
       'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
       {'rafamadriz/friendly-snippets', after = 'vim-vsnip'},
@@ -273,7 +245,7 @@ return require('packer').startup(function(use, use_rocks)
           separator_style = 'slant',
         },
       }
-      vim.api.nvim_set_keymap('n', 'bb', [[<Cmd>BufferLinePick<CR>]], {})
+      vim.keymap.nmap {'bb', '<Cmd>BufferLinePick<CR>'}
     end,
   }
   use {'tjdevries/colorbuddy.nvim', config = 'require("colorbuddy").colorscheme("quantumbuddy")'}
@@ -287,15 +259,14 @@ return require('packer').startup(function(use, use_rocks)
   }
   use {
     'tkmpypy/chowcho.nvim',
+    requires = 'nvim-web-devicons',
+    opt = true,
     cmd = 'Chowcho',
-    config = function() require('chowcho').setup {border_style = 'rounded'} end,
+    config = function() require('chowcho').setup {icon_enabled = true, border_style = 'rounded'} end,
   }
   use {'yamatsum/nvim-cursorline', config = 'require("plugins.nvim-cursorline").config()'}
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
-  use {
-    'dstein64/nvim-scrollview',
-    config = function() vim.g.scrollview_nvim_14040_workaround = true end,
-  }
+  use {'dstein64/nvim-scrollview', config = 'vim.g.scrollview_nvim_14040_workaround = true'}
   use {
     'dm1try/golden_size',
     config = function()
@@ -331,9 +302,10 @@ return require('packer').startup(function(use, use_rocks)
         '^table', 'block', 'arguments', 'if_statement', 'else_clause', 'jsx_element',
         'jsx_self_closing_element', 'try_statement', 'catch_clause', 'import_statement',
       }
+      vim.g.indent_blankline_show_first_indent_level = false
     end,
   }
-  use 'psliwka/vim-smoothie' -- Smooth scrolling
+  use 'karb94/neoscroll.nvim' -- Smooth scrolling
 
   -- Utilities
   use 'tpope/vim-fugitive'

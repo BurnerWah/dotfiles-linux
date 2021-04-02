@@ -28,7 +28,7 @@ require('compe').setup {
         'alsaconf', 'crontab', 'dircolors', 'dnsmasq', 'dosini', 'fstab', 'group', 'grub',
         'hostconf', 'hostsaccess', 'inittab', 'limits', 'logindefs', 'mailcap', 'markdown',
         'modconf', 'pamconf', 'passwd', 'pinfo', 'protocols', 'ptcap', 'resolv', 'rst', 'services',
-        'sshconfig', 'sshdconfig', 'sudoers', 'sysctl', 'udevconf', 'udevperm', 'updatedb',
+        'sshconfig', 'sshdconfig', 'spec', 'sudoers', 'sysctl', 'udevconf', 'udevperm', 'updatedb',
         'vimwiki', 'wget',
       },
       priority = 900, -- defaults to 5000 which can be problematic
