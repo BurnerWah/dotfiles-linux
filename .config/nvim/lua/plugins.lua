@@ -2,7 +2,7 @@
 -- Only required if you have packer in your `opt` pack
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use, use_rocks)
+return require('packer').startup(function(use)
   -- Packer can manage itself as an optional plugin
   use {'wbthomason/packer.nvim', opt = true}
 
@@ -10,7 +10,6 @@ return require('packer').startup(function(use, use_rocks)
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   -- hererocks are broken right now
-  use_rocks {'stdlib', 'fun', 'tl'}
   use {
     'kyazdani42/nvim-web-devicons',
     config = function()
@@ -37,7 +36,6 @@ return require('packer').startup(function(use, use_rocks)
   use {'glepnir/lspsaga.nvim', requires = 'nvim-lspconfig', config = 'require("plugins.lspsaga")'}
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
-  use {'jubnzv/virtual-types.nvim', requires = 'nvim-lspconfig', cmd = 'EnableVirtualTypes'}
   use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
   use {
     'kabouzeid/nvim-lspinstall',
@@ -64,10 +62,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("plugins.ale")'}
   use {
     'hrsh7th/vim-vsnip',
-    requires = {
-      'nvim-lspconfig', 'hrsh7th/vim-vsnip-integ',
-      {'rafamadriz/friendly-snippets', after = 'vim-vsnip'},
-    },
+    requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', after = 'vim-vsnip'}},
     config = function()
       vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
       local imap, smap = vim.keymap.imap, vim.keymap.smap
@@ -101,7 +96,6 @@ return require('packer').startup(function(use, use_rocks)
   use 'gluon-lang/vim-gluon'
   use 'blankname/vim-fish'
   -- Meson syntax is now manually maintained
-  -- vim-orgmode is really weird
   -- toml is handled internally + with nvim-treesitter
 
   -- CXX
@@ -124,7 +118,7 @@ return require('packer').startup(function(use, use_rocks)
   use {'Vimjas/vim-python-pep8-indent', ft = {'aap', 'bzl', 'cython', 'pyrex', 'python'}}
 
   -- RST
-  use {'stsewd/sphinx.nvim', ft = 'rst', run = ':UpdateRemotePlugins'}
+  use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me
 
   -- Telescope
   use {
@@ -219,7 +213,7 @@ return require('packer').startup(function(use, use_rocks)
       }
     end,
   }
-  use {'meain/vim-package-info', ft = {'json', 'requirements', 'toml'}, run = 'npm i'}
+  use {'meain/vim-package-info', run = 'npm i'} -- rplugin lazy loads
   use {
     'kyazdani42/nvim-tree.lua',
     requires = 'nvim-web-devicons',
@@ -250,14 +244,6 @@ return require('packer').startup(function(use, use_rocks)
     end,
   }
   use {'tjdevries/colorbuddy.nvim', config = 'require("colorbuddy").colorscheme("quantumbuddy")'}
-  use {
-    'DanilaMihailov/beacon.nvim',
-    config = function()
-      vim.g.beacon_ignore_filetypes = {
-        'minimap', 'tsplayground', 'vista', 'vista_kind', 'vista_markdown',
-      }
-    end,
-  }
   use {
     'tkmpypy/chowcho.nvim',
     requires = 'nvim-web-devicons',
@@ -294,7 +280,7 @@ return require('packer').startup(function(use, use_rocks)
     branch = 'lua',
     config = function()
       vim.g.indent_blankline_buftype_exclude = {'terminal'}
-      vim.g.indent_blankline_filetype_exclude = {'help', 'packer'}
+      vim.g.indent_blankline_filetype_exclude = {'help', 'packer', 'peek'}
       vim.g.indent_blankline_char = '▏'
       vim.g.indent_blankline_use_treesitter = true
       vim.g.indent_blankline_show_current_context = true
@@ -307,6 +293,10 @@ return require('packer').startup(function(use, use_rocks)
     end,
   }
   use 'karb94/neoscroll.nvim' -- Smooth scrolling
+  use {
+    'edluffy/specs.nvim',
+    config = function() require('specs').setup {popup = {fader = require('specs').pulse_fader}} end,
+  }
 
   -- Utilities
   use 'tpope/vim-fugitive'
@@ -360,7 +350,6 @@ return require('packer').startup(function(use, use_rocks)
     config = 'require("plugins.iron")',
   }
   use {'lukas-reineke/format.nvim', config = 'require("plugins.format-nvim")'}
-  use {'HiPhish/awk-ward.nvim', cmd = 'AwkWard'} -- Mirror
   use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
   use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
   use {
@@ -368,7 +357,15 @@ return require('packer').startup(function(use, use_rocks)
     requires = 'vim-test/vim-test',
     opt = true,
     cmd = {'Ultest', 'UltestNearest'},
-    run = ':UpdateRemotePlugins',
+    -- Lazy loading requires strict controls
+    setup = 'vim.g.ultest_loaded = true',
+    config = function()
+      vim.g.ultest_loaded = nil
+      vim.api.nvim_exec([[
+        UpdateRemotePlugins
+        runtime! plugin/ultest.vim
+      ]], false)
+    end,
   }
   use {
     'mattn/vim-sonictemplate',
@@ -464,5 +461,22 @@ return require('packer').startup(function(use, use_rocks)
     'dkarter/bullets.vim',
     ft = {'markdown', 'gitcommit'},
     setup = [[vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'}]],
+  }
+  use {
+    'kana/vim-textobj-user',
+    -- Lazy loading some text objects can break things. Others work surprisingly well though.
+    requires = {
+      {
+        'kana/vim-textobj-function',
+        keys = {
+          {'x', 'af'}, {'o', 'af'}, {'x', 'if'}, {'o', 'if'}, {'x', 'aF'}, {'o', 'aF'}, {'x', 'iF'},
+          {'o', 'iF'},
+        },
+      }, {
+        'sgur/vim-textobj-parameter',
+        keys = {{'x', 'a,'}, {'o', 'a,'}, {'x', 'i,'}, {'o', 'i,'}, {'x', 'i2,'}, {'o', 'i2,'}},
+      },
+      {'rsrchboy/vim-textobj-heredocs', keys = {{'x', 'aH'}, {'o', 'aH'}, {'x', 'iH'}, {'o', 'iH'}}},
+    },
   }
 end)
