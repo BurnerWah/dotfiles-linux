@@ -10,25 +10,7 @@ return require('packer').startup(function(use)
   use 'tjdevries/astronauta.nvim'
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   -- hererocks are broken right now
-  use {
-    'kyazdani42/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {
-        override = {
-          ['Gemfile'] = {icon = '', color = '#701516', name = 'Gemfile'},
-          ['Vagrantfile'] = {icon = '', color = '#1563ff', name = 'Vagrantfile'},
-          ['BSDmakefile'] = {icon = '', color = '#6d8086', name = 'Makefile'},
-          ['GNUmakefile'] = {icon = '', color = '#6d8086', name = 'Makefile'},
-          ['sublime-syntax'] = {icon = '', color = '#ff9800', name = 'SublimeSyntax'},
-          ['ron'] = {icon = '', color = '#6d8086', name = 'Ron'},
-          ['.luacheckrc'] = {icon = '', color = '#51a0cf', name = 'Lua'},
-          ['.busted'] = {icon = '', color = '#51a0cf', name = 'Lua'},
-          ['.luacov'] = {icon = '', color = '#51a0cf', name = 'Lua'},
-          ['rockspec'] = {icon = '', color = '#51a0cf', name = 'Lua'},
-        },
-      }
-    end,
-  }
+  use {'kyazdani42/nvim-web-devicons', config = 'require("plugins.nvim-web-devicons")'}
 
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
@@ -47,7 +29,6 @@ return require('packer').startup(function(use)
     -- Highlighting engine for neovim
     --
     -- I've chosen not to include some modules until some issues they have get fixed.
-    -- nvim-treesitter-textobjects can be added once #8 & #27 are fixed
     -- nvim-ts-rainbow can be added once #5 is fixed (which requires nvim-treesitter#879 merged)
     requires = {
       {'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter'},
@@ -150,45 +131,8 @@ return require('packer').startup(function(use)
       }
     end,
   }
-  use {
-    'liuchengxu/vista.vim',
-    -- Table of contents & symbol tree
-    cmd = 'Vista',
-    setup = function()
-      vim.g['vista#renderer#enable_icon'] = 1
-      vim.g['vista#renderer#icons'] = {
-        ['func'] = '',
-        ['function'] = '',
-        ['functions'] = '',
-        ['var'] = '',
-        ['variable'] = '',
-        ['variables'] = '',
-        ['const'] = '',
-        ['constant'] = '',
-        ['constructor'] = '',
-        ['method'] = 'ƒ',
-        ['enum'] = '了',
-        ['enummember'] = '',
-        ['enumerator'] = '了',
-        ['module'] = '',
-        ['modules'] = '',
-        ['class'] = '',
-        ['struct'] = '',
-        ['property'] = '',
-        ['interface'] = 'ﰮ',
-      }
-      vim.g.vista_echo_cursor_strategy = 'floating_win'
-      -- nvim_lsp support is now handled dynamically
-      vim.g.vista_executive_for = {
-        apiblueprint = 'markdown',
-        markdown = 'toc',
-        pandoc = 'markdown',
-        rst = 'toc',
-      }
-      -- Consider checking for commands before enabling them.
-      vim.g.vista_ctags_cmd = {go = 'gotags', rst = 'rst2ctags'}
-    end,
-  }
+  -- Table of contents & symbol tree
+  use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'}
   use {
     'lewis6991/gitsigns.nvim',
     requires = 'plenary.nvim',
