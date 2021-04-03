@@ -29,7 +29,7 @@ require('compe').setup {
         'hostconf', 'hostsaccess', 'inittab', 'limits', 'logindefs', 'mailcap', 'markdown',
         'modconf', 'pamconf', 'passwd', 'pinfo', 'protocols', 'ptcap', 'resolv', 'rst', 'services',
         'sshconfig', 'sshdconfig', 'spec', 'sudoers', 'sysctl', 'udevconf', 'udevperm', 'updatedb',
-        'vimwiki', 'wget',
+        'vimwiki',
       },
       priority = 900, -- defaults to 5000 which can be problematic
       dup = 0, -- allow duplicate entries (mostly with lsp)

@@ -138,15 +138,10 @@ text:
         - kderc
 
     other:
-      - gdbinit
       - gtkrc
       - inputrc
-      - nanorc
-      - pinforc
-      - screenrc
       - taskrc
       - vlcrc
-      - wgetrc
 
   manifest:
     - .devhelp
@@ -313,7 +308,6 @@ programming:
     editors:
       qt: [.pro]
       kdevelop: [.kdevelop]
-      emacs: [.dir-locals.el]
       vscode: [.vscodeignore]
 
     documentation:

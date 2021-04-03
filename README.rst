@@ -8,15 +8,20 @@ Tools I use
 -----------
 
 * I use Fedora_ as my main OS.
-* My desktop environment is GNOME_.
-* My preferred editor is Neovim_.
+* Desktop environment: GNOME_.
+* Editor: neovim_.
 * My default shell is Zsh, but for interactive shells I use Fish.
 * My primary python REPL is IPython_.
+* CXX toolchain: clang_ + LLVM_.
+* Coreutils: uutils_
 
 .. _Fedora: https://getfedora.org/
 .. _GNOME: https://www.gnome.org/
-.. _Neovim: https://neovim.io/
+.. _neovim: https://neovim.io/
 .. _IPython: https://ipython.org/
+.. _clang: https://clang.llvm.org/
+.. _LLVM: https://llvm.org/
+.. _uutils: https://github.com/uutils/coreutils
 
 Oddities
 --------

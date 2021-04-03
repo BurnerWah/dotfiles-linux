@@ -43,7 +43,6 @@ return {
     ['gql'] = 'graphql',
     ['graphql'] = 'graphql',
     ['graphqls'] = 'graphql',
-    ['info'] = 'info',
     ['iuml'] = 'plantuml',
     ['jsonc'] = 'jsonc',
     ['jsonld'] = 'json', -- JSON Linked Data
@@ -51,7 +50,6 @@ return {
     ['lzx'] = 'xml', -- OpenLaszlo
     ['mlir'] = 'mlir', -- from LLVM
     ['moon'] = 'moon',
-    ['org'] = 'org', -- vim-orgmode
     ['pip'] = 'requirements',
     ['plantuml'] = 'plantuml',
     ['posxml'] = 'xml', -- Posxml
@@ -98,7 +96,6 @@ return {
     ['.proselintrc'] = 'json',
     ['.tcelldb'] = 'json',
     ['.viminfo'] = 'viminfo',
-    ['.wgetrc'] = 'wget',
     ['.zlogin'] = 'zsh',
     ['.zlogout'] = 'zsh',
     ['.zprofile'] = 'zsh',
@@ -115,7 +112,6 @@ return {
     ['constraints.in'] = 'requirements',
     ['constraints.txt'] = 'requirements',
     ['fish_history'] = 'yaml',
-    ['gdbinit'] = 'gdb',
     ['gopkg.lock'] = 'toml',
     ['index.theme'] = 'desktop', -- Icon theme index
     ['jsconfig.json'] = 'jsonc', -- JS project config
@@ -138,7 +134,6 @@ return {
     ['tsconfig.json'] = 'jsonc', -- TS project config
     ['virc'] = 'vim',
     ['vkBasalt.conf'] = 'dosini',
-    ['wgetrc'] = 'wget',
     ['youtube-dl.conf'] = 'argfile', -- Custom filetype
     ['zlogin'] = 'zsh',
     ['zlogout'] = 'zsh',
