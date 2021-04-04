@@ -133,13 +133,6 @@ for _, S in ipairs({
   -- jedi-language-server has a really annoying code action that i'd like to avoid
 }) do configs[S].setup({}) end
 
-local url = {
-  parse = function(input)
-    input = input:gsub([[^gh:(.*):(.*):(.+)$]], [[https://github.com/%1/raw/%2/%3]])
-    return input
-  end,
-}
-
 configs.ccls.setup {
   init_options = {
     compilationDatabaseDirectory = 'build',
@@ -158,7 +151,7 @@ configs.clangd.setup {
   init_options = {clangdFileStatus = true},
 }
 
-configs.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}} -- Missing sass ft by default
+configs.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}}
 
 configs.denols.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('deno')}
 
@@ -169,34 +162,7 @@ configs.jsonls.setup {
 
 configs.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
 
-configs.sumneko_lua.setup {
-  cmd = {'lua-language-server'},
-  settings = {
-    Lua = {
-      runtime = {version = 'LuaJIT', path = vim.split(package.path, ';')},
-      completion = {callSnippet = 'Replace'}, -- Prefer completing snippets
-      diagnostics = {
-        globals = {
-          'vim', --
-          -- plugins
-          'packer_plugins', --
-          -- penlight
-          'utils', 'path', 'dir', 'tablex', 'stringio', 'sip', 'input', 'seq', 'lexer', 'stringx',
-          'config', 'pretty', 'data', 'func', 'text', 'operator', 'lapp', 'array2d',
-          'comprehension', 'xml', 'types', 'test', 'app', 'file', 'class', 'luabalanced', 'permute',
-          'template', 'url', 'compat', 'List', 'Map', 'Set', 'OrderedMap', 'MultiMap', 'Date',
-        },
-        disable = {'lowercase-global'},
-      },
-      hint = {enable = true, setType = true},
-      telemetry = {enable = false},
-      workspace = {
-        library = {vim.fn.expand('$VIMRUNTIME/lua'), vim.fn.stdpath('data') .. '/site/@types'},
-      },
-      intelliSense = {searchDepth = 4},
-    },
-  },
-}
+configs.sumneko_lua.setup {cmd = {'lua-language-server'}}
 
 configs.tsserver.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('node')}
 
