@@ -1,8 +1,0 @@
-/commands
-/*.json
-/lists
-*mru
-/sh
-/extensions/db.json
-/extensions/node_modules
-/extensions/*-data

@@ -7,7 +7,7 @@ switch "$TERM"
         end
 end
 
-set -l ppid (grep '^PPid:' /proc/$fish_pid/status | string match -r '\d+')
+set -l ppid (rg '^PPid:' /proc/$fish_pid/status | string match -r '\d+')
 
 switch (basename (readlink -f /proc/$ppid/exe))
     case kitty

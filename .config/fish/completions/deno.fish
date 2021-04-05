@@ -1,1 +1,0 @@
-deno completions fish | source

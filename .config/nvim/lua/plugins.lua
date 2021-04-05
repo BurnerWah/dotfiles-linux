@@ -327,7 +327,6 @@ return require('packer').startup(function(use)
     end,
   }
   use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
-  use {'segeljakt/vim-silicon', cmd = 'Silicon'}
   -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
   -- Spell support for tree-sitter is nice but it causes files to noticably refresh constantly.
   -- It also might be contributing to PID bloat by running hunspell too often.
