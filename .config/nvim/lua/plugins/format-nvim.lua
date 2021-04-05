@@ -44,14 +44,7 @@ local tool = {
   ---@param parser string The parser to use
   ---@return table
   prettier = function(parser)
-    return {
-      cmd = {
-        List {
-          'prettier', '-w', '--parser', parser, '--config-precedence', 'prefer-file', '--no-semi',
-          '--single-quote',
-        }:concat(' '),
-      },
-    }
+    return {cmd = {List {'prettier', '-w', '--parser', parser}:concat(' ')}}
   end,
 
   ---sqlformat

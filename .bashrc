@@ -17,6 +17,7 @@ export PATH
 
 HISTFILE=~/.local/share/bash_history
 
+# shellcheck disable=1090
 source ~/.local/share/bash-completion/completions/*
 
 # shellcheck source=/dev/null

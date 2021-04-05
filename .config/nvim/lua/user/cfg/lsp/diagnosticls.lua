@@ -96,11 +96,6 @@ local tool = {
 }
 
 M.linters = {
-  bashate = tool.generic {
-    {'bashate', '-i', 'E003', '%tempfile'},
-    pattern = {[[^.+?:(\d+):(\d+): ((E\d+) (.*))$]], {line = 1, column = 2, message = 3}},
-    security = 'hint',
-  },
   cmakelint = tool.generic {{'cmakelint', '%file'}, pattern = fmt.basic(true), security = 'warning'},
   cppcheck_c = tool.cppcheck('c'),
   cppcheck_cpp = tool.cppcheck('c++'),
@@ -318,7 +313,7 @@ M.linter_filetypes = {
   pod = {'write_good'},
   python = {'pylint'},
   rst = {'rstcheck', 'rst_lint', 'write_good'},
-  sh = {'bashate', 'shellcheck'},
+  sh = {'shellcheck'},
   sql = {'sqlint'},
   teal = {'tlcheck'},
   tex = {'write_good'},
@@ -336,11 +331,15 @@ local roots = Map {
   yaml = {'.yamllint', '.yamllint.yaml', '.yamllint.yaml'},
   css = {'.csslintrc'},
 }
-roots:setdefault(util.path.dirname)
+-- roots:setdefault(util.path.dirname)
 
 function M.root_finder(fname)
   local ft = vim.bo.filetype
   local root = roots[ft]
+  if root == nil then
+    roots[ft] = util.path.dirname
+    root = roots[ft]
+  end
   if type(root) == 'table' then
     roots[ft] = util.root_pattern(unpack(root))
     root = roots[ft]

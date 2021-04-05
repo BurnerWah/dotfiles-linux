@@ -1,3 +1,5 @@
+" vint: -ProhibitAutocmdWithNoGroup
+" an augroup here actually breaks other stuff
 " Stuff that needs to preced the plenary engine
 au BufNewFile,BufRead */.vscode/*.json setf jsonc " VSCode settings
 
@@ -7,7 +9,7 @@ au BufNewFile,BufRead * lua require('user.ft').detect_ft()
 " Functions {{{1
 " This is copied from nvim runtime
 func! s:StarSetf(ft)
-  if expand("<amatch>") !~ g:ft_ignore_pat
+  if expand('<amatch>') !~ g:ft_ignore_pat
     exe 'setf ' . a:ft
   endif
 endfunc
