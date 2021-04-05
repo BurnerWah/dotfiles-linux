@@ -3,6 +3,11 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
+  -- macros
+  local _M = {
+    telescope_load = function(ext) return 'require("telescope").load_extension("' .. ext .. '")' end,
+  }
+
   -- Packer can manage itself as an optional plugin
   use {'wbthomason/packer.nvim', opt = true}
 
@@ -118,7 +123,13 @@ return require('packer').startup(function(use)
     },
     config = 'require("plugins.telescope")',
   }
-  use {'pwntester/octo.nvim', requires = 'telescope.nvim', opt = true, cmd = 'Octo'}
+  use {
+    'pwntester/octo.nvim',
+    -- Lazy loading isn't very helpful for this since the command completions are too useful
+    -- I could experiment with a custom loader but not right now.
+    requires = {'telescope.nvim', 'plenary.nvim'},
+    config = _M.telescope_load('octo'),
+  }
 
   -- User interface
   use {
@@ -131,13 +142,11 @@ return require('packer').startup(function(use)
       }
     end,
   }
-  -- Table of contents & symbol tree
-  use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'}
+  use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'} -- TOC & symbol tree
   use {
     'lewis6991/gitsigns.nvim',
     requires = 'plenary.nvim',
-    -- if this loads before my colorscheme it will look terrible.
-    after = 'colorbuddy.nvim',
+    after = 'colorbuddy.nvim', -- Load after theme so it looks better
     config = 'require("gitsigns").setup()',
   }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
@@ -161,7 +170,6 @@ return require('packer').startup(function(use)
   use {
     'kyazdani42/nvim-tree.lua',
     requires = 'nvim-web-devicons',
-    opt = true,
     cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
   }
   use {
@@ -191,7 +199,6 @@ return require('packer').startup(function(use)
   use {
     'tkmpypy/chowcho.nvim',
     requires = 'nvim-web-devicons',
-    opt = true,
     cmd = 'Chowcho',
     config = function() require('chowcho').setup {icon_enabled = true, border_style = 'rounded'} end,
   }
@@ -199,24 +206,10 @@ return require('packer').startup(function(use)
   use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
   use {'dstein64/nvim-scrollview', config = 'vim.g.scrollview_nvim_14040_workaround = true'}
   use {
-    'dm1try/golden_size',
-    config = function()
-      local function ignore_by_buftype(types)
-        local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
-        for _, type in pairs(types) do if type == buftype then return 1 end end
-      end
-      local golden_size = require('golden_size')
-      -- set the callbacks, preserve the defaults
-      golden_size.set_ignore_callbacks {
-        {ignore_by_buftype, {'nerdtree', 'quickfix', 'terminal'}},
-        {golden_size.ignore_float_windows}, -- default one, ignore float windows
-        {golden_size.ignore_by_window_flag}, -- default one, ignore windows with w:ignore_gold_size=1
-      }
-    end,
-  }
-  use {
     'kevinhwang91/nvim-hlslens',
-    keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
+    -- no lazy loading until packer #273 is fixed or a new mechanism is set up
+    -- keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
+    -- event = {'CmdlineEnter /', 'CmdlineEnter \\?'},
     config = 'require("plugins.nvim-hlslens")',
   }
   use {
@@ -243,7 +236,7 @@ return require('packer').startup(function(use)
   }
 
   -- Utilities
-  use 'tpope/vim-fugitive'
+  use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
   use {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -275,7 +268,6 @@ return require('packer').startup(function(use)
     --
     -- This will probably replace vimwiki at some point.
     requires = {'plenary.nvim', 'telescope.nvim'},
-    opt = true,
     keys = {{'n', 'gzi'}},
     config = function()
       require('neuron').setup {
@@ -322,6 +314,18 @@ return require('packer').startup(function(use)
       {'i', '<C-y><C-t>'}, {'i', '<C-y><C-b>'},
     },
   }
+  use {
+    'numToStr/Navigator.nvim',
+    config = function()
+      require('Navigator').setup()
+      local nmap = vim.keymap.nmap
+      nmap {'<C-h>', '<Cmd>lua require("Navigator").left()<CR>', silent = true}
+      nmap {'<C-j>', '<Cmd>lua require("Navigator").down()<CR>', silent = true}
+      nmap {'<C-k>', '<Cmd>lua require("Navigator").up()<CR>', silent = true}
+      nmap {'<C-l>', '<Cmd>lua require("Navigator").right()<CR>', silent = true}
+      nmap {'<C-\\>', '<Cmd>lua require("Navigator").previous()<CR>', silent = true}
+    end,
+  }
 
   -- Integration
   use {
@@ -356,11 +360,11 @@ return require('packer').startup(function(use)
     cmd = {'HopWord', 'HopPattern', 'HopChar1', 'HopChar2', 'HopLine'},
     config = function()
       local nmap = vim.keymap.nmap
-      nmap {'<Leader>hw', [[<Cmd>lua require('hop').hint_words()<CR>]]}
-      nmap {'<Leader>hp', [[<Cmd>lua require('hop').hint_patterns()<CR>]]}
-      nmap {'<Leader>hc', [[<Cmd>lua require('hop').hint_char1()<CR>]]}
-      nmap {'<Leader>hC', [[<Cmd>lua require('hop').hint_char2()<CR>]]}
-      nmap {'<Leader>hl', [[<Cmd>lua require('hop').hint_lines()<CR>]]}
+      nmap {'<Leader>hw', '<Cmd>lua require("hop").hint_words()<CR>'}
+      nmap {'<Leader>hp', '<Cmd>lua require("hop").hint_patterns()<CR>'}
+      nmap {'<Leader>hc', '<Cmd>lua require("hop").hint_char1()<CR>'}
+      nmap {'<Leader>hC', '<Cmd>lua require("hop").hint_char2()<CR>'}
+      nmap {'<Leader>hl', '<Cmd>lua require("hop").hint_lines()<CR>'}
     end,
   }
   use {'windwp/nvim-autopairs', config = 'require("nvim-autopairs").setup()'}
@@ -395,8 +399,8 @@ return require('packer').startup(function(use)
   use {
     'junegunn/vim-easy-align',
     cmd = {'EasyAlign', 'LiveEasyAlign'},
-    keys = {{'n', 'ga'}, {'v', 'ga'}},
-    config = function()
+    keys = {'<Plug>(EasyAlign)', '<Plug>(LiveEasyAlign)'},
+    setup = function()
       vim.keymap.vmap {'ga', '<Plug>(LiveEasyAlign)', silent = true}
       vim.keymap.nmap {'ga', '<Plug>(EasyAlign)', silent = true}
     end,
@@ -407,20 +411,22 @@ return require('packer').startup(function(use)
     setup = [[vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'}]],
   }
   use {
-    'kana/vim-textobj-user',
-    -- Lazy loading some text objects can break things. Others work surprisingly well though.
-    requires = {
-      {
-        'kana/vim-textobj-function',
-        keys = {
-          {'x', 'af'}, {'o', 'af'}, {'x', 'if'}, {'o', 'if'}, {'x', 'aF'}, {'o', 'aF'}, {'x', 'iF'},
-          {'o', 'iF'},
-        },
-      }, {
-        'sgur/vim-textobj-parameter',
-        keys = {{'x', 'a,'}, {'o', 'a,'}, {'x', 'i,'}, {'o', 'i,'}, {'x', 'i2,'}, {'o', 'i2,'}},
-      },
-      {'rsrchboy/vim-textobj-heredocs', keys = {{'x', 'aH'}, {'o', 'aH'}, {'x', 'iH'}, {'o', 'iH'}}},
+    'kana/vim-textobj-function',
+    -- Can act up when lazy-loaded
+    requires = 'kana/vim-textobj-user',
+    keys = {
+      {'x', 'af'}, {'o', 'af'}, {'x', 'if'}, {'o', 'if'}, {'x', 'aF'}, {'o', 'aF'}, {'x', 'iF'},
+      {'o', 'iF'},
     },
+  }
+  use {
+    'sgur/vim-textobj-parameter',
+    requires = 'kana/vim-textobj-user',
+    keys = {{'x', 'a,'}, {'o', 'a,'}, {'x', 'i,'}, {'o', 'i,'}, {'x', 'i2,'}, {'o', 'i2,'}},
+  }
+  use {
+    'rsrchboy/vim-textobj-heredocs',
+    requires = 'kana/vim-textobj-user',
+    keys = {{'x', 'aH'}, {'o', 'aH'}, {'x', 'iH'}, {'o', 'iH'}},
   }
 end)

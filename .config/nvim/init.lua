@@ -2,8 +2,6 @@
 -- Most code that would go here got moved elsewhere at some point.
 assert(true)
 
-vim.g.loaded_skim = false
-vim.g.loaded_fzf = false
 vim.g.astronauta_load_keymap = false
 
 -- Global requires
@@ -26,7 +24,6 @@ aug init
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|vista_kind\|minimap\|tsplayground\)') | quit | endif
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no
-  au VimEnter * ++once unlet g:loaded_skim g:loaded_fzf
   " au BufWritePost plugins.lua PackerCompile
 aug END
 ]], false)

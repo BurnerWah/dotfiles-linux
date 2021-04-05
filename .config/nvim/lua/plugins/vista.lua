@@ -30,3 +30,4 @@ vim.g.vista_executive_for = {
 }
 -- Consider checking for commands before enabling them.
 vim.g.vista_ctags_cmd = {go = 'gotags', rst = 'rst2ctags'}
+-- TODO: get vimwiki working
