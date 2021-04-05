@@ -116,13 +116,9 @@ class fd_search(Command):
         (search_results, _err) = process.communicate()
         global fd_deq
         fd_deq = deque(
-            (
-                self.fm.thisdir.path + os.sep + rel
-                for rel in sorted(
-                    search_results.split(result_sep["split"]), key=str.lower
-                )
-                if rel != ""
-            )
+            self.fm.thisdir.path + os.sep + rel
+            for rel in sorted(search_results.split(result_sep["split"]), key=str.lower)
+            if rel != ""
         )
 
         if len(fd_deq) > 0:
@@ -176,12 +172,12 @@ class fzf_select(Command):
 
         if self.quantifier:
             # match only directories
-            command = "find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+            command = "find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
             -o -type d -print 2> /dev/null | sed 1d | cut -b3- | fzf +m"
 
         else:
             # match files and directories
-            command = "find -L . \( -path '*/\.*' -o -fstype 'dev' -o -fstype 'proc' \) -prune \
+            command = "find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
             -o -print 2> /dev/null | sed 1d | cut -b3- | fzf +m"
 
         fzf = self.fm.execute_command(
