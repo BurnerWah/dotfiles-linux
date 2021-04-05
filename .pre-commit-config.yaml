@@ -8,12 +8,14 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-json
+      - id: check-xml
       - id: check-executables-have-shebangs
       - id: check-added-large-files
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.2.1
     hooks:
       - id: prettier
+        stages: [commit, push, manual]
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.11.0
     hooks:
@@ -23,9 +25,17 @@ repos:
     hooks:
       - id: black
         language_version: python3.9
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.0.3
+    hooks:
+      - id: detect-secrets
   - repo: https://github.com/YaBoiBurner/pre-commit-hooks
     rev: 1.1.3
     hooks:
       - id: fish_indent
       - id: luaformatter
       - id: taplo-format
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.15.0
+    hooks:
+      - id: gitlint
