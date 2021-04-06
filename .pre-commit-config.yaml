@@ -3,46 +3,63 @@ repos:
     rev: v3.4.0
     hooks:
       - id: detect-private-key
+      - { id: check-added-large-files, stages: [commit, push, manual] }
       - id: trailing-whitespace
+        exclude_types:
+          - javascript
+          - json
+          - lua
+          - markdown
+          - python
+          - yaml
       - id: end-of-file-fixer
-      - id: check-yaml
-        stages: [commit, push, manual]
-      - id: check-toml
-        stages: [commit, push, manual]
-      - id: check-json
-        stages: [commit, push, manual]
-      - id: check-xml
-        stages: [commit, push, manual]
       - id: check-executables-have-shebangs
-      - id: check-added-large-files
-        stages: [commit, push, manual]
+      - { id: check-yaml, stages: [commit, push, manual] }
+      - { id: check-toml, stages: [commit, push, manual] }
+      - { id: check-json, stages: [commit, push, manual] }
+      - { id: check-xml, stages: [commit, push, manual] }
+      - { id: check-symlinks, stages: [commit, push, manual] }
+      - { id: destroyed-symlinks, stages: [commit, push, manual] }
+
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.2.1
-    hooks:
-      - id: prettier
-        stages: [commit, push, manual]
+    hooks: [{ id: prettier, stages: [commit, push, manual] }]
+
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.11.0
-    hooks:
-      - id: pyupgrade
-        stages: [commit, push, manual]
+    hooks: [{ id: pyupgrade, stages: [commit, push, manual] }]
+
   - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:
       - id: black
         language_version: python3.9
         stages: [commit, push, manual]
+
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.3.5
+    hooks:
+      - id: editorconfig-checker
+        stages: [commit, push, manual]
+        exclude_types:
+          - javascript
+          - json
+          - lua
+          - markdown
+          - python
+          - yaml
+
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.0.3
-    hooks:
-      - id: detect-secrets
+    hooks: [{ id: detect-secrets }]
+
   - repo: https://github.com/YaBoiBurner/pre-commit-hooks
     rev: 1.1.4
     hooks:
       - id: fish_indent
       - id: luaformatter
       - id: taplo-format
+
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.15.0
-    hooks:
-      - id: gitlint
+    hooks: [{ id: gitlint }]
