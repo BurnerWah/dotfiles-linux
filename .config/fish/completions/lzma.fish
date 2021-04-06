@@ -3,7 +3,6 @@
 # FIXME find some way to ignore .xz & .txz files
 complete -c lzma -w xz
 complete -c lzma -s d -l decompress -l uncompress -d Decompress -x -a "(
-  __fish_complete_suffix .lzma
-  __fish_complete_suffix .tlz
-)
-"
+    __fish_complete_suffix .lzma
+    __fish_complete_suffix .tlz
+)"

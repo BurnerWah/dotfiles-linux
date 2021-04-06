@@ -7,10 +7,10 @@ set -l T_help "$seen help && ! $seen config stash && [ (count (commandline -poc 
 
 complete -c glow -n "$seen config help" -x
 complete -c glow -n "! $seen config help" -x -a "(
-  __fish_complete_suffix .md
-  __fish_complete_suffix .mkd
-  __fish_complete_suffix .mdown
-  __fish_complete_suffix .markdown
+    __fish_complete_suffix .md
+    __fish_complete_suffix .mkd
+    __fish_complete_suffix .mdown
+    __fish_complete_suffix .markdown
 )"
 
 complete -c glow -s h -l help -d Help

@@ -1,12 +1,11 @@
 # unxz(1) completion
 # NOTE this isn't as complete as xz's completions
 complete -c unxz -x -a "(
-  __fish_complete_suffix .xz
-  __fish_complete_suffix .txz
-  __fish_complete_suffix .lzma
-  __fish_complete_suffix .tlz
-)
-"
+    __fish_complete_suffix .xz
+    __fish_complete_suffix .txz
+    __fish_complete_suffix .lzma
+    __fish_complete_suffix .tlz
+)"
 
 complete -c unxz -s t -l test -d "Test the integrity of compressed files"
 complete -c unxz -s l -l list -d "Print information about compressed files"

@@ -8,8 +8,8 @@ complete -c pigz -w gzip
 complete -c unpigz -w gunzip
 
 complete -c gzip -x -s d -l decompress -d "Decompress the compressed input" -a "(
-  __fish_complete_suffix .gz
-  __fish_complete_suffix .tgz
+    __fish_complete_suffix .gz
+    __fish_complete_suffix .tgz
 )\t"
 # the \t at the end stops the flag's description from being applied to files
 
