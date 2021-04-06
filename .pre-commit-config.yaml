@@ -36,6 +36,17 @@ repos:
         language_version: python3.9
         stages: [commit, push, manual]
 
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.0.3
+    hooks: [{ id: detect-secrets }]
+
+  - repo: https://github.com/YaBoiBurner/pre-commit-hooks
+    rev: 1.1.4
+    hooks:
+      - id: fish_indent
+      - id: luaformatter
+      - id: taplo-format
+
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 2.3.5
     hooks:
@@ -48,17 +59,6 @@ repos:
           - markdown
           - python
           - yaml
-
-  - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.0.3
-    hooks: [{ id: detect-secrets }]
-
-  - repo: https://github.com/YaBoiBurner/pre-commit-hooks
-    rev: 1.1.4
-    hooks:
-      - id: fish_indent
-      - id: luaformatter
-      - id: taplo-format
 
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.15.0
