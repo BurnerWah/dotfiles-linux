@@ -1,5 +1,17 @@
-# This is basically just here for shfmt right now.
+root = true
+
+# shfmt uses editorconfig but it's not great right now tbh
 [*.{sh,bashrc,bash_profile}]
 indent_style = space
 indent_size = 2
 switch_case_indent = true
+
+# Standard-ish fish style
+[*.fish]
+indent_size = 4
+indent_style = space
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+max_line_length = 100

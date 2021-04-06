@@ -208,8 +208,8 @@ return require('packer').startup(function(use)
   use {
     'kevinhwang91/nvim-hlslens',
     -- no lazy loading until packer #273 is fixed or a new mechanism is set up
-    -- keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
-    -- event = {'CmdlineEnter /', 'CmdlineEnter \\?'},
+    keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
+    event = 'CmdlineEnter [/\\?]',
     config = 'require("plugins.nvim-hlslens")',
   }
   use {

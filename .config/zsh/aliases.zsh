@@ -22,6 +22,7 @@ alias findmnt="grc ${aliases[findmnt]:-findmnt}"
 alias free="grc ${aliases[free]:-free} -h --si"
 alias getsebool="grc ${aliases[getsebool]:-getsebool}"
 alias grc='grc -es --colour=auto'
+alias grep='ugrep -G' egrep='ugrep -E' fgrep='ugrep -F'
 alias id="grc ${aliases[id]:-id}"
 alias ifconfig="grc ${aliases[ifconfig]:-ifconfig}"
 alias ip="grc ${aliases[ip]:-ip}"
@@ -39,6 +40,7 @@ alias semanage="grc ${aliases[semanage]:-semanage}"
 alias traceroute="grc ${aliases[traceroute]:-traceroute}"
 alias traceroute6="grc ${aliases[traceroute6]:-traceroute6}"
 alias wineconsole="${aliases[wineconsole]:-wineconsole} --backend=curses"
+alias zgrep='ugrep -zG' zegrep='ugrep -zE' zfgrep='ugrep -zF'
 
 alias cmd=command fns=functions fn=function unfn=unfunction fun=function unfun=unfunction func=function unfunc=unfunction ng=noglob xopen=xdg-open
 

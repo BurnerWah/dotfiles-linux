@@ -30,6 +30,7 @@ Oddities
 * I use environment variables to make programs use XDG base directories [1]_.
   Some of the methods are from the Arch Linux Wiki [2]_, while others
   are my own.
+* I'm not gonna change the license.
 
 .. [1] https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 .. [2] https://wiki.archlinux.org/index.php/XDG_Base_Directory

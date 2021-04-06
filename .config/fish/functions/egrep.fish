@@ -1,4 +1,9 @@
-if command -qs egrep
+if command -qs ugrep
+    function egrep
+        command ugrep -E $argv
+        # technicall ugrep --sort -E -U -Y -. -Dread -dread is more compatible
+    end
+else if command -qs egrep
     function egrep
         command egrep --color=auto $argv
     end
