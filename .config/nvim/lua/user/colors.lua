@@ -230,4 +230,7 @@ Group.new('GitGutterChange',       c.yellow)
 Group.new('GitGutterChangeDelete', c.orange)
 Group.new('GitGutterDelete',       c.red)
 
+-- Plugin - indent-blankline
+Group.new('IndentBlanklineChar', c.purple:dark():dark()) -- this looks really nice IMO
+
 -- LuaFormatter on

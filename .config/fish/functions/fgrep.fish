@@ -1,4 +1,8 @@
-if command -qs ugrep
+if command -qs rg
+    function fgrep
+        command rg -F $argv
+    end
+else if command -qs ugrep
     function fgrep
         command ugrep -F $argv
     end

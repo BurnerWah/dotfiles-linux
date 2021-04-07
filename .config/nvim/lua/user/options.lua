@@ -29,10 +29,12 @@ vim.o.titlestring = 'nvim %t'
 vim.o.titleold = '%{fnamemodify(getcwd(), ":t")}'
 vim.o.title = true
 
+-- Grep program
+-- We want to use ripgrep because it's the fastest.
+-- Nothing else really compares to it, so the next best option is assuming grep is symlinked to ugrep.
 if executable('rg') then
   vim.o.grepprg = [[rg -SL --hidden -g !.git --no-heading --vimgrep $*]]
   vim.o.grepformat = '%f:%l:%c:%m,' .. vim.o.grepformat
-  -- vim.o.grepprg = table.concat({'rg', '--hidden', '-g', '!.git', '--no-heading', }, ' ')
 end
 
 -- Enable spell checking

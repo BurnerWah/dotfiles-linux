@@ -1,4 +1,8 @@
-if command -qs ugrep
+if command -qs rg
+    function egrep
+        command rg $argv
+    end
+else if command -qs ugrep
     function egrep
         command ugrep -E $argv
         # technicall ugrep --sort -E -U -Y -. -Dread -dread is more compatible

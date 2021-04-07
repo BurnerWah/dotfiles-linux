@@ -319,10 +319,15 @@ return require('packer').startup(function(use)
   use {
     'editorconfig/editorconfig-vim',
     -- Editorconfig support
+    -- Rules that will modify files are disabled, since that's handled elsewhere.
+    -- Eventually I'll find or make a unified formatting plugin to replace this.
     config = function()
       vim.g.EditorConfig_exclude_patterns = {
         'davs\\?://.*', 'ftp://.*', 'fugitive://.*', 'https\\?://.*', 'info://.*', 'man://.*',
         'octo://.*', 'output://.*', 'rcp://.*', 'rsync://.*', 'scp://.*', 'sftp://.*', 'term://.*',
+      }
+      vim.g.EditorConfig_disable_rules = {
+        'insert_final_newline', 'max_line_length', 'trim_trailing_whitespace',
       }
     end,
   }
