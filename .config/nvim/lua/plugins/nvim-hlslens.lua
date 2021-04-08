@@ -64,4 +64,5 @@ hlslens.get_config().override_line_lens = function(lnum, loc, idx, r_idx, count,
   vim.api.nvim_buf_set_virtual_text(0, hls_ns, lnum - 1, chunks, {})
 end
 
-require('hlslens').enable()
+-- hlslens.setup {auto_enable = true}
+hlslens.enable()

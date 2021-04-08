@@ -27,7 +27,7 @@ syn region ublockInclude contained oneline start='^!#include' end='$' contains=@
 " Static network filters {{{2
 syn region ublockStaticBlock oneline start='^||.\+' end='$' contains=ublockStaticOpts
 syn region ublockStaticAllow oneline start='^@@||.\+' end='$' contains=ublockStaticOpts
-syn region ublockStaticOpts contained start='\^\?\$' end='$' contains=ublockStaticOpt
+syn region ublockStaticOpts contained start='\^\$\?' end='$' contains=ublockStaticOpt
 syn keyword ublockStaticOpt contained script image stylesheet object xmlhttprequest
 syn keyword ublockStaticOpt contained
       \ badfilter important subdocument ping websocket

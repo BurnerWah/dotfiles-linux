@@ -3,7 +3,7 @@ require('compe').register_source('fish', require('compe_fish')) -- custom source
 require('compe').setup {
   enabled = true,
   autocomplete = true,
-  debug = false,
+  debug = true,
   min_length = 1,
   preselect = 'enable',
   throttle_time = 80,
@@ -19,7 +19,8 @@ require('compe').setup {
     calc = true,
     vsnip = true,
     snippets_nvim = false,
-    nvim_lsp = true, -- Priority: 1000
+    -- nvim_lsp = true, -- Priority: 1000
+    nvim_lsp = {priority = 10000, dup = 0},
     nvim_lua = true,
     spell = true,
     tags = true,
@@ -33,6 +34,7 @@ require('compe').setup {
       },
       priority = 900, -- defaults to 5000 which can be problematic
       dup = 0, -- allow duplicate entries (mostly with lsp)
+      sort = true,
     },
     treesitter = true,
     omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},

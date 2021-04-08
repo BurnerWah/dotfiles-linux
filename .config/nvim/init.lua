@@ -7,6 +7,7 @@ vim.g.astronauta_load_keymap = false
 -- Global requires
 
 require('pl') -- Add penlight as a global library
+text.format_operator() -- This is too useful to live without sometimes
 require('uutils') -- Make my own libs easily accessible
 require('user.options') -- Set my vim options
 require('plugins') -- Load my plugins

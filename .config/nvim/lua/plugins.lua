@@ -224,7 +224,8 @@ return require('packer').startup(function(use)
   }
 
   -- Utilities
-  use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
+  -- use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
+  use {'lambdalisue/gina.vim'}
   use {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
