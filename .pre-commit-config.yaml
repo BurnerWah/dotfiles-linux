@@ -21,9 +21,13 @@ repos:
       - { id: check-symlinks, stages: [commit, push, manual] }
       - { id: destroyed-symlinks, stages: [commit, push, manual] }
 
+    # limit prettier to running on files it supports to speed up checks
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.2.1
-    hooks: [{ id: prettier, stages: [commit, push, manual] }]
+    hooks:
+      - id: prettier
+        stages: [commit, push, manual]
+        types: [javascript, json, markdown, yaml]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.11.0
