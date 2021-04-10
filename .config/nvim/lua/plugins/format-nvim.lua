@@ -113,4 +113,4 @@ require('format').setup {
   yaml = {tool.prettier('yaml')},
 }
 
--- vim.cmd [[autocmd init BufWritePost * FormatWrite]]
+vim.cmd [[autocmd init BufWritePost * FormatWrite]]
