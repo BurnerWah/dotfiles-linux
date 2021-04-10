@@ -69,7 +69,8 @@ return require('packer').startup(function(use)
     config = 'require("plugins.nvim-compe")',
   }
 
-  -- Filetypes
+  -- Filetypes & language features
+  -- Some of this stuff isn't managed by packer.
   use 'leafo/moonscript-vim'
   use 'rhysd/vim-llvm'
   use 'ron-rs/ron.vim'
@@ -98,10 +99,6 @@ return require('packer').startup(function(use)
   use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
   -- use 'davidgranstrom/nvim-markdown-preview'
-
-  -- Python
-  -- use 'vim-python/python-syntax'
-  use {'Vimjas/vim-python-pep8-indent', ft = {'aap', 'bzl', 'cython', 'pyrex', 'python'}}
 
   -- RST
   use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me

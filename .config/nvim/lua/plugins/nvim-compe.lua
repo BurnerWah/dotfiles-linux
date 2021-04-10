@@ -3,7 +3,7 @@ require('compe').register_source('fish', require('compe_fish')) -- custom source
 require('compe').setup {
   enabled = true,
   autocomplete = true,
-  debug = true,
+  debug = false,
   min_length = 1,
   preselect = 'enable',
   throttle_time = 80,
@@ -18,9 +18,7 @@ require('compe').setup {
     buffer = true,
     calc = true,
     vsnip = true,
-    snippets_nvim = false,
-    -- nvim_lsp = true, -- Priority: 1000
-    nvim_lsp = {priority = 10000, dup = 0},
+    nvim_lsp = true, -- Priority: 1000
     nvim_lua = true,
     spell = true,
     tags = true,
