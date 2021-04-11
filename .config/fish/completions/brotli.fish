@@ -4,9 +4,8 @@ set -l has __fish_contains_opt
 
 complete -c brotli -s{0,1,2,3,4,5,6,7,8,9} -d "Compression level (0-9)"
 
-complete -c brotli -x -s d -l decompress -d "Decompress the compressed input" -a "(
-    __fish_complete_suffix .br
-)\t"
+complete -c brotli -x -s d -l decompress -d "Decompress the compressed input" \
+    -a "(__fish_complete_suffix .br)\t"
 
 complete -c brotli -s c -l stdout -d "Compress to stdout"
 complete -c brotli -s f -l force -d Overwrite

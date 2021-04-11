@@ -1,11 +1,6 @@
 # xzcat(1) completion
 # completions are generally modeled after zcat's completions
-complete -c xzcat -x -a "(
-    __fish_complete_suffix .xz
-    __fish_complete_suffix .txz
-    __fish_complete_suffix .lzma
-    __fish_complete_suffix .tlz
-)"
+complete -c xzcat -x -a (_CM_suffixes .xz .txz .lzma -tlz)
 
 complete -c xzcat -s f -l force -d "Overwrite of output file"
 # skipped

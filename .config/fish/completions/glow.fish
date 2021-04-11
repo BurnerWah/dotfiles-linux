@@ -6,12 +6,7 @@ set -l seen __fish_seen_subcommand_from
 set -l T_help "$seen help && ! $seen config stash && [ (count (commandline -poc | string match help)) -lt 2 ]"
 
 complete -c glow -n "$seen config help" -x
-complete -c glow -n "! $seen config help" -x -a "(
-    __fish_complete_suffix .md
-    __fish_complete_suffix .mkd
-    __fish_complete_suffix .mdown
-    __fish_complete_suffix .markdown
-)"
+complete -c glow -n "! $seen config help" -x -a (_CM_suffixes .md .mkd .mdown .markdown)
 
 complete -c glow -s h -l help -d Help
 complete -Fc glow -l config -d "Config file"

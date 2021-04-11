@@ -1,7 +1,2 @@
 complete -c xzdiff -w diff
-complete -c xzdiff -xa "(
-    __fish_complete_suffix .xz
-    __fish_complete_suffix .txz
-    __fish_complete_suffix .lzma
-    __fish_complete_suffix .tlz
-)"
+complete -c xzdiff -xa (_CM_suffixes .xz .txz .lzma .tlz)

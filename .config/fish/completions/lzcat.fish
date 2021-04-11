@@ -1,5 +1,2 @@
 complete -c lzcat -w xzcat
-complete -c lzcat -x -a "(
-    __fish_complete_suffix .lzma
-    __fish_complete_suffix .tlz
-)"
+complete -c lzcat -x -a (_CM_suffixes .lzma .tlz)

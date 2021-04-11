@@ -5,10 +5,4 @@
 complete -c wine -l help -d 'Display this help and exit'
 complete -c wine -l version -d 'Output version information and exit'
 
-complete -c wine -xa "(
-    __fish_complete_suffix .exe
-    __fish_complete_suffix .exe.so
-    __fish_complete_suffix .com
-    __fish_complete_suffix .scr
-    __fish_complete_suffix .msi
-)"
+complete -c wine -xa (_CM_suffixes .exe .exe.so .com .scr .msi)
