@@ -41,6 +41,7 @@ return {
     ['glsl'] = 'glsl', -- From vim-glsl
     ['glu'] = 'gluon',
     ['gql'] = 'graphql',
+    ['dyon'] = 'dyon',
     ['graphql'] = 'graphql',
     ['graphqls'] = 'graphql',
     ['iuml'] = 'plantuml',

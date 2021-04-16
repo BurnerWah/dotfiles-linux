@@ -25,6 +25,7 @@ aug init
   au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|vista_kind\|minimap\|tsplayground\)') | quit | endif
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no
+  au VimEnter * ++once silent delcommand GBrowse
   " au BufWritePost plugins.lua PackerCompile
 aug END
 ]], false)

@@ -111,6 +111,10 @@
 	insteadOf = git://gitlab.com/
 	insteadOf = http://gitlab.com/
 
+[url "file:///dev/null/"] # not like you can do anything to stop me
+	insteadOf = ssh://git.savannah.gnu.org/
+	insteadOf = https://git.savannah.gnu.org/
+
 [delta]
 	side-by-side = false
 	plus-color = "#012800"

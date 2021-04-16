@@ -5,6 +5,7 @@ Documentation=man:man(1) man:mandb(8)
 [Timer]
 OnCalendar=weekly
 Persistent=true
+RandomizedDelaySec=1h
 
 [Install]
 WantedBy=timers.target

@@ -82,6 +82,7 @@ return require('packer').startup(function(use)
   use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
   use 'gluon-lang/vim-gluon'
   use 'blankname/vim-fish'
+  use 'thyrgle/vim-dyon'
   -- Meson syntax is now manually maintained
   -- toml is handled internally + with nvim-treesitter
 
@@ -98,7 +99,6 @@ return require('packer').startup(function(use)
   use {'plasticboy/vim-markdown', ft = 'markdown'}
   use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
-  -- use 'davidgranstrom/nvim-markdown-preview'
 
   -- RST
   use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me
@@ -221,8 +221,13 @@ return require('packer').startup(function(use)
   }
 
   -- Utilities
-  -- use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
-  use {'lambdalisue/gina.vim'}
+  use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
+  use {
+    'ruifm/gitlinker.nvim',
+    requires = 'plenary.nvim',
+    keys = {{'n', '<Leader>gy'}, {'v', '<Leader>gy'}},
+    config = function() require('gitlinker').setup() end,
+  }
   use {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
