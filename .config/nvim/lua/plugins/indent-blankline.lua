@@ -9,3 +9,4 @@ vim.g.indent_blankline_context_patterns = {
   'jsx_self_closing_element', 'try_statement', 'catch_clause', 'import_statement',
 }
 vim.g.indent_blankline_show_first_indent_level = false
+vim.g.indent_blankline_show_trailing_blankline_indent = false

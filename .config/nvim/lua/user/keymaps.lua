@@ -1,5 +1,6 @@
 UserMaps = {}
 local imap, smap, nnor = vim.keymap.imap, vim.keymap.smap, vim.keymap.nnoremap
+local vnor = vim.keymap.vnoremap
 local pumvisible, getline = vim.fn.pumvisible, vim.fn.getline
 local compe_complete = vim.fn['compe#complete']
 local vsnip = {
@@ -36,14 +37,12 @@ end
 function UserMaps.on_enter()
   if (pumvisible() ~= 0) then
     if vim.fn.complete_info().selected ~= -1 then
-      vim.fn['compe#confirm']('<CR>')
-      return npairs.esc('<C-y>')
+      return vim.fn['compe#confirm'](npairs.esc('<CR>'))
     else
-      vim.defer_fn(function() vim.fn['compe#confirm']('<CR>') end, 20)
-      return npairs.esc('<c-n>')
+      return npairs.esc('<CR>')
     end
   else
-    return npairs.check_break_line_char()
+    return npairs.autopairs_cr()
   end
 end
 
@@ -58,3 +57,5 @@ smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
 smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
 imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
+vnor {'<', '<gv'}
+vnor {'>', '>gv'}

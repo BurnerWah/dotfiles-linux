@@ -4,6 +4,7 @@ if vim.wo.breakindent and vim.wo.linebreak then
   vim.wo.listchars = (vim.fn.has('multi_byte') == 1 and
                          [[tab:▸ ,extends:❯,precedes:❮,nbsp:±]] or
                          [[tab:> ,extends:>,precedes:<,nbsp:+]])
+  -- Clear unwanted commands
   vim.api.nvim_exec([[
     sil! delc Toc
     sil! delc Toch

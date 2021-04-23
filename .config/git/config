@@ -1,7 +1,7 @@
 [core]
 	editor = nvim
 	pager = delta
-	# excludesFile = ~/.config/git/global.gitignore
+
 [user]
 	# user info
 	name = Jaden Pleasants
@@ -12,11 +12,15 @@
 	# aliases
 	aliases = config --get-regexp alias
 	graph = !ogl # https://github.com/onilton/ogl
+	open = brws
 
 [blame]
 	coloring = highlightRecent
 [commit]
-	gpgSign = true  # sign commits w/ GPG
+	gpgSign = true
+	# Sign commits w/ GPG
+	# Honestly not all that valuable IMO, but hopefully Git adds support for something like
+	# rage/age for signing commits.
 [fetch]
 	parallel = 0
 	# Run a reasonable number of fetch operations at once
@@ -107,9 +111,29 @@
 	insteadOf = git://github.com/
 	insteadOf = http://github.com/
 
+[url "https://gist.github.com/"]
+	insteadOf = http://gist.github.com/
+	insteadOf = git://gist.github.com/
+
 [url "https://gitlab.com/"]
 	insteadOf = git://gitlab.com/
 	insteadOf = http://gitlab.com/
+
+[url "https://git.kernel.org/"]
+	insteadOf = http://git.kernel.org/
+	insteadOf = git://git.kernel.org/
+
+[url "https://anongit.freedesktop.org/git/"]
+	insteadOf = http://anongit.freedesktop.org/git/
+	insteadOf = git://anongit.freedesktop.org/
+
+[url "https://gitlab.freedesktop.org/"]
+	insteadOf = http://gitlab.freedesktop.org/
+	insteadOf = git://gitlab.freedesktop.org/
+
+[url "https://gitlab.gnome.org/"]
+	insteadOf = http://gitlab.gnome.org/
+	insteadOf = git://gitlab.gnome.org/
 
 [url "file:///dev/null/"] # not like you can do anything to stop me
 	insteadOf = ssh://git.savannah.gnu.org/

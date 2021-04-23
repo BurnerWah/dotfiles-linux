@@ -92,6 +92,7 @@ Group.new('Title',        c.green)
 Group.new('VertSplit',    c.gray3,  c.gray0)
 Group.new('WarningMsg',   c.red)
 Group.new('WildMenu',     c.gray1,  c.cyan)
+Group.new('EndOfBuffer', c.gray0)
 
 -- Core - Standard syntax
 --        group,        fg,       bg,      styles

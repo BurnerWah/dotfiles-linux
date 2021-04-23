@@ -146,6 +146,21 @@ return require('packer').startup(function(use)
     after = 'colorbuddy.nvim', -- Load after theme so it looks better
     config = 'require("gitsigns").setup()',
   }
+  use {
+    'folke/lsp-trouble.nvim',
+    requires = 'nvim-lspconfig',
+    cmd = {
+      'LspTroubleOpen', 'LspTroubleWorkspaceOpen', 'LspTroubleDocumentOpen', 'LspTroubleToggle',
+      'LspTroubleWorkspaceToggle', 'LspTroubleDocumentToggle',
+    },
+    config = function() require('trouble').setup {} end,
+  }
+  use {
+    'simrat39/symbols-outline.nvim',
+    requires = 'nvim-lspconfig',
+    cmd = 'SymbolsOutline',
+    config = function() require('symbols-outline').setup {} end,
+  }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
   use {
@@ -219,6 +234,8 @@ return require('packer').startup(function(use)
     'edluffy/specs.nvim',
     config = function() require('specs').setup {popup = {fader = require('specs').pulse_fader}} end,
   }
+  -- use {'sunjon/shade.nvim', config = function() require('shade').setup() end}
+  -- Turned off because it breaks some random highlights (how?)
 
   -- Utilities
   use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
@@ -315,6 +332,21 @@ return require('packer').startup(function(use)
       nmap {'<C-k>', '<Cmd>lua require("Navigator").up()<CR>', silent = true}
       nmap {'<C-l>', '<Cmd>lua require("Navigator").right()<CR>', silent = true}
       nmap {'<C-\\>', '<Cmd>lua require("Navigator").previous()<CR>', silent = true}
+    end,
+  }
+  use {
+    'kdav5758/TrueZen.nvim',
+    opt = true,
+    cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
+    config = function() require('true-zen').setup {cursor_by_mode = true} end,
+  }
+  use {
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        auto_session_root_dir = vim.fn.stdpath('data') .. '/sessions/store',
+        auto_session_enable_last_session = false,
+      }
     end,
   }
 
