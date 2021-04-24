@@ -16,6 +16,14 @@ return require('packer').startup(function(use)
   use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
   -- hererocks are broken right now
   use {'kyazdani42/nvim-web-devicons', config = 'require("plugins.nvim-web-devicons")'}
+  use {
+    'mortepau/codicons.nvim',
+    config = function()
+      require('codicons').setup()
+      local ext = require('codicons.extensions').available()
+      require(ext.CompletionItemKind).set()
+    end,
+  }
 
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
@@ -23,7 +31,7 @@ return require('packer').startup(function(use)
   use {'glepnir/lspsaga.nvim', requires = 'nvim-lspconfig', config = 'require("plugins.lspsaga")'}
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
-  use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
+  -- use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
   use {
     'kabouzeid/nvim-lspinstall',
     requires = 'nvim-lspconfig',
@@ -68,40 +76,6 @@ return require('packer').startup(function(use)
     },
     config = 'require("plugins.nvim-compe")',
   }
-
-  -- Filetypes & language features
-  -- Some of this stuff isn't managed by packer.
-  use 'leafo/moonscript-vim'
-  use 'rhysd/vim-llvm'
-  use 'ron-rs/ron.vim'
-  use 'bakpakin/fennel.vim'
-  use 'aklt/plantuml-syntax'
-  use 'tikhomirov/vim-glsl'
-  use 'udalov/kotlin-vim'
-  use 'YaBoiBurner/requirements.txt.vim'
-  use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
-  use 'gluon-lang/vim-gluon'
-  use 'blankname/vim-fish'
-  use 'thyrgle/vim-dyon'
-  -- Meson syntax is now manually maintained
-  -- toml is handled internally + with nvim-treesitter
-
-  -- CXX
-  use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
-
-  -- Lua
-  -- use 'tjdevries/manillua.nvim'
-  use {'tjdevries/nlua.nvim', ft = 'lua'}
-  use {'bfredl/nvim-luadev', cmd = 'Luadev'}
-  use {'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'}}
-
-  -- Markdown
-  use {'plasticboy/vim-markdown', ft = 'markdown'}
-  use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
-  use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
-
-  -- RST
-  use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me
 
   -- Telescope
   use {
@@ -153,13 +127,49 @@ return require('packer').startup(function(use)
       'LspTroubleOpen', 'LspTroubleWorkspaceOpen', 'LspTroubleDocumentOpen', 'LspTroubleToggle',
       'LspTroubleWorkspaceToggle', 'LspTroubleDocumentToggle',
     },
-    config = function() require('trouble').setup {} end,
+    config = function()
+      local codicons = require('codicons')
+      require('trouble').setup {
+        fold_open = codicons.get('fold-down'),
+        fold_closed = codicons.get('fold-up'),
+        signs = {
+          error = codicons.get('error'),
+          warning = codicons.get('warning'),
+          hint = codicons.get('question'),
+          information = codicons.get('info'),
+        },
+      }
+    end,
   }
   use {
     'simrat39/symbols-outline.nvim',
     requires = 'nvim-lspconfig',
     cmd = 'SymbolsOutline',
-    config = function() require('symbols-outline').setup {} end,
+    config = function()
+      require('symbols-outline').setup {}
+      local codicons = require('codicons')
+      local symbols = require('symbols-outline.symbols')
+      tablex.foreach({
+        File = 'symbol-file',
+        Namespace = 'symbol-namespace',
+        Class = 'symbol-class',
+        Method = 'symbol-method',
+        Property = 'symbol-property',
+        Field = 'symbol-field',
+        Enum = 'symbol-enum',
+        Interface = 'symbol-interface',
+        Variable = 'symbol-variable',
+        Constant = 'symbol-constant',
+        String = 'symbol-string',
+        Number = 'symbol-numeric',
+        Boolean = 'symbol-boolean',
+        Array = 'symbol-array',
+        EnumMember = 'symbol-enum-member',
+        Struct = 'symbol-structure',
+        Event = 'symbol-event',
+        Operator = 'symbol-operator',
+      }, function(val, key) symbols[key].icon = codicons.get(val) end)
+    end,
   }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
@@ -178,7 +188,13 @@ return require('packer').startup(function(use)
       }
     end,
   }
-  use {'meain/vim-package-info', run = 'npm i'} -- rplugin lazy loads
+  use {
+    'meain/vim-package-info',
+    run = 'npm i',
+    config = function()
+      vim.g.vim_package_info_virutaltext_prefix = '  ' .. require('codicons').get('versions') .. ' '
+    end,
+  } -- rplugin lazy loads
   use {
     'kyazdani42/nvim-tree.lua',
     requires = 'nvim-web-devicons',
@@ -196,8 +212,11 @@ return require('packer').startup(function(use)
     -- - #14: (feat) Show only buffer in current tab?
     requires = 'nvim-web-devicons',
     config = function()
+      local codicons = require('codicons')
       require('bufferline').setup {
         options = {
+          buffer_close_icon = codicons.get('close'),
+          close_icon = codicons.get('close-all'),
           mappings = true,
           diagnostics = 'nvim_lsp',
           diagnostics_indicator = function(count, _) return '(' .. count .. ')' end,
@@ -220,8 +239,8 @@ return require('packer').startup(function(use)
   use {
     'kevinhwang91/nvim-hlslens',
     -- no lazy loading until packer #273 is fixed or a new mechanism is set up
-    keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
-    event = 'CmdlineEnter [/\\?]',
+    -- keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
+    -- event = 'CmdlineEnter [/\\?]',
     config = 'require("plugins.nvim-hlslens")',
   }
   use {
@@ -293,7 +312,7 @@ return require('packer').startup(function(use)
     keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
     config = 'require("plugins.iron")',
   }
-  use {'lukas-reineke/format.nvim', config = 'require("plugins.format-nvim")'}
+  use {'mhartington/formatter.nvim', config = 'require("plugins.formatter")'}
   use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
   use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
   use {
@@ -340,14 +359,47 @@ return require('packer').startup(function(use)
     cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
     config = function() require('true-zen').setup {cursor_by_mode = true} end,
   }
+
+  -- Filetypes & language features
+  -- Some of this stuff isn't managed by packer.
+  use 'leafo/moonscript-vim'
+  use 'rhysd/vim-llvm'
+  use 'ron-rs/ron.vim'
+  use 'bakpakin/fennel.vim'
+  use 'aklt/plantuml-syntax'
+  use 'tikhomirov/vim-glsl'
+  use 'udalov/kotlin-vim'
+  use 'YaBoiBurner/requirements.txt.vim'
+  use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
+  use 'gluon-lang/vim-gluon'
+  use 'blankname/vim-fish'
+  use 'thyrgle/vim-dyon'
+  -- Meson syntax is now manually maintained
+  -- toml is handled internally + with nvim-treesitter
+
+  -- CXX
+  use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
+
+  -- Lua
+  -- use 'tjdevries/manillua.nvim'
+  use {'tjdevries/nlua.nvim', ft = 'lua'}
+  use {'bfredl/nvim-luadev', cmd = 'Luadev'}
+  use {'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'}}
+
+  -- Markdown
+  use {'plasticboy/vim-markdown', ft = 'markdown'}
+  use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
+  use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
+
+  -- RST
+  use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me
+
+  -- Rust
   use {
-    'rmagatti/auto-session',
-    config = function()
-      require('auto-session').setup {
-        auto_session_root_dir = vim.fn.stdpath('data') .. '/sessions/store',
-        auto_session_enable_last_session = false,
-      }
-    end,
+    'simrat39/rust-tools.nvim',
+    ft = 'rust',
+    requires = {'nvim-lspconfig', 'nvim-lua/popup.nvim', 'plenary.nvim', 'telescope.nvim'},
+    config = function() require('rust-tools').setup {} end,
   }
 
   -- Integration
@@ -394,7 +446,17 @@ return require('packer').startup(function(use)
       nmap {'<Leader>hl', '<Cmd>lua require("hop").hint_lines()<CR>'}
     end,
   }
-  use {'windwp/nvim-autopairs', config = 'require("nvim-autopairs").setup()'}
+  use {
+    'windwp/nvim-autopairs',
+    config = function()
+      -- local Rule = require('nvim-autopairs.rule')
+      local npairs = require('nvim-autopairs')
+      npairs.setup {
+        check_ts = true,
+        ts_config = {lua = {'string'}, javascript = {'template_string'}},
+      }
+    end,
+  }
   use {
     'tpope/vim-abolish',
     cmd = {'Abolish', 'Subvert', 'S'},

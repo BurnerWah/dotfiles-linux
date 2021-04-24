@@ -45,7 +45,6 @@ Notable plugins
 - format.nvim_: Formatting plugin.
 - dial.nvim_: Improved ``<C-a>`` and ``<C-x>`` bindings.
 - git-messenger.vim_: Easy way to view git commit info for the current line.
-- git-blame.nvim_: Show git commit info as virtual text.
 - nvim-hlslens_: Show more search information as virtual text.
 - vista.vim_: Tagbar plugin with LSP support.
 
@@ -66,6 +65,5 @@ Notable plugins
 .. _format.nvim: https://github.com/lukas-reineke/format.nvim
 .. _dial.nvim: https://github.com/monaqa/dial.nvim
 .. _git-messenger.vim: https://github.com/rhysd/git-messenger.vim
-.. _git-blame.nvim: https://github.com/f-person/git-blame.nvim
 .. _nvim-hlslens: https://github.com/kevinhwang91/nvim-hlslens
 .. _vista.vim: https://github.com/liuchengxu/vista.vim

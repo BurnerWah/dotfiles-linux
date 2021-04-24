@@ -1,5 +1,6 @@
 -- Incomplete statusline config loosely based on nvcode (but with increasingly significant changes)
 local gl = require('galaxyline')
+local codicons = require('codicons')
 local gls = gl.section
 gl.short_line_list = {'LuaTree', 'dbui', 'minimap', 'vista', 'vista_kind', 'vista_markdown'}
 local condit = require('galaxyline.condition')
@@ -166,7 +167,7 @@ gls.left[7] = {
   DiffAdd = {
     provider = 'DiffAdd',
     condition = condit.hide_in_width,
-    icon = '  ',
+    icon = ' ' .. codicons.get('diff-added') .. ' ',
     highlight = {colors.green, colors.bg},
   },
 }
@@ -174,7 +175,7 @@ gls.left[8] = {
   DiffModified = {
     provider = 'DiffModified',
     condition = condit.hide_in_width,
-    icon = '  ',
+    icon = ' ' .. codicons.get('diff-modified') .. ' ',
     highlight = {colors.blue, colors.bg},
   },
 }
@@ -182,7 +183,7 @@ gls.left[9] = {
   DiffRemove = {
     provider = 'DiffRemove',
     condition = condit.hide_in_width,
-    icon = '  ',
+    icon = ' ' .. codicons.get('diff-removed') .. ' ',
     highlight = {colors.red, colors.bg},
   },
 }

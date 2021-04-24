@@ -128,9 +128,10 @@ require('nlspsettings').setup()
 
 for _, S in ipairs({
   'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'mypyls', 'pyright',
-  'rust_analyzer', 'sqls', 'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'vsc_stylelint',
-  'tealls', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
+  'sqls', 'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'vsc_stylelint', 'tealls',
+  'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
   -- jedi-language-server has a really annoying code action that i'd like to avoid
+  -- rust_analyzer is set up elsewhere.
 }) do configs[S].setup({}) end
 
 configs.ccls.setup {
