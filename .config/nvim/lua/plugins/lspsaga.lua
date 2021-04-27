@@ -18,7 +18,6 @@ require('lspsaga').init_lsp_saga {
   },
   code_action_keys = {quit = {'q', '<Esc>'}, exec = '<CR>'},
   rename_action_keys = {quit = {'<C-c>', '<Esc>'}, exec = '<CR>'},
-  border_style = 2, -- Rounded border
 }
 local nnor, tnor = vim.keymap.nnoremap, vim.keymap.tnoremap
 nnor {'<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], silent = true}

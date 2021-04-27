@@ -1,13 +1,14 @@
 local filetype = require('plenary.filetype')
-local expand = vim.fn.expand
-local did_filetype = vim.fn.did_filetype
+local V = require('vlib')
+local expand = V.fn.expand
+local did_filetype = V.fn.did_filetype
 
 local M = {}
 
 function M.detect_ft()
-  if did_filetype() == 0 then
+  if not did_filetype() then
     local file = expand('<amatch>')
-    if file == '' then return end
+    if not file then return end
     local type = filetype.detect(file)
     if type ~= '' then vim.bo.filetype = type end
   end

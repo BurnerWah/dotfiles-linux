@@ -1,15 +1,12 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
--- Only required if you have packer in your `opt` pack
-vim.cmd [[packadd packer.nvim]]
-
+-- This file can be loaded by calling `require('plugins')` from your init.lua
 return require('packer').startup(function(use)
   -- macros
   local _M = {
     telescope_load = function(ext) return 'require("telescope").load_extension("' .. ext .. '")' end,
   }
 
-  -- Packer can manage itself as an optional plugin
-  use {'wbthomason/packer.nvim', opt = true}
+  -- Packer can manage itself
+  use 'wbthomason/packer.nvim'
 
   -- Core plugins
   use 'tjdevries/astronauta.nvim'
@@ -28,10 +25,13 @@ return require('packer').startup(function(use)
   -- Completion & Linting
   use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
   use {'tamago324/nlsp-settings.nvim', requires = 'nvim-lspconfig'}
-  use {'glepnir/lspsaga.nvim', requires = 'nvim-lspconfig', config = 'require("plugins.lspsaga")'}
+  use {
+    'glepnir/lspsaga.nvim',
+    requires = {'nvim-lspconfig', 'codicons.nvim'},
+    config = 'require("plugins.lspsaga")',
+  }
   use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
   use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
-  -- use {'onsails/lspkind-nvim', requires = 'nvim-lspconfig', config = 'require("lspkind").init()'}
   use {
     'kabouzeid/nvim-lspinstall',
     requires = 'nvim-lspconfig',
@@ -47,6 +47,7 @@ return require('packer').startup(function(use)
       {'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter'},
       {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
       {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
+      {'nvim-treesitter/nvim-tree-docs', after = 'nvim-treesitter', requires = 'Olical/aniseed'},
       {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
       {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
     },
@@ -104,72 +105,10 @@ return require('packer').startup(function(use)
 
   -- User interface
   use {
-    'wfxr/minimap.vim',
-    cmd = 'Minimap',
-    setup = function()
-      vim.g.minimap_block_filetypes = {
-        'ale-fix-suggest', 'ale-preview-selection', 'ale-preview', 'fugitive', 'LuaTree',
-        'tsplayground', 'vista', 'vista_kind', 'vista_markdown',
-      }
-    end,
-  }
-  use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'} -- TOC & symbol tree
-  use {
     'lewis6991/gitsigns.nvim',
     requires = 'plenary.nvim',
     after = 'colorbuddy.nvim', -- Load after theme so it looks better
     config = 'require("gitsigns").setup()',
-  }
-  use {
-    'folke/lsp-trouble.nvim',
-    requires = 'nvim-lspconfig',
-    cmd = {
-      'LspTroubleOpen', 'LspTroubleWorkspaceOpen', 'LspTroubleDocumentOpen', 'LspTroubleToggle',
-      'LspTroubleWorkspaceToggle', 'LspTroubleDocumentToggle',
-    },
-    config = function()
-      local codicons = require('codicons')
-      require('trouble').setup {
-        fold_open = codicons.get('fold-down'),
-        fold_closed = codicons.get('fold-up'),
-        signs = {
-          error = codicons.get('error'),
-          warning = codicons.get('warning'),
-          hint = codicons.get('question'),
-          information = codicons.get('info'),
-        },
-      }
-    end,
-  }
-  use {
-    'simrat39/symbols-outline.nvim',
-    requires = 'nvim-lspconfig',
-    cmd = 'SymbolsOutline',
-    config = function()
-      require('symbols-outline').setup {}
-      local codicons = require('codicons')
-      local symbols = require('symbols-outline.symbols')
-      tablex.foreach({
-        File = 'symbol-file',
-        Namespace = 'symbol-namespace',
-        Class = 'symbol-class',
-        Method = 'symbol-method',
-        Property = 'symbol-property',
-        Field = 'symbol-field',
-        Enum = 'symbol-enum',
-        Interface = 'symbol-interface',
-        Variable = 'symbol-variable',
-        Constant = 'symbol-constant',
-        String = 'symbol-string',
-        Number = 'symbol-numeric',
-        Boolean = 'symbol-boolean',
-        Array = 'symbol-array',
-        EnumMember = 'symbol-enum-member',
-        Struct = 'symbol-structure',
-        Event = 'symbol-event',
-        Operator = 'symbol-operator',
-      }, function(val, key) symbols[key].icon = codicons.get(val) end)
-    end,
   }
   use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
   use 'f-person/git-blame.nvim'
@@ -190,19 +129,15 @@ return require('packer').startup(function(use)
   }
   use {
     'meain/vim-package-info',
+    requires = 'codicons.nvim',
     run = 'npm i',
     config = function()
       vim.g.vim_package_info_virutaltext_prefix = '  ' .. require('codicons').get('versions') .. ' '
     end,
   } -- rplugin lazy loads
   use {
-    'kyazdani42/nvim-tree.lua',
-    requires = 'nvim-web-devicons',
-    cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
-  }
-  use {
     'glepnir/galaxyline.nvim',
-    requires = 'nvim-web-devicons',
+    requires = {'nvim-web-devicons', 'codicons.nvim'},
     config = 'require("user.statusline")',
   }
   use {
@@ -210,7 +145,7 @@ return require('packer').startup(function(use)
     -- Tabline plugin
     -- Issues:
     -- - #14: (feat) Show only buffer in current tab?
-    requires = 'nvim-web-devicons',
+    requires = {'nvim-web-devicons', 'codicons.nvim'},
     config = function()
       local codicons = require('codicons')
       require('bufferline').setup {
@@ -359,6 +294,79 @@ return require('packer').startup(function(use)
     cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
     config = function() require('true-zen').setup {cursor_by_mode = true} end,
   }
+  use {
+    'wfxr/minimap.vim',
+    cmd = 'Minimap',
+    setup = function()
+      vim.g.minimap_block_filetypes = {
+        'ale-fix-suggest', 'ale-preview-selection', 'ale-preview', 'fugitive', 'LuaTree',
+        'tsplayground', 'vista', 'vista_kind', 'vista_markdown',
+      }
+    end,
+  }
+  use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'} -- TOC & symbol tree
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = 'nvim-web-devicons',
+    cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
+  }
+  use {
+    'folke/lsp-trouble.nvim',
+    requires = {'nvim-lspconfig', 'codicons.nvim'},
+    cmd = {
+      'LspTroubleOpen', 'LspTroubleWorkspaceOpen', 'LspTroubleDocumentOpen', 'LspTroubleToggle',
+      'LspTroubleWorkspaceToggle', 'LspTroubleDocumentToggle',
+    },
+    config = function()
+      local codicons = require('codicons')
+      require('trouble').setup {
+        fold_open = codicons.get('fold-down'),
+        fold_closed = codicons.get('fold-up'),
+        signs = {
+          error = codicons.get('error'),
+          warning = codicons.get('warning'),
+          hint = codicons.get('question'),
+          information = codicons.get('info'),
+        },
+      }
+    end,
+  }
+  use {
+    'simrat39/symbols-outline.nvim',
+    requires = {'nvim-lspconfig', 'codicons.nvim'},
+    cmd = 'SymbolsOutline',
+    config = function()
+      require('symbols-outline').setup {}
+      local codicons = require('codicons')
+      local symbols = require('symbols-outline.symbols')
+      tablex.foreach({
+        File = 'symbol-file',
+        Namespace = 'symbol-namespace',
+        Class = 'symbol-class',
+        Method = 'symbol-method',
+        Property = 'symbol-property',
+        Field = 'symbol-field',
+        Enum = 'symbol-enum',
+        Interface = 'symbol-interface',
+        Variable = 'symbol-variable',
+        Constant = 'symbol-constant',
+        String = 'symbol-string',
+        Number = 'symbol-numeric',
+        Boolean = 'symbol-boolean',
+        Array = 'symbol-array',
+        EnumMember = 'symbol-enum-member',
+        Struct = 'symbol-structure',
+        Event = 'symbol-event',
+        Operator = 'symbol-operator',
+      }, function(val, key) symbols[key].icon = codicons.get(val) end)
+    end,
+  }
+  use {
+    'YaBoiBurner/sniprun', -- Temporary fork to fix some hardcoded stuff
+    cmd = {'SnipRun', 'SnipInfo'},
+    keys = {'<Plug>SnipRun', '<Plug>SnipRunOperator', '<Plug>SnipInfo'},
+    run = 'cargo build --release',
+  }
 
   -- Filetypes & language features
   -- Some of this stuff isn't managed by packer.
@@ -397,9 +405,11 @@ return require('packer').startup(function(use)
   -- Rust
   use {
     'simrat39/rust-tools.nvim',
-    ft = 'rust',
+    -- Lazy-loading seems to conflict with nlsp-settings.nvim
+    -- ft = 'rust',
+    -- opt = true,
     requires = {'nvim-lspconfig', 'nvim-lua/popup.nvim', 'plenary.nvim', 'telescope.nvim'},
-    config = function() require('rust-tools').setup {} end,
+    config = function() require('rust-tools').setup() end,
   }
 
   -- Integration

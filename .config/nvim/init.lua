@@ -1,8 +1,6 @@
 -- Neovim startup script
 -- Most code that would go here got moved elsewhere at some point.
-assert(true)
-
-vim.g.astronauta_load_keymap = false
+assert(true, 'formatter no-op')
 
 -- Global requires
 

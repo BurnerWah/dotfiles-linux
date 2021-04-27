@@ -105,6 +105,9 @@ Group.new('healthSuccess', c.green:light())
 Group.new('LspReferenceText', g.Visual, g.Visual, g.Visual)
 Group.new('LspReferenceRead', g.Visual, g.Visual, g.Visual)
 Group.new('LspReferenceWrite', g.Visual, g.Visual, g.Visual)
+Group.new('LspDiagnosticsDefaultError', c.red:dark())
+Group.new('LspDiagnosticsDefaultWarning', c.orange:dark())
+Group.new('LspDiagnosticsDefaultInformation', c.blue:light())
 
 -- Plugin - nvim-treesitter
 Group.new('TSPunctDelimiter', c.indigo:dark())

@@ -128,10 +128,11 @@ require('nlspsettings').setup()
 
 for _, S in ipairs({
   'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'mypyls', 'pyright',
-  'sqls', 'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'vsc_stylelint', 'tealls',
-  'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
+  'sqls', 'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'tealls', 'vsc_textlint', 'eslint_lsp',
+  'vsc_jshint', 'vsc_spectral',
   -- jedi-language-server has a really annoying code action that i'd like to avoid
   -- rust_analyzer is set up elsewhere.
+  -- vsc_stylelint isn't really needed
 }) do configs[S].setup({}) end
 
 configs.ccls.setup {
@@ -158,7 +159,7 @@ configs.denols.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('deno')}
 
 configs.jsonls.setup {
   filetypes = {'json', 'jsonc'},
-  settings = {json = {schemas = require('nlspsettings.jsonls').get_default_schemas()}}, -- Schemas are generated now
+  settings = {json = {schemas = require('nlspsettings.jsonls').get_default_schemas()}},
 }
 
 configs.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}

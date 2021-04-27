@@ -302,6 +302,7 @@ programming:
       other:
         - .codecov.yml
         - .coveragerc
+        - .gitlint
         - .oclint
         - .pre-commit-config.yaml
 
