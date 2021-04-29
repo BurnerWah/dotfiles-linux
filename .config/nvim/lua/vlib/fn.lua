@@ -1,3 +1,4 @@
+--- @alias vlib.fn table<string, function>
 local fn, mt = {}, {}
 
 local fnproxy = require('vlib.fnproxy')

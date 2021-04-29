@@ -1,3 +1,5 @@
+--- @class vlib.fnproxy
+--- Proxy functions for vlib
 local fnproxy = {}
 
 --- Make a function wrapper where an empty string returns nil

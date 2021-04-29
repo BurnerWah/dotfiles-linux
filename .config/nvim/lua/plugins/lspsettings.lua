@@ -30,7 +30,6 @@ status.config {
 local server_filter = {
   cursorline = Set {
     'diagnosticls', 'vsc_alex', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
-    'vsc_stylelint',
   },
 }
 
@@ -127,9 +126,8 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 require('nlspsettings').setup()
 
 for _, S in ipairs({
-  'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'mypyls', 'pyright',
-  'sqls', 'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'tealls', 'vsc_textlint', 'eslint_lsp',
-  'vsc_jshint', 'vsc_spectral',
+  'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'pyright', 'sqls',
+  'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'tealls', 'eslint_lsp',
   -- jedi-language-server has a really annoying code action that i'd like to avoid
   -- rust_analyzer is set up elsewhere.
   -- vsc_stylelint isn't really needed

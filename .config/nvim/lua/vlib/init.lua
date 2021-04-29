@@ -1,5 +1,11 @@
+--- @meta
+--- @class vlib
+--- A higher-level abstraction for vim
+--- @field dsl vlib.dsl
+--- @field fn vlib.fn
+--- @field fnproxy vlib.fnproxy
 local M, mt = {}, {}
-local modules = {fn = true, fnproxy = true}
+local modules = {dsl = true, fn = true, fnproxy = true}
 function mt.__index(_, name)
   if modules[name] then
     rawset(M, name, require('vlib.' .. name))

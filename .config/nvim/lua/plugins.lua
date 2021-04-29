@@ -382,6 +382,7 @@ return require('packer').startup(function(use)
   use 'gluon-lang/vim-gluon'
   use 'blankname/vim-fish'
   use 'thyrgle/vim-dyon'
+  use 'bytecodealliance/cranelift.vim'
   -- Meson syntax is now manually maintained
   -- toml is handled internally + with nvim-treesitter
 

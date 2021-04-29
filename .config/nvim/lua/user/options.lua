@@ -80,36 +80,27 @@ end
 
 -- Global variables (pseudo-options) {{{1
 
-vim.g.loaded_python_provider = 0 --[[Block Python 2 rplugins]]
-vim.g.loaded_perl_provider = 0 --[[Block Perl rplugins]]
-vim.g.node_host_prog = exepath('neovim-node-host')
-vim.g.ruby_host_prog = exepath('neovim-ruby-host')
-vim.g.netrw_nogx = true
-vim.g.astronauta_load_keymap = false --[[We do this early]]
-vim.g.loaded_fzf = false --[[No pls don't load this I don't use it at all]]
+V.dsl.let {
+  loaded_python_provider = 0, -- Block Python 2 rplugins
+  loaded_perl_provider = 0, -- Block Perl rplugins
+  node_host_prog = exepath('neovim-node-host'),
+  ruby_host_prog = exepath('neovim-ruby-host'),
+  netrw_nogx = true,
+  astronauta_load_keymap = false, -- We do this early
+  loaded_fzf = false, -- No pls don't load this I don't use it at all
 
--- Filetype settings {{{1
+  -- Filetype settings
 
--- Python
+  no_python_maps = true, -- All maps covered by nvim-treesitter
+  omni_sql_no_default_maps = true,
+  tex_flavor = 'latex',
+  vimsyn_embed = 'lPr', -- Embed Lua, Python, and Ruby in vim syntax
 
-vim.g.no_python_maps = true --[[All maps covered by nvim-treesitter]]
+  -- Other
+  -- (this should go elsewhere but there isn't a good place for it)
 
--- SQL
-
-vim.g.omni_sql_no_default_maps = true
-
--- Tex
-
-vim.g.tex_flavor = 'latex'
-
--- VimL
-
-vim.g.vimsyn_embed = 'lPr' --[[Embed Lua, Python, and Ruby in vim syntax]]
-
--- Other {{{1
--- (this should go elsewhere but there isn't a good place for it)
-
-vim.g.snips_author = 'Jaden Pleasants'
-vim.g.snips_email = 'jadenpleasants@fastmail.com'
+  snips_author = 'Jaden Pleasants',
+  snips_email = 'jadenpleasants@fastmail.com',
+}
 
 -- vim:ft=lua fdm=marker
