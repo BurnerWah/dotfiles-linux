@@ -76,6 +76,7 @@ local text_objects = {
 
 require('nvim-treesitter.configs').setup {
   ensure_installed = 'maintained',
+  ignore_install = {'kotlin', 'verilog'}, -- These parsers are really big
   highlight = {enable = true},
   incremental_selection = {enable = true},
   indent = {enable = true}, -- Indent uses 'tabstop' so it has to be managed in ftplugins.

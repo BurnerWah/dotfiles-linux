@@ -30,6 +30,7 @@
 	threads = true  # multi-threaded index
 [init]
 	defaultBranch = main
+	templateDir = ~/.config/git/templates
 [interactive]
 	diffFilter = delta --color-only
 [merge]
