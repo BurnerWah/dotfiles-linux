@@ -7,20 +7,26 @@ return require('packer').startup({
       telescope_load = function(ext)
         return 'require("telescope").load_extension("' .. ext .. '")'
       end,
-      telescope_seqence = function(slug, ext)
+      telescope_seqence = function(slug, ext, opts)
         if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
+        opts = opts or {}
         return {
           slug,
           after = 'telescope.nvim',
           config = 'require("telescope").load_extension("' .. ext .. '")',
+          requires = opts.requires,
+          rocks = opts.rocks,
         }
       end,
-      telescope_nosequence = function(slug, ext)
+      telescope_nosequence = function(slug, ext, opts)
         if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
+        opts = opts or {}
         return {
           slug,
           event = 'VimEnter *',
           config = 'require("telescope").load_extension("' .. ext .. '")',
+          requires = opts.requires,
+          rocks = opts.rocks,
         }
       end,
     }
@@ -29,9 +35,14 @@ return require('packer').startup({
     use 'wbthomason/packer.nvim'
 
     -- Core plugins
+    use_rocks {
+      'compat53', -- Lua 5.3-like libraries
+      'penlight', -- Python-like libraries, functions, classes, etc.
+      'fun', -- Functional programming for LuaJIT
+      'stdlib', -- Enhanced standard library
+    }
     use 'tjdevries/astronauta.nvim'
     use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
-    use_rocks {'compat53'}
     use {'kyazdani42/nvim-web-devicons', config = _M.cfg('nvim-web-devicons')}
     use {
       'mortepau/codicons.nvim',
@@ -114,30 +125,23 @@ return require('packer').startup({
 
         -- Telescope plugins
         -- Don't use telescope project
-        'nvim-telescope/telescope-symbols.nvim',
-        _M.telescope_seqence('telescope-fzy-native.nvim', 'fzy_native'),
+        'nvim-telescope/telescope-symbols.nvim', {
+          'nvim-telescope/telescope-fzf-native.nvim',
+          run = 'make CC=clang',
+          config = _M.telescope_load('fzf'),
+        }, _M.telescope_seqence('telescope-fzy-native.nvim', 'fzy_native'),
         _M.telescope_seqence('telescope-fzf-writer.nvim', 'fzf_writer'),
         _M.telescope_nosequence('telescope-github.nvim', 'gh'),
         _M.telescope_nosequence('telescope-node-modules.nvim', 'node_modules'),
         _M.telescope_nosequence('telescope-media-files.nvim', 'media_files'),
         _M.telescope_nosequence('tamago324/telescope-sonictemplate.nvim', 'sonictemplate'),
-        _M.telescope_nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'), {
-          'nvim-telescope/telescope-frecency.nvim',
-          requires = 'tami5/sql.nvim',
-          event = 'VimEnter *',
-          config = _M.telescope_load('frecency'),
-        }, {
-          'nvim-telescope/telescope-cheat.nvim',
-          requires = 'tami5/sql.nvim',
-          event = 'VimEnter *',
-          config = _M.telescope_load('cheat'),
-        }, {
-          'nvim-telescope/telescope-arecibo.nvim',
+        _M.telescope_nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'),
+        _M.telescope_nosequence('telescope-frecency.nvim', 'frecency', {requires = 'tami5/sql.nvim'}),
+        _M.telescope_nosequence('telescope-cheat.nvim', 'cheat', {requires = 'tami5/sql.nvim'}),
+        _M.telescope_nosequence('telescope-arecibo.nvim', 'arecibo', {
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
-          event = 'VimEnter *',
-          config = _M.telescope_load('arecibo'),
-        },
+        }),
       },
       config = _M.cfg('telescope'),
     }
@@ -404,7 +408,7 @@ return require('packer').startup({
       end,
     }
     use {
-      'michaelb/sniprun', -- Temporary fork to fix some hardcoded stuff
+      'michaelb/sniprun',
       cmd = {'SnipRun', 'SnipInfo'},
       keys = {'<Plug>SnipRun', '<Plug>SnipRunOperator', '<Plug>SnipInfo'},
       run = 'bash ./install.sh',
