@@ -34,7 +34,15 @@ return require('packer').startup({
       'stdlib', -- Enhanced standard library
     }
     use 'tjdevries/astronauta.nvim'
-    use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
+    use {
+      'nvim-lua/plenary.nvim',
+      config = function()
+        -- local pl_co = coroutine.create(function()
+        require('plenary.filetype').add_file('user')
+        -- end)
+        -- coroutine.resume(pl_co)
+      end,
+    }
     use {'kyazdani42/nvim-web-devicons', config = _M.cfg('nvim-web-devicons')}
     use {
       'mortepau/codicons.nvim',
@@ -149,10 +157,9 @@ return require('packer').startup({
       'lewis6991/gitsigns.nvim',
       requires = 'plenary.nvim',
       after = 'colorbuddy.nvim', -- Load after theme so it looks better
-      config = 'require("gitsigns").setup()',
+      config = function() require('gitsigns').setup({current_line_blame = true}) end,
     }
     use {'rhysd/git-messenger.vim', cmd = 'GitMessenger', keys = {{'n', '<Leader>gm'}}}
-    use 'f-person/git-blame.nvim'
     use {
       'norcalli/nvim-colorizer.lua',
       -- Highlights color codes with the actual color

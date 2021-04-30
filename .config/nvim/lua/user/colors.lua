@@ -2,7 +2,10 @@
 -- LuaFormatter off
 -- local Color, c, Group, g, s = require('colorbuddy').setup()
 -- this avoids the globals that colorbuddy would naturally create.
-local Color, c, Group, g, s = uutils.import{'Color', 'colors', 'Group', 'groups', 'styles'}:from('colorbuddy')
+local colorbuddy = require('colorbuddy')
+local Color, c = colorbuddy.Color, colorbuddy.colors
+local Group, g = colorbuddy.Group, colorbuddy.groups
+local s = colorbuddy.styles
 
 vim.g.colors_name = 'quantum'
 
