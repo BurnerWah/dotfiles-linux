@@ -3,8 +3,25 @@ return require('packer').startup({
   function(use, use_rocks)
     -- macros
     local _M = {
+      cfg = function(name) return 'require("plugins.' .. name .. '")' end,
       telescope_load = function(ext)
         return 'require("telescope").load_extension("' .. ext .. '")'
+      end,
+      telescope_seqence = function(slug, ext)
+        if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
+        return {
+          slug,
+          after = 'telescope.nvim',
+          config = 'require("telescope").load_extension("' .. ext .. '")',
+        }
+      end,
+      telescope_nosequence = function(slug, ext)
+        if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
+        return {
+          slug,
+          event = 'VimEnter *',
+          config = 'require("telescope").load_extension("' .. ext .. '")',
+        }
       end,
     }
 
@@ -15,8 +32,7 @@ return require('packer').startup({
     use 'tjdevries/astronauta.nvim'
     use {'nvim-lua/plenary.nvim', config = 'require("plenary.filetype").add_file("user")'}
     use_rocks {'compat53'}
-    -- hererocks are broken right now
-    use {'kyazdani42/nvim-web-devicons', config = 'require("plugins.nvim-web-devicons")'}
+    use {'kyazdani42/nvim-web-devicons', config = _M.cfg('nvim-web-devicons')}
     use {
       'mortepau/codicons.nvim',
       config = function()
@@ -27,12 +43,12 @@ return require('packer').startup({
     }
 
     -- Completion & Linting
-    use {'neovim/nvim-lspconfig', config = 'require("user.cfg.lspsettings")'}
+    use {'neovim/nvim-lspconfig', config = _M.cfg('lspsettings')}
     use {'tamago324/nlsp-settings.nvim', requires = 'nvim-lspconfig'}
     use {
       'glepnir/lspsaga.nvim',
       requires = {'nvim-lspconfig', 'codicons.nvim'},
-      config = 'require("plugins.lspsaga")',
+      config = _M.cfg('lspsaga'),
     }
     use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
     use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
@@ -56,9 +72,9 @@ return require('packer').startup({
         {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
       },
       run = ':TSUpdate',
-      config = 'require("plugins.treesitter")',
+      config = _M.cfg('treesitter'),
     }
-    use {'dense-analysis/ale', cmd = 'ALEEnable', config = 'require("plugins.ale")'}
+    use {'dense-analysis/ale', cmd = 'ALEEnable', config = _M.cfg('ale')}
     use {
       'hrsh7th/vim-vsnip',
       requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', after = 'vim-vsnip'}},
@@ -87,7 +103,7 @@ return require('packer').startup({
         {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
         'nvim-treesitter',
       },
-      config = 'require("plugins.nvim-compe")',
+      config = _M.cfg('nvim-compe'),
     }
 
     -- Telescope
@@ -97,21 +113,40 @@ return require('packer').startup({
         'nvim-lua/popup.nvim', 'plenary.nvim', 'nvim-web-devicons', 'nvim-treesitter',
 
         -- Telescope plugins
-        'nvim-telescope/telescope-fzy-native.nvim', 'nvim-telescope/telescope-fzf-writer.nvim',
-        'nvim-telescope/telescope-symbols.nvim', 'nvim-telescope/telescope-github.nvim',
-        'nvim-telescope/telescope-project.nvim', 'nvim-telescope/telescope-node-modules.nvim',
-        'nvim-telescope/telescope-media-files.nvim', 'tamago324/telescope-sonictemplate.nvim',
-
-        {'nvim-telescope/telescope-frecency.nvim', requires = 'tami5/sql.nvim'},
-        {'nvim-telescope/telescope-cheat.nvim', requires = 'tami5/sql.nvim'},
+        -- Don't use telescope project
+        'nvim-telescope/telescope-symbols.nvim',
+        _M.telescope_seqence('telescope-fzy-native.nvim', 'fzy_native'),
+        _M.telescope_seqence('telescope-fzf-writer.nvim', 'fzf_writer'),
+        _M.telescope_nosequence('telescope-github.nvim', 'gh'),
+        _M.telescope_nosequence('telescope-node-modules.nvim', 'node_modules'),
+        _M.telescope_nosequence('telescope-media-files.nvim', 'media_files'),
+        _M.telescope_nosequence('tamago324/telescope-sonictemplate.nvim', 'sonictemplate'),
+        _M.telescope_nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'), {
+          'nvim-telescope/telescope-frecency.nvim',
+          requires = 'tami5/sql.nvim',
+          event = 'VimEnter *',
+          config = _M.telescope_load('frecency'),
+        }, {
+          'nvim-telescope/telescope-cheat.nvim',
+          requires = 'tami5/sql.nvim',
+          event = 'VimEnter *',
+          config = _M.telescope_load('cheat'),
+        }, {
+          'nvim-telescope/telescope-arecibo.nvim',
+          requires = 'nvim-treesitter',
+          rocks = {'openssl', 'lua-http-parser'},
+          event = 'VimEnter *',
+          config = _M.telescope_load('arecibo'),
+        },
       },
-      config = 'require("plugins.telescope")',
+      config = _M.cfg('telescope'),
     }
     use {
       'pwntester/octo.nvim',
       -- Lazy loading isn't very helpful for this since the command completions are too useful
       -- I could experiment with a custom loader but not right now.
       requires = {'telescope.nvim', 'plenary.nvim'},
+      after = 'telescope.nvim',
       config = _M.telescope_load('octo'),
     }
 
@@ -186,18 +221,8 @@ return require('packer').startup({
     use {'yamatsum/nvim-cursorline', config = 'require("plugins.nvim-cursorline").config()'}
     use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
     use {'dstein64/nvim-scrollview', config = 'vim.g.scrollview_nvim_14040_workaround = true'}
-    use {
-      'kevinhwang91/nvim-hlslens',
-      -- no lazy loading until packer #273 is fixed or a new mechanism is set up
-      -- keys = {{'n', 'n'}, {'n', 'N'}, {'n', '*'}, {'n', '#'}, {'n', 'g*'}, {'n', 'g#'}},
-      -- event = 'CmdlineEnter [/\\?]',
-      config = 'require("plugins.nvim-hlslens")',
-    }
-    use {
-      'lukas-reineke/indent-blankline.nvim',
-      branch = 'lua',
-      config = 'require("plugins.indent-blankline")',
-    }
+    use {'kevinhwang91/nvim-hlslens', config = _M.cfg('nvim-hlslens')}
+    use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', config = _M.cfg('indent-blankline')}
     use 'karb94/neoscroll.nvim' -- Smooth scrolling
     use {
       'edluffy/specs.nvim',
@@ -262,9 +287,9 @@ return require('packer').startup({
       'hkupty/iron.nvim',
       cmd = {'IronRepl', 'IronSend', 'IronReplHere', 'IronWatchCurrentFile'},
       keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
-      config = 'require("plugins.iron")',
+      config = _M.cfg('iron'),
     }
-    use {'mhartington/formatter.nvim', config = 'require("plugins.formatter")'}
+    use {'mhartington/formatter.nvim', config = _M.cfg('formatter')}
     use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
     use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
     use {
@@ -321,7 +346,7 @@ return require('packer').startup({
         }
       end,
     }
-    use {'liuchengxu/vista.vim', cmd = 'Vista', setup = 'require("plugins.vista")'} -- TOC & symbol tree
+    use {'liuchengxu/vista.vim', cmd = 'Vista', setup = _M.cfg('vista')} -- TOC & symbol tree
     use {
       'kyazdani42/nvim-tree.lua',
       requires = 'nvim-web-devicons',
@@ -353,7 +378,7 @@ return require('packer').startup({
       requires = {'nvim-lspconfig', 'codicons.nvim'},
       cmd = 'SymbolsOutline',
       config = function()
-        require('symbols-outline').setup {}
+        require('symbols-outline').setup()
         local codicons = require('codicons')
         local symbols = require('symbols-outline.symbols')
         tablex.foreach({
@@ -379,10 +404,18 @@ return require('packer').startup({
       end,
     }
     use {
-      'YaBoiBurner/sniprun', -- Temporary fork to fix some hardcoded stuff
+      'michaelb/sniprun', -- Temporary fork to fix some hardcoded stuff
       cmd = {'SnipRun', 'SnipInfo'},
       keys = {'<Plug>SnipRun', '<Plug>SnipRunOperator', '<Plug>SnipInfo'},
-      run = 'cargo build --release',
+      run = 'bash ./install.sh',
+      config = function()
+        require('sniprun').initial_setup {
+          interpreter_options = {
+            C_original = {compiler = 'clang'},
+            Cpp_original = {compiler = 'clang++ --debug'},
+          },
+        }
+      end,
     }
 
     -- Filetypes & language features
@@ -415,7 +448,7 @@ return require('packer').startup({
     -- Markdown
     use {'plasticboy/vim-markdown', ft = 'markdown'}
     use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
-    use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', ft = 'markdown'}
+    use {'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'}
 
     -- RST
     use {'stsewd/sphinx.nvim', ft = 'rst'} -- rplugin skipped because it's not useful for me
@@ -507,7 +540,7 @@ return require('packer').startup({
       'monaqa/dial.nvim',
       -- Replaces speeddating
       keys = {'<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'}},
-      config = 'require("plugins.dial")',
+      config = _M.cfg('dial'),
     }
     use {
       'AndrewRadev/splitjoin.vim',
