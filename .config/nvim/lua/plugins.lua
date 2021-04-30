@@ -2,34 +2,26 @@
 return require('packer').startup({
   function(use, use_rocks)
     -- macros
-    local _M = {
-      cfg = function(name) return 'require("plugins.' .. name .. '")' end,
-      telescope_load = function(ext)
-        return 'require("telescope").load_extension("' .. ext .. '")'
-      end,
-      telescope_seqence = function(slug, ext, opts)
-        if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
-        opts = opts or {}
-        return {
-          slug,
-          after = 'telescope.nvim',
-          config = 'require("telescope").load_extension("' .. ext .. '")',
-          requires = opts.requires,
-          rocks = opts.rocks,
-        }
-      end,
-      telescope_nosequence = function(slug, ext, opts)
-        if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
-        opts = opts or {}
-        return {
-          slug,
-          event = 'VimEnter *',
-          config = 'require("telescope").load_extension("' .. ext .. '")',
-          requires = opts.requires,
-          rocks = opts.rocks,
-        }
-      end,
-    }
+    local _M = {}
+    function _M.cfg(name) return 'require("plugins.' .. name .. '")' end
+    _M.telescope = {}
+    function _M.telescope.load(ext) return 'require("telescope").load_extension("' .. ext .. '")' end
+    function _M.telescope._construct(override, slug, ext, opts)
+      if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
+      opts = vim.tbl_extend('force', opts or {}, override)
+      return {
+        slug,
+        config = _M.telescope.load(ext),
+        after = opts.after,
+        event = opts.event,
+        requires = opts.requires,
+        rocks = opts.rocks,
+        run = opts.run,
+      }
+    end
+    function _M.telescope:immedeate(...) return self._construct({}, ...) end
+    function _M.telescope:sequence(...) return self._construct({after = 'telescope.nvim'}, ...) end
+    function _M.telescope:nosequence(...) return self._construct({event = 'VimEnter *'}, ...) end
 
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -125,20 +117,18 @@ return require('packer').startup({
 
         -- Telescope plugins
         -- Don't use telescope project
-        'nvim-telescope/telescope-symbols.nvim', {
-          'nvim-telescope/telescope-fzf-native.nvim',
-          run = 'make CC=clang',
-          config = _M.telescope_load('fzf'),
-        }, _M.telescope_seqence('telescope-fzy-native.nvim', 'fzy_native'),
-        _M.telescope_seqence('telescope-fzf-writer.nvim', 'fzf_writer'),
-        _M.telescope_nosequence('telescope-github.nvim', 'gh'),
-        _M.telescope_nosequence('telescope-node-modules.nvim', 'node_modules'),
-        _M.telescope_nosequence('telescope-media-files.nvim', 'media_files'),
-        _M.telescope_nosequence('tamago324/telescope-sonictemplate.nvim', 'sonictemplate'),
-        _M.telescope_nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'),
-        _M.telescope_nosequence('telescope-frecency.nvim', 'frecency', {requires = 'tami5/sql.nvim'}),
-        _M.telescope_nosequence('telescope-cheat.nvim', 'cheat', {requires = 'tami5/sql.nvim'}),
-        _M.telescope_nosequence('telescope-arecibo.nvim', 'arecibo', {
+        'nvim-telescope/telescope-symbols.nvim',
+        _M.telescope:immedeate('telescope-fzf-native.nvim', 'fzf', {run = 'make CC=clang'}),
+        _M.telescope:sequence('telescope-fzy-native.nvim', 'fzy_native'),
+        _M.telescope:sequence('telescope-fzf-writer.nvim', 'fzf_writer'),
+        _M.telescope:nosequence('telescope-github.nvim', 'gh'),
+        _M.telescope:nosequence('telescope-node-modules.nvim', 'node_modules'),
+        _M.telescope:nosequence('telescope-media-files.nvim', 'media_files'),
+        _M.telescope:nosequence('tamago324/telescope-sonictemplate.nvim', 'sonictemplate'),
+        _M.telescope:nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'),
+        _M.telescope:nosequence('telescope-frecency.nvim', 'frecency', {requires = 'tami5/sql.nvim'}),
+        _M.telescope:nosequence('telescope-cheat.nvim', 'cheat', {requires = 'tami5/sql.nvim'}),
+        _M.telescope:nosequence('telescope-arecibo.nvim', 'arecibo', {
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
         }),
@@ -151,7 +141,7 @@ return require('packer').startup({
       -- I could experiment with a custom loader but not right now.
       requires = {'telescope.nvim', 'plenary.nvim'},
       after = 'telescope.nvim',
-      config = _M.telescope_load('octo'),
+      config = _M.telescope.load('octo'),
     }
 
     -- User interface
