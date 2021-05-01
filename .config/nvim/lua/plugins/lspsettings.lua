@@ -1,30 +1,6 @@
 local lsp = vim.lsp
 local configs = require('lspconfig')
 local util = require('lspconfig/util')
-local status = require('lsp-status')
-
--- Handlers
-lsp.handlers['textDocument/typeDefinition'] = require('lsputil.locations').typeDefinition_handler
-lsp.handlers['textDocument/implementation'] = require('lsputil.locations').implementation_handler
-
--- Status
-status.register_progress()
-status.config {
-  indicator_errors = '',
-  indicator_warnings = '',
-  indicator_info = '',
-  indicator_hint = '',
-  select_symbol = function(cursor_pos, symbol)
-    if symbol.valueRange then
-      local value_range = {
-        ['start'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[1])},
-        ['end'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[2])},
-      }
-      return require('lsp-status.util').in_range(cursor_pos, value_range)
-    end
-  end,
-  current_function = true,
-}
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {
@@ -39,7 +15,7 @@ local function on_attach(client)
   local ft = vim.bo.filetype
   local caps = client.resolved_capabilities
   local ts_has_locals = require('nvim-treesitter.query').has_locals(ft)
-  status.on_attach(client)
+  require('lsp-status').on_attach(client)
 
   if caps.hover then
     nnor {'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
@@ -116,14 +92,12 @@ local function on_attach(client)
 end
 
 local capabilities = lsp.protocol.make_client_capabilities()
-vim.tbl_deep_extend('keep', capabilities, status.capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.window = capabilities.window or {}
+capabilities.window.workDoneProgress = true
 
 util.default_config = vim.tbl_extend('force', util.default_config,
                                      {capabilities = capabilities, on_attach = on_attach})
-
--- JSON Config support
-require('nlspsettings').setup()
 
 for _, S in ipairs({
   'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'pyright', 'sqls',
@@ -147,7 +121,7 @@ configs.ccls.setup {
 }
 
 configs.clangd.setup {
-  handlers = status.extensions.clangd.setup(),
+  handlers = require('lsp-status/extensions/clangd').setup(),
   init_options = {clangdFileStatus = true},
 }
 

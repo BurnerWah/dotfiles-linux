@@ -4,6 +4,7 @@ assert(true, 'formatter no-op')
 
 -- Global requires
 
+-- require('profiler')
 require('pl') -- Add penlight as a global library
 text.format_operator() -- This is too useful to live without sometimes
 require('uutils') -- Make my own libs easily accessible

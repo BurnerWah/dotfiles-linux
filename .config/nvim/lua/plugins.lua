@@ -1,6 +1,7 @@
 -- This file can be loaded by calling `require('plugins')` from your init.lua
 return require('packer').startup({
   function(use, use_rocks)
+    -- local use = WRAP(use)
     -- macros
     local _M = {}
     function _M.cfg(name) return 'require("plugins.' .. name .. '")' end
@@ -36,13 +37,10 @@ return require('packer').startup({
     use 'tjdevries/astronauta.nvim'
     use {
       'nvim-lua/plenary.nvim',
-      config = function()
-        -- local pl_co = coroutine.create(function()
-        require('plenary.filetype').add_file('user')
-        -- end)
-        -- coroutine.resume(pl_co)
-      end,
+      config = function() require('plenary.filetype').add_file('user') end,
     }
+    use 'iamcco/async-await.lua'
+    use 'norcalli/profiler.nvim'
     use {'kyazdani42/nvim-web-devicons', config = _M.cfg('nvim-web-devicons')}
     use {
       'mortepau/codicons.nvim',
@@ -55,14 +53,40 @@ return require('packer').startup({
 
     -- Completion & Linting
     use {'neovim/nvim-lspconfig', config = _M.cfg('lspsettings')}
-    use {'tamago324/nlsp-settings.nvim', requires = 'nvim-lspconfig'}
+    use {
+      'tamago324/nlsp-settings.nvim',
+      requires = 'nvim-lspconfig',
+      config = function() require('nlspsettings').setup() end,
+    }
     use {
       'glepnir/lspsaga.nvim',
       requires = {'nvim-lspconfig', 'codicons.nvim'},
       config = _M.cfg('lspsaga'),
     }
-    use {'nvim-lua/lsp-status.nvim', requires = 'nvim-lspconfig'}
-    use {'RishabhRD/nvim-lsputils', requires = {'nvim-lspconfig', 'RishabhRD/popfix'}}
+    use {
+      'nvim-lua/lsp-status.nvim',
+      requires = 'nvim-lspconfig',
+      config = function()
+        local status = require('lsp-status')
+        status.register_progress()
+        status.config {
+          indicator_errors = '',
+          indicator_warnings = '',
+          indicator_info = '',
+          indicator_hint = '',
+          select_symbol = function(cursor_pos, symbol)
+            if symbol.valueRange then
+              local value_range = {
+                ['start'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[1])},
+                ['end'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[2])},
+              }
+              return require('lsp-status.util').in_range(cursor_pos, value_range)
+            end
+          end,
+          current_function = true,
+        }
+      end,
+    }
     use {
       'kabouzeid/nvim-lspinstall',
       requires = 'nvim-lspconfig',
@@ -166,13 +190,13 @@ return require('packer').startup({
       ft = {'css', 'kitty', 'less', 'lua', 'vim'},
       cmd = 'ColorizerToggle',
       config = function()
-        require('colorizer').setup {
+        require('colorizer').setup({
           'kitty',
           'less',
           css = {css = true},
           lua = {RGB = false, RRGGBB = true, names = false},
           vim = {RGB = false, RRGGBB = true, names = false},
-        }
+        })
       end,
     }
     use {
@@ -195,9 +219,10 @@ return require('packer').startup({
       -- Issues:
       -- - #14: (feat) Show only buffer in current tab?
       requires = {'nvim-web-devicons', 'codicons.nvim'},
+      after = 'colorbuddy.nvim',
       config = function()
         local codicons = require('codicons')
-        require('bufferline').setup {
+        require('bufferline').setup({
           options = {
             buffer_close_icon = codicons.get('close'),
             close_icon = codicons.get('close-all'),
@@ -206,36 +231,43 @@ return require('packer').startup({
             diagnostics_indicator = function(count, _) return '(' .. count .. ')' end,
             separator_style = 'slant',
           },
-        }
+        })
         vim.keymap.nmap {'bb', '<Cmd>BufferLinePick<CR>'}
       end,
     }
-    use {'tjdevries/colorbuddy.nvim', config = 'require("colorbuddy").colorscheme("quantumbuddy")'}
+    use {
+      'tjdevries/colorbuddy.nvim',
+      event = 'VimEnter *',
+      config = function() require('colorbuddy').colorscheme('quantumbuddy') end,
+    }
     use {
       'tkmpypy/chowcho.nvim',
       requires = 'nvim-web-devicons',
       cmd = 'Chowcho',
       config = function()
-        require('chowcho').setup {icon_enabled = true, border_style = 'rounded'}
+        require('chowcho').setup({icon_enabled = true, border_style = 'rounded'})
       end,
     }
     use {'yamatsum/nvim-cursorline', config = 'require("plugins.nvim-cursorline").config()'}
     use {'alec-gibson/nvim-tetris', cmd = 'Tetris'}
-    use {'dstein64/nvim-scrollview', config = 'vim.g.scrollview_nvim_14040_workaround = true'}
+    use {
+      'dstein64/nvim-scrollview',
+      config = function() vim.g.scrollview_nvim_14040_workaround = true end,
+    }
     use {'kevinhwang91/nvim-hlslens', config = _M.cfg('nvim-hlslens')}
     use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', config = _M.cfg('indent-blankline')}
     use 'karb94/neoscroll.nvim' -- Smooth scrolling
     use {
       'edluffy/specs.nvim',
       config = function()
-        require('specs').setup {popup = {fader = require('specs').pulse_fader}}
+        require('specs').setup({popup = {fader = require('specs').pulse_fader}})
       end,
     }
     -- use {'sunjon/shade.nvim', config = function() require('shade').setup() end}
     -- Turned off because it breaks some random highlights (how?)
 
     -- Utilities
-    use {'tpope/vim-fugitive', config = 'vim.g.fugitive_legacy_commands = false'}
+    use {'tpope/vim-fugitive', config = function() vim.g.fugitive_legacy_commands = false end}
     use {
       'ruifm/gitlinker.nvim',
       requires = 'plenary.nvim',
@@ -245,7 +277,7 @@ return require('packer').startup({
     use {
       'TimUntersberger/neogit',
       cmd = 'Neogit',
-      config = function() require('neogit').setup {disable_signs = true} end,
+      config = function() require('neogit').setup({disable_signs = true}) end,
     }
     use 'farmergreg/vim-lastplace'
     use {
@@ -275,13 +307,13 @@ return require('packer').startup({
       requires = {'plenary.nvim', 'telescope.nvim'},
       keys = {{'n', 'gzi'}},
       config = function()
-        require('neuron').setup {
+        require('neuron').setup({
           virtual_titles = true,
           mappings = true,
           run = nil,
           neuron_dir = '~/Documents/Neuron',
           leader = 'gz',
-        }
+        })
       end,
     }
     use {
@@ -335,7 +367,7 @@ return require('packer').startup({
       'kdav5758/TrueZen.nvim',
       opt = true,
       cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
-      config = function() require('true-zen').setup {cursor_by_mode = true} end,
+      config = function() require('true-zen').setup({cursor_by_mode = true}) end,
     }
     use {
       'wfxr/minimap.vim',
@@ -362,7 +394,7 @@ return require('packer').startup({
       },
       config = function()
         local codicons = require('codicons')
-        require('trouble').setup {
+        require('trouble').setup({
           fold_open = codicons.get('fold-down'),
           fold_closed = codicons.get('fold-up'),
           signs = {
@@ -371,7 +403,7 @@ return require('packer').startup({
             hint = codicons.get('question'),
             information = codicons.get('info'),
           },
-        }
+        })
       end,
     }
     use {
@@ -410,32 +442,26 @@ return require('packer').startup({
       keys = {'<Plug>SnipRun', '<Plug>SnipRunOperator', '<Plug>SnipInfo'},
       run = 'bash ./install.sh',
       config = function()
-        require('sniprun').initial_setup {
+        require('sniprun').initial_setup({
           interpreter_options = {
             C_original = {compiler = 'clang'},
             Cpp_original = {compiler = 'clang++ --debug'},
           },
-        }
+        })
       end,
     }
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.
-    use 'leafo/moonscript-vim'
-    use 'rhysd/vim-llvm'
-    use 'ron-rs/ron.vim'
-    use 'bakpakin/fennel.vim'
-    use 'aklt/plantuml-syntax'
-    use 'tikhomirov/vim-glsl'
-    use 'udalov/kotlin-vim'
-    use 'YaBoiBurner/requirements.txt.vim'
-    use 'teal-language/vim-teal' -- Locally patched ti fix some issues.
-    use 'gluon-lang/vim-gluon'
-    use 'blankname/vim-fish'
-    use 'thyrgle/vim-dyon'
-    use 'bytecodealliance/cranelift.vim'
+    use {
+      'leafo/moonscript-vim', 'rhysd/vim-llvm', 'ron-rs/ron.vim', 'bakpakin/fennel.vim',
+      'aklt/plantuml-syntax', 'tikhomirov/vim-glsl', 'udalov/kotlin-vim',
+      'YaBoiBurner/requirements.txt.vim', 'teal-language/vim-teal', 'gluon-lang/vim-gluon',
+      'blankname/vim-fish', 'thyrgle/vim-dyon', 'bytecodealliance/cranelift.vim',
+    }
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter
+    -- vim-teal is patched
 
     -- CXX
     use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
@@ -514,10 +540,10 @@ return require('packer').startup({
       config = function()
         -- local Rule = require('nvim-autopairs.rule')
         local npairs = require('nvim-autopairs')
-        npairs.setup {
+        npairs.setup({
           check_ts = true,
           ts_config = {lua = {'string'}, javascript = {'template_string'}},
-        }
+        })
       end,
     }
     use {
@@ -560,7 +586,7 @@ return require('packer').startup({
     use {
       'dkarter/bullets.vim',
       ft = {'markdown', 'gitcommit'},
-      setup = [[vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'}]],
+      setup = function() vim.g.bullets_enabled_file_types = {'markdown', 'gitcommit'} end,
     }
     use {
       'kana/vim-textobj-function',
@@ -582,5 +608,5 @@ return require('packer').startup({
       keys = {{'x', 'aH'}, {'o', 'aH'}, {'x', 'iH'}, {'o', 'iH'}},
     }
   end,
-  config = {max_jobs = #vim.loop.cpu_info()},
+  config = {max_jobs = #vim.loop.cpu_info(), profile = {enable = true, threshold = 1}},
 })
