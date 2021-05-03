@@ -19,11 +19,7 @@ local filetypes = {
   -- Default meta-entry
   ___ = {
     function()
-      return {
-        exe = 'sed',
-        args = {'-e', [["s/[ \t]*$//"]], '-e', [[":a; /^$/ { $d; N; ba; }"]]},
-        stdin = true,
-      }
+      return {exe = 'sed', args = {[[-e 's/[ \t]*$//' -e ':a; /^$/ { $d; N; ba; }']]}, stdin = true}
     end,
   },
   c = {clang_format},

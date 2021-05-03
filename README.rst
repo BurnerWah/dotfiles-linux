@@ -10,7 +10,7 @@ Tools I use
 * I use Fedora_ as my main OS.
 * Desktop environment: GNOME_.
 * Editor: neovim_.
-* My default shell is Zsh, but for interactive shells I use Fish.
+* Shell: Fish
 * My primary python REPL is IPython_.
 * CXX toolchain: clang_ + LLVM_.
 * Coreutils: uutils_

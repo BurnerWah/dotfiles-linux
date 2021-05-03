@@ -69,7 +69,7 @@ if has('conceal') then
 end
 
 -- Fish causes problems with plugins
-vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell
+-- vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell
 
 -- Environment {{{1
 -- nvr support

@@ -100,11 +100,7 @@ util.default_config = vim.tbl_extend('force', util.default_config,
                                      {capabilities = capabilities, on_attach = on_attach})
 
 for _, S in ipairs({
-  'bashls', 'cmake', 'dockerls', 'dotls', 'fortls', 'gopls', 'html', 'lsp4xml', 'pyright', 'sqls',
-  'taplo', 'texlab', 'vimls', 'yamlls', 'vsc_alex', 'tealls', 'eslint_lsp',
-  -- jedi-language-server has a really annoying code action that i'd like to avoid
-  -- rust_analyzer is set up elsewhere.
-  -- vsc_stylelint isn't really needed
+  'bashls', 'dockerls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls',
 }) do configs[S].setup({}) end
 
 configs.ccls.setup {
