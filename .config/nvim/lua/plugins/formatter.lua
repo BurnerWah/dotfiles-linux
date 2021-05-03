@@ -1,19 +1,28 @@
 local findfile = require('vlib.fn').findfile
+local shellescape = vim.fn.shellescape
 
 local clang_format = function()
   return {
     exe = 'clang-format',
-    args = {'--assume-filename', vim.api.nvim_buf_get_name(0)},
+    args = {'--assume-filename' .. shellescape(vim.api.nvim_buf_get_name(0))},
     stdin = true,
   }
 end
 
 local prettier = function()
-  return {exe = 'prettier', args = {'--stdin-filepath', vim.api.nvim_buf_get_name(0)}, stdin = true}
+  return {
+    exe = 'prettier',
+    args = {'--stdin-filepath' .. shellescape(vim.api.nvim_buf_get_name(0))},
+    stdin = true,
+  }
 end
 
 -- Note: some arguments have to be quoted now.
--- #38 makes it so that command arguments are joined before calling stuff
+-- #38 makes it so that command arguments are joined before calling stuff.
+-- Apparently that's intended. I think that's fucking stupid, since everything
+-- is exposed to the user as tables.
+-- But since it's intended, fuck it, may as well just join things beforehand to
+-- save time.
 
 local filetypes = {
   -- Default meta-entry
@@ -36,17 +45,21 @@ local filetypes = {
       -- Try to figure out what formatter should be used.
       local stylua = findfile('stylua.toml', '.;')
       if stylua then
-        return {exe = 'stylua', args = {'--config-path', stylua, '-'}, stdin = true}
+        return {
+          exe = 'stylua',
+          args = {'--config-path' .. shellescape(stylua) .. '-'},
+          stdin = true,
+        }
       end
       return {exe = 'lua-format', stdin = true}
     end,
   },
   markdown = {prettier},
-  rust = {function() return {exe = 'rustfmt', args = {'--emit', 'stdout'}, stdin = true} end},
+  rust = {function() return {exe = 'rustfmt', args = {'--emit stdout'}, stdin = true} end},
   scss = {prettier},
-  toml = {function() return {exe = 'taplo', args = {'format', '-'}, stdin = true} end},
+  toml = {function() return {exe = 'taplo', args = {'format -'}, stdin = true} end},
   typescript = {prettier},
-  xml = {function() return {exe = 'xmllint', args = {'--format', '-'}, stdin = true} end},
+  xml = {function() return {exe = 'xmllint', args = {'--format -'}, stdin = true} end},
   yaml = {prettier},
 }
 

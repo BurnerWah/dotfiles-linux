@@ -52,7 +52,7 @@ return require('packer').startup({
     }
 
     -- Completion & Linting
-    use {'neovim/nvim-lspconfig', config = _M.cfg('lspsettings')}
+    use {'neovim/nvim-lspconfig', config = _M.cfg('lspsettings')} -- This kinda sucks ass
     use {
       'tamago324/nlsp-settings.nvim',
       requires = 'nvim-lspconfig',
@@ -322,7 +322,7 @@ return require('packer').startup({
       keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
       config = _M.cfg('iron'),
     }
-    use {'mhartington/formatter.nvim', config = _M.cfg('formatter')}
+    use {'mhartington/formatter.nvim', config = _M.cfg('formatter')} -- Note: this acts kinda shit
     use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}}
     use {'gennaro-tedesco/nvim-peekup', keys = {{'n', [[""]]}}}
     use {
@@ -446,6 +446,39 @@ return require('packer').startup({
           interpreter_options = {
             C_original = {compiler = 'clang'},
             Cpp_original = {compiler = 'clang++ --debug'},
+          },
+        })
+      end,
+    }
+    use {
+      'sindrets/diffview.nvim',
+      cmd = 'DiffviewOpen',
+      requires = 'nvim-web-devicons',
+      config = function()
+        local action = require('diffview.config').diffview_callback
+
+        require('diffview').setup({
+          file_panel = {width = 35, use_icons = true},
+          key_bindings = {
+            view = {
+              ['<tab>'] = action('select_next_entry'), -- Open the diff for the next file
+              ['<s-tab>'] = action('select_prev_entry'), -- Open the diff for the previous file
+              ['<leader>e'] = action('focus_files'), -- Bring focus to the files panel
+              ['<leader>b'] = action('toggle_files'), -- Toggle the files panel.
+            },
+            file_panel = {
+              ['j'] = action('next_entry'), -- Bring the cursor to the next file entry
+              ['<down>'] = action('next_entry'),
+              ['k'] = action('prev_entry'), -- Bring the cursor to the previous file entry.
+              ['<up>'] = action('prev_entry'),
+              ['<cr>'] = action('select_entry'), -- Open the diff for the selected entry.
+              ['o'] = action('select_entry'),
+              ['R'] = action('refresh_files'), -- Update stats and entries in the file list.
+              ['<tab>'] = action('select_next_entry'),
+              ['<s-tab>'] = action('select_prev_entry'),
+              ['<leader>e'] = action('focus_files'),
+              ['<leader>b'] = action('toggle_files'),
+            },
           },
         })
       end,
