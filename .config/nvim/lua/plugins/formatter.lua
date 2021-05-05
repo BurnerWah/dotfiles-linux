@@ -58,6 +58,18 @@ local filetypes = {
   python = {function() return {exe = 'black', args = {'-'}, stdin = true} end},
   rust = {function() return {exe = 'rustfmt', args = {'--emit stdout'}, stdin = true} end},
   scss = {prettier},
+  sh = {
+    function()
+      return {
+        exe = 'shfmt',
+        args = {
+          (vim.b.shfmt == nil and '-i=2 -ci' or nil), -- Preferred defaults
+          '-filename', shellescape(vim.api.nvim_buf_get_name(0)),
+        },
+        stdin = true,
+      }
+    end,
+  },
   toml = {function() return {exe = 'taplo', args = {'format -'}, stdin = true} end},
   typescript = {prettier},
   xml = {function() return {exe = 'xmllint', args = {'--format -'}, stdin = true} end},
