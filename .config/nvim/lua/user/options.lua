@@ -26,6 +26,8 @@ vim.cmd [[set synmaxcol=250]] -- Only highlight the first 250 collumns
 vim.o.mouse = 'a' -- Mouse support
 vim.o.termguicolors = true -- Truecolor mode
 
+vim.o.timeoutlen = 500
+
 vim.o.titlestring = 'nvim %t'
 vim.o.titleold = '%{fnamemodify(getcwd(), ":t")}'
 vim.o.title = true

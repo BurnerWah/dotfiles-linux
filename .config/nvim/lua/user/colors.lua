@@ -242,3 +242,11 @@ Group.link('GitSignsAdd', g.GitGutterAdd)
 Group.link('GitSignsChange', g.GitGutterChange)
 Group.link('GitSignsDelete', g.GitGutterDelete)
 Group.link('GitSignsCurrentLineBlame', g.NonText)
+
+-- Plugin - which-key.nvim
+Group.link('WhichKey', g.Function)
+Group.link('WhichKeySeparator', g.DiffAdded)
+Group.link('WhichKeyGroup', g.Keyword)
+Group.link('WhichKeyDesc', g.Identifier)
+Group.link('WhichKeyFloat', g.NormalFloat)
+Group.link('WhichKeyValue', g.Comment)

@@ -4,7 +4,7 @@ local shellescape = vim.fn.shellescape
 local clang_format = function()
   return {
     exe = 'clang-format',
-    args = {'--assume-filename' .. shellescape(vim.api.nvim_buf_get_name(0))},
+    args = {'--assume-filename', shellescape(vim.api.nvim_buf_get_name(0))},
     stdin = true,
   }
 end
@@ -12,7 +12,7 @@ end
 local prettier = function()
   return {
     exe = 'prettier',
-    args = {'--stdin-filepath' .. shellescape(vim.api.nvim_buf_get_name(0))},
+    args = {'--stdin-filepath', shellescape(vim.api.nvim_buf_get_name(0))},
     stdin = true,
   }
 end
@@ -35,6 +35,10 @@ local filetypes = {
   cpp = {clang_format},
   css = {prettier},
   fish = {function() return {exe = 'fish_indent', stdin = true} end},
+  go = {
+    function() return {exe = 'gofmt', stdin = true} end,
+    function() return {exe = 'goimports', stdin = true} end,
+  },
   html = {prettier},
   javascript = {prettier},
   json = {prettier},
@@ -45,16 +49,13 @@ local filetypes = {
       -- Try to figure out what formatter should be used.
       local stylua = findfile('stylua.toml', '.;')
       if stylua then
-        return {
-          exe = 'stylua',
-          args = {'--config-path' .. shellescape(stylua) .. '-'},
-          stdin = true,
-        }
+        return {exe = 'stylua', args = {'--config-path', shellescape(stylua), '-'}, stdin = true}
       end
       return {exe = 'lua-format', stdin = true}
     end,
   },
   markdown = {prettier},
+  python = {function() return {exe = 'black', args = {'-'}, stdin = true} end},
   rust = {function() return {exe = 'rustfmt', args = {'--emit stdout'}, stdin = true} end},
   scss = {prettier},
   toml = {function() return {exe = 'taplo', args = {'format -'}, stdin = true} end},

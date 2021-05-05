@@ -10,11 +10,12 @@ local server_filter = {
 }
 
 -- Setup function
-local function on_attach(client)
+local function on_attach(client, bufnr)
   local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
   local ft = vim.bo.filetype
   local caps = client.resolved_capabilities
   local ts_has_locals = require('nvim-treesitter.query').has_locals(ft)
+  local has_wk, wk = pcall(require, 'which-key')
   require('lsp-status').on_attach(client)
 
   if caps.hover then
@@ -25,6 +26,9 @@ local function on_attach(client)
   if caps.find_references then
     nnor {'gh', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
     nnor {'gr', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = true}
+    if has_wk then
+      wk.register({gr = {[[<Cmd>Lspsaga lsp_finder<CR>]], 'Find references', buffer = bufnr}})
+    end
   end
 
   if caps.signature_help then
@@ -42,6 +46,11 @@ local function on_attach(client)
 
   if caps.goto_definition then
     nnor {'gd', [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = true}
+    if has_wk then
+      wk.register({
+        gd = {[[<Cmd>Lspsaga preview_definition<CR>]], 'Go to definition', buffer = bufnr},
+      })
+    end
   end
 
   if caps.type_definition then
@@ -88,6 +97,12 @@ local function on_attach(client)
   nnor {'[g', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = true}
   nnor {']e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
   nnor {']g', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = true}
+  if has_wk then
+    wk.register({
+      ['[e'] = {[[<Cmd>Lspsaga diagnostic_jump_next<CR>]], 'Next diagnostic', buffer = bufnr},
+      [']e'] = {[[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], 'Previous diagnostic', buffer = bufnr},
+    })
+  end
 
 end
 
@@ -99,6 +114,8 @@ capabilities.window.workDoneProgress = true
 util.default_config = vim.tbl_extend('force', util.default_config,
                                      {capabilities = capabilities, on_attach = on_attach})
 
+-- Apparently we need this set up early
+require('nlspsettings').setup()
 for _, S in ipairs({
   'bashls', 'dockerls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls',
 }) do configs[S].setup({}) end
