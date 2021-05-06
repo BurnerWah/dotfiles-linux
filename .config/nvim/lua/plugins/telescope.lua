@@ -1,5 +1,6 @@
+---@type table<string, string>
 local E = vim.env
-require('telescope').setup {
+require('telescope').setup({
   defaults = {winblend = 10, file_sorter = require('telescope.sorters').get_fzy_sorter},
   extensions = {
     arecibo = {selected_engine = 'duckduckgo', show_domain_icons = true, show_http_headers = true},
@@ -15,7 +16,7 @@ require('telescope').setup {
     },
     fzf_writer = {use_highlighter = true},
   },
-}
+})
 
 local remap = vim.api.nvim_set_keymap
 local opts = {silent = true, noremap = true}

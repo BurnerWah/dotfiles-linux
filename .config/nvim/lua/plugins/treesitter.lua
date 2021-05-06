@@ -1,4 +1,7 @@
--- Helper to define table for a capture's support
+---Helper to define table for a capture's support
+---@param capture string Capture group
+---@param langs string[] Supported languages
+---@return table<string, string>
 local function make_support_table(capture, langs)
   assert(type(capture) == 'string')
   assert(type(langs) == 'table')
@@ -74,7 +77,7 @@ local text_objects = {
   },
 }
 
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   ensure_installed = 'maintained',
   ignore_install = {'kotlin', 'verilog'}, -- These parsers are really big
   highlight = {enable = true},
@@ -145,6 +148,6 @@ require('nvim-treesitter.configs').setup {
   context_commentstring = {enable = true},
   autopairs = {enable = true},
   tree_docs = {enable = true},
-}
+})
 local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 parser_config.bash.used_by = {'PKGBUILD'}

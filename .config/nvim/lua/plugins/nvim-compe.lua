@@ -1,6 +1,6 @@
 vim.o.completeopt = 'menuone,noselect'
 require('compe').register_source('fish', require('compe_fish')) -- custom source
-require('compe').setup {
+require('compe').setup({
   enabled = true,
   autocomplete = true,
   debug = false,
@@ -18,7 +18,7 @@ require('compe').setup {
     buffer = true,
     calc = true,
     vsnip = true,
-    nvim_lsp = true, -- Priority: 1000
+    nvim_lsp = true, --[[Priority: 1000]]
     nvim_lua = true,
     spell = true,
     tags = true,
@@ -30,15 +30,15 @@ require('compe').setup {
         'sshconfig', 'sshdconfig', 'spec', 'sudoers', 'sysctl', 'udevconf', 'udevperm', 'updatedb',
         'vimwiki',
       },
-      priority = 900, -- defaults to 5000 which can be problematic
-      dup = 0, -- allow duplicate entries (mostly with lsp)
+      priority = 900, --[[defaults to 5000 which can be problematic]]
+      dup = 0, --[[allow duplicate entries (mostly with lsp)]]
       sort = true,
     },
     treesitter = true,
     omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},
     fish = true,
   },
-}
+})
 local remap = vim.api.nvim_set_keymap
 local opts = {noremap = true, silent = true, expr = true}
 remap('i', '<C-Space>', [[compe#complete()]], opts)

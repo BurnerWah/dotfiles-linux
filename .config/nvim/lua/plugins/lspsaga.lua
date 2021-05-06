@@ -1,6 +1,6 @@
 local codicons = require('codicons')
 
-require('lspsaga').init_lsp_saga {
+require('lspsaga').init_lsp_saga({
   error_sign = codicons.get('error') or '',
   warn_sign = codicons.get('warning') or '',
   hint_sign = codicons.get('question') or '',
@@ -18,7 +18,7 @@ require('lspsaga').init_lsp_saga {
   },
   code_action_keys = {quit = {'q', '<Esc>'}, exec = '<CR>'},
   rename_action_keys = {quit = {'<C-c>', '<Esc>'}, exec = '<CR>'},
-}
+})
 local nnor, tnor = vim.keymap.nnoremap, vim.keymap.tnoremap
 nnor {'<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], silent = true}
 tnor {'<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], silent = true}

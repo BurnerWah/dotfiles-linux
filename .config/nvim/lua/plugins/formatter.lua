@@ -1,7 +1,20 @@
 local findfile = require('vlib.fn').findfile
+---@diagnostic disable-next-line: undefined-field
 local shellescape = vim.fn.shellescape
 
-local clang_format = function()
+---@class formatter.command: table
+---@field exe string
+---@field args string[]
+---@field stdin boolean
+---@field tempfile_dir string
+---@field tempfile_prefix string
+---@field tempfile_postfix string
+
+---@alias formatter.fn fun():formatter.command
+
+---clang-format
+---@return formatter.command
+local function clang_format()
   return {
     exe = 'clang-format',
     args = {'--assume-filename', shellescape(vim.api.nvim_buf_get_name(0))},
@@ -9,6 +22,8 @@ local clang_format = function()
   }
 end
 
+---Prettier
+---@return formatter.command
 local prettier = function()
   return {
     exe = 'prettier',
@@ -24,9 +39,10 @@ end
 -- But since it's intended, fuck it, may as well just join things beforehand to
 -- save time.
 
+---@type table<string, function[]>
 local filetypes = {
-  -- Default meta-entry
-  ___ = {
+  --[[Default meta-entry]]
+  __DEFAULT__ = {
     function()
       return {exe = 'sed', args = {[[-e 's/[ \t]*$//' -e ':a; /^$/ { $d; N; ba; }']]}, stdin = true}
     end,
@@ -77,8 +93,8 @@ local filetypes = {
 }
 
 -- Add fallback filetype
-filetypes = setmetatable(filetypes, {__index = function(t) return t.___ end})
+filetypes = setmetatable(filetypes, {__index = function(t) return t.__DEFAULT__ end})
 
-require('formatter').setup {logging = false, filetype = filetypes}
+require('formatter').setup({logging = false, filetype = filetypes})
 
 vim.cmd [[autocmd init BufWritePost * FormatWrite]]

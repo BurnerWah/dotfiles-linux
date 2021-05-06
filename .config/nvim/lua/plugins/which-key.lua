@@ -1,5 +1,7 @@
 local wk = require('which-key')
-wk.setup({operators = {ds = 'Surround', zF = 'Create fold'}})
+wk.setup({
+  operators = {zF = 'Create fold', Ys = 'Create surround', YS = 'Create surround', ga = 'Align'},
+})
 wk.register({
   ['<leader>'] = {
     ['1'] = 'which_key_ignore',
@@ -30,7 +32,6 @@ wk.register({
   ['[/'] = {'Previous comment'},
   [']/'] = {'Next comment'},
 })
-wk.register({y = {['<C-G>'] = {'Yank the current fugitive object'}}})
 wk.register({
   z = {
     -- buffer foldmethod must be marker or manual
@@ -38,10 +39,4 @@ wk.register({
     D = {'zD<Plug>(ScrollViewRefresh)', 'Delete all folds at cursor'},
   },
 })
--- wk.register({
---   y = {
---     s = {
---       name = 'surround',
---     }
---   }
--- })
+require('plugins.which-key.surround')

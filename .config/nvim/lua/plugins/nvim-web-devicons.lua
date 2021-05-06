@@ -1,4 +1,4 @@
-require('nvim-web-devicons').setup {
+require('nvim-web-devicons').setup({
   override = {
     ['Gemfile'] = {icon = '', color = '#701516', name = 'Gemfile'},
     ['Vagrantfile'] = {icon = '', color = '#1563ff', name = 'Vagrantfile'},
@@ -10,4 +10,4 @@ require('nvim-web-devicons').setup {
     ['.luacov'] = {icon = '', color = '#51a0cf', name = 'Lua'},
     ['rockspec'] = {icon = '', color = '#51a0cf', name = 'Lua'},
   },
-}
+})

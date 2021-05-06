@@ -56,7 +56,6 @@
   "Lua.hint.setType": true,
   "Lua.telemetry.enable": false,
   "Lua.workspace.library": [
-    "/usr/share/nvim/runtime/lua",
     "/home/jadenpleasants/.local/share/nvim/site/@types"
   ],
   "Lua.intelliSense.searchDepth": 4

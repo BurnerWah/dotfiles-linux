@@ -37,7 +37,7 @@ nnor {'#', mapgen.search('#')}
 nnor {'g*', mapgen.search('g*')}
 nnor {'g#', mapgen.search('g#')}
 
-require('hlslens').setup {
+require('hlslens').setup({
   auto_enable = true,
   nearest_float_when = 'auto',
   override_lens = function(render, plist, nearest, idx, r_idx)
@@ -67,5 +67,5 @@ require('hlslens').setup {
     end
     render.set_virt(0, lnum - 1, col - 1, chunks, nearest)
   end,
-}
+})
 -- hlslens.enable()

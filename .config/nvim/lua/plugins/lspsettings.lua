@@ -1,6 +1,7 @@
 local lsp = vim.lsp
 local configs = require('lspconfig')
 local util = require('lspconfig/util')
+local tablex = require('pl.tablex')
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {
@@ -16,7 +17,6 @@ local function on_attach(client, bufnr)
   local caps = client.resolved_capabilities
   local ts_has_locals = require('nvim-treesitter.query').has_locals(ft)
   local has_wk, wk = pcall(require, 'which-key')
-  require('lsp-status').on_attach(client)
 
   if caps.hover then
     nnor {'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = true}
@@ -36,6 +36,7 @@ local function on_attach(client, bufnr)
   end
 
   if caps.code_action then
+    vim.wo.signcolumn = 'yes'
     nnor {'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = true}
     vnor {'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = true}
   end
@@ -67,14 +68,6 @@ local function on_attach(client, bufnr)
       local vista_exec = 'vista_' .. ft .. '_executive'
       vim.g[vista_exec] = (vim.g[vista_exec] or vim.g.vista_executive_for[ft] or 'nvim_lsp')
     end
-    -- Assurance that lsp-status will work
-    vim.api.nvim_exec([[
-    autocmd! lsp_aucmds CursorHold
-    augroup lsp_current_function
-      autocmd! * <buffer>
-      autocmd CursorHold <buffer> lua require("lsp-status").update_current_function()
-    augroup END
-    ]], false)
   end
 
   if caps.document_highlight and not ts_has_locals then
@@ -116,11 +109,10 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 
 -- Apparently we need this set up early
 require('nlspsettings').setup()
-for _, S in ipairs({
-  'bashls', 'dockerls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls',
-}) do configs[S].setup({}) end
-
-configs.ccls.setup {
+tablex.foreach({
+  'bashls', 'dotls', 'dockerls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls',
+}, function(V) configs[V].setup({}) end)
+configs.ccls.setup({
   init_options = {
     compilationDatabaseDirectory = 'build',
     index = {threads = 0},
@@ -128,32 +120,19 @@ configs.ccls.setup {
     clang = {resourceDir = '/usr/lib64/clang/11'},
     highlight = {lsRanges = true},
   },
-  commands = {
-    LspFormat = {function() lsp.buf.range_formatting({}, {0, 0}, {vim.fn.line('$'), 0}) end},
-  },
-}
-
-configs.clangd.setup {
-  handlers = require('lsp-status/extensions/clangd').setup(),
-  init_options = {clangdFileStatus = true},
-}
-
-configs.cssls.setup {filetypes = {'css', 'sass', 'scss', 'less'}}
-
-configs.denols.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('deno')}
-
-configs.jsonls.setup {
+})
+configs.clangd.setup({init_options = {clangdFileStatus = true}})
+configs.cssls.setup({filetypes = {'css', 'sass', 'scss', 'less'}})
+configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
+configs.jsonls.setup({
   filetypes = {'json', 'jsonc'},
   settings = {json = {schemas = require('nlspsettings.jsonls').get_default_schemas()}},
-}
-
-configs.sqlls.setup {cmd = {'sql-language-server', 'up', '--method', 'stdio'}}
-
-configs.sumneko_lua.setup {cmd = {'lua-language-server'}}
-
-configs.tsserver.setup {root_dir = require('user.cfg.lsp.utils').tsdetect('node')}
+})
+configs.sqlls.setup({cmd = {'sql-language-server', 'up', '--method', 'stdio'}})
+configs.sumneko_lua.setup({cmd = {'lua-language-server'}})
+configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node')})
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
-configs.efm.setup {filetypes = {'eruby', 'make', 'zsh'}}
+configs.efm.setup({filetypes = {'eruby', 'make', 'zsh'}})
 configs.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup())

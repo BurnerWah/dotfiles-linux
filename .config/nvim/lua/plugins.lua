@@ -67,6 +67,7 @@ return require('packer').startup({
     use {
       'nvim-lua/lsp-status.nvim',
       requires = 'nvim-lspconfig',
+      opt = true,
       config = function()
         local status = require('lsp-status')
         status.register_progress()
@@ -225,10 +226,11 @@ return require('packer').startup({
     }
     use {
       'hoob3rt/lualine.nvim',
-      requires = {'arkav/lualine-lsp-progress'},
+      requires = {'arkav/lualine-lsp-progress', 'nvim-web-devicons'},
       config = function()
         require('lualine').setup({
-          options = {theme = 'tokyonight', sections = {lualine_c = {'filename', 'lsp_progress'}}},
+          options = {theme = 'tokyonight'},
+          sections = {lualine_c = {'filename', 'lsp_progress'}},
         })
       end,
     }
@@ -366,7 +368,6 @@ return require('packer').startup({
     use {
       'hkupty/iron.nvim',
       cmd = {'IronRepl', 'IronSend', 'IronReplHere', 'IronWatchCurrentFile'},
-      -- keys = {{'n', 'ctr'}, {'v', 'ctr'}, {'n', '<LocalLeader>sl'}},
       keys = {
         '<Plug>(iron-repeat-cmd)', '<Plug>(iron-cr)', '<Plug>(iron-interrupt)', '<Plug>(iron-exit)',
         '<Plug>(iron-clear)', '<Plug>(iron-send-motion)', '<Plug>(iron-send-lines)',
@@ -377,12 +378,7 @@ return require('packer').startup({
         vim.g.iron_map_extended = false
         vim.keymap.nmap {'ctr', '<Plug>(iron-send-motion)'}
         vim.keymap.vmap {'ctr', '<Plug>(iron-visual-send)'}
-        vim.keymap.nmap {'cp', '<Plug>(iron-repeat-cmd)'}
         vim.keymap.nmap {'<LocalLeader>sl', '<Plug>(iron-send-line)'}
-        vim.keymap.nmap {'c<CR>', '<Plug>(iron-cr)'}
-        vim.keymap.nmap {'cst', '<Plug>(iron-interrupt)'}
-        vim.keymap.nmap {'cq', '<Plug>(iron-exit)'}
-        vim.keymap.nmap {'cl', '<Plug>(iron-clear)'}
       end,
       config = _M.cfg('iron'),
     }
@@ -563,7 +559,9 @@ return require('packer').startup({
       -- ft = 'rust',
       -- opt = true,
       requires = {'nvim-lspconfig', 'nvim-lua/popup.nvim', 'plenary.nvim', 'telescope.nvim'},
-      config = function() require('rust-tools').setup() end,
+      config = function()
+        require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
+      end,
     }
 
     -- Integration
@@ -649,11 +647,11 @@ return require('packer').startup({
         vim.keymap.nmap {'ds', '<Plug>Dsurround'}
         vim.keymap.nmap {'cs', '<Plug>Csurround'}
         vim.keymap.nmap {'cS', '<Plug>CSurround'}
-        vim.keymap.nmap {'ys', '<Plug>Ysurround'}
-        vim.keymap.nmap {'yS', '<Plug>YSurround'}
-        vim.keymap.nmap {'yss', '<Plug>Yssurround'}
-        vim.keymap.nmap {'ySs', '<Plug>YSsurround'}
-        vim.keymap.nmap {'ySS', '<Plug>YSsurround'}
+        vim.keymap.nmap {'Ys', '<Plug>Ysurround'}
+        vim.keymap.nmap {'YS', '<Plug>YSurround'}
+        vim.keymap.nmap {'Yss', '<Plug>Yssurround'}
+        vim.keymap.nmap {'YSs', '<Plug>YSsurround'}
+        vim.keymap.nmap {'YSS', '<Plug>YSsurround'}
         vim.keymap.xmap {'S', '<Plug>VSurround'}
         vim.keymap.xmap {'gS', '<Plug>VgSurround'}
         vim.keymap.imap {'<C-S>', '<Plug>Isurround'}
