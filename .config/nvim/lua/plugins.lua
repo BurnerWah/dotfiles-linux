@@ -1,12 +1,13 @@
--- This file can be loaded by calling `require('plugins')` from your init.lua
 return require('packer').startup({
   ---@param use fun(opts: table)
   ---@param use_rocks fun(rocks: string|string[])
   function(use, use_rocks)
-    -- local use = WRAP(use)
+    local plugins_dir = vim.loop.os_getenv('XDG_CONFIG_HOME') .. '/nvim/lua/plugins'
+    -- use = WRAP(use)
     -- macros
     local _M = {}
     function _M.cfg(name) return 'require("plugins.' .. name .. '")' end
+    function _M.do_config(fname) return 'pcall(dofile, "' .. plugins_dir .. '/' .. fname .. '")' end
     _M.telescope = {}
     function _M.telescope.load(ext) return 'require("telescope").load_extension("' .. ext .. '")' end
     function _M.telescope._construct(override, slug, ext, opts)
@@ -30,12 +31,7 @@ return require('packer').startup({
     use 'wbthomason/packer.nvim'
 
     -- Core plugins
-    use_rocks {
-      'compat53', -- Lua 5.3-like libraries
-      'penlight', -- Python-like libraries, functions, classes, etc.
-      'fun', -- Functional programming for LuaJIT
-      'stdlib', -- Enhanced standard library
-    }
+    use_rocks({'compat53', 'penlight', 'fun', 'stdlib'})
     use 'tjdevries/astronauta.nvim'
     use {
       'nvim-lua/plenary.nvim',
@@ -43,7 +39,6 @@ return require('packer').startup({
     }
     use 'iamcco/async-await.lua'
     use 'norcalli/profiler.nvim'
-    use {'kyazdani42/nvim-web-devicons', config = _M.cfg('nvim-web-devicons')}
     use {
       'mortepau/codicons.nvim',
       config = function()
@@ -62,32 +57,7 @@ return require('packer').startup({
     use {
       'glepnir/lspsaga.nvim',
       requires = {'nvim-lspconfig', 'codicons.nvim'},
-      config = _M.cfg('lspsaga'),
-    }
-    use {
-      'nvim-lua/lsp-status.nvim',
-      requires = 'nvim-lspconfig',
-      opt = true,
-      config = function()
-        local status = require('lsp-status')
-        status.register_progress()
-        status.config({
-          indicator_errors = '',
-          indicator_warnings = '',
-          indicator_info = '',
-          indicator_hint = '',
-          select_symbol = function(cursor_pos, symbol)
-            if symbol.valueRange then
-              local value_range = {
-                ['start'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[1])},
-                ['end'] = {character = 0, line = vim.fn.byte2line(symbol.valueRange[2])},
-              }
-              return require('lsp-status.util').in_range(cursor_pos, value_range)
-            end
-          end,
-          current_function = true,
-        })
-      end,
+      config = _M.do_config('lspsaga.lua'),
     }
     use {
       'kabouzeid/nvim-lspinstall',
@@ -96,10 +66,6 @@ return require('packer').startup({
     }
     use {
       'nvim-treesitter/nvim-treesitter',
-      -- Highlighting engine for neovim
-      --
-      -- I've chosen not to include some modules until some issues they have get fixed.
-      -- nvim-ts-rainbow can be added once #5 is fixed (which requires nvim-treesitter#879 merged)
       requires = {
         {'nvim-treesitter/nvim-treesitter-refactor', after = 'nvim-treesitter'},
         {'nvim-treesitter/playground', after = 'nvim-treesitter', as = 'nvim-treesitter-playground'},
@@ -109,30 +75,13 @@ return require('packer').startup({
         {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
       },
       run = ':TSUpdate',
-      config = _M.cfg('treesitter'),
+      config = _M.do_config('treesitter.lua'),
     }
-    use {'dense-analysis/ale', cmd = 'ALEEnable', config = _M.cfg('ale')}
+    use {'dense-analysis/ale', cmd = 'ALEEnable', config = _M.do_config('ale.lua')}
     use {
       'hrsh7th/vim-vsnip',
       requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', after = 'vim-vsnip'}},
-      config = function()
-        vim.g.vsnip_snippet_dir = vim.fn.stdpath('config') .. '/vsnip'
-        local imap, smap = vim.keymap.imap, vim.keymap.smap
-        -- Expand
-        imap {'<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], expr = true}
-        smap {'<C-j>', [[vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-j>']], expr = true}
-        -- Expand or jump
-        imap {
-          '<C-l>',
-          [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']],
-          expr = true,
-        }
-        smap {
-          '<C-l>',
-          [[vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']],
-          expr = true,
-        }
-      end,
+      config = _M.do_config('vim-vsnip.lua'),
     }
     use {
       'hrsh7th/nvim-compe',
@@ -140,17 +89,15 @@ return require('packer').startup({
         {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
         'nvim-treesitter',
       },
-      config = _M.cfg('nvim-compe'),
+      config = _M.do_config('nvim-compe.lua'),
     }
 
     -- Telescope
     use {
       'nvim-telescope/telescope.nvim',
       requires = {
-        'nvim-lua/popup.nvim', 'plenary.nvim', 'nvim-web-devicons', 'nvim-treesitter',
+        'nvim-lua/popup.nvim', 'plenary.nvim', 'kyazdani42/nvim-web-devicons', 'nvim-treesitter',
 
-        -- Telescope plugins
-        -- Don't use telescope project
         'nvim-telescope/telescope-symbols.nvim',
         _M.telescope:immedeate('telescope-fzf-native.nvim', 'fzf', {run = 'make CC=clang'}),
         _M.telescope:sequence('telescope-fzy-native.nvim', 'fzy_native'),
@@ -167,12 +114,10 @@ return require('packer').startup({
           rocks = {'openssl', 'lua-http-parser'},
         }),
       },
-      config = _M.cfg('telescope'),
+      config = _M.do_config('telescope.lua'),
     }
     use {
       'pwntester/octo.nvim',
-      -- Lazy loading isn't very helpful for this since the command completions are too useful
-      -- I could experiment with a custom loader but not right now.
       requires = {'telescope.nvim', 'plenary.nvim'},
       after = 'telescope.nvim',
       config = _M.telescope.load('octo'),
@@ -182,7 +127,6 @@ return require('packer').startup({
     use {
       'lewis6991/gitsigns.nvim',
       requires = 'plenary.nvim',
-      -- after = 'colorbuddy.nvim', -- Load after theme so it looks better
       config = function() require('gitsigns').setup({current_line_blame = true}) end,
     }
     use {
@@ -196,7 +140,6 @@ return require('packer').startup({
     }
     use {
       'norcalli/nvim-colorizer.lua',
-      -- Highlights color codes with the actual color
       ft = {'css', 'kitty', 'less', 'lua', 'vim'},
       cmd = 'ColorizerToggle',
       config = function()
@@ -219,18 +162,29 @@ return require('packer').startup({
       end,
     } -- rplugin lazy loads
     use {
-      'glepnir/galaxyline.nvim',
-      requires = {'nvim-web-devicons', 'codicons.nvim'},
-      opt = true,
-      config = 'require("user.statusline")',
-    }
-    use {
       'hoob3rt/lualine.nvim',
-      requires = {'arkav/lualine-lsp-progress', 'nvim-web-devicons'},
+      requires = {'arkav/lualine-lsp-progress', 'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
       config = function()
+        local codicons = require('codicons')
         require('lualine').setup({
-          options = {theme = 'tokyonight'},
-          sections = {lualine_c = {'filename', 'lsp_progress'}},
+          options = {
+            theme = 'tokyonight',
+            section_separators = {'', ''},
+            component_separators = {'', ''},
+          },
+          sections = {
+            lualine_c = {
+              'filename', {
+                'diagnostics',
+                sources = {'nvim_lsp'},
+                symbols = {
+                  error = codicons.get('error') .. ' ',
+                  warn = codicons.get('warning') .. ' ',
+                  info = codicons.get('info') .. ' ',
+                },
+              }, 'lsp_progress',
+            },
+          },
         })
       end,
     }
@@ -242,11 +196,7 @@ return require('packer').startup({
     }
     use {
       'akinsho/nvim-bufferline.lua',
-      -- Tabline plugin
-      -- Issues:
-      -- - #14: (feat) Show only buffer in current tab?
-      requires = {'nvim-web-devicons', 'codicons.nvim'},
-      -- after = 'colorbuddy.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
       config = function()
         local codicons = require('codicons')
         require('bufferline').setup({
@@ -263,19 +213,7 @@ return require('packer').startup({
       end,
     }
     use {
-      'tjdevries/colorbuddy.nvim',
-      -- event = 'VimEnter *',
-      opt = true,
-      config = function() require('colorbuddy').colorscheme('quantumbuddy') end,
-    }
-    use {
-      'tiagovla/tokyodark.nvim',
-      opt = true,
-      config = function() vim.cmd [[colorscheme tokyodark]] end,
-    }
-    use {
       'folke/tokyonight.nvim',
-      opt = false,
       config = function()
         vim.g.tokyonight_style = 'night'
         vim.g.tokyonight_sidebars = {'qf', 'vista_kind', 'terminal', 'packer', 'LspTrouble'}
@@ -284,7 +222,8 @@ return require('packer').startup({
     }
     use {
       'tkmpypy/chowcho.nvim',
-      requires = 'nvim-web-devicons',
+      requires = 'kyazdani42/nvim-web-devicons',
+      opt = true,
       cmd = 'Chowcho',
       config = function()
         require('chowcho').setup({icon_enabled = true, border_style = 'rounded'})
@@ -296,8 +235,25 @@ return require('packer').startup({
       'dstein64/nvim-scrollview',
       config = function() vim.g.scrollview_nvim_14040_workaround = true end,
     }
-    use {'kevinhwang91/nvim-hlslens', config = _M.cfg('nvim-hlslens')}
-    use {'lukas-reineke/indent-blankline.nvim', branch = 'lua', config = _M.cfg('indent-blankline')}
+    use {'kevinhwang91/nvim-hlslens', config = _M.do_config('nvim-hlslens.lua')}
+    use {
+      'lukas-reineke/indent-blankline.nvim',
+      branch = 'lua',
+      config = function()
+        vim.g.indent_blankline_buftype_exclude = {'terminal'}
+        vim.g.indent_blankline_filetype_exclude = {'help', 'lspinfo', 'packer', 'peek'}
+        vim.g.indent_blankline_char = '▏'
+        vim.g.indent_blankline_use_treesitter = true
+        vim.g.indent_blankline_show_current_context = true
+        vim.g.indent_blankline_context_patterns = {
+          'class', 'return', 'function', 'method', '^if', '^while', 'jsx_element', '^for',
+          '^object', '^table', 'block', 'arguments', 'if_statement', 'else_clause', 'jsx_element',
+          'jsx_self_closing_element', 'try_statement', 'catch_clause', 'import_statement',
+        }
+        vim.g.indent_blankline_show_first_indent_level = false
+        vim.g.indent_blankline_show_trailing_blankline_indent = false
+      end,
+    }
     use 'karb94/neoscroll.nvim' -- Smooth scrolling
     use {
       'edluffy/specs.nvim',
@@ -307,7 +263,7 @@ return require('packer').startup({
     }
     -- use {'sunjon/shade.nvim', config = function() require('shade').setup() end}
     -- Turned off because it breaks some random highlights (how?)
-    use {'folke/which-key.nvim', config = _M.cfg('which-key')}
+    use {'folke/which-key.nvim', config = _M.do_config('which-key.lua')}
 
     -- Utilities
     use {
@@ -329,9 +285,9 @@ return require('packer').startup({
       config = function() require('neogit').setup({disable_signs = true}) end,
     }
     use 'farmergreg/vim-lastplace'
+    -- VimWiki - note-taking engine
     use {
       'vimwiki/vimwiki',
-      -- Note-taking engine
       event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
       cmd = {
         'VimwikiIndex', 'VimwikiTabIndex', 'VimwikiDiaryIndex', 'VimwikiMakeDiaryNote',
@@ -348,11 +304,10 @@ return require('packer').startup({
         vim.g.vimwiki_global_ext = 0
       end,
     }
+    -- neuron.nvim - Neuron-based note-taking engine
+    -- this might replace vimwiki at some point
     use {
       'oberblastmeister/neuron.nvim',
-      -- Neuron-based note-taking engine
-      --
-      -- This will probably replace vimwiki at some point.
       requires = {'plenary.nvim', 'telescope.nvim'},
       keys = {{'n', 'gzi'}},
       config = function()
@@ -380,9 +335,12 @@ return require('packer').startup({
         vim.keymap.vmap {'ctr', '<Plug>(iron-visual-send)'}
         vim.keymap.nmap {'<LocalLeader>sl', '<Plug>(iron-send-line)'}
       end,
-      config = _M.cfg('iron'),
+      config = _M.do_config('iron.lua'),
     }
-    use {'mhartington/formatter.nvim', config = _M.cfg('formatter')}
+    use {'mhartington/formatter.nvim', config = _M.do_config('formatter.lua')}
+
+    -- ultest - unit test support
+    -- lazy loading is very janky
     use {
       'rcarriga/vim-ultest',
       requires = 'vim-test/vim-test',
@@ -390,17 +348,16 @@ return require('packer').startup({
       opt = true,
       cmd = {'Ultest', 'UltestNearest', 'UltestSummary'},
       keys = {'<Plug>(ultest-run-file)', '<Plug>(ultest-run-nearest)'},
-      -- out of order rplugin loading is janky but this sorta works
       config = function()
         vim.cmd [[silent UpdateRemotePlugins]]
         vim.cmd [[au init User UltestPositionsUpdate ++once UltestNearest]]
       end,
     }
+    -- vim-sonictemplate - Template engine
+    -- fn load condition allows for telescope integration to load this
     use {
       'mattn/vim-sonictemplate',
-      -- Template engine
       cmd = 'Template',
-      -- fn load condition allows for telescope integration to load this
       fn = 'sonictemplate#complete',
       keys = {'<Plug>(sonictemplate)', '<Plug>(sonictemplate-intelligent)'},
       setup = function()
@@ -422,7 +379,6 @@ return require('packer').startup({
     }
     use {
       'kdav5758/TrueZen.nvim',
-      opt = true,
       cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
       config = function() require('true-zen').setup({cursor_by_mode = true}) end,
     }
@@ -436,10 +392,17 @@ return require('packer').startup({
         }
       end,
     }
-    use {'liuchengxu/vista.vim', cmd = 'Vista', setup = _M.cfg('vista')} -- TOC & symbol tree
+    -- vista.vim - TOC & symbol tree
+    use {
+      'liuchengxu/vista.vim',
+      cmd = 'Vista',
+      setup = require('plugins.vista').setup,
+      config = require('plugins.vista').config,
+    }
     use {
       'kyazdani42/nvim-tree.lua',
-      requires = 'nvim-web-devicons',
+      requires = 'kyazdani42/nvim-web-devicons',
+      opt = true,
       cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
     }
     use {
@@ -471,6 +434,7 @@ return require('packer').startup({
         require('symbols-outline').setup()
         local codicons = require('codicons')
         local symbols = require('symbols-outline.symbols')
+        local tablex = require('pl.tablex')
         tablex.foreach({
           File = 'symbol-file',
           Namespace = 'symbol-namespace',
@@ -510,8 +474,9 @@ return require('packer').startup({
     use {
       'sindrets/diffview.nvim',
       cmd = 'DiffviewOpen',
-      requires = 'nvim-web-devicons',
-      config = _M.cfg('diffview'),
+      requires = 'kyazdani42/nvim-web-devicons',
+      opt = true,
+      config = _M.do_config('diffview.lua'),
     }
 
     -- Filetypes & language features
@@ -541,10 +506,10 @@ return require('packer').startup({
     use {'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'}
 
     -- RST
+    -- sphinx.nvim - Sphinx integration
+    -- I just have this for tree-sitter stuff
     use {
       'stsewd/sphinx.nvim',
-      -- rplugin skipped because it's not useful for me
-      -- fzf integration skipped because i don't use the fzf plugin
       ft = 'rst',
       config = function()
         vim.cmd [[delcommand SphinxRefs]]
@@ -553,11 +518,10 @@ return require('packer').startup({
     }
 
     -- Rust
+    -- rust-tools.nvim - LSP plugin
+    -- has a very slow startup time, but rust-analyzer crashes if this is lazy-loaded.
     use {
       'simrat39/rust-tools.nvim',
-      -- Lazy-loading seems to conflict with nlsp-settings.nvim
-      -- ft = 'rust',
-      -- opt = true,
       requires = {'nvim-lspconfig', 'nvim-lua/popup.nvim', 'plenary.nvim', 'telescope.nvim'},
       config = function()
         require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
@@ -565,12 +529,13 @@ return require('packer').startup({
     }
 
     -- Integration
+    -- editorconfig-vim - Editorconfig support
+    -- Rules that will modify files are disabled, since that's handled elsewhere.
+    -- Eventually I'll find or make a unified formatting plugin to replace this.
     use {
       'editorconfig/editorconfig-vim',
-      -- Editorconfig support
-      -- Rules that will modify files are disabled, since that's handled elsewhere.
-      -- Eventually I'll find or make a unified formatting plugin to replace this.
-      config = function() require('plugins.editorconfig-vim').config() end,
+      -- config = function() require('plugins.editorconfig-vim').config() end,
+      config = require('plugins.editorconfig-vim').config,
     }
     use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}, keys = '<Plug>JqxList'}
     use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
@@ -581,12 +546,9 @@ return require('packer').startup({
 
     -- Text editing
     use 'tpope/vim-repeat'
+    -- hop.nvim - EasyMotion replacement
     use {
       'phaazon/hop.nvim',
-      -- EasyMotion replacement
-      --
-      -- GitHub Issues:
-      -- - #4: (feat) Quick-scope mode
       keys = {
         {'n', '<Leader>hw'}, {'n', '<Leader>hp'}, {'n', '<Leader>hc'}, {'n', '<Leader>hC'},
         {'n', '<Leader>hl'},
@@ -604,7 +566,6 @@ return require('packer').startup({
     use {
       'windwp/nvim-autopairs',
       config = function()
-        -- local Rule = require('nvim-autopairs.rule')
         local npairs = require('nvim-autopairs')
         npairs.setup({
           check_ts = true,
@@ -634,9 +595,10 @@ return require('packer').startup({
         vim.keymap.nmap {'gcu', '<Plug>Commentary<Plug>Commentary'}
       end,
     }
+    -- vim-surround
+    -- This could be replaced by blackCauldron7/surround.nvim eventually
     use {
       'tpope/vim-surround',
-      -- This will be replaced by blackCauldron7/surround.nvim eventually
       keys = {
         '<Plug>Dsurround', '<Plug>Csurround', '<Plug>CSurround', '<Plug>Ysurround',
         '<Plug>YSurround', '<Plug>Yssurround', '<Plug>YSsurround', '<Plug>VSurround',
@@ -659,11 +621,11 @@ return require('packer').startup({
         vim.keymap.imap {'<C-G>S', '<Plug>ISurround'}
       end,
     }
+    -- dial.nvim - Replaces speeddating
     use {
       'monaqa/dial.nvim',
-      -- Replaces speeddating
       keys = {'<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'}},
-      config = _M.cfg('dial'),
+      config = _M.do_config('dial.lua'),
     }
     use {
       'AndrewRadev/splitjoin.vim',

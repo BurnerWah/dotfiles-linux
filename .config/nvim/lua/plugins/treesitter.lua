@@ -1,3 +1,4 @@
+local tablex = require('tablex')
 ---Helper to define table for a capture's support
 ---@param capture string Capture group
 ---@param langs string[] Supported languages

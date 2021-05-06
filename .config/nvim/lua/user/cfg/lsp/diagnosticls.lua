@@ -1,6 +1,7 @@
 -- This warranted having a standalone file
 local M = {}
 local util = require('lspconfig/util')
+local Map = require('pl.Map')
 
 local fmt = {
   basic = function(file)

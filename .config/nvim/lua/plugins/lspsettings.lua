@@ -1,7 +1,7 @@
 local lsp = vim.lsp
 local configs = require('lspconfig')
 local util = require('lspconfig/util')
-local tablex = require('pl.tablex')
+local tablex, Set = require('pl.tablex'), require('pl.Set')
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {

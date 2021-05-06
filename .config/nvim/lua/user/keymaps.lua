@@ -8,7 +8,7 @@ local vsnip = {
   jumpable = function(...) return vim.fn['vsnip#jumpable'](...) == 1 end,
 }
 local npairs = require('nvim-autopairs')
-local Terminal = require('user.objects.Terminal')
+-- local Terminal = require('user.objects.Terminal')
 
 local function replace_termcodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
@@ -46,12 +46,12 @@ function UserMaps.on_enter()
   end
 end
 
-local term = Terminal()
+-- local term = Terminal()
 
-nnor {'<Leader>kh', term:mapper(1), silent = true}
-nnor {'<Leader>kj', term:mapper(2), silent = true}
-nnor {'<Leader>kk', term:mapper(3), silent = true}
-nnor {'<Leader>kl', term:mapper(4), silent = true}
+-- nnor {'<Leader>kh', term:mapper(1), silent = true}
+-- nnor {'<Leader>kj', term:mapper(2), silent = true}
+-- nnor {'<Leader>kk', term:mapper(3), silent = true}
+-- nnor {'<Leader>kl', term:mapper(4), silent = true}
 imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
 imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}

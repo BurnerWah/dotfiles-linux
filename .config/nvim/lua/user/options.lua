@@ -63,12 +63,10 @@ else
   vim.o.listchars = 'tab:> ,extends:>,precedes:<,nbsp:+,trail:-'
 end
 
-if has('conceal') then
-  vim.api.nvim_exec([[
-    set conceallevel=2
-    set concealcursor=nv
-  ]], false)
-end
+vim.api.nvim_exec([[
+  set conceallevel=2
+  set concealcursor=nv
+]], false)
 
 -- Fish causes problems with plugins
 -- vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell

@@ -5,9 +5,7 @@ assert(true, 'formatter no-op')
 -- Global requires
 
 -- require('profiler')
-require('pl') -- Add penlight as a global library
-text.format_operator() -- This is too useful to live without sometimes
-require('uutils') -- Make my own libs easily accessible
+require('pl.text').format_operator() -- This is too useful to live without sometimes
 require('user.options') -- Set my vim options
 require('plugins') -- Load my plugins
 require('astronauta.keymap') -- Add astronauta keymaps early so they can be utilized freely
