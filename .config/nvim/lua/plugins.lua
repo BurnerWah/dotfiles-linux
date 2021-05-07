@@ -8,24 +8,6 @@ return require('packer').startup({
     local _M = {}
     function _M.cfg(name) return 'require("plugins.' .. name .. '")' end
     function _M.do_config(fname) return 'pcall(dofile, "' .. plugins_dir .. '/' .. fname .. '")' end
-    _M.telescope = {}
-    function _M.telescope.load(ext) return 'require("telescope").load_extension("' .. ext .. '")' end
-    function _M.telescope._construct(override, slug, ext, opts)
-      if not slug:find('/') then slug = 'nvim-telescope/' .. slug end
-      opts = vim.tbl_extend('force', opts or {}, override)
-      return {
-        slug,
-        config = _M.telescope.load(ext),
-        after = opts.after,
-        event = opts.event,
-        requires = opts.requires,
-        rocks = opts.rocks,
-        run = opts.run,
-      }
-    end
-    function _M.telescope:immedeate(...) return self._construct({}, ...) end
-    function _M.telescope:sequence(...) return self._construct({after = 'telescope.nvim'}, ...) end
-    function _M.telescope:nosequence(...) return self._construct({event = 'VimEnter *'}, ...) end
 
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -42,27 +24,27 @@ return require('packer').startup({
     use {
       'mortepau/codicons.nvim',
       config = function()
-        require('codicons').setup()
+        local codicons = require('codicons')
+        codicons.setup()
         local ext = require('codicons.extensions').available()
         require(ext.CompletionItemKind).set()
+        vim.g.vim_package_info_virutaltext_prefix = '  ' .. codicons.get('versions') .. ' '
       end,
     }
 
     -- Completion & Linting
     use {
       'neovim/nvim-lspconfig',
-      requires = {'tamago324/nlsp-settings.nvim'},
+      requires = {
+        'tamago324/nlsp-settings.nvim',
+        {'kabouzeid/nvim-lspinstall', cmd = {'LspInstall', 'LspUninstall'}},
+      },
       config = _M.cfg('lspsettings'),
     }
     use {
       'glepnir/lspsaga.nvim',
       requires = {'nvim-lspconfig', 'codicons.nvim'},
       config = _M.do_config('lspsaga.lua'),
-    }
-    use {
-      'kabouzeid/nvim-lspinstall',
-      requires = 'nvim-lspconfig',
-      cmd = {'LspInstall', 'LspUninstall'},
     }
     use {
       'nvim-treesitter/nvim-treesitter',
@@ -80,7 +62,7 @@ return require('packer').startup({
     use {'dense-analysis/ale', cmd = 'ALEEnable', config = _M.do_config('ale.lua')}
     use {
       'hrsh7th/vim-vsnip',
-      requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', after = 'vim-vsnip'}},
+      requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', event = 'VimEnter *'}},
       config = _M.do_config('vim-vsnip.lua'),
     }
     use {
@@ -96,38 +78,31 @@ return require('packer').startup({
     use {
       'nvim-telescope/telescope.nvim',
       requires = {
-        'nvim-lua/popup.nvim', 'plenary.nvim', 'kyazdani42/nvim-web-devicons', 'nvim-treesitter',
-
-        'nvim-telescope/telescope-symbols.nvim',
-        _M.telescope:immedeate('telescope-fzf-native.nvim', 'fzf', {run = 'make CC=clang'}),
-        _M.telescope:sequence('telescope-fzy-native.nvim', 'fzy_native'),
-        _M.telescope:sequence('telescope-fzf-writer.nvim', 'fzf_writer'),
-        _M.telescope:nosequence('telescope-github.nvim', 'gh'),
-        _M.telescope:nosequence('telescope-node-modules.nvim', 'node_modules'),
-        _M.telescope:nosequence('telescope-media-files.nvim', 'media_files'),
-        _M.telescope:nosequence('tamago324/telescope-sonictemplate.nvim', 'sonictemplate'),
-        _M.telescope:nosequence('dhruvmanila/telescope-bookmarks.nvim', 'bookmarks'),
-        _M.telescope:nosequence('telescope-frecency.nvim', 'frecency', {requires = 'tami5/sql.nvim'}),
-        _M.telescope:nosequence('telescope-cheat.nvim', 'cheat', {requires = 'tami5/sql.nvim'}),
-        _M.telescope:nosequence('telescope-arecibo.nvim', 'arecibo', {
+        'plenary.nvim', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'},
+        'kyazdani42/nvim-web-devicons', 'nvim-treesitter', 'nvim-telescope/telescope-symbols.nvim',
+        'nvim-telescope/telescope-fzf-writer.nvim', 'nvim-telescope/telescope-node-modules.nvim',
+        'nvim-telescope/telescope-media-files.nvim', 'dhruvmanila/telescope-bookmarks.nvim',
+        {'nvim-telescope/telescope-fzf-native.nvim', run = 'make CC=clang'},
+        {'nvim-telescope/telescope-fzy-native.nvim', requires = 'plenary.nvim'},
+        {'nvim-telescope/telescope-github.nvim', requires = {'plenary.nvim', 'nvim-lua/popup.nvim'}},
+        {'tamago324/telescope-sonictemplate.nvim', requires = 'plenary.nvim'},
+        {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
+        {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}}, {
+          'nvim-telescope/telescope-arecibo.nvim',
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
-        }),
+        },
       },
       config = _M.do_config('telescope.lua'),
     }
-    use {
-      'pwntester/octo.nvim',
-      requires = {'telescope.nvim', 'plenary.nvim'},
-      after = 'telescope.nvim',
-      config = _M.telescope.load('octo'),
-    }
+    use {'pwntester/octo.nvim', requires = {'telescope.nvim', 'plenary.nvim'}}
 
     -- User interface
     use {
       'lewis6991/gitsigns.nvim',
       requires = 'plenary.nvim',
       config = function() require('gitsigns').setup({current_line_blame = true}) end,
+      event = 'VimEnter *',
     }
     use {
       'rhysd/git-messenger.vim',
@@ -152,15 +127,7 @@ return require('packer').startup({
         })
       end,
     }
-    use {
-      'meain/vim-package-info',
-      requires = 'codicons.nvim',
-      run = 'npm i',
-      config = function()
-        vim.g.vim_package_info_virutaltext_prefix =
-            '  ' .. require('codicons').get('versions') .. ' '
-      end,
-    } -- rplugin lazy loads
+    use {'meain/vim-package-info', run = 'npm i'} -- rplugin lazy loads
     use {
       'hoob3rt/lualine.nvim',
       requires = {'arkav/lualine-lsp-progress', 'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
@@ -238,6 +205,7 @@ return require('packer').startup({
     use {'kevinhwang91/nvim-hlslens', config = _M.do_config('nvim-hlslens.lua')}
     use {
       'lukas-reineke/indent-blankline.nvim',
+      requires = 'nvim-treesitter',
       branch = 'lua',
       config = function()
         vim.g.indent_blankline_buftype_exclude = {'terminal'}
@@ -281,6 +249,7 @@ return require('packer').startup({
     }
     use {
       'TimUntersberger/neogit',
+      requires = 'plenary.nvim',
       cmd = 'Neogit',
       config = function() require('neogit').setup({disable_signs = true}) end,
     }
@@ -294,14 +263,19 @@ return require('packer').startup({
         'VimwikiTabMakeDiaryNote',
       },
       keys = {
-        {'n', '<Leader>ww'}, {'n', '<Leader>wt'}, {'n', '<Leader>wi'}, {'n', '<Leader>w<Leader>w'},
-        {'n', '<Leader>w<Leader>t'}, {'n', '<Leader>w<Leader>y'}, {'n', '<Leader>w<Leader>m'},
+        '<Plug>VimwikiIndex', '<Plug>VimwikiTabIndex', '<Plug>VimwikiUISelect',
+        '<Plug>VimwikiDiaryIndex', '<Plug>VimwikiDiaryGenerateLinks', '<Plug>VimwikiMakeDiaryNote',
+        '<Plug>VimwikiTabMakeDiaryNote', '<Plug>VimwikiMakeYesterdayDiaryNote',
+        '<Plug>VimwikiMakeTomorrowDiaryNote',
       },
       setup = function()
         vim.g.vimwiki_list = {{path = '~/Documents/VimWiki', nested_syntaxes = {['c++'] = 'cpp'}}}
         vim.g.vimwiki_folding = 'expr'
-        vim.g.vimwiki_listsyms = '✗○◐●✓'
         vim.g.vimwiki_global_ext = 0
+        vim.g.vimwiki_hl_headers = 1
+        vim.g.vimwiki_key_mappings = {global = false}
+        vim.keymap.nmap {'<Leader>ww', '<Plug>VimwikiIndex'}
+        vim.keymap.nmap {'<Leader>wt', '<Plug>VimwikiTabIndex'}
       end,
     }
     -- neuron.nvim - Neuron-based note-taking engine
@@ -337,7 +311,7 @@ return require('packer').startup({
       end,
       config = _M.do_config('iron.lua'),
     }
-    use {'mhartington/formatter.nvim', config = _M.do_config('formatter.lua')}
+    use {'mhartington/formatter.nvim', event = 'VimEnter *', config = _M.do_config('formatter.lua')}
 
     -- ultest - unit test support
     -- lazy loading is very janky
@@ -377,10 +351,14 @@ return require('packer').startup({
         nmap {'<C-\\>', '<Cmd>lua require("Navigator").previous()<CR>', silent = true}
       end,
     }
+
+    -- development fork of kdav5758/TrueZen.nvim
     use {
-      'kdav5758/TrueZen.nvim',
+      '~/Projects/nvim-plugins/TrueZen.nvim',
       cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
-      config = function() require('true-zen').setup({cursor_by_mode = true}) end,
+      config = function()
+        require('true-zen').setup({ataraxis = {force_when_plus_one_window = true}})
+      end,
     }
     use {
       'wfxr/minimap.vim',
@@ -399,19 +377,44 @@ return require('packer').startup({
       setup = require('plugins.vista').setup,
       config = require('plugins.vista').config,
     }
+    -- nvim-tree.lua - File tree
+    -- Part of this loader is deferred, so we can push a slow step back
     use {
       'kyazdani42/nvim-tree.lua',
-      requires = 'kyazdani42/nvim-web-devicons',
+      requires = {'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
       opt = true,
       cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
+      setup = function() vim.g.nvim_tree_lsp_diagnostics = true end,
+      config = function()
+        local codicons = require('codicons')
+        vim.g.nvim_tree_show_icons = {git = 1, folders = 1, files = 1}
+        vim.g.nvim_tree_icons = {
+          symlink = codicons.get('file-symlink-file'),
+          git_icons = {
+            renamed = codicons.get('diff-renamed'),
+            deleted = codicons.get('diff-removed'),
+            ignored = codicons.get('diff-ignored'),
+          },
+          folder = {
+            default = codicons.get('folder'),
+            open = codicons.get('folder-opened'),
+            symlink = codicons.get('file-symlink-directory'),
+          },
+          lsp = {
+            hint = codicons.get('question'),
+            info = codicons.get('info'),
+            warning = codicons.get('warning'),
+            error = codicons.get('error'),
+          },
+        }
+        vim.defer_fn(require('nvim-tree').refresh, 50)
+      end,
     }
     use {
       'folke/lsp-trouble.nvim',
-      requires = {'nvim-lspconfig', 'codicons.nvim'},
-      cmd = {
-        'LspTroubleOpen', 'LspTroubleWorkspaceOpen', 'LspTroubleDocumentOpen', 'LspTroubleToggle',
-        'LspTroubleWorkspaceToggle', 'LspTroubleDocumentToggle',
-      },
+      requires = {'nvim-lspconfig', 'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
+      cmd = {'LspTrouble', 'LspTroubleToggle'},
+      opt = true,
       config = function()
         local codicons = require('codicons')
         require('trouble').setup({
@@ -522,7 +525,10 @@ return require('packer').startup({
     -- has a very slow startup time, but rust-analyzer crashes if this is lazy-loaded.
     use {
       'simrat39/rust-tools.nvim',
-      requires = {'nvim-lspconfig', 'nvim-lua/popup.nvim', 'plenary.nvim', 'telescope.nvim'},
+      requires = {
+        'nvim-lspconfig', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'}, 'plenary.nvim',
+        'telescope.nvim',
+      },
       config = function()
         require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
       end,
@@ -538,7 +544,7 @@ return require('packer').startup({
       config = require('plugins.editorconfig-vim').config,
     }
     use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}, keys = '<Plug>JqxList'}
-    use {'kdheepak/lazygit.nvim', cmd = 'LazyGit'}
+    use {'kdheepak/lazygit.nvim', requires = 'plenary.nvim', cmd = 'LazyGit'}
     -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
     -- Spell support for tree-sitter is nice but it causes files to noticably refresh constantly.
     -- It also might be contributing to PID bloat by running hunspell too often.
@@ -549,22 +555,19 @@ return require('packer').startup({
     -- hop.nvim - EasyMotion replacement
     use {
       'phaazon/hop.nvim',
-      keys = {
-        {'n', '<Leader>hw'}, {'n', '<Leader>hp'}, {'n', '<Leader>hc'}, {'n', '<Leader>hC'},
-        {'n', '<Leader>hl'},
-      },
       cmd = {'HopWord', 'HopPattern', 'HopChar1', 'HopChar2', 'HopLine'},
-      config = function()
+      setup = function()
         local nmap = vim.keymap.nmap
-        nmap {'<Leader>hw', '<Cmd>lua require("hop").hint_words()<CR>'}
-        nmap {'<Leader>hp', '<Cmd>lua require("hop").hint_patterns()<CR>'}
-        nmap {'<Leader>hc', '<Cmd>lua require("hop").hint_char1()<CR>'}
-        nmap {'<Leader>hC', '<Cmd>lua require("hop").hint_char2()<CR>'}
-        nmap {'<Leader>hl', '<Cmd>lua require("hop").hint_lines()<CR>'}
+        nmap {'<Leader>hw', '<Cmd>HopWord<CR>'}
+        nmap {'<Leader>hp', '<Cmd>HopPattern<CR>'}
+        nmap {'<Leader>hc', '<Cmd>HopChar1<CR>'}
+        nmap {'<Leader>hC', '<Cmd>HopChar2<CR>'}
+        nmap {'<Leader>hl', '<Cmd>HopLine<CR>'}
       end,
     }
     use {
       'windwp/nvim-autopairs',
+      requires = 'nvim-treesitter',
       config = function()
         local npairs = require('nvim-autopairs')
         npairs.setup({

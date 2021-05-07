@@ -41,7 +41,6 @@ end
 
 ---@type table<string, function[]>
 local filetypes = {
-  --[[Default meta-entry]]
   __DEFAULT__ = {
     function()
       return {exe = 'sed', args = {[[-e 's/[ \t]*$//' -e ':a; /^$/ { $d; N; ba; }']]}, stdin = true}
@@ -62,7 +61,6 @@ local filetypes = {
   less = {prettier},
   lua = {
     function()
-      -- Try to figure out what formatter should be used.
       local stylua = findfile('stylua.toml', '.;')
       if stylua then
         return {exe = 'stylua', args = {'--config-path', shellescape(stylua), '-'}, stdin = true}
@@ -79,8 +77,8 @@ local filetypes = {
       return {
         exe = 'shfmt',
         args = {
-          (vim.b.shfmt == nil and '-i=2 -ci' or nil), -- Preferred defaults
-          '-filename', shellescape(vim.api.nvim_buf_get_name(0)),
+          (vim.b.shfmt == nil and '-i=2 -ci' or nil), '-filename',
+          shellescape(vim.api.nvim_buf_get_name(0)),
         },
         stdin = true,
       }

@@ -39,9 +39,8 @@ require('compe').setup({
     fish = true,
   },
 })
-local remap = vim.api.nvim_set_keymap
-local opts = {noremap = true, silent = true, expr = true}
-remap('i', '<C-Space>', [[compe#complete()]], opts)
-remap('i', '<C-e>', [[compe#close('<C-e>')]], opts)
-remap('i', '<C-f>', [[compe#scroll({ 'delta': +4 })]], opts)
-remap('i', '<C-d>', [[compe#scroll({ 'delta': -4 })]], opts)
+
+vim.keymap.inoremap {'<C-Space>', [[compe#complete()]], silent = true, expr = true}
+vim.keymap.inoremap {'<C-e>', [[compe#close('<C-e>')]], silent = true, expr = true}
+vim.keymap.inoremap {'<C-f>', [[compe#scroll({ 'delta': +4 })]], silent = true, expr = true}
+vim.keymap.inoremap {'<C-d>', [[compe#scroll({ 'delta': -4 })]], silent = true, expr = true}

@@ -23,7 +23,7 @@ aug init
   au FileType group,man,shada setl nospell
   au FileType help setl signcolumn=no
   au VimEnter * ++once silent delcommand GBrowse
-  " au BufWritePost plugins.lua PackerCompile
+  au BufWritePost plugins.lua PackerCompile
   au TextYankPost * lua require('vim.highlight').on_yank {higroup = 'Search', timeout = 200}
 aug END
 ]], false)
