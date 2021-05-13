@@ -24,7 +24,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
   })
   tablex.foreach({
     'fzf', 'fzy_native', 'fzf_writer', 'gh', 'node_modules', 'media_files', 'sonictemplate',
-    'bookmarks', 'frecency', 'cheat', 'arecibo', 'octo',
+    'bookmarks', 'frecency', 'cheat', 'arecibo', 'dap',
   }, require('telescope').load_extension)
 
   vim.keymap.nmap {'<Leader>ff', '<Cmd>Telescope find_files<CR>', silent = true}

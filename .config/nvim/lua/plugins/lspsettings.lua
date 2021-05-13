@@ -2,6 +2,7 @@ local lsp = vim.lsp
 local configs = require('lspconfig')
 local util = require('lspconfig/util')
 local tablex, Set = require('pl.tablex'), require('pl.Set')
+local lspcontainers = require('lspcontainers')
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {
@@ -109,9 +110,8 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 
 -- Apparently we need this set up early
 require('nlspsettings').setup()
-tablex.foreach({
-  'bashls', 'dotls', 'dockerls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls',
-}, function(V) configs[V].setup({}) end)
+tablex.foreach({'bashls', 'dotls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls'},
+               function(V) configs[V].setup({}) end)
 configs.ccls.setup({
   init_options = {
     compilationDatabaseDirectory = 'build',
@@ -122,6 +122,11 @@ configs.ccls.setup({
   },
 })
 configs.clangd.setup({init_options = {clangdFileStatus = true}})
+configs.dockerls.setup({
+  before_init = function(params) params.processId = vim.NIL end,
+  cmd = lspcontainers.command('dockerls'),
+  root_dir = util.root_pattern('.git', vim.fn.getcwd()),
+})
 configs.cssls.setup({filetypes = {'css', 'sass', 'scss', 'less'}})
 configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
 configs.jsonls.setup({
@@ -131,6 +136,11 @@ configs.jsonls.setup({
 configs.sqlls.setup({cmd = {'sql-language-server', 'up', '--method', 'stdio'}})
 configs.sumneko_lua.setup({cmd = {'lua-language-server'}})
 configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node')})
+configs.yamlls.setup({
+  before_init = function(params) params.processId = vim.NIL end,
+  cmd = lspcontainers.command('yamlls'),
+  root_dir = util.root_pattern('.git', vim.fn.getcwd()),
+})
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters

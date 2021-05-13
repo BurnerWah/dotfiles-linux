@@ -35,10 +35,7 @@ return require('packer').startup({
     -- Completion & Linting
     use {
       'neovim/nvim-lspconfig',
-      requires = {
-        'tamago324/nlsp-settings.nvim',
-        {'kabouzeid/nvim-lspinstall', cmd = {'LspInstall', 'LspUninstall'}},
-      },
+      requires = {'tamago324/nlsp-settings.nvim', 'lspcontainers/lspcontainers.nvim'},
       config = _M.cfg('lspsettings'),
     }
     use {
@@ -74,6 +71,15 @@ return require('packer').startup({
       config = _M.do_config('nvim-compe.lua'),
     }
 
+    use {
+      'mfussenegger/nvim-dap',
+      requires = {
+        'jbyuki/one-small-step-for-vimkind',
+        {'theHamsta/nvim-dap-virtual-text', requires = 'nvim-treesitter'},
+      },
+      config = _M.do_config('dap.lua'),
+    }
+
     -- Telescope
     use {
       'nvim-telescope/telescope.nvim',
@@ -87,7 +93,8 @@ return require('packer').startup({
         {'nvim-telescope/telescope-github.nvim', requires = {'plenary.nvim', 'nvim-lua/popup.nvim'}},
         {'tamago324/telescope-sonictemplate.nvim', requires = 'plenary.nvim'},
         {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
-        {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}}, {
+        {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
+        {'nvim-telescope/telescope-dap.nvim', requires = {'nvim-dap', 'nvim-treesitter'}}, {
           'nvim-telescope/telescope-arecibo.nvim',
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
@@ -95,7 +102,11 @@ return require('packer').startup({
       },
       config = _M.do_config('telescope.lua'),
     }
-    use {'pwntester/octo.nvim', requires = {'telescope.nvim', 'plenary.nvim'}}
+    use {
+      'pwntester/octo.nvim',
+      requires = {'telescope.nvim', 'plenary.nvim'},
+      config = _M.do_config('octo.lua'),
+    }
 
     -- User interface
     use {
@@ -174,9 +185,12 @@ return require('packer').startup({
             diagnostics = 'nvim_lsp',
             diagnostics_indicator = function(count, _) return '(' .. count .. ')' end,
             separator_style = 'slant',
+            offsets = {{filetype = 'NvimTree', text = 'File Explorer'}},
           },
         })
         vim.keymap.nmap {'bb', '<Cmd>BufferLinePick<CR>'}
+        vim.keymap.nmap {'[b', '<Cmd>BufferLineCycleNext<CR>'}
+        vim.keymap.nmap {']b', '<Cmd>BufferLineCyclePrev<CR>'}
       end,
     }
     use {
@@ -232,6 +246,20 @@ return require('packer').startup({
     -- use {'sunjon/shade.nvim', config = function() require('shade').setup() end}
     -- Turned off because it breaks some random highlights (how?)
     use {'folke/which-key.nvim', config = _M.do_config('which-key.lua')}
+    use {
+      'rcarriga/nvim-dap-ui',
+      requires = {'nvim-dap', 'codicons.nvim'},
+      config = function()
+        local has_codicons, codicons = pcall(require, 'codicons')
+        require('dapui').setup({
+          icons = {
+            expanded = has_codicons and codicons.get('chevron-down') or '⯆',
+            collapsed = has_codicons and codicons.get('chevron-right') or '⯈',
+            circular = has_codicons and codicons.get('refresh') or '↺',
+          },
+        })
+      end,
+    }
 
     -- Utilities
     use {
@@ -355,9 +383,13 @@ return require('packer').startup({
     -- development fork of kdav5758/TrueZen.nvim
     use {
       '~/Projects/nvim-plugins/TrueZen.nvim',
-      cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft'},
+      cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft', 'TZFocus'},
       config = function()
-        require('true-zen').setup({ataraxis = {force_when_plus_one_window = true}})
+        require('true-zen').setup({
+          true_false_commands = true,
+          ataraxis = {force_when_plus_one_window = true},
+          minimalist = {store_and_restore_settings = true},
+        })
       end,
     }
     use {
@@ -488,11 +520,13 @@ return require('packer').startup({
       'leafo/moonscript-vim', 'rhysd/vim-llvm', 'ron-rs/ron.vim', 'bakpakin/fennel.vim',
       'aklt/plantuml-syntax', 'tikhomirov/vim-glsl', 'udalov/kotlin-vim',
       'YaBoiBurner/requirements.txt.vim', 'teal-language/vim-teal', 'gluon-lang/vim-gluon',
-      'blankname/vim-fish', 'thyrgle/vim-dyon', 'bytecodealliance/cranelift.vim',
+      'thyrgle/vim-dyon', 'bytecodealliance/cranelift.vim',
     }
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter
     -- vim-teal is patched
+    -- fish is handled internally + with nvim-treesitter
+    -- cranelift.vim, vim-gluon, vim-dyon - ftdetect removed
 
     -- CXX
     use {'jackguo380/vim-lsp-cxx-highlight', ft = {'c', 'cpp', 'objc', 'objcpp', 'cc', 'cuda'}}
@@ -507,6 +541,14 @@ return require('packer').startup({
     use {'plasticboy/vim-markdown', ft = 'markdown'}
     use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
     use {'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'}
+
+    -- Python
+    use {
+      'mfussenegger/nvim-dap-python',
+      ft = 'python',
+      requires = 'nvim-dap',
+      config = function() require('dap-python').setup() end,
+    }
 
     -- RST
     -- sphinx.nvim - Sphinx integration
@@ -538,11 +580,8 @@ return require('packer').startup({
     -- editorconfig-vim - Editorconfig support
     -- Rules that will modify files are disabled, since that's handled elsewhere.
     -- Eventually I'll find or make a unified formatting plugin to replace this.
-    use {
-      'editorconfig/editorconfig-vim',
-      -- config = function() require('plugins.editorconfig-vim').config() end,
-      config = require('plugins.editorconfig-vim').config,
-    }
+    use {'editorconfig/editorconfig-vim', config = require('plugins.editorconfig-vim').config}
+    use {'numToStr/FTerm.nvim', config = _M.do_config('fterm.lua')}
     use {'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}, keys = '<Plug>JqxList'}
     use {'kdheepak/lazygit.nvim', requires = 'plenary.nvim', cmd = 'LazyGit'}
     -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}

@@ -21,6 +21,7 @@ local shebang_fts = {
   ['ruby'] = 'ruby',
   ['tl'] = 'teal',
   ['ts-node'] = 'typescript',
+  -- ['zx'] = 'javascript',
 }
 local shebang = {}
 for _, prefix in ipairs(shebang_prefixes) do
