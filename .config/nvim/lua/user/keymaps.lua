@@ -2,7 +2,6 @@ UserMaps = {}
 local imap, smap = vim.keymap.imap, vim.keymap.smap
 local vnor = vim.keymap.vnoremap
 local pumvisible, getline = vim.fn.pumvisible, vim.fn.getline
-local compe_complete = vim.fn['compe#complete']
 local vsnip = {
   available = function(...) return vim.fn['vsnip#available'](...) == 1 end,
   jumpable = function(...) return vim.fn['vsnip#jumpable'](...) == 1 end,
@@ -11,7 +10,6 @@ local vsnip = {
 -- Lazy require
 local npairs = setmetatable({}, {
   __index = function(self, key)
-    print('Replaced key')
     self[key] = require('nvim-autopairs')[key]
     return self[key]
   end,
@@ -32,7 +30,7 @@ function UserMaps.tab_complete()
   if (pumvisible() == 1) then return replace_termcodes('<C-n>') end
   if vsnip.available(1) then return replace_termcodes('<Plug>(vsnip-expand-or-jump)') end
   if check_back_space() then return replace_termcodes('<Tab>') end
-  return compe_complete()
+  return vim.fn['compe#complete']()
 end
 
 function UserMaps.s_tab_complete()

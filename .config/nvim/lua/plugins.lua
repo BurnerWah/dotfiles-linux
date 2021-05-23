@@ -665,7 +665,7 @@ return require('packer').startup({
     }
     -- dial.nvim - Replaces speeddating
     use {
-      'monaqa/dial.nvim',
+      '~/Projects/nvim-plugins/dial.nvim',
       keys = {'<C-a>', '<C-x>', {'v', 'g<C-a>'}, {'v', 'g<C-x>'}},
       config = _M.do_config('dial.lua'),
     }

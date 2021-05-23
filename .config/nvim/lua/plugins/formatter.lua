@@ -95,4 +95,4 @@ filetypes = setmetatable(filetypes, {__index = function(t) return t.__DEFAULT__ 
 
 require('formatter').setup({logging = false, filetype = filetypes})
 
-vim.cmd [[autocmd init BufWritePost * FormatWrite]]
+vim.cmd [[autocmd init BufWritePost * silent FormatWrite]]
