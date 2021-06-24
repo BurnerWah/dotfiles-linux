@@ -9,20 +9,18 @@ local executable = V.fn.executable
 
 -- Vim settings
 
-vim.api.nvim_exec([[
-  set expandtab     " Use spaces instead of tabs.
-  set softtabstop=2 " Tab key indents by 2 spaces
-  set shiftwidth=2  " >> indents by 2 spaces
-]], false)
+vim.o.expandtab = true --[[Use spaces instead of tabs.]]
+vim.o.softtabstop = 2 --[[Tab key indents by 2 spaces]]
+vim.o.shiftwidth = 2 --[[>> indents by 2 spaces]]
 vim.o.shiftround = true -- >> indents to next multiple of 'shiftwidth'.
-vim.cmd [[set smartindent]]
+vim.o.smartindent = true
 vim.o.hidden = true --  Switch between buffers without having to save first.
 vim.o.lazyredraw = true -- Only redraw when necessary
 vim.o.splitbelow = true -- Open new windows below the current window.
 vim.o.splitright = true -- Open new windows right of the current window.
-vim.cmd [[set cursorline]] -- Find the current line quickly
+vim.o.cursorline = true -- Find the current line quickly
 vim.o.report = 0 -- Always report changed lines.
-vim.cmd [[set synmaxcol=250]] -- Only highlight the first 250 collumns
+vim.o.synmaxcol = 250 -- Only highlight the first 250 collumns
 vim.o.mouse = 'a' -- Mouse support
 vim.o.termguicolors = true -- Truecolor mode
 
@@ -37,7 +35,7 @@ vim.o.title = true
 -- Nothing else really compares to it, so the next best option is assuming grep is symlinked to ugrep.
 if executable('rg') then
   vim.o.grepprg = [[rg -SL --hidden -g !.git --no-heading --vimgrep $*]]
-  vim.o.grepformat = '%f:%l:%c:%m,' .. vim.o.grepformat
+  vim.opt.grepformat:prepend('%f:%l:%c:%m')
 end
 
 -- Enable spell checking
@@ -46,10 +44,8 @@ end
 -- Instead, enable it on filetypes which tree-sitter doesn't support.
 --
 -- TODO rewrite settings in Lua
-vim.api.nvim_exec([[
-  set nospell
-  set spelllang=en_us
-]], false)
+vim.o.spell = false
+vim.o.spelllang = 'en_us'
 
 vim.o.pumblend = 10 -- Slightly transparent menus
 vim.o.sessionoptions = 'blank,curdir,folds,help,localoptions,tabpages,winpos,winsize'
@@ -63,10 +59,8 @@ else
   vim.o.listchars = 'tab:> ,extends:>,precedes:<,nbsp:+,trail:-'
 end
 
-vim.api.nvim_exec([[
-  set conceallevel=2
-  set concealcursor=nv
-]], false)
+vim.o.conceallevel = 2
+vim.o.concealcursor = 'nv'
 
 -- Fish causes problems with plugins
 -- vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell

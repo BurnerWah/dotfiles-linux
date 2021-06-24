@@ -51,7 +51,14 @@ return require('packer').startup({
         {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
         {'nvim-treesitter/nvim-tree-docs', after = 'nvim-treesitter', requires = 'Olical/aniseed'},
         {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
-        {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
+        {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'}, {
+          'mfussenegger/nvim-ts-hint-textobject',
+          keys = {{'o', 'm'}, {'v', 'm'}},
+          config = function()
+            vim.keymap.omap({'m', [[:<C-u>lua require('tsht').nodes()<CR>]], silent = true})
+            vim.keymap.vnoremap({'m', [[<Cmd>lua require('tsht').nodes()<CR>]], silent = true})
+          end,
+        },
       },
       run = ':TSUpdate',
       config = _M.do_config('treesitter.lua'),
@@ -74,7 +81,7 @@ return require('packer').startup({
     use {
       'mfussenegger/nvim-dap',
       requires = {
-        'jbyuki/one-small-step-for-vimkind',
+        'jbyuki/one-small-step-for-vimkind', {'Pocco81/DAPInstall.nvim'},
         {'theHamsta/nvim-dap-virtual-text', requires = 'nvim-treesitter'},
       },
       config = _M.do_config('dap.lua'),
@@ -88,6 +95,7 @@ return require('packer').startup({
         'kyazdani42/nvim-web-devicons', 'nvim-treesitter', 'nvim-telescope/telescope-symbols.nvim',
         'nvim-telescope/telescope-fzf-writer.nvim', 'nvim-telescope/telescope-node-modules.nvim',
         'nvim-telescope/telescope-media-files.nvim', 'dhruvmanila/telescope-bookmarks.nvim',
+        'cwebster2/github-coauthors.nvim',
         {'nvim-telescope/telescope-fzf-native.nvim', run = 'make CC=clang'},
         {'nvim-telescope/telescope-fzy-native.nvim', requires = 'plenary.nvim'},
         {'nvim-telescope/telescope-github.nvim', requires = {'plenary.nvim', 'nvim-lua/popup.nvim'}},
@@ -260,6 +268,12 @@ return require('packer').startup({
         })
       end,
     }
+    use {
+      'winston0410/range-highlight.nvim',
+      requires = 'winston0410/cmd-parser.nvim',
+      event = 'VimEnter *',
+      config = function() require('range-highlight').setup({}) end,
+    }
 
     -- Utilities
     use {
@@ -285,17 +299,17 @@ return require('packer').startup({
     -- VimWiki - note-taking engine
     use {
       'vimwiki/vimwiki',
-      event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
-      cmd = {
-        'VimwikiIndex', 'VimwikiTabIndex', 'VimwikiDiaryIndex', 'VimwikiMakeDiaryNote',
-        'VimwikiTabMakeDiaryNote',
-      },
-      keys = {
-        '<Plug>VimwikiIndex', '<Plug>VimwikiTabIndex', '<Plug>VimwikiUISelect',
-        '<Plug>VimwikiDiaryIndex', '<Plug>VimwikiDiaryGenerateLinks', '<Plug>VimwikiMakeDiaryNote',
-        '<Plug>VimwikiTabMakeDiaryNote', '<Plug>VimwikiMakeYesterdayDiaryNote',
-        '<Plug>VimwikiMakeTomorrowDiaryNote',
-      },
+      -- event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
+      -- cmd = {
+      --   'VimwikiIndex', 'VimwikiTabIndex', 'VimwikiDiaryIndex', 'VimwikiMakeDiaryNote',
+      --   'VimwikiTabMakeDiaryNote',
+      -- },
+      -- keys = {
+      --   '<Plug>VimwikiIndex', '<Plug>VimwikiTabIndex', '<Plug>VimwikiUISelect',
+      --   '<Plug>VimwikiDiaryIndex', '<Plug>VimwikiDiaryGenerateLinks', '<Plug>VimwikiMakeDiaryNote',
+      --   '<Plug>VimwikiTabMakeDiaryNote', '<Plug>VimwikiMakeYesterdayDiaryNote',
+      --   '<Plug>VimwikiMakeTomorrowDiaryNote',
+      -- },
       setup = function()
         vim.g.vimwiki_list = {{path = '~/Documents/VimWiki', nested_syntaxes = {['c++'] = 'cpp'}}}
         vim.g.vimwiki_folding = 'expr'
@@ -340,6 +354,16 @@ return require('packer').startup({
       config = _M.do_config('iron.lua'),
     }
     use {'mhartington/formatter.nvim', event = 'VimEnter *', config = _M.do_config('formatter.lua')}
+    use {
+      'sudormrfbin/cheatsheet.nvim',
+      requires = {
+        'telescope.nvim', 'plenary.nvim', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'},
+      },
+      cmd = {'Cheatsheet', 'CheatsheetEdit'},
+      setup = function()
+        pcall(vim.keymap.nnoremap, {'<Leader>?', [[:<C-U>Cheatsheet<CR>]], silent = true})
+      end,
+    }
 
     -- ultest - unit test support
     -- lazy loading is very janky
@@ -380,17 +404,10 @@ return require('packer').startup({
       end,
     }
 
-    -- development fork of kdav5758/TrueZen.nvim
     use {
-      '~/Projects/nvim-plugins/TrueZen.nvim',
-      cmd = {'TZAtaraxis', 'TZMinimalist', 'TZBottom', 'TZTop', 'TZLeft', 'TZFocus'},
-      config = function()
-        require('true-zen').setup({
-          true_false_commands = true,
-          ataraxis = {force_when_plus_one_window = true},
-          minimalist = {store_and_restore_settings = true},
-        })
-      end,
+      'folke/zen-mode.nvim',
+      cmd = 'ZenMode',
+      config = function() require("zen-mode").setup({plugins = {gitsigns = {enabled = true}}}) end,
     }
     use {
       'wfxr/minimap.vim',
@@ -513,6 +530,14 @@ return require('packer').startup({
       opt = true,
       config = _M.do_config('diffview.lua'),
     }
+    use {
+      'folke/todo-comments.nvim',
+      requires = {'plenary.nvim', 'lsp-trouble.nvim', 'telescope.nvim'},
+      cmd = {'TodoQuickFix', 'TodoTelescope', 'TodoTrouble'},
+      config = function() require("todo-comments").setup({}) end,
+    }
+    use {'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'}
+    use {'Pocco81/HighStr.nvim', cmd = 'HSHighlight'}
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.
@@ -520,7 +545,7 @@ return require('packer').startup({
       'leafo/moonscript-vim', 'rhysd/vim-llvm', 'ron-rs/ron.vim', 'bakpakin/fennel.vim',
       'aklt/plantuml-syntax', 'tikhomirov/vim-glsl', 'udalov/kotlin-vim',
       'YaBoiBurner/requirements.txt.vim', 'teal-language/vim-teal', 'gluon-lang/vim-gluon',
-      'thyrgle/vim-dyon', 'bytecodealliance/cranelift.vim',
+      'thyrgle/vim-dyon', 'bytecodealliance/cranelift.vim', 'NoahTheDuke/vim-just',
     }
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter
@@ -536,6 +561,7 @@ return require('packer').startup({
     use {'tjdevries/nlua.nvim', ft = 'lua'}
     use {'bfredl/nvim-luadev', cmd = 'Luadev'}
     use {'rafcamlet/nvim-luapad', cmd = {'Lua', 'Luapad', 'LuaRun'}}
+    use {'milisims/nvim-luaref', 'nanotee/luv-vimdocs'}
 
     -- Markdown
     use {'plasticboy/vim-markdown', ft = 'markdown'}
@@ -576,6 +602,12 @@ return require('packer').startup({
       end,
     }
 
+    -- YAML
+    use {'cuducos/yaml.nvim', ft = 'yaml', requires = {'nvim-treesitter', 'telescope.nvim'}}
+
+    -- Vim
+    use 'danilamihailov/vim-tips-wiki'
+
     -- Integration
     -- editorconfig-vim - Editorconfig support
     -- Rules that will modify files are disabled, since that's handled elsewhere.
@@ -588,9 +620,12 @@ return require('packer').startup({
     -- Spell support for tree-sitter is nice but it causes files to noticably refresh constantly.
     -- It also might be contributing to PID bloat by running hunspell too often.
     -- It's a WIP so some problems can be expected.
+    use {'jamestthompson3/nvim-remote-containers', cmd = {'AttachToContainer', 'BuildImage'}}
+    use {'andweeb/presence.nvim'}
 
     -- Text editing
     use 'tpope/vim-repeat'
+    use 'ggandor/lightspeed.nvim'
     -- hop.nvim - EasyMotion replacement
     use {
       'phaazon/hop.nvim',
@@ -706,6 +741,13 @@ return require('packer').startup({
       'rsrchboy/vim-textobj-heredocs',
       requires = 'kana/vim-textobj-user',
       keys = {{'x', 'aH'}, {'o', 'aH'}, {'x', 'iH'}, {'o', 'iH'}},
+    }
+    use {'jbyuki/venn.nvim', event = 'OptionSet virtualedit', cmd = 'VBox'}
+    use {
+      'mizlan/iswap.nvim',
+      requires = 'nvim-treesitter',
+      cmd = 'ISwap',
+      config = function() require('iswap').setup({}) end,
     }
   end,
   config = {max_jobs = #vim.loop.cpu_info(), profile = {enable = true, threshold = 1}},

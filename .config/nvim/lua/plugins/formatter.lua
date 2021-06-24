@@ -63,7 +63,13 @@ local filetypes = {
     function()
       local stylua = findfile('stylua.toml', '.;')
       if stylua then
-        return {exe = 'stylua', args = {'--config-path', shellescape(stylua), '-'}, stdin = true}
+        return {
+          exe = 'stylua',
+          args = {
+            '--search-parent-directories', '--stdin-filepath', vim.api.nvim_buf_get_name(0), '-',
+          },
+          stdin = true,
+        }
       end
       return {exe = 'lua-format', stdin = true}
     end,

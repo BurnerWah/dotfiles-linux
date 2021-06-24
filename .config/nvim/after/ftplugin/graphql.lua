@@ -4,8 +4,7 @@ vim.bo.shiftwidth = 2
 vim.bo.expandtab = true
 vim.bo.comments = ':#'
 vim.bo.commentstring = '# %s'
-local iskeyword = require('user.optlib').commalist('iskeyword', 'bo')
-iskeyword = iskeyword + {'$', '@-@'}
+vim.opt_local.iskeyword:append('$,@-@')
 vim.bo.indentkeys = '0{,0},0),0[,0],0#,!^F,o,O'
 
 vim.b.did_indent = 1

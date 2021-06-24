@@ -1,3 +1,6 @@
+--map-syntax /home/*/.config/pipewire/media-session.d/*:JSON
+--map-syntax /home/*/.config/copr:INI
+--map-syntax /home/*/.config/yamllint/config:YAML
 --map-syntax **/share/flatpak/overrides/*:INI
 --map-syntax *.csproj:XML
 --map-syntax *.jenkins:Groovy
@@ -38,6 +41,7 @@
 --map-syntax BSDmakefile:Makefile
 --map-syntax ReText.conf:INI
 --map-syntax Trolltech.conf:INI
+--map-syntax QtProject.conf:INI
 --map-syntax anacrontab:Crontab
 --map-syntax bashrc:'Bourne Again Shell (bash)'
 --map-syntax conf:INI
