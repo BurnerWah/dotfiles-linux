@@ -103,7 +103,8 @@ return require('packer').startup({
         {'tamago324/telescope-sonictemplate.nvim', requires = 'plenary.nvim'},
         {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
         {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
-        {'nvim-telescope/telescope-dap.nvim', requires = {'nvim-dap', 'nvim-treesitter'}}, {
+        {'nvim-telescope/telescope-dap.nvim', requires = {'nvim-dap', 'nvim-treesitter'}},
+        {'elianiva/telescope-npm.nvim', requires = 'plenary.nvim'}, {
           'nvim-telescope/telescope-arecibo.nvim',
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
@@ -539,6 +540,7 @@ return require('packer').startup({
     })
     use({'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'})
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
+    use({'winston0410/mark-radar.nvim', config = function() require("mark-radar").setup() end})
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.
