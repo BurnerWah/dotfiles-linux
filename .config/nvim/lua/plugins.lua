@@ -299,17 +299,17 @@ return require('packer').startup({
     -- VimWiki - note-taking engine
     use {
       'vimwiki/vimwiki',
-      -- event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
-      -- cmd = {
-      --   'VimwikiIndex', 'VimwikiTabIndex', 'VimwikiDiaryIndex', 'VimwikiMakeDiaryNote',
-      --   'VimwikiTabMakeDiaryNote',
-      -- },
-      -- keys = {
-      --   '<Plug>VimwikiIndex', '<Plug>VimwikiTabIndex', '<Plug>VimwikiUISelect',
-      --   '<Plug>VimwikiDiaryIndex', '<Plug>VimwikiDiaryGenerateLinks', '<Plug>VimwikiMakeDiaryNote',
-      --   '<Plug>VimwikiTabMakeDiaryNote', '<Plug>VimwikiMakeYesterdayDiaryNote',
-      --   '<Plug>VimwikiMakeTomorrowDiaryNote',
-      -- },
+      event = 'BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md',
+      cmd = {
+        'VimwikiIndex', 'VimwikiTabIndex', 'VimwikiDiaryIndex', 'VimwikiMakeDiaryNote',
+        'VimwikiTabMakeDiaryNote',
+      },
+      keys = {
+        '<Plug>VimwikiIndex', '<Plug>VimwikiTabIndex', '<Plug>VimwikiUISelect',
+        '<Plug>VimwikiDiaryIndex', '<Plug>VimwikiDiaryGenerateLinks', '<Plug>VimwikiMakeDiaryNote',
+        '<Plug>VimwikiTabMakeDiaryNote', '<Plug>VimwikiMakeYesterdayDiaryNote',
+        '<Plug>VimwikiMakeTomorrowDiaryNote',
+      },
       setup = function()
         vim.g.vimwiki_list = {{path = '~/Documents/VimWiki', nested_syntaxes = {['c++'] = 'cpp'}}}
         vim.g.vimwiki_folding = 'expr'
@@ -568,6 +568,9 @@ return require('packer').startup({
     use {'npxbr/glow.nvim', ft = {'markdown', 'pandoc.markdown', 'rmd'}}
     use {'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'}
 
+    -- Org
+    use {'kristijanhusak/orgmode.nvim', config = function() require('orgmode').setup({}) end}
+
     -- Python
     use {
       'mfussenegger/nvim-dap-python',
@@ -622,6 +625,7 @@ return require('packer').startup({
     -- It's a WIP so some problems can be expected.
     use {'jamestthompson3/nvim-remote-containers', cmd = {'AttachToContainer', 'BuildImage'}}
     use {'andweeb/presence.nvim'}
+    use({'kristijanhusak/vim-carbon-now-sh', cmd = 'CarbonNowSh'})
 
     -- Text editing
     use 'tpope/vim-repeat'

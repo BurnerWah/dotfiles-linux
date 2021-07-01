@@ -39,6 +39,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
       treesitter = true,
       omni = {filetypes = {'clojure', 'debchangelog', 'mf', 'mp', 'vimwiki'}},
       fish = true,
+      orgmode = true,
     },
   })
 
