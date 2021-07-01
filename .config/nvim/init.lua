@@ -11,19 +11,20 @@ require('plugins') -- Load my plugins
 require('astronauta.keymap') -- Add astronauta keymaps early so they can be utilized freely
 require('user.keymaps') -- Add my own keymaps
 
--- Augroups (don't support lua)
-vim.api.nvim_exec([[
-" We just need this group initialized
-aug user_ftplugin
-aug END
-" Init augroup
-aug init
-  au!
-  au BufEnter * if (winnr('$') == 1 && &filetype =~# '\%(vista\|vista_kind\|minimap\|tsplayground\)') | quit | endif
-  au FileType group,man,shada setl nospell
-  au FileType help setl signcolumn=no
-  au VimEnter * ++once silent delcommand GBrowse
-  au BufWritePost plugins.lua PackerCompile
-  au TextYankPost * lua require('vim.highlight').on_yank {higroup = 'Search', timeout = 200}
-aug END
-]], false)
+-- Augroups (Use a lua abstraction)
+require('agrp').set({
+  -- Dummy group that can be added to as needed
+  user_ftplugin = {},
+  init = {
+    {
+      'BufEnter', '*', function()
+        local ftypes = {vista = true, vista_kind = true, minimap = true, tsplayground = true}
+        if vim.fn.winnr('$') == 1 and ftypes[vim.bo.filetype] then vim.cmd('quit') end
+      end,
+    },
+    FileType = {{'group,man,shada', 'setl nospell'}, {'help', 'setl signcolumn=no'}},
+    {'VimEnter', '*', '++once silent delcommand GBrowse'},
+    {'BufWritePost', 'plugins.lua', 'PackerCompile'},
+    {'TextYankPost', '*', function() vim.highlight.on_yank({higroup = 'Search', timeout = 200}) end},
+  },
+})

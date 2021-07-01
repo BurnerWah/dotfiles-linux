@@ -21,6 +21,7 @@ return require('packer').startup({
     })
     use('iamcco/async-await.lua')
     use('norcalli/profiler.nvim')
+    use('delphinus/agrp.nvim')
     use({
       'mortepau/codicons.nvim',
       config = function()
