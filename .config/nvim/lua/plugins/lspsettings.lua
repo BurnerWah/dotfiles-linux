@@ -6,9 +6,9 @@ local lspcontainers = require('lspcontainers')
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {
-  cursorline = Set {
+  cursorline = Set({
     'diagnosticls', 'vsc_alex', 'vsc_textlint', 'eslint_lsp', 'vsc_jshint', 'vsc_spectral',
-  },
+  }),
 }
 
 -- Setup function
@@ -24,36 +24,36 @@ local function on_attach(client, bufnr)
     local has_wk, wk = pcall(require, 'which-key')
 
     if caps.hover then
-      nnor {'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr}
+      nnor({'<Leader>hh', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr})
       if ft ~= 'vim' then
-        nnor {'K', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr}
+        nnor({'K', [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr})
       end
     end
 
     if caps.find_references then
-      nnor {'gh', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr}
-      nnor {'gr', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr}
+      nnor({'gh', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr})
+      nnor({'gr', [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr})
       if has_wk then
         wk.register({gr = {[[<Cmd>Lspsaga lsp_finder<CR>]], 'Find references', buffer = bufnr}})
       end
     end
 
     if caps.signature_help then
-      nnor {'gs', [[<Cmd>Lspsaga signature_help<CR>]], silent = true, buffer = bufnr}
+      nnor({'gs', [[<Cmd>Lspsaga signature_help<CR>]], silent = true, buffer = bufnr})
     end
 
     if caps.code_action then
       vim.wo[winnr].signcolumn = 'yes'
-      nnor {'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = bufnr}
-      vnor {'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = bufnr}
+      nnor({'ca', [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = bufnr})
+      vnor({'ca', [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = bufnr})
     end
 
     if caps.rename then
-      nnor {'<Leader>rn', [[<Cmd>Lspsaga rename<CR>]], silent = true, buffer = bufnr}
+      nnor({'<Leader>rn', [[<Cmd>Lspsaga rename<CR>]], silent = true, buffer = bufnr})
     end
 
     if caps.goto_definition then
-      nnor {'gd', [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = bufnr}
+      nnor({'gd', [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = bufnr})
       if has_wk then
         wk.register({
           gd = {[[<Cmd>Lspsaga preview_definition<CR>]], 'Go to definition', buffer = bufnr},
@@ -62,11 +62,11 @@ local function on_attach(client, bufnr)
     end
 
     if caps.type_definition then
-      nnor {'gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], silent = true, buffer = bufnr}
+      nnor({'gy', [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], silent = true, buffer = bufnr})
     end
 
     if caps.implementation then
-      nnor {'gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], silent = true, buffer = bufnr}
+      nnor({'gi', [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], silent = true, buffer = bufnr})
     end
 
     if caps.document_symbol then
@@ -92,11 +92,11 @@ local function on_attach(client, bufnr)
     end
 
     -- Diagnostics are probably always available
-    nnor {'<Leader>cd', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = bufnr}
-    nnor {'[e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr}
-    nnor {'[g', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr}
-    nnor {']e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr}
-    nnor {']g', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr}
+    nnor({'<Leader>cd', [[<Cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = bufnr})
+    nnor({'[e', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr})
+    nnor({'[g', [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr})
+    nnor({']e', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr})
+    nnor({']g', [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr})
     if has_wk then
       wk.register({
         ['[e'] = {[[<Cmd>Lspsaga diagnostic_jump_next<CR>]], 'Next diagnostic', buffer = bufnr},
@@ -127,7 +127,7 @@ configs.ccls.setup({
     compilationDatabaseDirectory = 'build',
     index = {threads = 0},
     cache = {directory = '.ccls-cache'},
-    clang = {resourceDir = '/usr/lib64/clang/11'},
+    clang = {resourceDir = '/usr/lib64/clang/12'},
     highlight = {lsRanges = true},
   },
 })

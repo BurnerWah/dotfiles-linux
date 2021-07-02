@@ -43,10 +43,11 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     },
   })
 
-  vim.keymap.inoremap {'<C-Space>', [[compe#complete()]], silent = true, expr = true}
-  vim.keymap.inoremap {'<C-e>', [[compe#close('<C-e>')]], silent = true, expr = true}
-  vim.keymap.inoremap {'<C-f>', [[compe#scroll({ 'delta': +4 })]], silent = true, expr = true}
-  vim.keymap.inoremap {'<C-d>', [[compe#scroll({ 'delta': -4 })]], silent = true, expr = true}
+  local inor = vim.keymap.inoremap
+  inor({'<C-Space>', [[compe#complete()]], silent = true, expr = true})
+  inor({'<C-e>', [[compe#close('<C-e>')]], silent = true, expr = true})
+  inor({'<C-f>', [[compe#scroll({ 'delta': +4 })]], silent = true, expr = true})
+  inor({'<C-d>', [[compe#scroll({ 'delta': -4 })]], silent = true, expr = true})
 
   async:close()
 end))

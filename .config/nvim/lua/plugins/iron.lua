@@ -21,8 +21,8 @@ iron.set_config({
 })
 
 -- Set up keymaps that aren't useful until iron starts
-vim.keymap.nmap {'cst', '<Plug>(iron-interrupt)'}
-vim.keymap.nmap {'cq', '<Plug>(iron-exit)'}
-vim.keymap.nmap {'cl', '<Plug>(iron-clear)'}
-vim.keymap.nmap {'cp', '<Plug>(iron-repeat-cmd)'}
-vim.keymap.nmap {'c<CR>', '<Plug>(iron-cr)'}
+vim.keymap.nmap({'cst', '<Plug>(iron-interrupt)'})
+vim.keymap.nmap({'cq', '<Plug>(iron-exit)'})
+vim.keymap.nmap({'cl', '<Plug>(iron-clear)'})
+vim.keymap.nmap({'cp', '<Plug>(iron-repeat-cmd)'})
+vim.keymap.nmap({'c<CR>', '<Plug>(iron-cr)'})

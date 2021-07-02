@@ -73,7 +73,7 @@ cleanup = vim.loop.new_async(vim.schedule_wrap(function()
     'ale_code_action',
   }
   for _, map in ipairs(unmap) do vim.cmd('unmap <Plug>(' .. map .. ')') end
-  vim.cmd [[iunmap <Plug>(ale_complete)]]
+  vim.cmd('iunmap <Plug>(ale_complete)')
 
   local delcom = {
     'ALEComplete', 'ALEDocumentation', 'ALEFindReferences', 'ALEGoToDefinition',

@@ -20,7 +20,7 @@ function M.config()
   vim.g.EditorConfig_disable_rules = {
     'insert_final_newline', 'max_line_length', 'trim_trailing_whitespace',
   }
-  vim.cmd [[call editorconfig#AddNewHook(function('user#abstract#editorconfig_hook'))]]
+  vim.cmd([[call editorconfig#AddNewHook(function('user#abstract#editorconfig_hook'))]])
 end
 
 --- Editorconfig Hook

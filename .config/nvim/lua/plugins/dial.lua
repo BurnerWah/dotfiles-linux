@@ -10,21 +10,21 @@ dial.augends['custom#boolean'] = dial.common.enum_cyclic {
 table.insert(dial.config.searchlist.normal, 'custom#boolean')
 
 -- Keymaps - We add repeat support to this
-nnor {
+nnor({
   '<C-a>', function()
     dial.cmd.increment_normal(vim.v.count1)
     pcall(vim.cmd, [[silent! call repeat#set("\<C-a>", v:count)]])
   end,
-}
-nnor {
+})
+nnor({
   '<C-x>', function()
     dial.cmd.increment_normal(-vim.v.count1)
     pcall(vim.cmd, [[silent! call repeat#set("\<C-x>", v:count)]])
   end,
-}
+})
 -- vim.keymap.nmap {'<C-a>', '<Plug>(dial-increment)'}
 -- vim.keymap.nmap {'<C-x>', '<Plug>(dial-decrement)'}
-vmap {'<C-a>', '<Plug>(dial-increment)'}
-vmap {'<C-x>', '<Plug>(dial-decrement)'}
-vmap {'g<C-a>', '<Plug>(dial-increment-additional)'}
-vmap {'g<C-x>', '<Plug>(dial-decrement-additional)'}
+vmap({'<C-a>', '<Plug>(dial-increment)'})
+vmap({'<C-x>', '<Plug>(dial-decrement)'})
+vmap({'g<C-a>', '<Plug>(dial-increment-additional)'})
+vmap({'g<C-x>', '<Plug>(dial-decrement-additional)'})

@@ -5,7 +5,8 @@ local E = vim.env
 
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
-  require('telescope').setup({
+  local telescope = require('telescope')
+  telescope.setup({
     defaults = {winblend = 10, file_sorter = require('telescope.sorters').get_fzy_sorter},
     extensions = {
       arecibo = {selected_engine = 'duckduckgo', show_domain_icons = true, show_http_headers = true},
@@ -25,13 +26,14 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
   tablex.foreach({
     'fzf', 'fzy_native', 'fzf_writer', 'gh', 'node_modules', 'media_files', 'sonictemplate',
     'bookmarks', 'frecency', 'cheat', 'arecibo', 'dap', 'githubcoauthors', 'npm',
-  }, require('telescope').load_extension)
+  }, telescope.load_extension)
 
-  vim.keymap.nmap {'<Leader>ff', '<Cmd>Telescope find_files<CR>', silent = true}
-  vim.keymap.nmap {'<Leader>fg', '<Cmd>Telescope live_grep<CR>', silent = true}
-  vim.keymap.nmap {'<Leader>fb', '<Cmd>Telescope buffers<CR>', silent = true}
-  vim.keymap.nmap {'<Leader>fh', '<Cmd>Telescope help_tags<CR>', silent = true}
-  vim.keymap.nmap {'<Leader>fF', '<Cmd>Telescope frequency<CR>', silent = true}
+  local nmap = vim.keymap.nmap
+  nmap({'<Leader>ff', '<Cmd>Telescope find_files<CR>', silent = true})
+  nmap({'<Leader>fg', '<Cmd>Telescope live_grep<CR>', silent = true})
+  nmap({'<Leader>fb', '<Cmd>Telescope buffers<CR>', silent = true})
+  nmap({'<Leader>fh', '<Cmd>Telescope help_tags<CR>', silent = true})
+  nmap({'<Leader>fF', '<Cmd>Telescope frequency<CR>', silent = true})
 
   async:close()
 end))

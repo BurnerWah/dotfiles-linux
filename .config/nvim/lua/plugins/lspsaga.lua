@@ -20,5 +20,5 @@ require('lspsaga').init_lsp_saga({
   rename_action_keys = {quit = {'<C-c>', '<Esc>'}, exec = '<CR>'},
 })
 
-vim.keymap.nnoremap {'<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], silent = true}
-vim.keymap.tnoremap {'<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], silent = true}
+vim.keymap.nnoremap({'<A-d>', [[<Cmd>Lspsaga open_floaterm fish<CR>]], silent = true})
+vim.keymap.tnoremap({'<A-d>', [[<C-\><C-n><Cmd>Lspsaga close_floaterm<CR>]], silent = true})

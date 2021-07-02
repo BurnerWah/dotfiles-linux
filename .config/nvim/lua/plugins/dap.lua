@@ -38,7 +38,7 @@ dap.adapters.nlua = function(callback, config)
 end
 
 --[[Map K to hover during sessions]]
-dap.listeners.after['event_initialized']['me'] = function()
+dap.listeners.after.event_initialized.me = function()
   for _, buf in pairs(api.nvim_list_bufs()) do
     local keymaps = api.nvim_buf_get_keymap(buf, 'n')
     for _, keymap in pairs(keymaps) do
@@ -72,22 +72,22 @@ if has_codicons then
 end
 
 local nnor = vim.keymap.nnoremap
-nnor {'<F5>', [[<Cmd>lua require('dap').continue()<CR>]], silent = true}
-nnor {'<F10>', [[<Cmd>lua require('dap').step_over()<CR>]], silent = true}
-nnor {'<F11>', [[<Cmd>lua require('dap').step_into()<CR>]], silent = true}
-nnor {'<F12>', [[<Cmd>lua require('dap').step_out()<CR>]], silent = true}
-nnor {'<Leader>b', [[<Cmd>lua require('dap').toggle_breakpoint()<CR>]], silent = true}
-nnor {
+nnor({'<F5>', [[<Cmd>lua require('dap').continue()<CR>]], silent = true})
+nnor({'<F10>', [[<Cmd>lua require('dap').step_over()<CR>]], silent = true})
+nnor({'<F11>', [[<Cmd>lua require('dap').step_into()<CR>]], silent = true})
+nnor({'<F12>', [[<Cmd>lua require('dap').step_out()<CR>]], silent = true})
+nnor({'<Leader>b', [[<Cmd>lua require('dap').toggle_breakpoint()<CR>]], silent = true})
+nnor({
   '<Leader>B',
   ---@diagnostic disable-next-line: undefined-field
   function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
   silent = true,
-}
-nnor {
+})
+nnor({
   '<Leader>lp',
   ---@diagnostic disable-next-line: undefined-field
   function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end,
   silent = true,
-}
-nnor {'<Leader>dr', [[<Cmd>lua require('dap').repl.open()<CR>]], silent = true}
-nnor {'<Leader>dl', [[<Cmd>lua require('dap').run_last()<CR>]], silent = true}
+})
+nnor({'<Leader>dr', [[<Cmd>lua require('dap').repl.open()<CR>]], silent = true})
+nnor({'<Leader>dl', [[<Cmd>lua require('dap').run_last()<CR>]], silent = true})

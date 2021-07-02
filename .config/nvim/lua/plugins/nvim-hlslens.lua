@@ -2,14 +2,14 @@ local nnor, nmap = vim.keymap.nnoremap, vim.keymap.nmap
 local feedkeys, replace_termcodes = vim.api.nvim_feedkeys, vim.api.nvim_replace_termcodes
 -- local hlslens = require('hlslens')
 -- This will let us delete the search end keymap when we're done with it
-nnor {
+nnor({
   '<Plug>(UserEndHlslens)',
   function()
     feedkeys(replace_termcodes(':nohlsearch<CR>', true, false, true), 'n', true)
-    vim.cmd [[nunmap <Leader>l]]
+    vim.cmd('nunmap <Leader>l')
   end,
   silent = true,
-}
+})
 
 local mapgen = {
   iterate = function(key)
@@ -17,25 +17,25 @@ local mapgen = {
       -- This used to use vim.cmd, but that broke. Feedkeys works better anyway though.
       feedkeys(vim.v.count1 .. key, 'n', true)
       require('hlslens').start()
-      nmap {'<Leader>l', '<Plug>(UserEndHlslens)', silent = true}
+      nmap({'<Leader>l', '<Plug>(UserEndHlslens)', silent = true})
     end
   end,
   search = function(key)
     return function()
       feedkeys(key, 'n', true)
       require('hlslens').start()
-      nmap {'<Leader>l', '<Plug>(UserEndHlslens)', silent = true}
+      nmap({'<Leader>l', '<Plug>(UserEndHlslens)', silent = true})
     end
   end,
 }
 
-nnor {'n', mapgen.iterate('n'), silent = true}
-nnor {'N', mapgen.iterate('N'), silent = true}
+nnor({'n', mapgen.iterate('n'), silent = true})
+nnor({'N', mapgen.iterate('N'), silent = true})
 
-nnor {'*', mapgen.search('*')}
-nnor {'#', mapgen.search('#')}
-nnor {'g*', mapgen.search('g*')}
-nnor {'g#', mapgen.search('g#')}
+nnor({'*', mapgen.search('*')})
+nnor({'#', mapgen.search('#')})
+nnor({'g*', mapgen.search('g*')})
+nnor({'g#', mapgen.search('g#')})
 
 require('hlslens').setup({
   auto_enable = true,

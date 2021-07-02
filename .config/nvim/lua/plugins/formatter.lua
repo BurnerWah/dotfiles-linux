@@ -100,5 +100,3 @@ local filetypes = {
 filetypes = setmetatable(filetypes, {__index = function(t) return t.__DEFAULT__ end})
 
 require('formatter').setup({logging = false, filetype = filetypes})
-
-vim.cmd [[autocmd init BufWritePost * silent FormatWrite]]
