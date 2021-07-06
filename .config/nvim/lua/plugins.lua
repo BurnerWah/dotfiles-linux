@@ -15,10 +15,7 @@ return require('packer').startup({
     -- Core plugins
     use_rocks({'compat53', 'penlight', 'fun', 'stdlib'})
     use('tjdevries/astronauta.nvim')
-    use({
-      'nvim-lua/plenary.nvim',
-      config = function() require('plenary.filetype').add_file('user') end,
-    })
+    use({'nvim-lua/plenary.nvim', config = [[require('plenary.filetype').add_file('user')]]})
     use('iamcco/async-await.lua')
     use('norcalli/profiler.nvim')
     use('delphinus/agrp.nvim')
@@ -224,7 +221,7 @@ return require('packer').startup({
     use({'alec-gibson/nvim-tetris', cmd = 'Tetris'})
     use({
       'dstein64/nvim-scrollview',
-      config = function() vim.g.scrollview_nvim_14040_workaround = true end,
+      -- config = function() vim.g.scrollview_nvim_14040_workaround = true end,
     })
     use({'kevinhwang91/nvim-hlslens', config = _M.do_config('nvim-hlslens.lua')})
     use({
@@ -395,13 +392,14 @@ return require('packer').startup({
     use({
       'numToStr/Navigator.nvim',
       config = function()
-        require('Navigator').setup()
-        local nmap = vim.keymap.nmap
-        nmap({'<C-h>', '<Cmd>lua require("Navigator").left()<CR>', silent = true})
-        nmap({'<C-j>', '<Cmd>lua require("Navigator").down()<CR>', silent = true})
-        nmap({'<C-k>', '<Cmd>lua require("Navigator").up()<CR>', silent = true})
-        nmap({'<C-l>', '<Cmd>lua require("Navigator").right()<CR>', silent = true})
-        nmap({'<C-\\>', '<Cmd>lua require("Navigator").previous()<CR>', silent = true})
+        local Navigator = require('Navigator')
+        Navigator.setup()
+        local nmap = vim.keymap.nnoremap
+        nmap({'<C-h>', Navigator.left, silent = true})
+        nmap({'<C-j>', Navigator.down, silent = true})
+        nmap({'<C-k>', Navigator.up, silent = true})
+        nmap({'<C-l>', Navigator.right, silent = true})
+        nmap({'<C-\\>', Navigator.previous, silent = true})
       end,
     })
 
@@ -535,12 +533,12 @@ return require('packer').startup({
       'folke/todo-comments.nvim',
       requires = {'plenary.nvim', 'lsp-trouble.nvim', 'telescope.nvim'},
       cmd = {'TodoQuickFix', 'TodoTelescope', 'TodoTrouble'},
-      config = function() require("todo-comments").setup({}) end,
+      config = [[require("todo-comments").setup()]],
     })
     use({'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'})
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
-    use({'winston0410/mark-radar.nvim', config = function() require("mark-radar").setup() end})
-    use({'Pocco81/AutoSave.nvim', config = function() require('autosave').setup() end})
+    use({'winston0410/mark-radar.nvim', config = [[require("mark-radar").setup()]]})
+    use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
     use({
       'notomo/gesture.nvim',
       config = function()
@@ -586,14 +584,14 @@ return require('packer').startup({
     use({'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'})
 
     -- Org
-    use({'kristijanhusak/orgmode.nvim', config = function() require('orgmode').setup({}) end})
+    use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
 
     -- Python
     use({
       'mfussenegger/nvim-dap-python',
       ft = 'python',
       requires = 'nvim-dap',
-      config = function() require('dap-python').setup() end,
+      config = [[require('dap-python').setup()]],
     })
 
     -- RST
@@ -768,7 +766,7 @@ return require('packer').startup({
       'mizlan/iswap.nvim',
       requires = 'nvim-treesitter',
       cmd = 'ISwap',
-      config = function() require('iswap').setup({}) end,
+      config = [[require('iswap').setup({})]],
     })
   end,
   config = {max_jobs = #vim.loop.cpu_info(), profile = {enable = true, threshold = 1}},
