@@ -230,7 +230,6 @@ return require('packer').startup({
     use({
       'lukas-reineke/indent-blankline.nvim',
       requires = 'nvim-treesitter',
-      branch = 'lua',
       config = function()
         vim.g.indent_blankline_buftype_exclude = {'terminal'}
         vim.g.indent_blankline_filetype_exclude = {'help', 'lspinfo', 'packer', 'peek'}
@@ -541,6 +540,21 @@ return require('packer').startup({
     use({'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'})
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
     use({'winston0410/mark-radar.nvim', config = function() require("mark-radar").setup() end})
+    use({'Pocco81/AutoSave.nvim', config = function() require('autosave').setup() end})
+    use({
+      'notomo/gesture.nvim',
+      config = function()
+        local gesture = require('gesture')
+        vim.keymap.nnoremap({'<RightMouse>', '<Nop>'})
+        vim.keymap.nnoremap({'<RightDrag>', gesture.draw, silent = true})
+        vim.keymap.nnoremap({'<RightRelease>', gesture.finish, silent = true})
+        gesture.register({
+          name = 'scroll to bottom',
+          inputs = {gesture.up(), gesture.down()},
+          action = function() vim.api.nvim_feedkeys('G', 'n', true) end,
+        })
+      end,
+    })
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.

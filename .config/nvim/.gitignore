@@ -1,4 +1,4 @@
-/plugin/packer_compiled.vim
+/plugin/packer_compiled.*
 /spell
 /lua/user/data/gen/*
 !/lua/user/data/gen/.gitkeep
