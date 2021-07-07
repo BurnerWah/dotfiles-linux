@@ -49,7 +49,8 @@ return require('packer').startup({
         {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
         {'nvim-treesitter/nvim-tree-docs', after = 'nvim-treesitter', requires = 'Olical/aniseed'},
         {'windwp/nvim-ts-autotag', after = 'nvim-treesitter'},
-        {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'}, {
+        {'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter'},
+        {'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter'}, {
           'mfussenegger/nvim-ts-hint-textobject',
           keys = {{'o', 'm'}, {'v', 'm'}},
           config = function()
@@ -539,20 +540,7 @@ return require('packer').startup({
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
     use({'winston0410/mark-radar.nvim', config = [[require("mark-radar").setup()]]})
     use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
-    use({
-      'notomo/gesture.nvim',
-      config = function()
-        local gesture = require('gesture')
-        vim.keymap.nnoremap({'<RightMouse>', '<Nop>'})
-        vim.keymap.nnoremap({'<RightDrag>', gesture.draw, silent = true})
-        vim.keymap.nnoremap({'<RightRelease>', gesture.finish, silent = true})
-        gesture.register({
-          name = 'scroll to bottom',
-          inputs = {gesture.up(), gesture.down()},
-          action = function() vim.api.nvim_feedkeys('G', 'n', true) end,
-        })
-      end,
-    })
+    use({'notomo/gesture.nvim', config = _M.do_config('gesture.lua')})
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.

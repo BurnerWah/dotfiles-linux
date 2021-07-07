@@ -148,6 +148,10 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
         swap_previous = {['<Leader>A'] = text_objects.parameter.inner},
       },
     },
+    textsubjects = {
+      enable = true,
+      keymaps = {['.'] = 'textsubjects-smart', [';'] = 'textsubjects-container-outer'},
+    },
     autotag = {enable = true},
     context_commentstring = {enable = true},
     autopairs = {enable = true},
