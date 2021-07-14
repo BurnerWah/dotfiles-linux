@@ -94,7 +94,7 @@ return require('packer').startup({
         'kyazdani42/nvim-web-devicons', 'nvim-treesitter', 'nvim-telescope/telescope-symbols.nvim',
         'nvim-telescope/telescope-fzf-writer.nvim', 'nvim-telescope/telescope-node-modules.nvim',
         'nvim-telescope/telescope-media-files.nvim', 'dhruvmanila/telescope-bookmarks.nvim',
-        'cwebster2/github-coauthors.nvim',
+        'cwebster2/github-coauthors.nvim', 'jvgrootveld/telescope-zoxide',
         {'nvim-telescope/telescope-fzf-native.nvim', run = 'make CC=clang'},
         {'nvim-telescope/telescope-fzy-native.nvim', requires = 'plenary.nvim'},
         {'nvim-telescope/telescope-github.nvim', requires = {'plenary.nvim', 'nvim-lua/popup.nvim'}},
@@ -102,7 +102,8 @@ return require('packer').startup({
         {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
         {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
         {'nvim-telescope/telescope-dap.nvim', requires = {'nvim-dap', 'nvim-treesitter'}},
-        {'elianiva/telescope-npm.nvim', requires = 'plenary.nvim'}, {
+        {'elianiva/telescope-npm.nvim', requires = 'plenary.nvim'},
+        {'nvim-telescope/telescope-smart-history.nvim', requires = 'tami5/sql.nvim'}, {
           'nvim-telescope/telescope-arecibo.nvim',
           requires = 'nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
@@ -573,6 +574,12 @@ return require('packer').startup({
 
     -- Org
     use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
+    use({
+      'akinsho/org-bullets.nvim',
+      ft = 'org',
+      requires = 'orgmode.nvim',
+      config = [[require("org-bullets").setup()]],
+    })
 
     -- Python
     use({

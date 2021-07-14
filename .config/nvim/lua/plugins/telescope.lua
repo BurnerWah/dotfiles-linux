@@ -7,7 +7,11 @@ local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
   local telescope = require('telescope')
   telescope.setup({
-    defaults = {winblend = 10, file_sorter = require('telescope.sorters').get_fzy_sorter},
+    defaults = {
+      winblend = 10,
+      file_sorter = require('telescope.sorters').get_fzy_sorter,
+      history = {path = '~/.local/share/nvim/databases/telescope_history.sqlite3', limit = 100},
+    },
     extensions = {
       arecibo = {selected_engine = 'duckduckgo', show_domain_icons = true, show_http_headers = true},
       bookmarks = {selected_browser = 'firefox', url_open_command = 'xdg-open'},
@@ -25,7 +29,8 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
   })
   tablex.foreach({
     'fzf', 'fzy_native', 'fzf_writer', 'gh', 'node_modules', 'media_files', 'sonictemplate',
-    'bookmarks', 'frecency', 'cheat', 'arecibo', 'dap', 'githubcoauthors', 'npm',
+    'bookmarks', 'frecency', 'cheat', 'arecibo', 'dap', 'githubcoauthors', 'npm', 'smart_history',
+    'zoxide',
   }, telescope.load_extension)
 
   local nmap = vim.keymap.nmap
