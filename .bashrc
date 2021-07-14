@@ -12,9 +12,6 @@ if ! [[ "$PATH" =~ $HOME/.local/bin: ]]; then
 fi
 export PATH
 
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
-
 HISTFILE=~/.local/share/bash_history
 
 # shellcheck disable=1090
@@ -32,7 +29,7 @@ fi
 
 # Variable cleanup
 if type -f fzf >/dev/null 2>&1; then
-  for i in $(printenv | grep _fzf_orig_completion_ | sed -E 's/^(_fzf_orig_completion_[^=]+)(=.*)$/\1/g'); do
+  for i in $(printenv | rg _fzf_orig_completion_ | sed -E 's/^(_fzf_orig_completion_[^=]+)(=.*)$/\1/g'); do
     export -n "${i?}"
   done
 fi
