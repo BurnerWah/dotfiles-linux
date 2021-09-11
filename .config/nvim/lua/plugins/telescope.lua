@@ -28,7 +28,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     },
   })
   tablex.foreach({
-    'fzf', 'fzy_native', 'fzf_writer', 'gh', 'node_modules', 'media_files', 'sonictemplate',
+    'fzf', 'fzy_native', 'fzf_writer', 'gh', --[['node_modules',]] 'media_files', 'sonictemplate',
     'bookmarks', 'frecency', 'cheat', 'arecibo', 'dap', 'githubcoauthors', 'npm', 'smart_history',
     'zoxide',
   }, telescope.load_extension)

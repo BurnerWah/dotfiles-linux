@@ -111,6 +111,7 @@ return {
     ['anacrontab'] = 'crontab',
     ['babelrc.config.json'] = 'jsonc', -- Babel config
     ['cargo.lock'] = 'toml',
+    ['chromium-flags.conf'] = 'argfile',
     ['coc-settings.json'] = 'jsonc', -- Coc.nvim config
     ['coffeelint.json'] = 'jsonc', -- Coffeelint config
     ['constraints.in'] = 'requirements',

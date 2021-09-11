@@ -121,24 +121,21 @@ text:
       - .timer
 
     kde:
-      kate:
-        - katerc
-        - katemetainfos
-        - kateschemarc
-        - katesyntaxhighlightingrc
-        - katevirc
-
-      kleopatra: [kleopatrarc]
-      konsole: [konsolerc]
-      krita: [kritarc, kritadisplayrc]
-
-      global:
-        - kde4rc
-        - kdeglobals
-        - kderc
+      - 'baloo*rc'
+      - kde4rc
+      - kded5rc
+      - kdeglobals
+      - kderc
+      - kiorc
+      - kservicemenurc
+      - ktimezonedrc
+      - plasma-localerc
+      - plasmarc
+      - trashrc
 
     other:
       - gtkrc
+      - gtkrc-2.0
       - inputrc
       - taskrc
       - vlcrc
@@ -324,6 +321,7 @@ media:
   image:
     - .arw
     - .bmp
+    - .dds
     - .gif
     - .ico
     - .jfi
@@ -362,11 +360,7 @@ media:
       - .opus
       - .wma
 
-    lossless:
-      - .alac
-      - .ape
-      - .flac
-      - .wav
+    lossless: [.alac, .ape, .flac, .wav]
 
   video:
     - .avi
@@ -410,11 +404,7 @@ office:
     - .rtf
     - .sxw
 
-  spreadsheet:
-    - .ods
-    - .xlr
-    - .xls
-    - .xlsx
+  spreadsheet: [.ods, .xlr, .xls, .xlsx]
 
   presentation:
     - .kex

@@ -156,3 +156,4 @@ configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node'
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
 configs.efm.setup({filetypes = {'eruby', 'make', 'zsh'}})
 configs.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup())
+-- require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})

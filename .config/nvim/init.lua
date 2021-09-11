@@ -24,7 +24,8 @@ require('agrp').set({
     },
     FileType = {{'group,man,shada', 'setl nospell'}, {'help', 'setl signcolumn=no'}},
     BufWritePost = {
-      {'plugins.lua', 'PackerCompile'}, {'*', 'silent FormatWrite'}, -- formatter.nvim
+      -- {'plugins.lua', 'PackerCompile'},
+      {'*', 'silent FormatWrite'}, -- formatter.nvim
     },
     {'VimEnter', '*', '++once silent delcommand GBrowse'},
     {'TextYankPost', '*', function() vim.highlight.on_yank({higroup = 'Search', timeout = 200}) end},

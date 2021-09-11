@@ -190,7 +190,6 @@ return require('packer').startup({
           options = {
             buffer_close_icon = codicons.get('close'),
             close_icon = codicons.get('close-all'),
-            mappings = true,
             diagnostics = 'nvim_lsp',
             diagnostics_indicator = function(count, _) return '(' .. count .. ')' end,
             separator_style = 'slant',
@@ -610,9 +609,9 @@ return require('packer').startup({
         'nvim-lspconfig', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'}, 'plenary.nvim',
         'telescope.nvim',
       },
-      config = function()
-        require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
-      end,
+      -- config = function()
+      --   require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
+      -- end,
     })
 
     -- YAML
