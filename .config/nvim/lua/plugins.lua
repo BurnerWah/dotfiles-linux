@@ -29,6 +29,8 @@ return require('packer').startup({
         vim.g.vim_package_info_virutaltext_prefix = '  ' .. codicons.get('versions') .. ' '
       end,
     })
+    use({'lewis6991/impatient.nvim', config = 'require("impatient")'})
+    use('tjdevries/lazy.nvim')
 
     -- Completion & Linting
     use({
@@ -230,7 +232,7 @@ return require('packer').startup({
       requires = 'nvim-treesitter',
       config = function()
         vim.g.indent_blankline_buftype_exclude = {'terminal'}
-        vim.g.indent_blankline_filetype_exclude = {'help', 'lspinfo', 'packer', 'peek'}
+        vim.g.indent_blankline_filetype_exclude = {'alpha', 'help', 'lspinfo', 'packer', 'peek'}
         vim.g.indent_blankline_char = '▏'
         vim.g.indent_blankline_use_treesitter = true
         vim.g.indent_blankline_show_current_context = true
@@ -273,6 +275,11 @@ return require('packer').startup({
       event = 'VimEnter *',
       config = function() require('range-highlight').setup({}) end,
     })
+    use({
+      'goolord/alpha-nvim',
+      config = function() require('alpha').setup(require('alpha.themes.dashboard').opts) end,
+    })
+    use({'rcarriga/nvim-notify', config = function() vim.notify = require("notify") end})
 
     -- Utilities
     use({

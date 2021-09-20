@@ -1,4 +1,5 @@
 UserMaps = {}
+local lazy = require('lazy')
 local imap, smap = vim.keymap.imap, vim.keymap.smap
 local vnor = vim.keymap.vnoremap
 local pumvisible, getline = vim.fn.pumvisible, vim.fn.getline
@@ -8,12 +9,13 @@ local vsnip = {
 }
 
 -- Lazy require
-local npairs = setmetatable({}, {
-  __index = function(self, key)
-    self[key] = require('nvim-autopairs')[key]
-    return self[key]
-  end,
-})
+local npairs = lazy.require_on_index('nvim-autopairs')
+-- local npairs = setmetatable({}, {
+--   __index = function(self, key)
+--     self[key] = require('nvim-autopairs')[key]
+--     return self[key]
+--   end,
+-- })
 
 local function replace_termcodes(str) return vim.api.nvim_replace_termcodes(str, true, true, true) end
 
