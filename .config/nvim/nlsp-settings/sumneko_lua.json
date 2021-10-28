@@ -19,5 +19,5 @@
   "Lua.workspace.library": [
     "/home/jadenpleasants/.local/share/nvim/site/@types"
   ],
-  "Lua.intelliSense.searchDepth": 4
+  "Lua.intelliSense.searchDepth": 1
 }

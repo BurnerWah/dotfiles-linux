@@ -1,4 +1,4 @@
 # Defined interactively
 function genact
-    podman run --rm -it docker.io/svenstaro/genact $argv
+    docker run --rm -it svenstaro/genact $argv
 end

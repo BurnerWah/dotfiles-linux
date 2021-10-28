@@ -36,19 +36,10 @@
 [merge]
 	# controls mergeing
 	# [diff] sometimes falls back to this
-	tool = vimdiff  # use nvim for diff & merge
+	tool = nvimdiff  # oh cool, we can use this now
 	guitool = meld  # use meld for diff & merge in a GUI
 [mergetool]
 	prompt = false
-[mergetool "vimdiff"]
-	path = nvim
-	path = vim
-[mergetool "vimdiff2"]
-	path = nvim
-	path = vim
-[mergetool "vimdiff3"]
-	path = nvim
-	path = vim
 [mergetool "meld"]
 	path = org.gnome.meld # Flatpak support?
 	path = meld # fallback to normal install

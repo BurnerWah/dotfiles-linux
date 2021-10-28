@@ -439,13 +439,6 @@
       <match type="string" value="/bin/env pypy3" offset="2:16"/>
     </magic>
   </mime-type>
-  <!-- text/x-tcl: Tcl script {{{2 -->
-  <mime-type type="text/x-tcl">
-    <magic priority="50">
-      <match type="string" value="/bin/tclsh" offset="2:16"/>
-      <match type="string" value="/bin/env tclsh" offset="2:16"/>
-    </magic>
-  </mime-type>
   <!-- text/x-texinfo: TeXInfo document {{{2 -->
   <mime-type type="text/x-texinfo">
     <alias type="application/x-texinfo"/>
@@ -502,6 +495,13 @@
   <mime-type type="video/x-ms-wmv">
     <alias type="audio/x-ms-wmv"/>
     <alias type="video/x-wmv"/>
+  </mime-type>
+  <!-- Misc poorly sorted aliases don't wanna categorize rn {{{1 -->
+  <mime-type type="application/mathematica">
+    <alias type="application/vnd.wolfram.mathematica"/>
+  </mime-type>
+  <mime-type type="text/x-matlab">
+    <alias type="text/octave"/>
   </mime-type>
   <!-- 1}}} -->
 </mime-info>

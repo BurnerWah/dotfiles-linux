@@ -2,6 +2,16 @@
 -- Most code that would go here got moved elsewhere at some point.
 assert(true, 'formatter no-op')
 
+-- Important configs for very specific scenarios
+local parent_exe = vim.loop.fs_readlink('/proc/' .. vim.loop.os_getppid() .. '/exe')
+if not parent_exe then
+  -- this is probably sudoedit, so just turn off some weirdness.
+  vim.g.loaded_compe_tabnine = true
+elseif parent_exe:find('/systemctl') then
+  -- this escapes some of our resource management
+  vim.g.loaded_compe_tabnine = true
+end
+
 -- Global requires
 
 -- require('profiler')

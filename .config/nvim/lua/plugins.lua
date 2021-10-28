@@ -13,7 +13,7 @@ return require('packer').startup({
     use('wbthomason/packer.nvim')
 
     -- Core plugins
-    use_rocks({'compat53', 'penlight', 'fun', 'stdlib'})
+    use_rocks({'compat53', 'penlight', 'fun', 'stdlib', 'luaposix'})
     use('tjdevries/astronauta.nvim')
     use({'nvim-lua/plenary.nvim', config = [[require('plenary.filetype').add_file('user')]]})
     use('iamcco/async-await.lua')
@@ -279,7 +279,7 @@ return require('packer').startup({
       'goolord/alpha-nvim',
       config = function() require('alpha').setup(require('alpha.themes.dashboard').opts) end,
     })
-    use({'rcarriga/nvim-notify', config = function() vim.notify = require("notify") end})
+    use({'rcarriga/nvim-notify'})
 
     -- Utilities
     use({
@@ -546,7 +546,7 @@ return require('packer').startup({
     use({'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'})
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
     use({'winston0410/mark-radar.nvim', config = [[require("mark-radar").setup()]]})
-    use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
+    -- use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
     use({'notomo/gesture.nvim', config = _M.do_config('gesture.lua')})
 
     -- Filetypes & language features

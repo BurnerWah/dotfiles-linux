@@ -120,7 +120,7 @@ util.default_config = vim.tbl_extend('force', util.default_config,
 
 -- Apparently we need this set up early
 require('nlspsettings').setup()
-tablex.foreach({'bashls', 'dotls', 'gopls', 'html', 'pyright', 'sqls', 'texlab', 'vimls', 'yamlls'},
+tablex.foreach({'bashls', 'dotls', 'gopls', 'html', 'pyright', 'texlab', 'vimls', 'yamlls'},
                function(V) configs[V].setup({}) end)
 configs.ccls.setup({
   init_options = {
@@ -154,6 +154,6 @@ configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node'
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
-configs.efm.setup({filetypes = {'eruby', 'make', 'zsh'}})
-configs.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup())
+-- configs.efm.setup({filetypes = {'eruby', 'make', 'zsh'}})
+-- configs.diagnosticls.setup(require('user.cfg.lsp.diagnosticls'):setup())
 -- require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})

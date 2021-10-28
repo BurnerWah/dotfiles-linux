@@ -112,11 +112,11 @@ M.linters = {
     roots = '.csslintrc',
     securities = {warning = 'warning', error = 'error'},
   },
-  fish = tool.generic {
-    {'fish', '-n', '%file'},
-    stream = 'stderr',
-    pattern = {[[^.*\(line (\d+)\): (.*)$]], {line = 1, message = 2}},
-  },
+  -- fish = tool.generic {
+  --   {'fish', '-n', '%file'},
+  --   stream = 'stderr',
+  --   pattern = {[[^.*\(line (\d+)\): (.*)$]], {line = 1, message = 2}},
+  -- },
   flawfinder = tool.generic {
     {'flawfinder', '-CDQS', '-'},
     pattern = {
@@ -303,7 +303,7 @@ M.linter_filetypes = {
   cs = {'mcs'},
   css = {'csslint'},
   dockerfile = {'hadolint'},
-  fish = {'fish'},
+  -- fish = {'fish'},
   gitcommit = {'gitlint'},
   html = {'tidy', 'write_good'},
   lua = {'luacheck'}, -- Luac is often redundant w/ lsp
