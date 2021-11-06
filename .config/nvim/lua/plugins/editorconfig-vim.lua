@@ -2,23 +2,38 @@ local M = {}
 
 --- Type conversion helper
 local as = {
-  mappings = {bool = {['true'] = true, ['false'] = false}},
+  mappings = { bool = { ["true"] = true, ["false"] = false } },
   ---Parse a boolean from editorconfig
   ---@param self table
   ---@param option string
   ---@return boolean?
-  bool = function(self, option) return self.mappings.bool[option] end,
+  bool = function(self, option)
+    return self.mappings.bool[option]
+  end,
 }
 
 local success, fail = 0, 1
 
 function M.config()
   vim.g.EditorConfig_exclude_patterns = {
-    'davs\\?://.*', 'ftp://.*', 'fugitive://.*', 'https\\?://.*', 'info://.*', 'man://.*',
-    'octo://.*', 'output://.*', 'rcp://.*', 'rsync://.*', 'scp://.*', 'sftp://.*', 'term://.*',
+    "davs\\?://.*",
+    "ftp://.*",
+    "fugitive://.*",
+    "https\\?://.*",
+    "info://.*",
+    "man://.*",
+    "octo://.*",
+    "output://.*",
+    "rcp://.*",
+    "rsync://.*",
+    "scp://.*",
+    "sftp://.*",
+    "term://.*",
   }
   vim.g.EditorConfig_disable_rules = {
-    'insert_final_newline', 'max_line_length', 'trim_trailing_whitespace',
+    "insert_final_newline",
+    "max_line_length",
+    "trim_trailing_whitespace",
   }
   vim.cmd([[call editorconfig#AddNewHook(function('user#abstract#editorconfig_hook'))]])
 end
@@ -49,7 +64,9 @@ function M.hook(config)
   }
 
   --[[Commit configuration]]
-  if not vim.tbl_isempty(shfmt) then vim.b.shfmt = shfmt end
+  if not vim.tbl_isempty(shfmt) then
+    vim.b.shfmt = shfmt
+  end
 
   return status
 end

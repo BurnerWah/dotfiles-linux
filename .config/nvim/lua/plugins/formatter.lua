@@ -1,4 +1,4 @@
-local findfile = require('vlib.fn').findfile
+local findfile = require("vlib.fn").findfile
 ---@diagnostic disable-next-line: undefined-field
 local shellescape = vim.fn.shellescape
 
@@ -16,8 +16,8 @@ local shellescape = vim.fn.shellescape
 ---@return formatter.command
 local function clang_format()
   return {
-    exe = 'clang-format',
-    args = {'--assume-filename', shellescape(vim.api.nvim_buf_get_name(0))},
+    exe = "clang-format",
+    args = { "--assume-filename", shellescape(vim.api.nvim_buf_get_name(0)) },
     stdin = true,
   }
 end
@@ -26,8 +26,8 @@ end
 ---@return formatter.command
 local prettier = function()
   return {
-    exe = 'prettier',
-    args = {'--stdin-filepath', shellescape(vim.api.nvim_buf_get_name(0))},
+    exe = "prettier",
+    args = { "--stdin-filepath", shellescape(vim.api.nvim_buf_get_name(0)) },
     stdin = true,
   }
 end
@@ -43,60 +43,92 @@ end
 local filetypes = {
   __DEFAULT__ = {
     function()
-      return {exe = 'sed', args = {[[-e 's/[ \t]*$//' -e ':a; /^$/ { $d; N; ba; }']]}, stdin = true}
+      return { exe = "sed", args = { [[-e 's/[ \t]*$//' -e ':a; /^$/ { $d; N; ba; }']] }, stdin = true }
     end,
   },
-  c = {clang_format},
-  cpp = {clang_format},
-  css = {prettier},
-  fish = {function() return {exe = 'fish_indent', stdin = true} end},
-  go = {
-    function() return {exe = 'gofmt', stdin = true} end,
-    function() return {exe = 'goimports', stdin = true} end,
+  c = { clang_format },
+  cpp = { clang_format },
+  css = { prettier },
+  fish = {
+    function()
+      return { exe = "fish_indent", stdin = true }
+    end,
   },
-  html = {prettier},
-  javascript = {prettier},
-  json = {prettier},
-  jsonc = {prettier},
-  less = {prettier},
+  go = {
+    function()
+      return { exe = "gofmt", stdin = true }
+    end,
+    function()
+      return { exe = "goimports", stdin = true }
+    end,
+  },
+  html = { prettier },
+  javascript = { prettier },
+  json = { prettier },
+  jsonc = { prettier },
+  less = { prettier },
   lua = {
     function()
-      local stylua = findfile('stylua.toml', '.;')
+      local stylua = findfile("stylua.toml", ".;")
       if stylua then
         return {
-          exe = 'stylua',
+          exe = "stylua",
           args = {
-            '--search-parent-directories', '--stdin-filepath', vim.api.nvim_buf_get_name(0), '-',
+            "--search-parent-directories",
+            "--stdin-filepath",
+            vim.api.nvim_buf_get_name(0),
+            "-",
           },
           stdin = true,
         }
       end
-      return {exe = 'lua-format', stdin = true}
+      return { exe = "lua-format", stdin = true }
     end,
   },
-  markdown = {prettier},
-  python = {function() return {exe = 'black', args = {'-'}, stdin = true} end},
-  rust = {function() return {exe = 'rustfmt', args = {'--emit stdout'}, stdin = true} end},
-  scss = {prettier},
+  markdown = { prettier },
+  python = {
+    function()
+      return { exe = "black", args = { "-" }, stdin = true }
+    end,
+  },
+  rust = {
+    function()
+      return { exe = "rustfmt", args = { "--emit stdout" }, stdin = true }
+    end,
+  },
+  scss = { prettier },
   sh = {
     function()
       return {
-        exe = 'shfmt',
+        exe = "shfmt",
         args = {
-          (vim.b.shfmt == nil and '-i=2 -ci' or nil), '-filename',
+          (vim.b.shfmt == nil and "-i=2 -ci" or nil),
+          "-filename",
           shellescape(vim.api.nvim_buf_get_name(0)),
         },
         stdin = true,
       }
     end,
   },
-  toml = {function() return {exe = 'taplo', args = {'format -'}, stdin = true} end},
-  typescript = {prettier},
-  xml = {function() return {exe = 'xmllint', args = {'--format -'}, stdin = true} end},
-  yaml = {prettier},
+  toml = {
+    function()
+      return { exe = "taplo", args = { "format -" }, stdin = true }
+    end,
+  },
+  typescript = { prettier },
+  xml = {
+    function()
+      return { exe = "xmllint", args = { "--format -" }, stdin = true }
+    end,
+  },
+  yaml = { prettier },
 }
 
 -- Add fallback filetype
-filetypes = setmetatable(filetypes, {__index = function(t) return t.__DEFAULT__ end})
+filetypes = setmetatable(filetypes, {
+  __index = function(t)
+    return t.__DEFAULT__
+  end,
+})
 
-require('formatter').setup({logging = false, filetype = filetypes})
+require("formatter").setup({ logging = false, filetype = filetypes })

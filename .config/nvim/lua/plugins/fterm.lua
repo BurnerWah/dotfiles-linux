@@ -1,5 +1,5 @@
 local Terminal = require("FTerm")
 
-user_terminals = {bpytop = Terminal:new({cmd = "bpytop"})}
+user_terminals = { bpytop = Terminal:new({ cmd = "bpytop" }) }
 
-vim.cmd('command! Bpytop lua user_terminals.bpytop:toggle()')
+vim.cmd("command! Bpytop lua user_terminals.bpytop:toggle()")
