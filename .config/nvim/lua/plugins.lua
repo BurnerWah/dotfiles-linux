@@ -31,6 +31,8 @@ return require('packer').startup({
     })
     -- use({'lewis6991/impatient.nvim', config = 'require("impatient")'})
     use('tjdevries/lazy.nvim')
+    -- custom library that i haven't made public yet
+    use('~/Projects/nvim-plugins/std.nvim')
 
     -- Completion & Linting
     use({
@@ -42,7 +44,7 @@ return require('packer').startup({
       'tami5/lspsaga.nvim',
       -- maintained fork of glepnir/lspsaga.nvim
       -- i'll look for a replacement for lspsaga outright at some point
-      requires = {'nvim-lspconfig', 'codicons.nvim'},
+      requires = {'neovim/nvim-lspconfig', 'mortepau/codicons.nvim'},
       config = _M.do_config('lspsaga.lua'),
     })
     use({
@@ -69,18 +71,22 @@ return require('packer').startup({
     use({'dense-analysis/ale', cmd = 'ALEEnable', config = _M.do_config('ale.lua')})
     use({
       'hrsh7th/vim-vsnip',
-      requires = {'nvim-lspconfig', {'rafamadriz/friendly-snippets', event = 'VimEnter *'}},
+      requires = {'neovim/nvim-lspconfig', {'rafamadriz/friendly-snippets', event = 'VimEnter *'}},
       config = _M.do_config('vim-vsnip.lua'),
     })
     use({
       'hrsh7th/nvim-cmp',
       requires = {
         'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', 'hrsh7th/cmp-calc',
-        'onsails/lspkind-nvim', 'f3fora/cmp-spell', {'hrsh7th/cmp-nvim-lua', ft = 'lua'},
-        {'hrsh7th/cmp-nvim-lsp', requires = 'nvim-lspconfig'},
+        'onsails/lspkind-nvim', 'f3fora/cmp-spell', 'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-nvim-lsp-document-symbol', {'hrsh7th/cmp-nvim-lua', ft = 'lua'},
         {'hrsh7th/cmp-vsnip', requires = 'vim-vsnip'},
-        {'ray-x/cmp-treesitter', requires = 'nvim-treesitter'},
-        {'tzachar/cmp-tabnine', run = './install.sh'},
+        {'ray-x/cmp-treesitter', requires = 'nvim-treesitter/nvim-treesitter'},
+        {'hrsh7th/cmp-copilot', requires = 'github/copilot.vim'},
+        {'tzachar/cmp-tabnine', run = './install.sh'}, {
+          'tzachar/cmp-fuzzy-buffer',
+          requires = {{'tzachar/fuzzy.nvim', requires = 'nvim-telescope/telescope-fzf-native.nvim'}},
+        },
       },
       config = _M.do_config('nvim-cmp.lua'),
     })
@@ -89,7 +95,7 @@ return require('packer').startup({
       'mfussenegger/nvim-dap',
       requires = {
         'jbyuki/one-small-step-for-vimkind', {'Pocco81/DAPInstall.nvim'},
-        {'theHamsta/nvim-dap-virtual-text', requires = 'nvim-treesitter'},
+        {'theHamsta/nvim-dap-virtual-text', requires = 'nvim-treesitter/nvim-treesitter'},
       },
       config = _M.do_config('dap.lua'),
     })
@@ -98,22 +104,33 @@ return require('packer').startup({
     use({
       'nvim-telescope/telescope.nvim',
       requires = {
-        'plenary.nvim', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'},
-        'kyazdani42/nvim-web-devicons', 'nvim-treesitter', 'nvim-telescope/telescope-symbols.nvim',
-        'nvim-telescope/telescope-fzf-writer.nvim', 'nvim-telescope/telescope-node-modules.nvim',
-        'nvim-telescope/telescope-media-files.nvim', 'dhruvmanila/telescope-bookmarks.nvim',
-        'cwebster2/github-coauthors.nvim', 'jvgrootveld/telescope-zoxide',
-        {'nvim-telescope/telescope-fzf-native.nvim', run = 'make CC=clang'},
-        {'nvim-telescope/telescope-fzy-native.nvim', requires = 'plenary.nvim'},
-        {'nvim-telescope/telescope-github.nvim', requires = {'plenary.nvim', 'nvim-lua/popup.nvim'}},
-        {'tamago324/telescope-sonictemplate.nvim', requires = 'plenary.nvim'},
-        {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
-        {'nvim-telescope/telescope-cheat.nvim', requires = {'tami5/sql.nvim', 'plenary.nvim'}},
-        {'nvim-telescope/telescope-dap.nvim', requires = {'nvim-dap', 'nvim-treesitter'}},
-        {'elianiva/telescope-npm.nvim', requires = 'plenary.nvim'},
+        -- Telescope dependencies
+        'nvim-lua/plenary.nvim', {'nvim-lua/popup.nvim', requires = 'nvim-lua/plenary.nvim'},
+        -- Optional dependencies
+        'kyazdani42/nvim-web-devicons', 'nvim-treesitter/nvim-treesitter',
+        'nvim-telescope/telescope-symbols.nvim',
+        {'nvim-telescope/telescope-fzf-writer.nvim', requires = 'nvim-lua/plenary.nvim'},
+        'nvim-telescope/telescope-node-modules.nvim', 'nvim-telescope/telescope-media-files.nvim',
+        'dhruvmanila/telescope-bookmarks.nvim', 'cwebster2/github-coauthors.nvim',
+        'jvgrootveld/telescope-zoxide', {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
+        {'nvim-telescope/telescope-fzy-native.nvim', requires = 'nvim-lua/plenary.nvim'}, {
+          'nvim-telescope/telescope-github.nvim',
+          requires = {'nvim-lua/plenary.nvim', 'nvim-lua/popup.nvim'},
+        }, {'tamago324/telescope-sonictemplate.nvim', requires = 'nvim-lua/plenary.nvim'},
+        {
+          'nvim-telescope/telescope-frecency.nvim',
+          requires = {'tami5/sql.nvim', 'nvim-lua/plenary.nvim'},
+        },
+        {
+          'nvim-telescope/telescope-cheat.nvim',
+          requires = {'tami5/sql.nvim', 'nvim-lua/plenary.nvim'},
+        }, {
+          'nvim-telescope/telescope-dap.nvim',
+          requires = {'mfussenegger/nvim-dap', 'nvim-treesitter/nvim-treesitter'},
+        }, {'elianiva/telescope-npm.nvim', requires = 'nvim-lua/plenary.nvim'},
         {'nvim-telescope/telescope-smart-history.nvim', requires = 'tami5/sql.nvim'}, {
           'nvim-telescope/telescope-arecibo.nvim',
-          requires = 'nvim-treesitter',
+          requires = 'nvim-treesitter/nvim-treesitter',
           rocks = {'openssl', 'lua-http-parser'},
         },
       },
@@ -121,14 +138,14 @@ return require('packer').startup({
     })
     use({
       'pwntester/octo.nvim',
-      requires = {'telescope.nvim', 'plenary.nvim'},
+      requires = {'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim'},
       config = _M.do_config('octo.lua'),
     })
 
     -- User interface
     use({
       'lewis6991/gitsigns.nvim',
-      requires = 'plenary.nvim',
+      requires = 'nvim-lua/plenary.nvim',
       config = function() require('gitsigns').setup({current_line_blame = true}) end,
       event = 'VimEnter *',
     })
@@ -158,30 +175,10 @@ return require('packer').startup({
     use({'meain/vim-package-info', run = 'npm i'}) -- rplugin lazy loads
     use({
       'hoob3rt/lualine.nvim',
-      requires = {'arkav/lualine-lsp-progress', 'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
-      config = function()
-        local codicons = require('codicons')
-        require('lualine').setup({
-          options = {
-            theme = 'tokyonight',
-            section_separators = {'', ''},
-            component_separators = {'', ''},
-          },
-          sections = {
-            lualine_c = {
-              'filename', {
-                'diagnostics',
-                sources = {'nvim_lsp'},
-                symbols = {
-                  error = codicons.get('error') .. ' ',
-                  warn = codicons.get('warning') .. ' ',
-                  info = codicons.get('info') .. ' ',
-                },
-              }, 'lsp_progress',
-            },
-          },
-        })
-      end,
+      requires = {
+        'arkav/lualine-lsp-progress', 'kyazdani42/nvim-web-devicons', 'mortepau/codicons.nvim',
+      },
+      config = _M.do_config('lualine.lua'),
     })
     use({
       'lewis6991/foldsigns.nvim',
@@ -191,7 +188,7 @@ return require('packer').startup({
     })
     use({
       'akinsho/nvim-bufferline.lua',
-      requires = {'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
+      requires = {'kyazdani42/nvim-web-devicons', 'mortepau/codicons.nvim'},
       config = function()
         local codicons = require('codicons')
         require('bufferline').setup({
@@ -228,14 +225,11 @@ return require('packer').startup({
     })
     use({'yamatsum/nvim-cursorline', config = 'require("plugins.nvim-cursorline").config()'})
     use({'alec-gibson/nvim-tetris', cmd = 'Tetris'})
-    use({
-      'dstein64/nvim-scrollview',
-      -- config = function() vim.g.scrollview_nvim_14040_workaround = true end,
-    })
+    use({'dstein64/nvim-scrollview'})
     use({'kevinhwang91/nvim-hlslens', config = _M.do_config('nvim-hlslens.lua')})
     use({
       'lukas-reineke/indent-blankline.nvim',
-      requires = 'nvim-treesitter',
+      requires = 'nvim-treesitter/nvim-treesitter',
       config = function()
         vim.g.indent_blankline_buftype_exclude = {'terminal'}
         vim.g.indent_blankline_filetype_exclude = {'alpha', 'help', 'lspinfo', 'packer', 'peek'}
@@ -263,7 +257,7 @@ return require('packer').startup({
     use({'folke/which-key.nvim', config = _M.do_config('which-key.lua')})
     use({
       'rcarriga/nvim-dap-ui',
-      requires = {'nvim-dap', 'codicons.nvim'},
+      requires = {'mfussenegger/nvim-dap', 'mortepau/codicons.nvim'},
       config = function()
         local has_codicons, codicons = pcall(require, 'codicons')
         require('dapui').setup({
@@ -297,13 +291,13 @@ return require('packer').startup({
     })
     use({
       'ruifm/gitlinker.nvim',
-      requires = 'plenary.nvim',
+      requires = 'nvim-lua/plenary.nvim',
       keys = {{'n', '<Leader>gy'}, {'v', '<Leader>gy'}},
       config = function() require('gitlinker').setup() end,
     })
     use({
       'TimUntersberger/neogit',
-      requires = 'plenary.nvim',
+      requires = 'nvim-lua/plenary.nvim',
       cmd = 'Neogit',
       config = function() require('neogit').setup({disable_signs = true}) end,
     })
@@ -336,7 +330,7 @@ return require('packer').startup({
     -- this might replace vimwiki at some point
     use({
       'oberblastmeister/neuron.nvim',
-      requires = {'plenary.nvim', 'telescope.nvim'},
+      requires = {'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim'},
       keys = {{'n', 'gzi'}},
       config = function()
         require('neuron').setup({
@@ -369,7 +363,8 @@ return require('packer').startup({
     use({
       'sudormrfbin/cheatsheet.nvim',
       requires = {
-        'telescope.nvim', 'plenary.nvim', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'},
+        'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim',
+        {'nvim-lua/popup.nvim', requires = 'nvim-lua/plenary.nvim'},
       },
       cmd = {'Cheatsheet', 'CheatsheetEdit'},
       setup = function()
@@ -443,38 +438,15 @@ return require('packer').startup({
     -- Part of this loader is deferred, so we can push a slow step back
     use({
       'kyazdani42/nvim-tree.lua',
-      requires = {'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
+      requires = {'kyazdani42/nvim-web-devicons', 'mortepau/codicons.nvim'},
       opt = true,
       cmd = {'NvimTreeOpen', 'NvimTreeToggle', 'NvimTreeFindFile'},
       setup = function() vim.g.nvim_tree_lsp_diagnostics = true end,
-      config = function()
-        local codicons = require('codicons')
-        vim.g.nvim_tree_show_icons = {git = 1, folders = 1, files = 1}
-        vim.g.nvim_tree_icons = {
-          symlink = codicons.get('file-symlink-file'),
-          git_icons = {
-            renamed = codicons.get('diff-renamed'),
-            deleted = codicons.get('diff-removed'),
-            ignored = codicons.get('diff-ignored'),
-          },
-          folder = {
-            default = codicons.get('folder'),
-            open = codicons.get('folder-opened'),
-            symlink = codicons.get('file-symlink-directory'),
-          },
-          lsp = {
-            hint = codicons.get('question'),
-            info = codicons.get('info'),
-            warning = codicons.get('warning'),
-            error = codicons.get('error'),
-          },
-        }
-        vim.defer_fn(require('nvim-tree').refresh, 50)
-      end,
+      config = _M.do_config('nvim-tree.lua'),
     })
     use({
       'folke/lsp-trouble.nvim',
-      requires = {'nvim-lspconfig', 'kyazdani42/nvim-web-devicons', 'codicons.nvim'},
+      requires = {'neovim/nvim-lspconfig', 'kyazdani42/nvim-web-devicons', 'mortepau/codicons.nvim'},
       cmd = {'LspTrouble', 'LspTroubleToggle'},
       opt = true,
       config = function()
@@ -493,34 +465,9 @@ return require('packer').startup({
     })
     use({
       'simrat39/symbols-outline.nvim',
-      requires = {'nvim-lspconfig', 'codicons.nvim'},
+      requires = {'neovim/nvim-lspconfig', 'mortepau/codicons.nvim'},
       cmd = 'SymbolsOutline',
-      config = function()
-        require('symbols-outline').setup()
-        local codicons = require('codicons')
-        local symbols = require('symbols-outline.symbols')
-        local tablex = require('pl.tablex')
-        tablex.foreach({
-          File = 'symbol-file',
-          Namespace = 'symbol-namespace',
-          Class = 'symbol-class',
-          Method = 'symbol-method',
-          Property = 'symbol-property',
-          Field = 'symbol-field',
-          Enum = 'symbol-enum',
-          Interface = 'symbol-interface',
-          Variable = 'symbol-variable',
-          Constant = 'symbol-constant',
-          String = 'symbol-string',
-          Number = 'symbol-numeric',
-          Boolean = 'symbol-boolean',
-          Array = 'symbol-array',
-          EnumMember = 'symbol-enum-member',
-          Struct = 'symbol-structure',
-          Event = 'symbol-event',
-          Operator = 'symbol-operator',
-        }, function(val, key) symbols[key].icon = codicons.get(val) end)
-      end,
+      config = _M.do_config('symbols-outline.lua'),
     })
     use({
       'michaelb/sniprun',
@@ -545,11 +492,11 @@ return require('packer').startup({
     })
     use({
       'folke/todo-comments.nvim',
-      requires = {'plenary.nvim', 'lsp-trouble.nvim', 'telescope.nvim'},
+      requires = {'nvim-lua/plenary.nvim', 'lsp-trouble.nvim', 'nvim-telescope/telescope.nvim'},
       cmd = {'TodoQuickFix', 'TodoTelescope', 'TodoTrouble'},
       config = [[require("todo-comments").setup()]],
     })
-    use({'NTBBloodbath/rest.nvim', requires = 'plenary.nvim', keys = '<Plug>RestNvim'})
+    use({'NTBBloodbath/rest.nvim', requires = 'nvim-lua/plenary.nvim', keys = '<Plug>RestNvim'})
     use({'Pocco81/HighStr.nvim', cmd = 'HSHighlight'})
     use({'winston0410/mark-radar.nvim', config = [[require("mark-radar").setup()]]})
     -- use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
@@ -597,7 +544,7 @@ return require('packer').startup({
     use({
       'mfussenegger/nvim-dap-python',
       ft = 'python',
-      requires = 'nvim-dap',
+      requires = 'mfussenegger/nvim-dap',
       config = [[require('dap-python').setup()]],
     })
 
@@ -619,8 +566,8 @@ return require('packer').startup({
     use({
       'simrat39/rust-tools.nvim',
       requires = {
-        'nvim-lspconfig', {'nvim-lua/popup.nvim', requires = 'plenary.nvim'}, 'plenary.nvim',
-        'telescope.nvim',
+        'neovim/nvim-lspconfig', {'nvim-lua/popup.nvim', requires = 'nvim-lua/plenary.nvim'},
+        'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim',
       },
       -- config = function()
       --   require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
@@ -629,12 +576,16 @@ return require('packer').startup({
     use({
       'Saecki/crates.nvim',
       event = {'BufRead Cargo.toml'},
-      requires = {'nvim-cmp', 'plenary.nvim'},
+      requires = {'hrsh7th/nvim-cmp', 'nvim-lua/plenary.nvim'},
       config = function() require('crates').setup() end,
     })
 
     -- YAML
-    use({'cuducos/yaml.nvim', ft = 'yaml', requires = {'nvim-treesitter', 'telescope.nvim'}})
+    use({
+      'cuducos/yaml.nvim',
+      ft = 'yaml',
+      requires = {'nvim-treesitter/nvim-treesitter', 'nvim-telescope/telescope.nvim'},
+    })
 
     -- Vim
     use('danilamihailov/vim-tips-wiki')
@@ -646,7 +597,7 @@ return require('packer').startup({
     use({'editorconfig/editorconfig-vim', config = require('plugins.editorconfig-vim').config})
     use({'numToStr/FTerm.nvim', config = _M.do_config('fterm.lua')})
     use({'gennaro-tedesco/nvim-jqx', cmd = {'JqxList', 'JqxQuery'}, keys = '<Plug>JqxList'})
-    use({'kdheepak/lazygit.nvim', requires = 'plenary.nvim', cmd = 'LazyGit'})
+    use({'kdheepak/lazygit.nvim', requires = 'nvim-lua/plenary.nvim', cmd = 'LazyGit'})
     -- use {'lewis6991/spellsitter.nvim', config = function() require('spellsitter').setup() end}
     -- Spell support for tree-sitter is nice but it causes files to noticably refresh constantly.
     -- It also might be contributing to PID bloat by running hunspell too often.
@@ -673,7 +624,7 @@ return require('packer').startup({
     })
     use({
       'windwp/nvim-autopairs',
-      requires = 'nvim-treesitter',
+      requires = 'nvim-treesitter/nvim-treesitter',
       config = function()
         local npairs = require('nvim-autopairs')
         npairs.setup({
@@ -777,7 +728,7 @@ return require('packer').startup({
     use({'jbyuki/venn.nvim', event = 'OptionSet virtualedit', cmd = 'VBox'})
     use({
       'mizlan/iswap.nvim',
-      requires = 'nvim-treesitter',
+      requires = 'nvim-treesitter/nvim-treesitter',
       cmd = 'ISwap',
       config = [[require('iswap').setup({})]],
     })

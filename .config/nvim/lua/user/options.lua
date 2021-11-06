@@ -1,9 +1,9 @@
 -- TODO convert vim.cmd calls to pure Lua
 -- Imports & Functions {{{1
 local V = require('vlib')
-local exepath = V.fn.exepath
+local exepath = require('vimstd.fn').exepath
 local has = V.fn.has
-local executable = V.fn.executable
+local executable = require('vimstd.fn').executable
 
 -- Global options {{{1
 
@@ -65,7 +65,7 @@ vim.o.concealcursor = 'nv'
 -- Fish causes problems with plugins
 -- vim.o.shell = vim.o.shell:find('fish$') and 'bash' or vim.o.shell
 
--- Environment {{{1
+-- Environment {{{modname: string1
 -- nvr support
 if executable('nvr') then
   vim.env.EDITOR = 'nvr -cc split --remote-wait'

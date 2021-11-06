@@ -3,6 +3,7 @@ local configs = require('lspconfig')
 local util = require('lspconfig/util')
 local tablex, Set = require('pl.tablex'), require('pl.Set')
 local lspcontainers = require('lspcontainers')
+local exepath = require('vimstd.fn').exepath
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
 local server_filter = {
@@ -148,7 +149,7 @@ configs.jsonls.setup({
   settings = {json = {schemas = require('nlspsettings.jsonls').get_default_schemas()}},
 })
 configs.lemminx.setup({
-  cmd = {vim.fn.exepath('lemminx')},
+  cmd = {exepath('lemminx')},
   settings = {xml = {server = {workDir = '~/.cache/lemminx'}}},
 })
 configs.sqlls.setup({cmd = {'sql-language-server', 'up', '--method', 'stdio'}})

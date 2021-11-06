@@ -19,12 +19,15 @@ cmp.setup({
   sources = cmp.config.sources({
     {name = 'nvim_lsp'}, {name = 'vsnip'}, {name = 'buffer'}, {name = 'cmp_tabnine'},
     {name = 'treesitter'}, {name = 'spell'}, {name = 'crates'}, {name = 'nvim_lua'},
-    {name = 'calc'}, {name = 'fish'},
+    {name = 'calc'}, {name = 'fish'}, {name = 'copilot'}, {name = 'fuzzy_buffer'},
   }),
   formatting = {format = lspkind.cmp_format({with_text = true, maxwidth = 50})},
 })
 
-cmp.setup.cmdline('/', {sources = {{name = 'buffer'}}})
+cmp.setup.cmdline('/', {
+  sources = cmp.config.sources({{name = 'nvim_lsp_document_symbol'}},
+                               {{name = 'fuzzy_buffer'}, {name = 'buffer'}}),
+})
 
 -- cmp.setup.cmdline(':', {sources = cmp.config.sources({{name = 'path'}}, {{name = 'cmdline'}})})
 
