@@ -45,7 +45,6 @@ repos:
     rev: 1.1.4
     hooks:
       - id: fish_indent
-      - id: luaformatter
       - id: taplo-format
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
