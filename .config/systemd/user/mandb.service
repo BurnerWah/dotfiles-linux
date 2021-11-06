@@ -2,7 +2,12 @@
 Description=User man-db update
 Documentation=man:man(1) man:mandb(8)
 ConditionFileIsExecutable=/usr/bin/mandb
+ConditionACPower=true
 
 [Service]
 Type=oneshot
+Nice=19
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
 ExecStart=/usr/bin/mandb --quiet --user-db
+Slice=background.slice

@@ -28,35 +28,35 @@ local function check_back_space()
   end
 end
 
-function UserMaps.tab_complete()
-  if (pumvisible() == 1) then return replace_termcodes('<C-n>') end
-  if vsnip.available(1) then return replace_termcodes('<Plug>(vsnip-expand-or-jump)') end
-  if check_back_space() then return replace_termcodes('<Tab>') end
-  return vim.fn['compe#complete']()
-end
+-- function UserMaps.tab_complete()
+--   if (pumvisible() == 1) then return replace_termcodes('<C-n>') end
+--   if vsnip.available(1) then return replace_termcodes('<Plug>(vsnip-expand-or-jump)') end
+--   if check_back_space() then return replace_termcodes('<Tab>') end
+--   return vim.fn['compe#complete']()
+-- end
 
-function UserMaps.s_tab_complete()
-  if (pumvisible() == 1) then return replace_termcodes('<C-p>') end
-  if vsnip.jumpable(-1) then return replace_termcodes('<Plug>(vsnip-jump-prev)') end
-  return replace_termcodes('<S-Tab>')
-end
+-- function UserMaps.s_tab_complete()
+--   if (pumvisible() == 1) then return replace_termcodes('<C-p>') end
+--   if vsnip.jumpable(-1) then return replace_termcodes('<Plug>(vsnip-jump-prev)') end
+--   return replace_termcodes('<S-Tab>')
+-- end
 
-function UserMaps.on_enter()
-  if (pumvisible() ~= 0) then
-    if vim.fn.complete_info().selected ~= -1 then
-      return vim.fn['compe#confirm'](npairs.esc('<CR>'))
-    else
-      return npairs.esc('<CR>')
-    end
-  else
-    return npairs.autopairs_cr()
-  end
-end
+-- function UserMaps.on_enter()
+--   if (pumvisible() ~= 0) then
+--     if vim.fn.complete_info().selected ~= -1 then
+--       return vim.fn['compe#confirm'](npairs.esc('<CR>'))
+--     else
+--       return npairs.esc('<CR>')
+--     end
+--   else
+--     return npairs.autopairs_cr()
+--   end
+-- end
 
-imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
-smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
-imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
-smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
-imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
+-- imap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
+-- smap {'<Tab>', [[v:lua.UserMaps.tab_complete()]], expr = true}
+-- imap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
+-- smap {'<S-Tab>', [[v:lua.UserMaps.s_tab_complete()]], expr = true}
+-- imap {'<CR>', [[v:lua.UserMaps.on_enter()]], expr = true}
 vnor {'<', '<gv'}
 vnor {'>', '>gv'}

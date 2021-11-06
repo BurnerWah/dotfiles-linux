@@ -3,7 +3,7 @@ local api = vim.api
 
 local keymap_restore = {}
 
-vim.g.dap_virtual_text = true
+-- vim.g.dap_virtual_text = true
 
 dap.adapters.cpp = {
   type = 'executable',

@@ -29,7 +29,7 @@ return require('packer').startup({
         vim.g.vim_package_info_virutaltext_prefix = '  ' .. codicons.get('versions') .. ' '
       end,
     })
-    use({'lewis6991/impatient.nvim', config = 'require("impatient")'})
+    -- use({'lewis6991/impatient.nvim', config = 'require("impatient")'})
     use('tjdevries/lazy.nvim')
 
     -- Completion & Linting
@@ -39,7 +39,9 @@ return require('packer').startup({
       config = _M.cfg('lspsettings'),
     })
     use({
-      'glepnir/lspsaga.nvim',
+      'tami5/lspsaga.nvim',
+      -- maintained fork of glepnir/lspsaga.nvim
+      -- i'll look for a replacement for lspsaga outright at some point
       requires = {'nvim-lspconfig', 'codicons.nvim'},
       config = _M.do_config('lspsaga.lua'),
     })
@@ -71,12 +73,16 @@ return require('packer').startup({
       config = _M.do_config('vim-vsnip.lua'),
     })
     use({
-      'hrsh7th/nvim-compe',
+      'hrsh7th/nvim-cmp',
       requires = {
-        {'tzachar/compe-tabnine', run = 'bash install.sh'}, 'vim-vsnip', 'nvim-lspconfig',
-        'nvim-treesitter',
+        'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', 'hrsh7th/cmp-calc',
+        'onsails/lspkind-nvim', 'f3fora/cmp-spell', {'hrsh7th/cmp-nvim-lua', ft = 'lua'},
+        {'hrsh7th/cmp-nvim-lsp', requires = 'nvim-lspconfig'},
+        {'hrsh7th/cmp-vsnip', requires = 'vim-vsnip'},
+        {'ray-x/cmp-treesitter', requires = 'nvim-treesitter'},
+        {'tzachar/cmp-tabnine', run = './install.sh'},
       },
-      config = _M.do_config('nvim-compe.lua'),
+      config = _M.do_config('nvim-cmp.lua'),
     })
 
     use({
@@ -579,13 +585,13 @@ return require('packer').startup({
     use({'iamcco/markdown-preview.nvim', run = 'cd app && pnpm install', ft = 'markdown'})
 
     -- Org
-    use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
-    use({
-      'akinsho/org-bullets.nvim',
-      ft = 'org',
-      requires = 'orgmode.nvim',
-      config = [[require("org-bullets").setup()]],
-    })
+    -- use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
+    -- use({
+    --   'akinsho/org-bullets.nvim',
+    --   ft = 'org',
+    --   requires = 'orgmode.nvim',
+    --   config = [[require("org-bullets").setup()]],
+    -- })
 
     -- Python
     use({
@@ -619,6 +625,12 @@ return require('packer').startup({
       -- config = function()
       --   require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
       -- end,
+    })
+    use({
+      'Saecki/crates.nvim',
+      event = {'BufRead Cargo.toml'},
+      requires = {'nvim-cmp', 'plenary.nvim'},
+      config = function() require('crates').setup() end,
     })
 
     -- YAML

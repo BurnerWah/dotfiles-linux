@@ -114,20 +114,24 @@ local capabilities = lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.window = capabilities.window or {}
 capabilities.window.workDoneProgress = true
+local has_cmp_lsp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
+if has_cmp_lsp then cmp_lsp.update_capabilities(capabilities) end
 
 util.default_config = vim.tbl_extend('force', util.default_config,
                                      {capabilities = capabilities, on_attach = on_attach})
 
 -- Apparently we need this set up early
 require('nlspsettings').setup()
-tablex.foreach({'bashls', 'dotls', 'gopls', 'html', 'pyright', 'texlab', 'vimls', 'yamlls'},
-               function(V) configs[V].setup({}) end)
+tablex.foreach({
+  'bashls', 'cmake', 'denols', 'dotls', 'eslint', 'gopls', 'html', 'pyright', 'texlab', 'tsserver',
+  'vimls', 'yamlls',
+}, function(V) configs[V].setup({}) end)
 configs.ccls.setup({
   init_options = {
     compilationDatabaseDirectory = 'build',
     index = {threads = 0},
     cache = {directory = '.ccls-cache'},
-    clang = {resourceDir = '/usr/lib64/clang/12'},
+    clang = {resourceDir = '/usr/lib64/clang/13'},
     highlight = {lsRanges = true},
   },
 })
@@ -138,19 +142,18 @@ configs.dockerls.setup({
   root_dir = util.root_pattern('.git', vim.fn.getcwd()),
 })
 configs.cssls.setup({filetypes = {'css', 'sass', 'scss', 'less'}})
-configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
+-- configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
 configs.jsonls.setup({
   filetypes = {'json', 'jsonc'},
   settings = {json = {schemas = require('nlspsettings.jsonls').get_default_schemas()}},
 })
+configs.lemminx.setup({
+  cmd = {vim.fn.exepath('lemminx')},
+  settings = {xml = {server = {workDir = '~/.cache/lemminx'}}},
+})
 configs.sqlls.setup({cmd = {'sql-language-server', 'up', '--method', 'stdio'}})
 configs.sumneko_lua.setup({cmd = {'lua-language-server'}})
-configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node')})
--- configs.yamlls.setup({
---   before_init = function(params) params.processId = vim.NIL end,
---   cmd = lspcontainers.command('yamlls'),
---   root_dir = util.root_pattern('.git', vim.fn.getcwd()),
--- })
+-- configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node')})
 
 -- The giant language servers - diagnosticls & efm
 -- more linters are @ https://github.com/iamcco/diagnostic-languageserver/wiki/Linters
