@@ -10,7 +10,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     defaults = {
       winblend = 10,
       file_sorter = require("telescope.sorters").get_fzy_sorter,
-      history = { path = "~/.local/share/nvim/databases/telescope_history.sqlite3", limit = 100 },
+      history = { path = vim.fn.stdpath("data") .. "/databases/telescope_history.sqlite3", limit = 100 },
     },
     extensions = {
       arecibo = { selected_engine = "duckduckgo", show_domain_icons = true, show_http_headers = true },
@@ -31,7 +31,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     "fzf",
     "fzy_native",
     "fzf_writer",
-    "gh", --[['node_modules',]]
+    "gh",
     "media_files",
     "sonictemplate",
     "bookmarks",
@@ -40,7 +40,6 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     "arecibo",
     "dap",
     "githubcoauthors",
-    "npm",
     "smart_history",
     "zoxide",
   }, telescope.load_extension)

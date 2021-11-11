@@ -1,5 +1,4 @@
 {
-  "Lua.runtime.version": "LuaJIT",
   "Lua.runtime.path": [
     "?.lua",
     "?/init.lua",
@@ -11,13 +10,9 @@
     "/usr/share/lua/5.1/?/init.lua"
   ],
   "Lua.completion.callSnippet": "Replace",
-  "Lua.diagnostics.globals": ["vim", "packer_plugins"],
   "Lua.diagnostics.disable": ["lowercase-global"],
   "Lua.hint.enable": true,
   "Lua.hint.setType": true,
   "Lua.telemetry.enable": false,
-  "Lua.workspace.library": [
-    "/home/jadenpleasants/.local/share/nvim/site/@types"
-  ],
   "Lua.intelliSense.searchDepth": 1
 }

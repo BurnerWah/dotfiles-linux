@@ -180,7 +180,10 @@ configs.lemminx.setup({
   settings = { xml = { server = { workDir = "~/.cache/lemminx" } } },
 })
 configs.sqlls.setup({ cmd = { "sql-language-server", "up", "--method", "stdio" } })
-configs.sumneko_lua.setup({ cmd = { "lua-language-server" } })
+configs.sumneko_lua.setup({
+  cmd = { "lua-language-server" },
+  root_dir = util.root_pattern(".luarc.json", ".git"),
+})
 -- configs.tsserver.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('node')})
 
 -- The giant language servers - diagnosticls & efm

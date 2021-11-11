@@ -33,7 +33,7 @@ return require("packer").startup({
         vim.g.vim_package_info_virutaltext_prefix = "  " .. codicons.get("versions") .. " "
       end,
     })
-    -- use({'lewis6991/impatient.nvim', config = 'require("impatient")'})
+    use({ "lewis6991/impatient.nvim", config = 'require("impatient")' })
     use("tjdevries/lazy.nvim")
     -- custom library that i haven't made public yet
     use("~/Projects/nvim-plugins/std.nvim")
@@ -73,7 +73,6 @@ return require("packer").startup({
       run = ":TSUpdate",
       config = _M.do_config("treesitter.lua"),
     })
-    use({ "dense-analysis/ale", cmd = "ALEEnable", config = _M.do_config("ale.lua") })
     use({
       "hrsh7th/vim-vsnip",
       requires = { "neovim/nvim-lspconfig", { "rafamadriz/friendly-snippets", event = "VimEnter *" } },
@@ -90,17 +89,30 @@ return require("packer").startup({
         "f3fora/cmp-spell",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lsp-document-symbol",
+        "lukas-reineke/cmp-under-comparator",
+        "hrsh7th/cmp-emoji",
         { "hrsh7th/cmp-nvim-lua", ft = "lua" },
         { "hrsh7th/cmp-vsnip", requires = "vim-vsnip" },
         { "ray-x/cmp-treesitter", requires = "nvim-treesitter/nvim-treesitter" },
         { "hrsh7th/cmp-copilot", requires = "github/copilot.vim" },
         { "tzachar/cmp-tabnine", run = "./install.sh" },
+        { "f3fora/cmp-nuspell", rocks = "lua-nuspell" },
         {
           "tzachar/cmp-fuzzy-buffer",
           requires = { { "tzachar/fuzzy.nvim", requires = "nvim-telescope/telescope-fzf-native.nvim" } },
         },
       },
       config = _M.do_config("nvim-cmp.lua"),
+    })
+    use({
+      "mfussenegger/nvim-lint",
+      ft = { "markdown", "sh" },
+      config = function()
+        require("lint").linters_by_ft = {
+          markdown = { "markdownlint" },
+          sh = { "shellcheck" },
+        }
+      end,
     })
 
     use({
@@ -124,37 +136,49 @@ return require("packer").startup({
         "kyazdani42/nvim-web-devicons",
         "nvim-treesitter/nvim-treesitter",
         "nvim-telescope/telescope-symbols.nvim",
-        { "nvim-telescope/telescope-fzf-writer.nvim", requires = "nvim-lua/plenary.nvim" },
-        "nvim-telescope/telescope-node-modules.nvim",
+        -- Telescope plugins
+        "nvim-telescope/telescope-fzf-writer.nvim",
         "nvim-telescope/telescope-media-files.nvim",
         "dhruvmanila/telescope-bookmarks.nvim",
         "cwebster2/github-coauthors.nvim",
         "jvgrootveld/telescope-zoxide",
         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-        { "nvim-telescope/telescope-fzy-native.nvim", requires = "nvim-lua/plenary.nvim" },
-        {
-          "nvim-telescope/telescope-github.nvim",
-          requires = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
-        },
-        { "tamago324/telescope-sonictemplate.nvim", requires = "nvim-lua/plenary.nvim" },
-        {
-          "nvim-telescope/telescope-frecency.nvim",
-          requires = { "tami5/sql.nvim", "nvim-lua/plenary.nvim" },
-        },
-        {
-          "nvim-telescope/telescope-cheat.nvim",
-          requires = { "tami5/sql.nvim", "nvim-lua/plenary.nvim" },
-        },
-        {
-          "nvim-telescope/telescope-dap.nvim",
-          requires = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" },
-        },
-        { "elianiva/telescope-npm.nvim", requires = "nvim-lua/plenary.nvim" },
+        "nvim-telescope/telescope-fzy-native.nvim",
+        "nvim-telescope/telescope-github.nvim",
+        { "tamago324/telescope-sonictemplate.nvim", requires = "mattn/vim-sonictemplate" },
+        { "nvim-telescope/telescope-frecency.nvim", requires = "tami5/sql.nvim" },
+        { "nvim-telescope/telescope-cheat.nvim", requires = "tami5/sql.nvim" },
+        { "nvim-telescope/telescope-dap.nvim", requires = "mfussenegger/nvim-dap" },
         { "nvim-telescope/telescope-smart-history.nvim", requires = "tami5/sql.nvim" },
         {
           "nvim-telescope/telescope-arecibo.nvim",
           requires = "nvim-treesitter/nvim-treesitter",
           rocks = { "openssl", "lua-http-parser" },
+        },
+        -- NOTE: the WorkspaceFoundNodeProject event isn't implemented yet
+        {
+          "nvim-telescope/telescope-node-modules.nvim",
+          ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "typescriptcommon" },
+          event = { "BufRead package.json", "User WorkspaceFoundNodeProject" },
+          config = function()
+            require("telescope").load_extension("node_modules")
+          end,
+        },
+        {
+          "elianiva/telescope-npm.nvim",
+          ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "typescriptcommon" },
+          event = { "BufRead package.json", "User WorkspaceFoundNodeProject" },
+          config = function()
+            require("telescope").load_extension("npm")
+          end,
+        },
+        {
+          "ElPiloto/telescope-vimwiki.nvim",
+          requires = "vimwiki/vimwiki",
+          ft = "vimwiki",
+          config = function()
+            require("telescope").load_extension("vimwiki")
+          end,
         },
       },
       config = _M.do_config("telescope.lua"),
@@ -169,10 +193,10 @@ return require("packer").startup({
     use({
       "lewis6991/gitsigns.nvim",
       requires = "nvim-lua/plenary.nvim",
+      event = "VimEnter *",
       config = function()
         require("gitsigns").setup({ current_line_blame = true })
       end,
-      event = "VimEnter *",
     })
     use({
       "rhysd/git-messenger.vim",
@@ -328,7 +352,14 @@ return require("packer").startup({
         require("alpha").setup(require("alpha.themes.dashboard").opts)
       end,
     })
-    use({ "rcarriga/nvim-notify" })
+    use("rcarriga/nvim-notify")
+    use({
+      "lukas-reineke/headlines.nvim",
+      ft = { "markdown", "rmd", "vimwiki", "orgmode" },
+      config = function()
+        require("headlines").setup()
+      end,
+    })
 
     -- Utilities
     use({
@@ -358,26 +389,26 @@ return require("packer").startup({
     -- VimWiki - note-taking engine
     use({
       "vimwiki/vimwiki",
-      event = "BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md",
-      cmd = {
-        "VimwikiIndex",
-        "VimwikiTabIndex",
-        "VimwikiDiaryIndex",
-        "VimwikiMakeDiaryNote",
-        "VimwikiTabMakeDiaryNote",
-      },
-      keys = {
-        "<Plug>VimwikiIndex",
-        "<Plug>VimwikiTabIndex",
-        "<Plug>VimwikiUISelect",
-        "<Plug>VimwikiDiaryIndex",
-        "<Plug>VimwikiDiaryGenerateLinks",
-        "<Plug>VimwikiMakeDiaryNote",
-        "<Plug>VimwikiTabMakeDiaryNote",
-        "<Plug>VimwikiMakeYesterdayDiaryNote",
-        "<Plug>VimwikiMakeTomorrowDiaryNote",
-      },
-      setup = function()
+      -- event = "BufNewFile,BufRead *.markdown,*.mdown,*.mdwn,*.wiki,*.mkdn,*.mw,*.md",
+      -- cmd = {
+      --   "VimwikiIndex",
+      --   "VimwikiTabIndex",
+      --   "VimwikiDiaryIndex",
+      --   "VimwikiMakeDiaryNote",
+      --   "VimwikiTabMakeDiaryNote",
+      -- },
+      -- keys = {
+      --   "<Plug>VimwikiIndex",
+      --   "<Plug>VimwikiTabIndex",
+      --   "<Plug>VimwikiUISelect",
+      --   "<Plug>VimwikiDiaryIndex",
+      --   "<Plug>VimwikiDiaryGenerateLinks",
+      --   "<Plug>VimwikiMakeDiaryNote",
+      --   "<Plug>VimwikiTabMakeDiaryNote",
+      --   "<Plug>VimwikiMakeYesterdayDiaryNote",
+      --   "<Plug>VimwikiMakeTomorrowDiaryNote",
+      -- },
+      config = function()
         vim.g.vimwiki_list = { { path = "~/Documents/VimWiki", nested_syntaxes = { ["c++"] = "cpp" } } }
         vim.g.vimwiki_folding = "expr"
         vim.g.vimwiki_global_ext = 0
@@ -437,6 +468,14 @@ return require("packer").startup({
       cmd = { "Cheatsheet", "CheatsheetEdit" },
       setup = function()
         pcall(vim.keymap.nnoremap, { "<Leader>?", [[:<C-U>Cheatsheet<CR>]], silent = true })
+      end,
+    })
+    use({ "lambdalisue/guise.vim", requires = "vim-denops/denops.vim" })
+    use({ "lambdalisue/askpass.vim", requires = "vim-denops/denops.vim" })
+    use({
+      "luukvbaal/stabilize.nvim",
+      config = function()
+        require("stabilize").setup()
       end,
     })
 
@@ -573,11 +612,18 @@ return require("packer").startup({
       "folke/todo-comments.nvim",
       requires = { "nvim-lua/plenary.nvim", "lsp-trouble.nvim", "nvim-telescope/telescope.nvim" },
       cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
-      config = [[require("todo-comments").setup()]],
+      config = function()
+        require("todo-comments").setup()
+      end,
     })
     use({ "NTBBloodbath/rest.nvim", requires = "nvim-lua/plenary.nvim", keys = "<Plug>RestNvim" })
     use({ "Pocco81/HighStr.nvim", cmd = "HSHighlight" })
-    use({ "winston0410/mark-radar.nvim", config = [[require("mark-radar").setup()]] })
+    use({
+      "winston0410/mark-radar.nvim",
+      config = function()
+        require("mark-radar").setup()
+      end,
+    })
     -- use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
     use({ "notomo/gesture.nvim", config = _M.do_config("gesture.lua") })
 
@@ -613,11 +659,12 @@ return require("packer").startup({
     use({ "bfredl/nvim-luadev", cmd = "Luadev" })
     use({ "rafcamlet/nvim-luapad", cmd = { "Lua", "Luapad", "LuaRun" } })
     use({ "milisims/nvim-luaref", "nanotee/luv-vimdocs" })
+    use({ "folke/lua-dev.nvim", opt = true })
 
     -- Markdown
     use({ "plasticboy/vim-markdown", ft = "markdown" })
     use({ "npxbr/glow.nvim", ft = { "markdown", "pandoc.markdown", "rmd" } })
-    use({ "iamcco/markdown-preview.nvim", run = "cd app && pnpm install", ft = "markdown" })
+    use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
 
     -- Org
     -- use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
@@ -633,7 +680,9 @@ return require("packer").startup({
       "mfussenegger/nvim-dap-python",
       ft = "python",
       requires = "mfussenegger/nvim-dap",
-      config = [[require('dap-python').setup()]],
+      config = function()
+        require("dap-python").setup()
+      end,
     })
 
     -- RST
@@ -697,6 +746,14 @@ return require("packer").startup({
     use({ "jamestthompson3/nvim-remote-containers", cmd = { "AttachToContainer", "BuildImage" } })
     use({ "andweeb/presence.nvim" })
     use({ "kristijanhusak/vim-carbon-now-sh", cmd = "CarbonNowSh" })
+    use({
+      "rlch/github-notifications.nvim",
+      requires = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+      config = function()
+        require("github-notifications").setup()
+        require("telescope").load_extension("ghn")
+      end,
+    })
 
     -- Text editing
     use("tpope/vim-repeat")
@@ -789,8 +846,8 @@ return require("packer").startup({
     })
     use({
       "AndrewRadev/splitjoin.vim",
-      cmd = { "SplitjoinSplit", "SplitjoinJoin" },
-      keys = { { "n", "gJ" }, { "n", "gS" } },
+      -- cmd = { "SplitjoinSplit", "SplitjoinJoin" },
+      -- keys = { { "n", "gJ" }, { "n", "gS" } },
     })
     use({
       "junegunn/vim-easy-align",
@@ -838,7 +895,9 @@ return require("packer").startup({
       "mizlan/iswap.nvim",
       requires = "nvim-treesitter/nvim-treesitter",
       cmd = "ISwap",
-      config = [[require('iswap').setup({})]],
+      config = function()
+        require("iswap").setup({})
+      end,
     })
   end,
   config = { max_jobs = #vim.loop.cpu_info(), profile = { enable = true, threshold = 1 } },

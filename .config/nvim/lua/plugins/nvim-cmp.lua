@@ -22,18 +22,34 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "vsnip" },
-    { name = "buffer" },
+    { name = "copilot" },
     { name = "cmp_tabnine" },
     { name = "treesitter" },
-    { name = "spell" },
     { name = "crates" },
     { name = "nvim_lua" },
     { name = "calc" },
     { name = "fish" },
-    { name = "copilot" },
+    { name = "emoji" },
     { name = "fuzzy_buffer" },
+    { name = "buffer" },
+  }, {
+    { name = "nuspell" },
+    { name = "spell" },
   }),
   formatting = { format = lspkind.cmp_format({ with_text = true, maxwidth = 50 }) },
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      require("cmp-under-comparator").under,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
 })
 
 cmp.setup.cmdline("/", {
