@@ -12,7 +12,7 @@ repos:
           - markdown
           - python
           - yaml
-      - id: end-of-file-fixer
+      # - id: end-of-file-fixer
       - id: check-executables-have-shebangs
       - { id: check-yaml, stages: [commit, push, manual] }
       - { id: check-toml, stages: [commit, push, manual] }

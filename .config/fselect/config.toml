@@ -54,7 +54,17 @@ is_doc = [
   ".xltx",
   ".xps",
 ]
-is_image = [".bmp", ".gif", ".jpeg", ".jpg", ".png", ".psb", ".psd", ".tiff", ".webp"]
+is_image = [
+  ".bmp",
+  ".gif",
+  ".jpeg",
+  ".jpg",
+  ".png",
+  ".psb",
+  ".psd",
+  ".tiff",
+  ".webp",
+]
 is_source = [
   ".asm",
   ".bas",
