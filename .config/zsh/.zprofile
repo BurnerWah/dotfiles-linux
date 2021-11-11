@@ -1,1 +1,1 @@
-profile.zsh
+/dev/zero

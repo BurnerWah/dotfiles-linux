@@ -1,1 +1,1 @@
-init.zsh
+/dev/zero

@@ -1,3 +1,0 @@
-#compdef gh
-eval "$(gh completion --shell=zsh)"
-_gh "$@"

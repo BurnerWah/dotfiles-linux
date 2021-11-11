@@ -1,5 +1,0 @@
-#compdef git-graft
-#description merge and destroy a given branch
-_arguments \
-  ':src-branch:__git_branch_names' \
-  ':dest-branch:__git_branch_names'

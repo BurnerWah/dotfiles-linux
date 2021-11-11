@@ -1,1 +1,1 @@
-env.zsh
+/dev/zero
