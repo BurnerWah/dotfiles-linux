@@ -11,3 +11,4 @@ CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 ExecStart=/usr/bin/mandb --quiet --user-db
 Slice=background.slice
+StateDirectory=man

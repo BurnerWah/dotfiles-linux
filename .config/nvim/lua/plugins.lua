@@ -744,7 +744,7 @@ return require("packer").startup({
     -- It also might be contributing to PID bloat by running hunspell too often.
     -- It's a WIP so some problems can be expected.
     use({ "jamestthompson3/nvim-remote-containers", cmd = { "AttachToContainer", "BuildImage" } })
-    use({ "andweeb/presence.nvim" })
+    -- use({ "andweeb/presence.nvim" })
     use({ "kristijanhusak/vim-carbon-now-sh", cmd = "CarbonNowSh" })
     use({
       "rlch/github-notifications.nvim",
