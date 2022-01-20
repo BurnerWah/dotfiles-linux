@@ -2,7 +2,7 @@
   "runtime.version": "LuaJIT",
   "diagnostic.globals": ["vim", "packer_plugins"],
   "workspace.library": [
-    "/home/jadenpleasants/.local/share/nvim/site/@types",
-    "/home/jadenpleasants/.local/share/nvim/site/pack/packer/opt/lua-dev.nvim/types"
+    "/home/burner/.local/share/nvim/site/@types",
+    "/home/burner/.local/share/nvim/site/pack/packer/opt/lua-dev.nvim/types"
   ]
 }

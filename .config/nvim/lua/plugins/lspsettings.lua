@@ -2,7 +2,7 @@ local lsp = vim.lsp
 local configs = require("lspconfig")
 local util = require("lspconfig/util")
 local tablex, Set = require("pl.tablex"), require("pl.Set")
-local lspcontainers = require("lspcontainers")
+-- local lspcontainers = require("lspcontainers")
 local exepath = require("vimstd.fn").exepath
 
 -- Client filter - used to automatically turn off on_attach stuff for certain servers
@@ -23,43 +23,57 @@ local function on_attach(client, bufnr)
   local async
 
   async = vim.loop.new_async(vim.schedule_wrap(function()
-    local nnor, vnor = vim.keymap.nnoremap, vim.keymap.vnoremap
     local ft = vim.bo[1].filetype
     local caps = client.resolved_capabilities
     local ts_has_locals = require("nvim-treesitter.query").has_locals(ft)
     local has_wk, wk = pcall(require, "which-key")
 
     if caps.hover then
-      nnor({ "<Leader>hh", [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set(
+        "n",
+        "<Leader>hh",
+        [[<Cmd>Lspsaga hover_doc<CR>]],
+        { noremap = true, silent = true, buffer = bufnr }
+      )
       if ft ~= "vim" then
-        nnor({ "K", [[<Cmd>Lspsaga hover_doc<CR>]], silent = true, buffer = bufnr })
+        vim.kemap.set("n", "K", [[<Cmd>Lspsaga hover_doc<CR>]], { noremap = true, silent = true, buffer = bufnr })
       end
     end
 
     if caps.find_references then
-      nnor({ "gh", [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr })
-      nnor({ "gr", [[<Cmd>Lspsaga lsp_finder<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set("n", "gh", [[<Cmd>Lspsaga lsp_finder<CR>]], { noremap = true, silent = true, buffer = bufnr })
+      vim.kemap.set("n", "gr", [[<Cmd>Lspsaga lsp_finder<CR>]], { noremap = true, silent = true, buffer = bufnr })
       if has_wk then
         wk.register({ gr = { [[<Cmd>Lspsaga lsp_finder<CR>]], "Find references", buffer = bufnr } })
       end
     end
 
     if caps.signature_help then
-      nnor({ "gs", [[<Cmd>Lspsaga signature_help<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set("n", "gs", [[<Cmd>Lspsaga signature_help<CR>]], { noremap = true, silent = true, buffer = bufnr })
     end
 
     if caps.code_action then
       vim.wo[winnr].signcolumn = "yes"
-      nnor({ "ca", [[<Cmd>Lspsaga code_action<CR>]], silent = true, buffer = bufnr })
-      vnor({ "ca", [[:<C-u>Lspsaga range_code_action<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set("n", "ca", [[<Cmd>Lspsaga code_action<CR>]], { noremap = true, silent = true, buffer = bufnr })
+      vim.kemap.set(
+        "v",
+        "ca",
+        [[:<C-u>Lspsaga range_code_action<CR>]],
+        { noremap = true, silent = true, buffer = bufnr }
+      )
     end
 
     if caps.rename then
-      nnor({ "<Leader>rn", [[<Cmd>Lspsaga rename<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set("n", "<Leader>rn", [[<Cmd>Lspsaga rename<CR>]], { noremap = true, silent = true, buffer = bufnr })
     end
 
     if caps.goto_definition then
-      nnor({ "gd", [[<Cmd>Lspsaga preview_definition<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set(
+        "n",
+        "gd",
+        [[<Cmd>Lspsaga preview_definition<CR>]],
+        { noremap = true, silent = true, buffer = bufnr }
+      )
       if has_wk then
         wk.register({
           gd = { [[<Cmd>Lspsaga preview_definition<CR>]], "Go to definition", buffer = bufnr },
@@ -68,11 +82,21 @@ local function on_attach(client, bufnr)
     end
 
     if caps.type_definition then
-      nnor({ "gy", [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set(
+        "n",
+        "gy",
+        [[<Cmd>lua vim.lsp.buf.type_definition()<CR>]],
+        { noremap = true, silent = true, buffer = bufnr }
+      )
     end
 
     if caps.implementation then
-      nnor({ "gi", [[<Cmd>lua vim.lsp.buf.implementation()<CR>]], silent = true, buffer = bufnr })
+      vim.kemap.set(
+        "n",
+        "gi",
+        [[<Cmd>lua vim.lsp.buf.implementation()<CR>]],
+        { noremap = true, silent = true, buffer = bufnr }
+      )
     end
 
     if caps.document_symbol then
@@ -101,11 +125,36 @@ local function on_attach(client, bufnr)
     end
 
     -- Diagnostics are probably always available
-    nnor({ "<Leader>cd", [[<Cmd>Lspsaga show_line_diagnostics<CR>]], silent = true, buffer = bufnr })
-    nnor({ "[e", [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr })
-    nnor({ "[g", [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], silent = true, buffer = bufnr })
-    nnor({ "]e", [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr })
-    nnor({ "]g", [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]], silent = true, buffer = bufnr })
+    vim.kemap.set(
+      "n",
+      "<Leader>cd",
+      [[<Cmd>Lspsaga show_line_diagnostics<CR>]],
+      { noremap = true, silent = true, buffer = bufnr }
+    )
+    vim.kemap.set(
+      "n",
+      "[e",
+      [[<Cmd>Lspsaga diagnostic_jump_next<CR>]],
+      { noremap = true, silent = true, buffer = bufnr }
+    )
+    vim.kemap.set(
+      "n",
+      "[g",
+      [[<Cmd>Lspsaga diagnostic_jump_next<CR>]],
+      { noremap = true, silent = true, buffer = bufnr }
+    )
+    vim.kemap.set(
+      "n",
+      "]e",
+      [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]],
+      { noremap = true, silent = true, buffer = bufnr }
+    )
+    vim.kemap.set(
+      "n",
+      "]g",
+      [[<Cmd>Lspsaga diagnostic_jump_prev<CR>]],
+      { noremap = true, silent = true, buffer = bufnr }
+    )
     if has_wk then
       wk.register({
         ["[e"] = { [[<Cmd>Lspsaga diagnostic_jump_next<CR>]], "Next diagnostic", buffer = bufnr },
@@ -140,11 +189,13 @@ tablex.foreach({
   "bashls",
   "cmake",
   "denols",
+  "dockerls",
   "dotls",
   "eslint",
   "gopls",
   "html",
   "pyright",
+  "sqlls",
   "texlab",
   "tsserver",
   "vimls",
@@ -152,23 +203,16 @@ tablex.foreach({
 }, function(V)
   configs[V].setup({})
 end)
-configs.ccls.setup({
-  init_options = {
-    compilationDatabaseDirectory = "build",
-    index = { threads = 0 },
-    cache = { directory = ".ccls-cache" },
-    clang = { resourceDir = "/usr/lib64/clang/13" },
-    highlight = { lsRanges = true },
-  },
-})
+-- configs.ccls.setup({
+--   init_options = {
+--     compilationDatabaseDirectory = "build",
+--     index = { threads = 0 },
+--     cache = { directory = ".ccls-cache" },
+--     clang = { resourceDir = "/usr/lib64/clang/13" },
+--     highlight = { lsRanges = true },
+--   },
+-- })
 configs.clangd.setup({ init_options = { clangdFileStatus = true } })
-configs.dockerls.setup({
-  before_init = function(params)
-    params.processId = vim.NIL
-  end,
-  cmd = lspcontainers.command("dockerls"),
-  root_dir = util.root_pattern(".git", vim.fn.getcwd()),
-})
 configs.cssls.setup({ filetypes = { "css", "sass", "scss", "less" } })
 -- configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
 configs.jsonls.setup({
@@ -179,7 +223,6 @@ configs.lemminx.setup({
   cmd = { exepath("lemminx") },
   settings = { xml = { server = { workDir = "~/.cache/lemminx" } } },
 })
-configs.sqlls.setup({ cmd = { "sql-language-server", "up", "--method", "stdio" } })
 configs.sumneko_lua.setup({
   cmd = { "lua-language-server" },
   root_dir = util.root_pattern(".luarc.json", ".git"),

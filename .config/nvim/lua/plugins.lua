@@ -18,11 +18,11 @@ return require("packer").startup({
 
     -- Core plugins
     use_rocks({ "compat53", "penlight", "fun", "stdlib", "luaposix" })
-    use("tjdevries/astronauta.nvim")
+    -- use("tjdevries/astronauta.nvim")
     use({ "nvim-lua/plenary.nvim", config = [[require('plenary.filetype').add_file('user')]] })
-    use("iamcco/async-await.lua")
-    use("norcalli/profiler.nvim")
-    use("delphinus/agrp.nvim")
+    use({ "iamcco/async-await.lua" })
+    use({ "norcalli/profiler.nvim" })
+    use({ "delphinus/agrp.nvim" })
     use({
       "mortepau/codicons.nvim",
       config = function()
@@ -34,14 +34,23 @@ return require("packer").startup({
       end,
     })
     use({ "lewis6991/impatient.nvim", config = 'require("impatient")' })
-    use("tjdevries/lazy.nvim")
+    use({ "tjdevries/lazy.nvim", module = "lazy" })
+    use({
+      "ldelossa/litee.nvim",
+      module_pattern = "litee.*",
+      config = function()
+        require("litee.lib").setup({
+          tree = { icon_set = "codicons" },
+        })
+      end,
+    })
     -- custom library that i haven't made public yet
-    use("~/Projects/nvim-plugins/std.nvim")
+    use({ "~/Projects/nvim-plugins/std.nvim" })
 
     -- Completion & Linting
     use({
       "neovim/nvim-lspconfig",
-      requires = { "tamago324/nlsp-settings.nvim", "lspcontainers/lspcontainers.nvim" },
+      requires = { "tamago324/nlsp-settings.nvim", { "lspcontainers/lspcontainers.nvim", module = "lspcontainers" } },
       config = _M.cfg("lspsettings"),
     })
     use({
@@ -65,8 +74,8 @@ return require("packer").startup({
           "mfussenegger/nvim-ts-hint-textobject",
           keys = { { "o", "m" }, { "v", "m" } },
           config = function()
-            vim.keymap.omap({ "m", [[:<C-u>lua require('tsht').nodes()<CR>]], silent = true })
-            vim.keymap.vnoremap({ "m", [[<Cmd>lua require('tsht').nodes()<CR>]], silent = true })
+            vim.keymap.set("o", "m", [[:<C-u>lua require('tsht').nodes()<CR>]], { silent = true })
+            vim.keymap.set("o", "m", [[<Cmd>lua require('tsht').nodes()<CR>]], { silent = true, noremap = true })
           end,
         },
       },
@@ -118,8 +127,8 @@ return require("packer").startup({
     use({
       "mfussenegger/nvim-dap",
       requires = {
-        "jbyuki/one-small-step-for-vimkind",
-        { "Pocco81/DAPInstall.nvim" },
+        { "jbyuki/one-small-step-for-vimkind", module = "osv" },
+        { "Pocco81/DAPInstall.nvim", cmd = { "DIInstall", "DIUninstall", "DIList" }, module = "dap-install" },
         { "theHamsta/nvim-dap-virtual-text", requires = "nvim-treesitter/nvim-treesitter" },
       },
       config = _M.do_config("dap.lua"),
@@ -131,7 +140,7 @@ return require("packer").startup({
       requires = {
         -- Telescope dependencies
         "nvim-lua/plenary.nvim",
-        { "nvim-lua/popup.nvim", requires = "nvim-lua/plenary.nvim" },
+        { "nvim-lua/popup.nvim", module = "popup", requires = "nvim-lua/plenary.nvim" },
         -- Optional dependencies
         "kyazdani42/nvim-web-devicons",
         "nvim-treesitter/nvim-treesitter",
@@ -180,6 +189,7 @@ return require("packer").startup({
             require("telescope").load_extension("vimwiki")
           end,
         },
+        "LinArcX/telescope-env.nvim",
       },
       config = _M.do_config("telescope.lua"),
     })
@@ -204,7 +214,7 @@ return require("packer").startup({
       keys = "<Plug>(git-messenger)",
       setup = function()
         vim.g.git_messenger_no_default_mappings = true
-        vim.keymap.nmap({ "<Leader>gm", "<Plug>(git-messenger)" })
+        vim.keymap.set("n", "<Leader>gm", "<Plug>(git-messenger)")
       end,
     })
     use({
@@ -254,9 +264,9 @@ return require("packer").startup({
             offsets = { { filetype = "NvimTree", text = "File Explorer" } },
           },
         })
-        vim.keymap.nmap({ "bb", "<Cmd>BufferLinePick<CR>" })
-        vim.keymap.nmap({ "[b", "<Cmd>BufferLineCycleNext<CR>" })
-        vim.keymap.nmap({ "]b", "<Cmd>BufferLineCyclePrev<CR>" })
+        vim.keymap.set("n", "bb", "<Cmd>BufferLinePick<CR>")
+        vim.keymap.set("n", "[b", "<Cmd>BufferLineCycleNext<CR>")
+        vim.keymap.set("n", "]b", "<Cmd>BufferLineCyclePrev<CR>")
       end,
     })
     use({
@@ -352,7 +362,7 @@ return require("packer").startup({
         require("alpha").setup(require("alpha.themes.dashboard").opts)
       end,
     })
-    use("rcarriga/nvim-notify")
+    use({ "rcarriga/nvim-notify", config = [[require("telescope").load_extension("notify")]], module = "notify" })
     use({
       "lukas-reineke/headlines.nvim",
       ft = { "markdown", "rmd", "vimwiki", "orgmode" },
@@ -414,8 +424,8 @@ return require("packer").startup({
         vim.g.vimwiki_global_ext = 0
         vim.g.vimwiki_hl_headers = 1
         vim.g.vimwiki_key_mappings = { global = false }
-        vim.keymap.nmap({ "<Leader>ww", "<Plug>VimwikiIndex" })
-        vim.keymap.nmap({ "<Leader>wt", "<Plug>VimwikiTabIndex" })
+        vim.keymap.set("n", "<Leader>ww", "<Plug>VimwikiIndex")
+        vim.keymap.set("n", "<Leader>wt", "<Plug>VimwikiTabIndex")
       end,
     })
     -- neuron.nvim - Neuron-based note-taking engine
@@ -451,9 +461,9 @@ return require("packer").startup({
       setup = function()
         vim.g.iron_map_defaults = false
         vim.g.iron_map_extended = false
-        vim.keymap.nmap({ "ctr", "<Plug>(iron-send-motion)" })
-        vim.keymap.vmap({ "ctr", "<Plug>(iron-visual-send)" })
-        vim.keymap.nmap({ "<LocalLeader>sl", "<Plug>(iron-send-line)" })
+        vim.keymap.set("n", "ctr", "<Plug>(iron-send-motion)")
+        vim.keymap.set("v", "ctr", "<Plug>(iron-visual-send)")
+        vim.keymap.set("n", "<LocalLeader>sl", "<Plug>(iron-send-line)")
       end,
       config = _M.do_config("iron.lua"),
     })
@@ -463,11 +473,11 @@ return require("packer").startup({
       requires = {
         "nvim-telescope/telescope.nvim",
         "nvim-lua/plenary.nvim",
-        { "nvim-lua/popup.nvim", requires = "nvim-lua/plenary.nvim" },
+        { "nvim-lua/popup.nvim", module = "popup", requires = "nvim-lua/plenary.nvim" },
       },
       cmd = { "Cheatsheet", "CheatsheetEdit" },
       setup = function()
-        pcall(vim.keymap.nnoremap, { "<Leader>?", [[:<C-U>Cheatsheet<CR>]], silent = true })
+        vim.keymap.set("n", "<Leader>?", [[:<C-U>Cheatsheet<CR>]], { silent = true, noremap = true })
       end,
     })
     use({ "lambdalisue/guise.vim", requires = "vim-denops/denops.vim" })
@@ -501,8 +511,8 @@ return require("packer").startup({
       fn = "sonictemplate#complete",
       keys = { "<Plug>(sonictemplate)", "<Plug>(sonictemplate-intelligent)" },
       setup = function()
-        vim.keymap.nmap({ "<C-y>t", "<Plug>(sonictemplate)" })
-        vim.keymap.nmap({ "<C-y>T", "<Plug>(sonictemplate-intelligent)" })
+        vim.keymap.set("n", "<C-y>t", "<Plug>(sonictemplate)")
+        vim.keymap.set("n", "<C-y>T", "<Plug>(sonictemplate-intelligent)")
       end,
     })
     use({
@@ -510,12 +520,11 @@ return require("packer").startup({
       config = function()
         local Navigator = require("Navigator")
         Navigator.setup()
-        local nmap = vim.keymap.nnoremap
-        nmap({ "<C-h>", Navigator.left, silent = true })
-        nmap({ "<C-j>", Navigator.down, silent = true })
-        nmap({ "<C-k>", Navigator.up, silent = true })
-        nmap({ "<C-l>", Navigator.right, silent = true })
-        nmap({ "<C-\\>", Navigator.previous, silent = true })
+        vim.keymap.set("n", "<C-h>", Navigator.left, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-j>", Navigator.down, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-k>", Navigator.up, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-l>", Navigator.right, { noremap = true, silent = true })
+        vim.keymap.set("n", "<C-\\>", Navigator.previous, { noremap = true, silent = true })
       end,
     })
 
@@ -626,23 +635,48 @@ return require("packer").startup({
     })
     -- use({'Pocco81/AutoSave.nvim', config = [[require('autosave').setup()]]})
     use({ "notomo/gesture.nvim", config = _M.do_config("gesture.lua") })
+    use({
+      "ldelossa/litee-calltree.nvim",
+      module = "litee.calltree",
+      cmd = {
+        "LTOpenToCalltree",
+        "LTPopOutCalltree",
+        "LTNextCalltree",
+        "LTPrevCalltree",
+        "LTExpandCalltree",
+        "LTFocusCalltree",
+        "LTSwitchCalltree",
+        "LTJumpCalltree",
+        "LTJumpCalltreeSplit",
+        "LTJumpCalltreeVSplit",
+        "LTJumpCalltreeTab",
+        "LTHoverCalltree",
+        "LTDetailsCalltree",
+        "LTDumpTreeCalltree",
+        "LTDumpNodeCalltree",
+      },
+      requires = { "ldelossa/litee.nvim" },
+      config = function()
+        require("litee.calltree").setup({})
+      end,
+    })
 
     -- Filetypes & language features
     -- Some of this stuff isn't managed by packer.
     use({
-      "leafo/moonscript-vim",
-      "rhysd/vim-llvm",
-      "ron-rs/ron.vim",
-      "bakpakin/fennel.vim",
+      { "leafo/moonscript-vim", ft = "moon" },
+      { "rhysd/vim-llvm", ft = { "llvm", "mlir", "tablegen" } },
+      { "ron-rs/ron.vim", ft = "ron" },
+      { "bakpakin/fennel.vim", ft = "fennel" },
       "aklt/plantuml-syntax",
-      "tikhomirov/vim-glsl",
-      "udalov/kotlin-vim",
-      "YaBoiBurner/requirements.txt.vim",
-      "teal-language/vim-teal",
-      "gluon-lang/vim-gluon",
-      "thyrgle/vim-dyon",
-      "bytecodealliance/cranelift.vim",
-      "NoahTheDuke/vim-just",
+      { "tikhomirov/vim-glsl", ft = { "glsl", "elm", "html" } },
+      { "udalov/kotlin-vim", ft = "kotlin" },
+      { "YaBoiBurner/requirements.txt.vim", ft = "requirements" },
+      { "teal-language/vim-teal", ft = "teal" },
+      { "gluon-lang/vim-gluon", ft = "gluon" },
+      { "thyrgle/vim-dyon", ft = "dyon" },
+      { "bytecodealliance/cranelift.vim", ft = "clif" },
+      { "NoahTheDuke/vim-just", ft = "just" },
     })
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter
@@ -704,7 +738,7 @@ return require("packer").startup({
       "simrat39/rust-tools.nvim",
       requires = {
         "neovim/nvim-lspconfig",
-        { "nvim-lua/popup.nvim", requires = "nvim-lua/plenary.nvim" },
+        { "nvim-lua/popup.nvim", module = "popup", requires = "nvim-lua/plenary.nvim" },
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim",
       },
@@ -756,19 +790,18 @@ return require("packer").startup({
     })
 
     -- Text editing
-    use("tpope/vim-repeat")
-    use("ggandor/lightspeed.nvim")
+    use({ "tpope/vim-repeat" })
+    use({ "ggandor/lightspeed.nvim" })
     -- hop.nvim - EasyMotion replacement
     use({
       "phaazon/hop.nvim",
       cmd = { "HopWord", "HopPattern", "HopChar1", "HopChar2", "HopLine" },
       setup = function()
-        local nmap = vim.keymap.nmap
-        nmap({ "<Leader>hw", "<Cmd>HopWord<CR>" })
-        nmap({ "<Leader>hp", "<Cmd>HopPattern<CR>" })
-        nmap({ "<Leader>hc", "<Cmd>HopChar1<CR>" })
-        nmap({ "<Leader>hC", "<Cmd>HopChar2<CR>" })
-        nmap({ "<Leader>hl", "<Cmd>HopLine<CR>" })
+        vim.keymap.set("n", "<Leader>hw", "<Cmd>HopWord<CR>")
+        vim.keymap.set("n", "<Leader>hp", "<Cmd>HopPattern<CR>")
+        vim.keymap.set("n", "<Leader>hc", "<Cmd>HopChar1<CR>")
+        vim.keymap.set("n", "<Leader>hC", "<Cmd>HopChar2<CR>")
+        vim.keymap.set("n", "<Leader>hl", "<Cmd>HopLine<CR>")
       end,
     })
     use({
@@ -789,7 +822,7 @@ return require("packer").startup({
       setup = function()
         vim.g.abolish_no_mappings = true
         vim.g.abolish_save_file = vim.fn.stdpath("config") .. "/after/plugin/abolish.vim"
-        vim.keymap.nmap({ "cr", "<Plug>(abolish-coerce-word)" })
+        vim.keymap.set("n", "cr", "<Plug>(abolish-coerce-word)")
       end,
     })
     use({
@@ -797,11 +830,11 @@ return require("packer").startup({
       cmd = "Commentary",
       keys = { "<Plug>Commentary", "<Plug>CommentaryLine", "<Plug>ChangeCommentary" },
       setup = function()
-        vim.keymap.xmap({ "gc", "<Plug>Commentary" })
-        vim.keymap.nmap({ "gc", "<Plug>Commentary" })
-        vim.keymap.omap({ "gc", "<Plug>Commentary" })
-        vim.keymap.nmap({ "gcc", "<Plug>CommentaryLine" })
-        vim.keymap.nmap({ "gcu", "<Plug>Commentary<Plug>Commentary" })
+        vim.keymap.set("x", "gc", "<Plug>Commentary")
+        vim.keymap.set("n", "gc", "<Plug>Commentary")
+        vim.keymap.set("o", "gc", "<Plug>Commentary")
+        vim.keymap.set("n", "gcc", "<Plug>CommentaryLine")
+        vim.keymap.set("n", "gcu", "<Plug>Commentary<Plug>Commentary")
       end,
     })
     -- vim-surround
@@ -823,19 +856,19 @@ return require("packer").startup({
       },
       setup = function()
         vim.g.surround_no_mappings = true
-        vim.keymap.nmap({ "ds", "<Plug>Dsurround" })
-        vim.keymap.nmap({ "cs", "<Plug>Csurround" })
-        vim.keymap.nmap({ "cS", "<Plug>CSurround" })
-        vim.keymap.nmap({ "Ys", "<Plug>Ysurround" })
-        vim.keymap.nmap({ "YS", "<Plug>YSurround" })
-        vim.keymap.nmap({ "Yss", "<Plug>Yssurround" })
-        vim.keymap.nmap({ "YSs", "<Plug>YSsurround" })
-        vim.keymap.nmap({ "YSS", "<Plug>YSsurround" })
-        vim.keymap.xmap({ "S", "<Plug>VSurround" })
-        vim.keymap.xmap({ "gS", "<Plug>VgSurround" })
-        vim.keymap.imap({ "<C-S>", "<Plug>Isurround" })
-        vim.keymap.imap({ "<C-G>s", "<Plug>Isurround" })
-        vim.keymap.imap({ "<C-G>S", "<Plug>ISurround" })
+        vim.keymap.set("n", "ds", "<Plug>Dsurround")
+        vim.keymap.set("n", "cs", "<Plug>Csurround")
+        vim.keymap.set("n", "cS", "<Plug>CSurround")
+        vim.keymap.set("n", "Ys", "<Plug>Ysurround")
+        vim.keymap.set("n", "YS", "<Plug>YSurround")
+        vim.keymap.set("n", "Yss", "<Plug>Yssurround")
+        vim.keymap.set("n", "YSs", "<Plug>YSsurround")
+        vim.keymap.set("n", "YSS", "<Plug>YSsurround")
+        vim.keymap.set("x", "S", "<Plug>VSurround")
+        vim.keymap.set("x", "gS", "<Plug>VgSurround")
+        vim.keymap.set("i", "<C-S>", "<Plug>Isurround")
+        vim.keymap.set("i", "<C-G>s", "<Plug>Isurround")
+        vim.keymap.set("i", "<C-G>S", "<Plug>ISurround")
       end,
     })
     -- dial.nvim - Replaces speeddating
@@ -846,16 +879,16 @@ return require("packer").startup({
     })
     use({
       "AndrewRadev/splitjoin.vim",
-      -- cmd = { "SplitjoinSplit", "SplitjoinJoin" },
-      -- keys = { { "n", "gJ" }, { "n", "gS" } },
+      cmd = { "SplitjoinSplit", "SplitjoinJoin" },
+      keys = { { "n", "gJ" }, { "n", "gS" } },
     })
     use({
       "junegunn/vim-easy-align",
       cmd = { "EasyAlign", "LiveEasyAlign" },
       keys = { "<Plug>(EasyAlign)", "<Plug>(LiveEasyAlign)" },
       setup = function()
-        vim.keymap.vmap({ "ga", "<Plug>(LiveEasyAlign)", silent = true })
-        vim.keymap.nmap({ "ga", "<Plug>(EasyAlign)", silent = true })
+        vim.keymap.set("v", "ga", "<Plug>(LiveEasyAlign)", { silent = true })
+        vim.keymap.set("n", "ga", "<Plug>(EasyAlign)", { silent = true })
       end,
     })
     use({

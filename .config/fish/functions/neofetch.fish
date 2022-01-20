@@ -2,7 +2,7 @@
 # it's just here to tell neofetch what shell we're in instead of using $SHELL
 if command -qs neofetch
     function neofetch
-        set -lx SHELL (which fish)
+        set -lx SHELL (command -s fish)
         command neofetch $argv
     end
 end

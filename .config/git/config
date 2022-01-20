@@ -1,4 +1,6 @@
 [core]
+	# editor = flatpak run --file-forwarding re.sonny.Commit @@
+	# set this via GIT_EDITOR in gui apps
 	editor = nvim
 	pager = delta
 
@@ -13,6 +15,8 @@
 	aliases = config --get-regexp alias
 	graph = !ogl # https://github.com/onilton/ogl
 	open = brws
+	# This is useful for compacting .git directories extremely aggressively
+	gc-ref = "!sh -c 'git gc --prune=now --aggressive; git reflog expire --all --expire=now'"
 
 [blame]
 	coloring = highlightRecent
@@ -127,14 +131,14 @@
 	insteadOf = http://gitlab.gnome.org/
 	insteadOf = git://gitlab.gnome.org/
 
-[url "file:///dev/null/"] # not like you can do anything to stop me
+[url "file:///run/systemd/inaccessible/dir"] # not like you can do anything to stop me
 	insteadOf = ssh://git.savannah.gnu.org/
 	insteadOf = https://git.savannah.gnu.org/
 
 [delta]
+	# please don't use github issues as a way to randomly ping me about breaking changes
+	# it's very annoying and makes me regret using your software
 	side-by-side = false
-	plus-color = "#012800"
-	minus-color = "#340001"
 	syntax-theme = Monokai Extended
 	line-numbers = true
 

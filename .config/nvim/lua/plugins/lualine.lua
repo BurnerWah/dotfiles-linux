@@ -14,7 +14,7 @@ require("lualine").setup({
         "diff",
         {
           "diagnostics",
-          sources = { "nvim" },
+          sources = { "nvim_diagnostic" },
           symbols = {
             error = codicons and (codicons.get("error") .. " ") or nil,
             warn = codicons and (codicons.get("warning") .. " ") or nil,

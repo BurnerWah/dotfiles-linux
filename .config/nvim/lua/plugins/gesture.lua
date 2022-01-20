@@ -1,8 +1,8 @@
 local gesture = require("gesture")
 
-vim.keymap.nnoremap({ "<RightMouse>", "<Nop>" })
-vim.keymap.nnoremap({ "<RightDrag>", gesture.draw, silent = true })
-vim.keymap.nnoremap({ "<RightRelease>", gesture.finish, silent = true })
+vim.keymap.set('n', "<RightMouse>", "<Nop>" {noremap=true,})
+vim.keymap.set('n', "<RightDrag>", gesture.draw, {noremap=true,silent = true })
+vim.keymap.set('n', "<RightRelease>", gesture.finish, {noremap=true,silent = true })
 
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()

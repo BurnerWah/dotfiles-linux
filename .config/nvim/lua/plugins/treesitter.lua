@@ -174,7 +174,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
 
   require("nvim-treesitter.configs").setup({
     ensure_installed = "maintained",
-    ignore_install = { "kotlin", "verilog" }, -- These parsers are really big
+    -- ignore_install = { "kotlin", "verilog" }, -- These parsers are really big
     highlight = { enable = true },
     incremental_selection = { enable = true },
     indent = { enable = true }, -- Indent uses 'tabstop' so it has to be managed in ftplugins.
@@ -183,61 +183,61 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     textobjects = {
       select = {
         enable = true,
-        keymaps = {
-          ["af"] = text_objects.fn.outer,
-          ["if"] = text_objects.fn.inner,
-          ["ac"] = text_objects.class.outer,
-          ["ic"] = text_objects.class.inner,
-          -- Vim-like
-          ["a'"] = text_objects.string.single.outer,
-          ['a"'] = text_objects.string.double.outer,
-          ['i"'] = text_objects.string.double.inner,
-          ["a/"] = text_objects.comment.outer,
-          ["a*"] = text_objects.comment.outer,
-          -- Ambiguous selections
-          ["a["] = text_objects.ambig.braces.outer,
-          ["a]"] = text_objects.ambig.braces.outer,
-          ["i["] = text_objects.ambig.braces.inner,
-          ["i]"] = text_objects.ambig.braces.inner,
-          ["a{"] = text_objects.ambig.brackets.outer,
-          ["a}"] = text_objects.ambig.brackets.outer,
-          ["i{"] = text_objects.ambig.brackets.inner,
-          ["i}"] = text_objects.ambig.brackets.inner,
-          ["a("] = text_objects.ambig.parens.outer,
-          ["a)"] = text_objects.ambig.parens.outer,
-          ["i("] = text_objects.ambig.parens.inner,
-          ["i)"] = text_objects.ambig.parens.inner,
-          ["a`"] = {
-            bash = "@ambig.tilde.outer",
-            javascript = "@string.template.outer",
-            lua = "@string.any.outer",
-            toml = "@string.any.outer", -- mostly for multi-line strings
-          },
-          ["i`"] = { bash = "@ambig.tilde.inner" },
-        },
+        -- keymaps = {
+        --   ["af"] = text_objects.fn.outer,
+        --   ["if"] = text_objects.fn.inner,
+        --   ["ac"] = text_objects.class.outer,
+        --   ["ic"] = text_objects.class.inner,
+        --   -- Vim-like
+        --   ["a'"] = text_objects.string.single.outer,
+        --   ['a"'] = text_objects.string.double.outer,
+        --   ['i"'] = text_objects.string.double.inner,
+        --   ["a/"] = text_objects.comment.outer,
+        --   ["a*"] = text_objects.comment.outer,
+        --   -- Ambiguous selections
+        --   ["a["] = text_objects.ambig.braces.outer,
+        --   ["a]"] = text_objects.ambig.braces.outer,
+        --   ["i["] = text_objects.ambig.braces.inner,
+        --   ["i]"] = text_objects.ambig.braces.inner,
+        --   ["a{"] = text_objects.ambig.brackets.outer,
+        --   ["a}"] = text_objects.ambig.brackets.outer,
+        --   ["i{"] = text_objects.ambig.brackets.inner,
+        --   ["i}"] = text_objects.ambig.brackets.inner,
+        --   ["a("] = text_objects.ambig.parens.outer,
+        --   ["a)"] = text_objects.ambig.parens.outer,
+        --   ["i("] = text_objects.ambig.parens.inner,
+        --   ["i)"] = text_objects.ambig.parens.inner,
+        --   ["a`"] = {
+        --     bash = "@ambig.tilde.outer",
+        --     javascript = "@string.template.outer",
+        --     lua = "@string.any.outer",
+        --     toml = "@string.any.outer", -- mostly for multi-line strings
+        --   },
+        --   ["i`"] = { bash = "@ambig.tilde.inner" },
+        -- },
       },
-      move = {
-        enable = true,
-        goto_next_start = { ["]m"] = text_objects.fn.outer, ["]]"] = text_objects.class.outer },
-        goto_next_end = {
-          ["]M"] = text_objects.fn.outer,
-          ["]["] = text_objects.class.outer,
-          ["]*"] = text_objects.comment.outer,
-          ["]/"] = text_objects.comment.outer,
-        },
-        goto_previous_start = {
-          ["[m"] = text_objects.fn.outer,
-          ["[["] = text_objects.class.outer,
-          ["[*"] = text_objects.comment.outer,
-          ["[/"] = text_objects.comment.outer,
-        },
-        goto_previous_end = { ["[M"] = text_objects.fn.outer, ["[]"] = text_objects.class.outer },
-      },
-      swap = {
-        enable = true,
-        swap_next = { ["<Leader>a"] = text_objects.parameter.inner },
-        swap_previous = { ["<Leader>A"] = text_objects.parameter.inner },
-      },
+      -- move = {
+      --   enable = true,
+      --   goto_next_start = { ["]m"] = text_objects.fn.outer, ["]]"] = text_objects.class.outer },
+      --   goto_next_end = {
+      --     ["]M"] = text_objects.fn.outer,
+      --     ["]["] = text_objects.class.outer,
+      --     ["]*"] = text_objects.comment.outer,
+      --     ["]/"] = text_objects.comment.outer,
+      --   },
+      --   goto_previous_start = {
+      --     ["[m"] = text_objects.fn.outer,
+      --     ["[["] = text_objects.class.outer,
+      --     ["[*"] = text_objects.comment.outer,
+      --     ["[/"] = text_objects.comment.outer,
+      --   },
+      --   goto_previous_end = { ["[M"] = text_objects.fn.outer, ["[]"] = text_objects.class.outer },
+      -- },
+      -- swap = {
+      --   enable = true,
+      --   swap_next = { ["<Leader>a"] = '@parameter.inner' },
+      --   swap_previous = { ["<Leader>A"] = '@parameter.inner' },
+      -- },
     },
     textsubjects = {
       enable = true,
@@ -246,7 +246,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     autotag = { enable = true },
     context_commentstring = { enable = true },
     autopairs = { enable = true },
-    tree_docs = { enable = true },
+    -- tree_docs = { enable = true },
   })
   local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
   parser_config.bash.used_by = { "PKGBUILD" }

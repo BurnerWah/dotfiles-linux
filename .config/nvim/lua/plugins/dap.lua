@@ -69,27 +69,35 @@ if has_codicons then
   sign_define("DapStopped", { text = codicons.get("debug-stop"), texthl = "", linehl = "", numhl = "" })
 end
 
-local nnor = vim.keymap.nnoremap
-nnor({ "<F5>", [[<Cmd>lua require('dap').continue()<CR>]], silent = true })
-nnor({ "<F10>", [[<Cmd>lua require('dap').step_over()<CR>]], silent = true })
-nnor({ "<F11>", [[<Cmd>lua require('dap').step_into()<CR>]], silent = true })
-nnor({ "<F12>", [[<Cmd>lua require('dap').step_out()<CR>]], silent = true })
-nnor({ "<Leader>b", [[<Cmd>lua require('dap').toggle_breakpoint()<CR>]], silent = true })
-nnor({
+-- vim.keymap.set("n", "<F5>", [[<Cmd>lua require('dap').continue()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<F5>", dap.continue, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<F10>", [[<Cmd>lua require('dap').step_over()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<F10>", dap.step_over, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<F11>", [[<Cmd>lua require('dap').step_into()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<F11>", dap.step_into, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<F12>", [[<Cmd>lua require('dap').step_out()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<F12>", dap.step_out, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Leader>b", [[<Cmd>lua require('dap').toggle_breakpoint()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { noremap = true, silent = true })
+vim.keymap.set(
+  "n",
   "<Leader>B",
   ---@diagnostic disable-next-line: undefined-field
   function()
     dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
   end,
-  silent = true,
-})
-nnor({
+  { noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
   "<Leader>lp",
   ---@diagnostic disable-next-line: undefined-field
   function()
     dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
   end,
-  silent = true,
-})
-nnor({ "<Leader>dr", [[<Cmd>lua require('dap').repl.open()<CR>]], silent = true })
-nnor({ "<Leader>dl", [[<Cmd>lua require('dap').run_last()<CR>]], silent = true })
+  { noremap = true, silent = true }
+)
+-- vim.keymap.set("n", "<Leader>dr", [[<Cmd>lua require('dap').repl.open()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>dr", dap.repl.open, { noremap = true, silent = true })
+-- vim.keymap.set("n", "<Leader>dl", [[<Cmd>lua require('dap').run_last()<CR>]], { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>dl", dap.run_last, { noremap = true, silent = true })

@@ -18,7 +18,7 @@ end
 require("pl.text").format_operator() -- This is too useful to live without sometimes
 require("user.options") -- Set my vim options
 require("plugins") -- Load my plugins
-require("astronauta.keymap") -- Add astronauta keymaps early so they can be utilized freely
+-- require("astronauta.keymap") -- Add astronauta keymaps early so they can be utilized freely
 require("user.keymaps") -- Add my own keymaps
 
 -- Augroups (Use a lua abstraction)

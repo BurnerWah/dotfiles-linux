@@ -42,14 +42,14 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     "githubcoauthors",
     "smart_history",
     "zoxide",
+    "env",
   }, telescope.load_extension)
 
-  local nmap = vim.keymap.nmap
-  nmap({ "<Leader>ff", "<Cmd>Telescope find_files<CR>", silent = true })
-  nmap({ "<Leader>fg", "<Cmd>Telescope live_grep<CR>", silent = true })
-  nmap({ "<Leader>fb", "<Cmd>Telescope buffers<CR>", silent = true })
-  nmap({ "<Leader>fh", "<Cmd>Telescope help_tags<CR>", silent = true })
-  nmap({ "<Leader>fF", "<Cmd>Telescope frequency<CR>", silent = true })
+  vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>", { silent = true })
+  vim.keymap.set("n", "<Leader>fg", "<Cmd>Telescope live_grep<CR>", { silent = true })
+  vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>", { silent = true })
+  vim.keymap.set("n", "<Leader>fh", "<Cmd>Telescope help_tags<CR>", { silent = true })
+  vim.keymap.set("n", "<Leader>fF", "<Cmd>Telescope frequency<CR>", { silent = true })
 
   async:close()
 end))
