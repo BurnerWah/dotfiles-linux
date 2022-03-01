@@ -22,4 +22,14 @@ if isatty
     set -q GTK_RC_FILES && set --path GTK_RC_FILES $GTK_RC_FILES
     set -q GTK2_RC_FILES && set --path GTK2_RC_FILES $GTK2_RC_FILES
 
+    # Add fisher functions & completions to fish path
+    if set -q fisher_path && [ $fisher_path != $__fish_config_dir ]
+        if not contains -- $fisher_path/functions $fish_function_path
+            set -a fish_function_path $fisher_path/functions
+        end
+        if not contains -- $fisher_path/completions $fish_complete_path
+            set -a fish_complete_path $fisher_path/completions
+        end
+    end
+
 end

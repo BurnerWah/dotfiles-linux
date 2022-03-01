@@ -8,7 +8,7 @@ function __gtk_launch_apps -d "internal completion function"
     # fd -d 1 -e desktop . $dirs | string replace -r '^/.+/' '' | string replace -r '.desktop$' ''
     # this is imperfect since we need to also invert a match on NoDisplay=true
     # we also need to limit it to just .desktop files with a max depth of 1.
-    rg -l -e '^Exec=' -e '^Type=Application' $dirs | string replace -r '^/.+/' '' | string replace -r '.desktop$' ''
+    rg -l -e '^Exec=' -e '^Type=Application' $dirs 2>/dev/null | string replace -r '^/.+/' '' | string replace -r '.desktop$' ''
     # rg -l '^Exec=' $dirs
 end
 

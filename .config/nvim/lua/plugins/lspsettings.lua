@@ -184,8 +184,9 @@ util.default_config = vim.tbl_extend(
 )
 
 -- Apparently we need this set up early
-require("nlspsettings").setup()
+require("nlspsettings").setup({ jsonls_append_default_schemas = true })
 tablex.foreach({
+  "awk_ls",
   "bashls",
   "cmake",
   "denols",
@@ -195,6 +196,7 @@ tablex.foreach({
   "gopls",
   "html",
   "pyright",
+  "solargraph",
   "sqlls",
   "texlab",
   "tsserver",
@@ -203,15 +205,6 @@ tablex.foreach({
 }, function(V)
   configs[V].setup({})
 end)
--- configs.ccls.setup({
---   init_options = {
---     compilationDatabaseDirectory = "build",
---     index = { threads = 0 },
---     cache = { directory = ".ccls-cache" },
---     clang = { resourceDir = "/usr/lib64/clang/13" },
---     highlight = { lsRanges = true },
---   },
--- })
 configs.clangd.setup({ init_options = { clangdFileStatus = true } })
 configs.cssls.setup({ filetypes = { "css", "sass", "scss", "less" } })
 -- configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})

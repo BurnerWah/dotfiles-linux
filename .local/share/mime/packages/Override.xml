@@ -385,6 +385,9 @@
   <mime-type type="text/tab-separated-values">
     <alias type="application/tab-separated-values"/>
   </mime-type>
+  <mime-type type="text/vbscript">
+    <alias type="text/x-visualbasic"/>
+  </mime-type>
   <!-- text/vnd.grahviz: Graphviz DOT graph {{{2 -->
   <mime-type type="text/vnd.graphviz">
     <alias type="text/x-dot"/>

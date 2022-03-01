@@ -1,10 +1,11 @@
-local tablex = require("pl.tablex")
-
----@type table<string, string>
-local E = vim.env
-
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
+  local tablex = require("pl.tablex")
+  local Set = require("pl.Set")
+
+  ---@type table<string, string>
+  local E = vim.env
+
   local telescope = require("telescope")
   telescope.setup({
     defaults = {
@@ -25,6 +26,23 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
         },
       },
       fzf_writer = { use_highlighter = true },
+      media_files = {
+        filetypes = (function()
+          local executable = require("vimstd.fn").executable
+          local ret = Set({ "jpg", "png", "jpeg", "webp" })
+          if executable("identify") then
+            ret = ret + "gif"
+          end
+          if executable("ffmpegthumbnailer") then
+            ret = ret + Set({ "mp4", "webm" })
+          end
+          if executable("pdftoppm") then
+            ret = ret + Set({ "pdf", "epub" })
+          end
+          return Set.values(ret)
+        end)(),
+        find_cmd = "rg",
+      },
     },
   })
   tablex.foreach({

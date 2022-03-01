@@ -83,11 +83,6 @@ return require("packer").startup({
       config = _M.do_config("treesitter.lua"),
     })
     use({
-      "hrsh7th/vim-vsnip",
-      requires = { "neovim/nvim-lspconfig", { "rafamadriz/friendly-snippets", event = "VimEnter *" } },
-      config = _M.do_config("vim-vsnip.lua"),
-    })
-    use({
       "hrsh7th/nvim-cmp",
       requires = {
         "hrsh7th/cmp-buffer",
@@ -101,7 +96,11 @@ return require("packer").startup({
         "lukas-reineke/cmp-under-comparator",
         "hrsh7th/cmp-emoji",
         { "hrsh7th/cmp-nvim-lua", ft = "lua" },
-        { "hrsh7th/cmp-vsnip", requires = "vim-vsnip" },
+        {
+          "hrsh7th/cmp-vsnip",
+          requires = { "hrsh7th/vim-vsnip", { "rafamadriz/friendly-snippets", event = "VimEnter *" } },
+          config = [[vim.g.vsnip_snippet_dir = vim.fn.stdpath("config") .. "/vsnip"]],
+        },
         { "ray-x/cmp-treesitter", requires = "nvim-treesitter/nvim-treesitter" },
         { "hrsh7th/cmp-copilot", requires = "github/copilot.vim" },
         { "tzachar/cmp-tabnine", run = "./install.sh" },
@@ -699,6 +698,7 @@ return require("packer").startup({
     use({ "plasticboy/vim-markdown", ft = "markdown" })
     use({ "npxbr/glow.nvim", ft = { "markdown", "pandoc.markdown", "rmd" } })
     use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", ft = "markdown" })
+    use({ "kat0h/bufpreview.vim", requires = "vim-denops/denops.vim" })
 
     -- Org
     -- use({'kristijanhusak/orgmode.nvim', config = [[require('orgmode').setup()]]})
@@ -742,9 +742,9 @@ return require("packer").startup({
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim",
       },
-      -- config = function()
-      --   require('rust-tools').setup({server = {capabilities = {window = {workDoneProgress = true}}}})
-      -- end,
+      config = function()
+        require("rust-tools").setup({})
+      end,
     })
     use({
       "Saecki/crates.nvim",
@@ -788,6 +788,7 @@ return require("packer").startup({
         require("telescope").load_extension("ghn")
       end,
     })
+    -- use({ "skanehira/denops-docker.vim", requires = "vim-denops/denops.vim" })
 
     -- Text editing
     use({ "tpope/vim-repeat" })

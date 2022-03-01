@@ -12,13 +12,15 @@ if ! [[ "$PATH" =~ $HOME/.local/bin: ]]; then
 fi
 export PATH
 
-HISTFILE=~/.local/share/bash_history
+HISTFILE=~/.cache/bash_history
 
 # shellcheck disable=1090
-source ~/.local/share/bash-completion/completions/*
+# source ~/.local/share/bash-completion/completions/*
 
 # shellcheck source=/dev/null
-source <(zoxide init bash 2>/dev/null)
+if type -f zoxide >/dev/null 2>&1; then
+  source <(zoxide init bash 2>/dev/null)
+fi
 
 # User specific aliases and functions
 if type -f exa >/dev/null 2>&1; then

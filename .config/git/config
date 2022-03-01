@@ -92,6 +92,12 @@
 	ignoredHook = true
 	waitingForEditor = true
 
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
 # Protocols: never use git://
 # git:// is insecure. When possible, we try to rewrite it to https://.
 # http:// is also insecure, so we want to avoid that too. But I haven't blocked it outright.
