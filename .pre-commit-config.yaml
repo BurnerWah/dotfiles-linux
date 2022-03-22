@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: detect-private-key
       - { id: check-added-large-files, stages: [commit, push, manual] }
@@ -23,22 +23,22 @@ repos:
 
     # limit prettier to running on files it supports to speed up checks
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.3.0
+    rev: v2.6.0
     hooks: [{ id: prettier, stages: [commit, push, manual] }]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.18.1
+    rev: v2.31.1
     hooks: [{ id: pyupgrade, stages: [commit, push, manual] }]
 
   - repo: https://github.com/psf/black
-    rev: 21.5b1
+    rev: 22.1.0
     hooks:
       - id: black
         language_version: python3.9
         stages: [commit, push, manual]
 
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.1.0
+    rev: v1.2.0
     hooks: [{ id: detect-secrets }]
 
   - repo: https://github.com/YaBoiBurner/pre-commit-hooks
@@ -48,7 +48,7 @@ repos:
       - id: taplo-format
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.3.5
+    rev: 2.4.0
     hooks:
       - id: editorconfig-checker
         stages: [commit, push, manual]
@@ -61,5 +61,5 @@ repos:
           - yaml
 
   - repo: https://github.com/jorisroovers/gitlint
-    rev: v0.15.1
+    rev: v0.17.0
     hooks: [{ id: gitlint }]
