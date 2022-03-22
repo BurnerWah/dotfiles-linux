@@ -676,6 +676,7 @@ return require("packer").startup({
       { "thyrgle/vim-dyon", ft = "dyon" },
       { "bytecodealliance/cranelift.vim", ft = "clif" },
       { "NoahTheDuke/vim-just", ft = "just" },
+      { "abhishekmukherg/xonsh-vim" },
     })
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter

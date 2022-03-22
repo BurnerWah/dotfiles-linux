@@ -184,7 +184,7 @@ util.default_config = vim.tbl_extend(
 )
 
 -- Apparently we need this set up early
-require("nlspsettings").setup({ jsonls_append_default_schemas = true })
+-- require("nlspsettings").setup({ jsonls_append_default_schemas = true })
 tablex.foreach({
   "awk_ls",
   "bashls",
@@ -197,7 +197,6 @@ tablex.foreach({
   "html",
   "pyright",
   "solargraph",
-  "sqlls",
   "texlab",
   "tsserver",
   "vimls",
@@ -210,7 +209,7 @@ configs.cssls.setup({ filetypes = { "css", "sass", "scss", "less" } })
 -- configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
 configs.jsonls.setup({
   filetypes = { "json", "jsonc" },
-  settings = { json = { schemas = require("nlspsettings.jsonls").get_default_schemas() } },
+  -- settings = { json = { schemas = require("nlspsettings.jsonls").get_default_schemas() } },
 })
 configs.lemminx.setup({
   cmd = { exepath("lemminx") },

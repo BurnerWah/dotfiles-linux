@@ -1,1 +1,5 @@
 edit_mode = "vi"
+startup = [
+  "zoxide init nushell --hook prompt | save ~/.cache/.zoxide.nu",
+  "source ~/.cache/.zoxide.nu",
+]
