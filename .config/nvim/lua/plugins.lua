@@ -667,7 +667,7 @@ return require("packer").startup({
       { "rhysd/vim-llvm", ft = { "llvm", "mlir", "tablegen" } },
       { "ron-rs/ron.vim", ft = "ron" },
       { "bakpakin/fennel.vim", ft = "fennel" },
-      "aklt/plantuml-syntax",
+      { "aklt/plantuml-syntax" },
       { "tikhomirov/vim-glsl", ft = { "glsl", "elm", "html" } },
       { "udalov/kotlin-vim", ft = "kotlin" },
       { "YaBoiBurner/requirements.txt.vim", ft = "requirements" },
@@ -677,6 +677,7 @@ return require("packer").startup({
       { "bytecodealliance/cranelift.vim", ft = "clif" },
       { "NoahTheDuke/vim-just", ft = "just" },
       { "abhishekmukherg/xonsh-vim" },
+      { "~/Projects/nvim-plugins/adblock-syntax.vim", ft = "abp" },
     })
     -- Meson syntax is now manually maintained
     -- toml is handled internally + with nvim-treesitter
