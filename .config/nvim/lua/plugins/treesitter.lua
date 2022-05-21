@@ -173,7 +173,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
   }
 
   require("nvim-treesitter.configs").setup({
-    ensure_installed = "maintained",
+    ensure_installed = "all",
     -- ignore_install = { "kotlin", "verilog" }, -- These parsers are really big
     highlight = { enable = true },
     incremental_selection = { enable = true },

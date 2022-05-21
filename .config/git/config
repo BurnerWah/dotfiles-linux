@@ -1,7 +1,7 @@
 [core]
-	# editor = flatpak run --file-forwarding re.sonny.Commit @@
+	editor = flatpak run --file-forwarding re.sonny.Commit @@
 	# set this via GIT_EDITOR in gui apps
-	editor = nvim
+	# editor = nvim
 	pager = delta
 
 [user]

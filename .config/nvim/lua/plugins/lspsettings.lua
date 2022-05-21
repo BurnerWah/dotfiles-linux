@@ -186,7 +186,7 @@ util.default_config = vim.tbl_extend(
 -- Apparently we need this set up early
 -- require("nlspsettings").setup({ jsonls_append_default_schemas = true })
 tablex.foreach({
-  "awk_ls",
+  -- "awk_ls",
   "bashls",
   "cmake",
   "denols",

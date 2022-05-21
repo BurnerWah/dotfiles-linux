@@ -354,7 +354,7 @@
 
 # Enables rich html representation of docstrings. (This requires the docrepr
 # module).
-# c.InteractiveShell.sphinxify_docstring = False
+c.InteractiveShell.sphinxify_docstring = True
 
 #
 # c.InteractiveShell.wildcards_case_sensitive = True
@@ -367,6 +367,7 @@
 # -----------------------------------------------------------------------------
 
 # A subclass of InteractiveShell for ZMQ.
+c.ZMQInteractiveShell.sphinxify_docstring = True
 
 # -----------------------------------------------------------------------------
 # ProfileDir(LoggingConfigurable)
