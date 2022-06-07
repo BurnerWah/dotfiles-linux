@@ -3,7 +3,6 @@
 # --downloader-args aria2c '-c -j 3 -x 3 -s 3 -k 1M'
 
 --no-mtime
---embed-thumbnail
 --embed-metadata
 --xattrs
 # vim:ft=argfile

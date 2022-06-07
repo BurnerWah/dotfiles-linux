@@ -1,3 +1,3 @@
-function pspspsps --wraps=ps --description 'alias pspspsps ps'
-    ps $argv
+function pspspsps --wraps='type cat' --description 'alias pspspsps type cat'
+    type cat $argv
 end
