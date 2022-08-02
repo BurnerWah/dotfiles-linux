@@ -32,4 +32,7 @@ if isatty
         end
     end
 
+    if not contains -- $__fish_config_dir/vendor_completions.d $fish_complete_path
+        set -a fish_complete_path $__fish_config_dir/vendor_completions.d
+    end
 end

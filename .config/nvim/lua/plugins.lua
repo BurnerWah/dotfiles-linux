@@ -104,7 +104,7 @@ return require("packer").startup({
         { "ray-x/cmp-treesitter", requires = "nvim-treesitter/nvim-treesitter" },
         { "hrsh7th/cmp-copilot", requires = "github/copilot.vim" },
         { "tzachar/cmp-tabnine", run = "./install.sh" },
-        { "f3fora/cmp-nuspell", rocks = "lua-nuspell" },
+        -- { "f3fora/cmp-nuspell", rocks = "lua-nuspell" },
         {
           "tzachar/cmp-fuzzy-buffer",
           requires = { { "tzachar/fuzzy.nvim", requires = "nvim-telescope/telescope-fzf-native.nvim" } },
@@ -488,20 +488,6 @@ return require("packer").startup({
       end,
     })
 
-    -- ultest - unit test support
-    -- lazy loading is very janky
-    use({
-      "rcarriga/vim-ultest",
-      requires = "vim-test/vim-test",
-      run = ":UpdateRemotePlugins",
-      opt = true,
-      cmd = { "Ultest", "UltestNearest", "UltestSummary" },
-      keys = { "<Plug>(ultest-run-file)", "<Plug>(ultest-run-nearest)" },
-      config = function()
-        vim.cmd("silent UpdateRemotePlugins")
-        vim.cmd("au init User UltestPositionsUpdate ++once UltestNearest")
-      end,
-    })
     -- vim-sonictemplate - Template engine
     -- fn load condition allows for telescope integration to load this
     use({

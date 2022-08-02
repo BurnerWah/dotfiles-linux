@@ -1,7 +1,0 @@
-#!/usr/bin/env -S node --title=tsserver
-/*
- * The nodejs-typescript package for fedora (at time of writing) doesn't give
- * the tsserver entry point execute permissions, and doesn't link it into
- * /usr/bin. This script is just an alternate entry point until that's fixed.
- */
-require("/usr/lib/node_modules/typescript/lib/tsserver");

@@ -41,7 +41,7 @@ require("agrp").set({
       -- {'plugins.lua', 'PackerCompile'},
       { "*", "silent FormatWrite" }, -- formatter.nvim
     },
-    { "VimEnter", "*", "++once silent delcommand GBrowse" },
+    -- { "VimEnter", "*", "++once silent delcommand GBrowse" },
     {
       "TextYankPost",
       "*",
