@@ -22,10 +22,10 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     { f = { name = "find", f = { [[<Cmd>Telescope find_files<CR>]], "Find File" } } },
     { prefix = [[<leader>]] }
   )
-  wk.register(
-    { w = { name = "VimWiki", w = { "Open index" }, t = { "Open index in new tab" } } },
-    { prefix = "<leader>" }
-  )
+  -- wk.register(
+  --   { w = { name = "VimWiki", w = { "Open index" }, t = { "Open index in new tab" } } },
+  --   { prefix = "<leader>" }
+  -- )
   wk.register({
     ["<leader>gm"] = { [[<Plug>(git-messenger)]], "Show git commit info" },
     ["<leader>gy"] = { "Get the URL for a line of code" },

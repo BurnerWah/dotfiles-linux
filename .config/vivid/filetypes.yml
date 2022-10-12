@@ -175,6 +175,7 @@ markup:
 
 programming:
   source:
+    astro: [.astro]
     actionscript: [.as]
     applescript: [.applescript]
     asp: [.asa]
@@ -217,7 +218,7 @@ programming:
     haskell: [.hs]
     ipython: [.ipynb]
     java: [.java, .bsh]
-    javascript: [.js, .htc]
+    javascript: [.js, .jsx, .cjs, .mjs, .htc]
     julia: [.jl]
     kotlin: [.kt, .kts]
     latex: [.tex, .ltx]
@@ -227,6 +228,7 @@ programming:
     lua: [.lua]
     mathematica: [.nb]
     matlab: [.matlab, .m, .mn]
+    nunjucks: [.njk]
     ocaml: [.ml, .mli]
     pascal: [.pas, .p, .dpr]
     perl: [.pl, .pm, .pod, .t, .cgi]
@@ -242,12 +244,14 @@ programming:
     scala: [.scala, .sbt]
     shell: [.sh, .bash, .csh, .zsh, .fish]
     sql: [.sql]
+    svlte: [.svelte]
     swift: [.swift]
     tablegen: [.td]
     tcl: [.tcl]
     typescript: [.ts, .tsx]
     vala: [.vala, .vapi]
     vim: [.vim]
+    vue: [.vue]
 
   tooling:
     vcs:
@@ -289,10 +293,11 @@ programming:
         - .editorconfig
         - .prettierignore
         - .prettierrc
+        - .prettierrc.cjs
 
     linting:
       cxx: [.clang-tidy]
-      javascript: [.jshintrc, .eslintrc, .eslintignore]
+      javascript: [.jshintrc, .eslintrc, .eslintrc.cjs, .eslintignore]
       lua: [.busted, .luacheckrc, .luacov]
       python: [pylintrc, .mypy.ini]
       vim: [.vintrc.yaml]
@@ -513,3 +518,5 @@ unimportant:
     - .zcompdump
     - gschemas.compiled
     - package-lock.json
+    - pnpm-lock.yaml
+    - .eslintcache

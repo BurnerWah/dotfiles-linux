@@ -1,6 +1,6 @@
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
-  local tablex = require("pl.tablex")
+  -- local tablex = require("pl.tablex")
   local Set = require("pl.Set")
 
   ---@type table<string, string>
@@ -45,23 +45,11 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
       },
     },
   })
-  tablex.foreach({
-    "fzf",
-    "fzy_native",
-    "fzf_writer",
-    "gh",
-    "media_files",
-    "sonictemplate",
-    "bookmarks",
-    "frecency",
-    "cheat",
-    "arecibo",
-    "dap",
-    "githubcoauthors",
-    "smart_history",
-    "zoxide",
-    "env",
-  }, telescope.load_extension)
+  -- tablex.foreach({
+  --   "fzf",
+  --   -- "frecency",
+  --   -- "smart_history",
+  -- }, telescope.load_extension)
 
   vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>", { silent = true })
   vim.keymap.set("n", "<Leader>fg", "<Cmd>Telescope live_grep<CR>", { silent = true })

@@ -1,25 +1,13 @@
 local lsp = vim.lsp
 local configs = require("lspconfig")
 local util = require("lspconfig/util")
-local tablex, Set = require("pl.tablex"), require("pl.Set")
--- local lspcontainers = require("lspcontainers")
+local tablex = require("pl.tablex")
 local exepath = require("vimstd.fn").exepath
-
--- Client filter - used to automatically turn off on_attach stuff for certain servers
-local server_filter = {
-  cursorline = Set({
-    "diagnosticls",
-    "vsc_alex",
-    "vsc_textlint",
-    "eslint_lsp",
-    "vsc_jshint",
-    "vsc_spectral",
-  }),
-}
 
 -- Setup function
 local function on_attach(client, bufnr)
   local winnr = vim.api.nvim_get_current_win()
+  local buf = vim.api.nvim_get_current_buf()
   local async
 
   async = vim.loop.new_async(vim.schedule_wrap(function()
@@ -109,19 +97,27 @@ local function on_attach(client, bufnr)
 
     if caps.document_highlight and not ts_has_locals then
       -- Tree-sitter does this better
-      vim.api.nvim_exec(
-        [[
-    augroup lsp_document_highlight
-      autocmd! * <buffer>
-      autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-    ]],
-        false
-      )
-    elseif not ts_has_locals and not server_filter.cursorline[client.config.name] then
-      -- If tree-sitter & lsp can't handle stuff, defer document highlighting to nvim-cursorline.
-      require("user.cfg.nvim-cursorline").on_attach()
+      local aug = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = false })
+      vim.api.nvim_creat_autocmd("CursorHold", {
+        group = aug,
+        buffer = buf,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_creat_autocmd("CursorMoved", {
+        group = aug,
+        buffer = buf,
+        callback = vim.lsp.buf.clear_references,
+      })
+      -- vim.api.nvim_exec(
+      --   [[
+      -- augroup lsp_document_highlight
+      -- autocmd! * <buffer>
+      -- autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+      -- autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      -- augroup END
+      -- ]],
+      --   false
+      -- )
     end
 
     -- Diagnostics are probably always available
@@ -168,53 +164,49 @@ local function on_attach(client, bufnr)
   async:send()
 end
 
-local capabilities = lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.window = capabilities.window or {}
-capabilities.window.workDoneProgress = true
+local caps = lsp.protocol.make_client_capabilities()
+caps.textDocument.completion.completionItem.snippetSupport = true
+caps.window = caps.window or {}
+caps.window.workDoneProgress = true
 local has_cmp_lsp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
 if has_cmp_lsp then
-  cmp_lsp.update_capabilities(capabilities)
+  cmp_lsp.update_capabilities(caps)
 end
 
-util.default_config = vim.tbl_extend(
-  "force",
-  util.default_config,
-  { capabilities = capabilities, on_attach = on_attach }
-)
+util.default_config = vim.tbl_extend("force", util.default_config, { capabilities = caps, on_attach = on_attach })
 
 -- Apparently we need this set up early
 -- require("nlspsettings").setup({ jsonls_append_default_schemas = true })
 tablex.foreach({
   -- "awk_ls",
   "bashls",
-  "cmake",
+  -- "cmake",
   "denols",
   "dockerls",
-  "dotls",
-  "eslint",
-  "gopls",
+  -- "dotls",
+  -- "eslint",
+  -- "gopls",
   "html",
   "pyright",
-  "solargraph",
-  "texlab",
+  -- "solargraph",
+  -- "texlab",
   "tsserver",
   "vimls",
   "yamlls",
 }, function(V)
   configs[V].setup({})
 end)
-configs.clangd.setup({ init_options = { clangdFileStatus = true } })
-configs.cssls.setup({ filetypes = { "css", "sass", "scss", "less" } })
+-- configs.clangd.setup({ init_options = { clangdFileStatus = true } })
+-- configs.cssls.setup({ filetypes = { "css", "sass", "scss", "less" } })
 -- configs.denols.setup({root_dir = require('user.cfg.lsp.utils').tsdetect('deno')})
 configs.jsonls.setup({
   filetypes = { "json", "jsonc" },
   -- settings = { json = { schemas = require("nlspsettings.jsonls").get_default_schemas() } },
 })
-configs.lemminx.setup({
-  cmd = { exepath("lemminx") },
-  settings = { xml = { server = { workDir = "~/.cache/lemminx" } } },
-})
+-- configs.lemminx.setup({
+--   cmd = { exepath("lemminx") },
+--   settings = { xml = { server = { workDir = "~/.cache/lemminx" } } },
+-- })
 configs.sumneko_lua.setup({
   cmd = { "lua-language-server" },
   root_dir = util.root_pattern(".luarc.json", ".git"),

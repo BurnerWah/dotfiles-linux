@@ -1,23 +1,27 @@
-local dial = require("dial")
-
--- Boolean flipping
-dial.augends["custom#boolean"] = dial.common.enum_cyclic({
-  name = "boolean",
-  desc = "Flip a boolean between true and false",
-  strlist = { "true", "false" },
+-- Configuration
+local augend = require("dial.augend")
+local config = require("dial.config")
+config.augends:register_group({
+  -- default augends used when no group name is specified
+  default = {
+    augend.integer.alias.decimal, -- nonnegative decimal number (0, 1, 2, 3, ...)
+    augend.integer.alias.hex, -- nonnegative hex number  (0x01, 0x1a1f, etc.)
+    augend.integer.alias.binary, -- binary values (0b01, etc.)
+    augend.date.alias["%Y/%m/%d"], -- date (2022/08/06, etc.)
+    augend.date.alias["%Y-%m-%d"], -- date (2022-08-06, etc.)
+    augend.date.alias["%m/%d"], -- short date (08/06, etc.)
+    augend.date.alias["%H:%M"], -- time (13:30, etc.)
+    augend.constant.alias.bool, -- boolean value (true <-> false)
+    augend.semver.alias.semver, -- semantiv versions (0.3.0, 1.2.8, etc.)
+  },
 })
-table.insert(dial.config.searchlist.normal, "custom#boolean")
 
--- Keymaps - We add repeat support to this
-vim.keymap.set("n", "<C-a>", function()
-  dial.cmd.increment_normal(vim.v.count1)
-  pcall(vim.cmd, [[silent! call repeat#set("\<C-a>", v:count)]])
-end, { noremap = true })
-vim.keymap.set("n", "<C-x>", function()
-  dial.cmd.increment_normal(-vim.v.count1)
-  pcall(vim.cmd, [[silent! call repeat#set("\<C-x>", v:count)]])
-end, { noremap = true })
-vim.keymap.set("v", "<C-a>", "<Plug>(dial-increment)")
-vim.keymap.set("v", "<C-x>", "<Plug>(dial-decrement)")
-vim.keymap.set("v", "g<C-a>", "<Plug>(dial-increment-additional)")
-vim.keymap.set("v", "g<C-x>", "<Plug>(dial-decrement-additional)")
+-- Keymaps
+local maps = require("dial.map")
+
+vim.keymap.set("n", "<C-a>", maps.inc_normal(), { noremap = true })
+vim.keymap.set("n", "<C-x>", maps.dec_normal(), { noremap = true })
+vim.keymap.set("v", "<C-a>", maps.inc_visual(), { noremap = true })
+vim.keymap.set("v", "<C-x>", maps.dec_visual(), { noremap = true })
+vim.keymap.set("v", "g<C-a>", maps.inc_gvisual(), { noremap = true })
+vim.keymap.set("v", "g<C-x>", maps.dec_gvisual(), { noremap = true })

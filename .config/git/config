@@ -40,10 +40,14 @@
 [merge]
 	# controls mergeing
 	# [diff] sometimes falls back to this
-	tool = nvimdiff  # oh cool, we can use this now
-	guitool = meld  # use meld for diff & merge in a GUI
+	# tool = nvimdiff  # oh cool, we can use this now
+	# guitool = meld  # use meld for diff & merge in a GUI
+	tool = code
+	guitool = code
 [mergetool]
 	prompt = false
+[mergetool "code"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 [mergetool "meld"]
 	path = org.gnome.meld # Flatpak support?
 	path = meld # fallback to normal install
@@ -148,6 +152,7 @@
 	syntax-theme = Monokai Extended
 	line-numbers = true
 
-# vim:ft=gitconfig noexpandtab tabstop=2
 [credential]
 	helper = /usr/libexec/git-core/git-credential-libsecret
+
+# vim:ft=gitconfig noexpandtab tabstop=2

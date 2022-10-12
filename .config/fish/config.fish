@@ -35,4 +35,17 @@ if isatty
     if not contains -- $__fish_config_dir/vendor_completions.d $fish_complete_path
         set -a fish_complete_path $__fish_config_dir/vendor_completions.d
     end
+
+    if set -q HOMEBREW_PREFIX
+        if not contains -- $HOMEBREW_PREFIX/share/fish/vendor_functions.d $fish_function_path
+            set -a fish_function_path $HOMEBREW_PREFIX/share/fish/vendor_functions.d
+        end
+        if not contains -- $HOMEBREW_PREFIX/share/fish/vendor_completions.d $fish_complete_path
+            set -a fish_complete_path $HOMEBREW_PREFIX/share/fish/vendor_completions.d
+        end
+    end
+
+    # if not contains -- $XDG_DATA_HOME/fish/generated_completions $fish_complete_path
+    #     set -a fish_complete_path $XDG_DATA_HOME/fish/generated_completions
+    # end
 end

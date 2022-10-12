@@ -1,0 +1,6 @@
+{
+  "esbonio.sphinx.confDir": "",
+  "files.associations": {
+    "**/.config/environment.d/*.conf": "dotenv"
+  }
+}

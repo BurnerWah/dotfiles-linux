@@ -13,6 +13,7 @@
 --map-syntax .eslintignore:'Git Ignore'
 --map-syntax .eslintrc:JSON
 --map-syntax .flake8:INI
+--map-syntax .jshintrc:JSON
 --map-syntax .lua-format:YAML
 --map-syntax .luacheckrc:Lua
 --map-syntax .luacov:Lua

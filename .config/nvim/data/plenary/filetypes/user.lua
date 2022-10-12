@@ -21,6 +21,10 @@ local shebang_fts = {
   ["ruby"] = "ruby",
   ["tl"] = "teal",
   ["ts-node"] = "typescript",
+  ["ts-node-cwd"] = "typescript",
+  ["ts-node-esm"] = "typescript",
+  ["ts-node-script"] = "typescript",
+  ["ts-node-transpile-only"] = "typescript",
 }
 local shebang = {}
 for _, prefix in ipairs(shebang_prefixes) do
@@ -51,6 +55,7 @@ return {
     ["iuml"] = "plantuml",
     ["jsonc"] = "jsonc",
     ["jsonld"] = "json", -- JSON Linked Data
+    ["just"] = "just",
     ["ll"] = "llvm",
     ["lzx"] = "xml", -- OpenLaszlo
     ["mlir"] = "mlir", -- from LLVM
@@ -93,6 +98,7 @@ return {
     [".jshintrc"] = "jsonc", -- JSHint config
     [".jsinspectrc"] = "json", -- JSInspect config
     [".jslintrc"] = "jsonc",
+    [".justfile"] = "just",
     [".luacompleterc"] = "json",
     [".manpath"] = "manconf", -- User manpath
     [".mocharc.json"] = "jsonc", -- MochaJS config
@@ -123,6 +129,7 @@ return {
     ["gopkg.lock"] = "toml",
     ["index.theme"] = "desktop", -- Icon theme index
     ["jsconfig.json"] = "jsonc", -- JS project config
+    ["justfile"] = "just",
     ["man_db.conf"] = "manconf", -- System mandb config (on Fedora)
     ["meson.build"] = "meson",
     ["meson_options.txt"] = "meson",

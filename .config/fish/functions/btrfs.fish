@@ -1,5 +1,6 @@
 function btrfs
     # Apply some defaults to btrfs commands in a kinda awkward way
+    set -l no_wrap_systemd
     if isatty stdout
         switch $argv[1]
             case "d*"
@@ -12,8 +13,16 @@ function btrfs
                         set argv $argv[1..2] -H $argv[3..-1]
                     case du
                         set argv $argv[1..2] --si $argv[3..-1]
+                        set -e no_wrap_systemd
+                    case defragment
+                        set -e no_wrap_systemd
                 end
         end
     end
-    command btrfs $argv
+    if not set -q no_wrap_systemd
+        and command -qs systemd-run
+        wrap-systemd.scope cmd-btrfs- btrfs $argv
+    else
+        command btrfs $argv
+    end
 end

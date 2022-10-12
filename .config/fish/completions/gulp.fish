@@ -1,0 +1,1 @@
+gulp --completion=fish | source

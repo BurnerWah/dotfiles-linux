@@ -34,8 +34,8 @@ vim.o.title = true
 -- We want to use ripgrep because it's the fastest.
 -- Nothing else really compares to it, so the next best option is assuming grep is symlinked to ugrep.
 if executable("rg") then
-  vim.o.grepprg = [[rg -SL --hidden -g !.git --no-heading --vimgrep $*]]
-  vim.opt.grepformat:prepend("%f:%l:%c:%m")
+	vim.o.grepprg = [[rg -SL --hidden -g !.git --no-heading --vimgrep $*]]
+	vim.opt.grepformat:prepend("%f:%l:%c:%m")
 end
 
 -- Enable spell checking
@@ -54,9 +54,9 @@ vim.o.updatetime = 300
 -- Show non-printable characters
 vim.cmd([[set list]])
 if has("multi_byte") then
-  vim.o.listchars = "tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-"
+	vim.o.listchars = "tab:▸ ,extends:❯,precedes:❮,nbsp:±,trail:-"
 else
-  vim.o.listchars = "tab:> ,extends:>,precedes:<,nbsp:+,trail:-"
+	vim.o.listchars = "tab:> ,extends:>,precedes:<,nbsp:+,trail:-"
 end
 
 vim.o.conceallevel = 2
@@ -68,33 +68,32 @@ vim.o.concealcursor = "nv"
 -- Environment {{{modname: string1
 -- nvr support
 if executable("nvr") then
-  vim.env.EDITOR = "nvr -cc split --remote-wait"
-  vim.env.GIT_EDITOR = "nvr -cc split --remote-wait"
+	vim.env.EDITOR = "nvr -cc split --remote-wait"
+	vim.env.GIT_EDITOR = "nvr -cc split --remote-wait"
 end
 
 -- Global variables (pseudo-options) {{{1
 
 V.dsl.let({
-  loaded_python_provider = 0, -- Block Python 2 rplugins
-  loaded_perl_provider = 0, -- Block Perl rplugins
-  node_host_prog = exepath("neovim-node-host"),
-  ruby_host_prog = exepath("neovim-ruby-host"),
-  netrw_nogx = true,
-  astronauta_load_keymap = false, -- We do this early
-  loaded_fzf = false, -- No pls don't load this I don't use it at all
+	loaded_python_provider = 0, -- Block Python 2 rplugins
+	loaded_perl_provider = 0, -- Block Perl rplugins
+	node_host_prog = exepath("neovim-node-host"),
+	ruby_host_prog = exepath("neovim-ruby-host"),
+	netrw_nogx = true,
+	astronauta_load_keymap = false, -- We do this early
+	loaded_fzf = false, -- No pls don't load this I don't use it at all
 
-  -- Filetype settings
+	-- Filetype settings
 
-  no_python_maps = true, -- All maps covered by nvim-treesitter
-  omni_sql_no_default_maps = true,
-  tex_flavor = "latex",
-  vimsyn_embed = "lPr", -- Embed Lua, Python, and Ruby in vim syntax
+	no_python_maps = true, -- All maps covered by nvim-treesitter
+	omni_sql_no_default_maps = true,
+	tex_flavor = "latex",
+	vimsyn_embed = "lPr", -- Embed Lua, Python, and Ruby in vim syntax
 
-  -- Other
-  -- (this should go elsewhere but there isn't a good place for it)
+	-- Other
+	-- (this should go elsewhere but there isn't a good place for it)
 
-  snips_author = "Jaden Pleasants",
-  snips_email = "jadenpleasants@fastmail.com",
+	snips_author = "Burner",
 })
 
 -- vim:ft=lua fdm=marker

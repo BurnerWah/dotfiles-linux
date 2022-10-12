@@ -1,7 +1,7 @@
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
-require("cmp_tabnine.config"):setup({ ignored_file_types = { text = true } })
+-- require("cmp_tabnine.config"):setup({ ignored_file_types = { text = true } })
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -11,8 +11,6 @@ end
 local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
-
-cmp.register_source("fish", require("cmp_fish").new())
 
 cmp.setup({
   completion = { completeopt = "menu,menuone,noselect" },
@@ -54,9 +52,9 @@ cmp.setup({
     { name = "nvim_lsp" },
     { name = "vsnip" },
     { name = "copilot" },
-    { name = "cmp_tabnine" },
+    -- { name = "cmp_tabnine" },
     { name = "treesitter" },
-    { name = "crates" },
+    -- { name = "crates" },
     { name = "nvim_lua" },
     { name = "calc" },
     { name = "fish" },
@@ -65,7 +63,7 @@ cmp.setup({
     { name = "fuzzy_buffer" },
     { name = "buffer" },
   }, {
-    { name = "nuspell" },
+    -- { name = "nuspell" },
     { name = "spell" },
   }),
   formatting = { format = lspkind.cmp_format({ with_text = true, maxwidth = 50 }) },
@@ -78,7 +76,7 @@ cmp.setup({
       cmp.config.compare.recently_used,
       require("cmp-under-comparator").under,
       cmp.config.compare.kind,
-      require("cmp_tabnine.compare"),
+      -- require("cmp_tabnine.compare"),
       cmp.config.compare.sort_text,
       cmp.config.compare.length,
       cmp.config.compare.order,
